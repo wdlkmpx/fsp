@@ -74,7 +74,8 @@
 	or from 
 	<ulink url="http://ibiblio.org/pub/linux/system/network/file-transfer/">ibblio</ulink>.
 	If you have the FSP tools already you can access the latest FSP release
-	via fsp on hxt.homelinux.org port 2221.
+	via fsp on hxt.homelinux.org or wrack.telelev.net both running fspd on
+	port 2221.
       </para>
       <para>
 	When you're interesseted in the latest, and of course greates,
@@ -208,17 +209,18 @@
       <sect3 id="getsource">
 	<title>How to obtain the source distribution</title>
 	<para>
-	  FIXME
-	  Link back to the id whrecanifind  and tell how to download a tar.gz file ;)
+	  There are several ways to obtain the fsp source distribution please take a
+	  look at <xref linkend="wherecanifind">	  
 	</para>
       </sect3>
       <sect3 id="getbinary">
 	<title>How to obtain a binary copy</title>
 	<para>
-	  FIXME
-	  Well maybe we can provide binary builds some time in the future
-	  I startet a spec file for RH 7.3 (should be generic cause fsp is nearly dependencie free)
-	  some time ago but never finished it
+	  At the moment we provide only rpms for RedHat 7.3. You can download the rpm file from
+	  the sf.net download page or from wrack.telelev.net. wrack.telelev.net provides the
+	  rpms in a apt-rpm useable way, for more information about apt-rpm and the packages on
+	  wrack.telelev.net take a look at http://sven.stormbind.net/aptrpm/
+	  If you're running other rpm based distributions you can try to rebuild the source rpms.
 	</para>
       </sect3>
     </sect2>
@@ -226,8 +228,12 @@
 <sect2 id="compilesource">
       <title>How to compile the source code</title>
       <para>
-	FIXME
-	Tell the normal shit again, tar zxf, ./configure make make install
+	After download you should be able to unpack the source tarball, change
+	into the source directory and use
+	./configure
+	make
+	su
+	make install	
       </para>
     </sect2>
 </sect1>
@@ -239,7 +245,33 @@
     <para>
       FIXME
       Information about the fspd
+      Maybe I should start a second document describing all the
+      possible configuration options in the fspd?
+      Raw overview for this section:
+      - install fspd -> see prior section
+      - basic infos on fspd.conf
+      - info about init scripts
+      - info about the several .FSP_ files
       </para>
+    <sect2 id="fspd.conf">
+      <title>How to setup a basic fspd.conf</title>
+      <para>
+	FIXME
+      </para>
+    </sect2>
+    <sect2 id="initscript">
+	<title>How can I start the fspd automagicly on reboot?</title>
+      <para>
+	FIXME
+	Use init scripts ;)
+      </para>
+    </sect2>
+      <sect2 id="restrictions">
+	<title>How to setup restrictions on directorys?</title>
+	<para>
+	  FIXME
+	</para>
+      </sect2>
   </sect1>
 <!-- end how to use the server -->
 
@@ -251,6 +283,20 @@
       Explain client tools and those f*cking shell script wrappers *hrhr*
       Check the X based fsp tools, maybe they'll compile ...
       </para>
+    <sect2 id="fsptoolchain">
+      <title>The fsp tool collection</title>
+      <para>
+	FIXME
+	Information about all the f* commands
+      </para>
+    </sect2>
+    <sect2 id="fspclient">
+      <title>fspclient</title>
+      <para>
+	FIXME
+	Enter information about fspclient here
+      </para>
+    </sect2> 
   </sect1>
 <!-- end how to use the client -->
 
