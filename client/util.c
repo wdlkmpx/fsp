@@ -136,8 +136,10 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
   
   fpath = util_abs_path(path);
   
-  for(pos = 0, at_eof = acc = cnt = 0; ; ) {
-    while((acc < UBUF_SPACE) && !at_eof) {
+  for(pos = 0, at_eof = acc = cnt = 0; ; ) 
+  {
+    while((acc < UBUF_SPACE) && !at_eof) 
+    {
       ub = client_interact(CC_GET_DIR,pos, strlen(fpath),
 			   (unsigned char *)fpath+1, 2,
 			   (unsigned char *)&client_net_len);
@@ -155,7 +157,7 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
       acc += rlen;
       pos += rlen;
     }
-      
+    
     if(acc >= UBUF_SPACE) len = UBUF_SPACE;
     else len = acc;
       
@@ -176,8 +178,8 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
     else dp = (RDIRENT **)  malloc((cnt+k+1)*sizeof(RDIRENT *));
       
     if(!p1 || !dp) {
-      free(fpath);
       fputs("directory reading out of memory\n",stderr);
+      free(fpath);
       return((RDIRENT **) 0);
     }
       
@@ -186,6 +188,7 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
       if(((RDIRENT *) p2)->type == RDTYPE_SKIP) break;
       if(((RDIRENT *) p2)->type == RDTYPE_END) {
 	dp[cnt] = 0;
+        free(fpath);
 	return(dp);
       }
       dp[cnt] = (RDIRENT *) p1;
@@ -201,11 +204,13 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
       
     if(acc < UBUF_SPACE) {
       dp[cnt] = 0;
+      free(fpath);
       return(dp);
     }
     for(p1 = buf + UBUF_SPACE, p2 = buf, k = (acc -= UBUF_SPACE); k--;)
       *p2++ = *p1++;
   }
+  free(fpath);
 }
 
 static int util_download_main PROTO5(char *, path, char *, fpath, FILE *, fp,
@@ -472,7 +477,11 @@ RDIR *util_opendir PROTO1(char *, path)
     if(!strcmp(ddp->path,fpath)) break;
   
   if(!ddp) {
-    if(!(dep = get_dir_blk(fpath))) return((RDIR *) 0);
+    if(!(dep = get_dir_blk(fpath)))
+    {
+	free(fpath);
+	return((RDIR *) 0);
+    }
     ddp = (DDLIST *) malloc(sizeof(DDLIST));
     ddp->dep_root = dep;
     ddp->path = fpath;
@@ -546,8 +555,15 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     }
   }
 
-  /*  free(fpath); */ /* TODO: memory leak is there, this should be freed! */
+  free(fpath); 
+  
   fpath = util_abs_path(path);
+  if(!strcmp(fpath,env_dir)) {
+    ppath = fpath;
+    pfile = ".";
+  } else {
+    util_split_path(fpath,&ppath,&p1,&pfile);
+  }
 
   /*  if(cached) printf("Record found in cache.\n",ppath); */
   if(statworks && !cached)

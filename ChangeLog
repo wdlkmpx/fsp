@@ -4,6 +4,8 @@ W.I.P
 	fspscan: install it when doing make install
 	fspd: -l logfile switch
 	removed crash when logfile is in use
+	fixed memory leak in client/util.c:get_dir_blk
+	fixed memory leak in client/util.c:open_dir
 
 Version 2.8.1b15 -- 15 Oct 2003 
         Sven writes manpage for fspscan.1
