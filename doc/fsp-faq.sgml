@@ -93,11 +93,9 @@
       <sect3 id="gethelpdocs">
 	<title>RTFM - Read the fine Manuals</title>
 	<para>
-	  FIXME
-	  The &fsp; definition:
+	  <ulink url="http://fsp.sourceforge.net/doc/PROTOCOL.txt">The &fsp; definition</ulink>
 	  The latest version of the FAQ
 	  The old FAQ
-	  
 	</para>
       </sect3>
           <sect3 id="gethelpml">
@@ -118,26 +116,84 @@
     </sect2>
     
     <sect2 id="licence">
-      <title>Licence and redistribution of FSP</title>
+      <title>Licence, copyright and redistribution of FSP</title>
       <para>
-	FIXME
-	name and link to the licence
+	Most parts of the &fsp; distribution are free and licenced under a
+	BSD/MIT/X licence.
+      </para>
+      <para>
+	From the COPYRIGHT file in the source distribution (e-mail addresses removed):
+	<programlisting>
+	  Authors:
+	  Radim Kolar  (Current FSP maintainer)
+	  Andrew Doherty
+	  Michael Fischbein
+	  Cimarron D. Taylor
+	  Guido van Rossum
+	  Wen-King Su
+	  Philip G. Richards
+	  Michael Meskes
+	  Rich $alz
+	  gjc@mitech.com
+	  Joseph_Traub
+	  Sven (VMS port maintainer)
+	  Very Mad Students, University of Karlsruhe, FRG (VMS port)
+	  
+	  Copyright:
+	  All of the FSP code is free software.  Most of fsp falls under two
+	  copyrights, the 2-point BSD copyright and one by Wen-King Su:
+	  
+	  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)
+	  You may copy or modify this file in any manner you wish, provided
+	  that this notice is always included, and that you hold the author
+	  harmless for any loss or damage resulting from the installation or
+	  use of this software.
+	  
+	  Other contributions to fsp fall under different copyrights:
+	  
+	  This file is Copyright 1992 by Philip G. Richards.  All Rights Reserved.
+	  See the file README that came with this distribution for permissions on
+	  code usage, copying, and distribution.  It comes with absolutely no warranty.
+	  
+	  Copyright (c) 1993 by Michael Meskes
+	  You may copy or modify this file in any manner you wish, provided
+	  that this notice is always included, and that you hold the author
+	  harmless for any loss or damage resulting from the installation or
+	  use of this software.
+	</programlisting>
       </para>
     </sect2>
    
     <sect2 id="projecthistory">
       <title>Project history</title>
       <para>
-	FIXME
-	A short summary about the Project History
+	This should give you a short overview over the development of the &fsp;
+	in the past and today.
       </para>
+      <sect3 id="histpast">
+	<title>The past</title>
+	<para>
+	  In the past various people worked on the &fsp;, see
+	  <xref linkend="licence">
+	</para>
+      </sect3>
+      <sect3 id="histtoday">
+	<title>Today</title>
+	<para>
+	  Radim Kolar started to work on the &fsp; again in June 2003. Since
+	  that time he's maintaining the source distribution. You can reach him
+	  on the mailinglists or via e-mail <email>hsn@cybermail.net-nospam</email>.
+	  </para>
+	<para>
+	  Since September 2003 Sven Hoexter is working on parts of the documentation.
+	  You can reach him on the mailinglists or via e-mail
+	  <email>sven@du-gehoerst-mir.de-nospam</email>.
     </sect2>
     
     <sect2 id="credits">
       <title>Developers and contributors</title>
       <para>
-	FIXME
-	Give credit to the past developers and people who have contributed
+	See <xref linkend="licence">
       </para>
     </sect2>
 
