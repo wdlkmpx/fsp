@@ -11,6 +11,7 @@
 #include "tweak.h"
 #include "server_def.h"
 #include "s_extern.h"
+#include "my-string.h"
 
 /*****************************************************************************
  * Routine to parse a path string given by the client.

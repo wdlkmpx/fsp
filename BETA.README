@@ -2,11 +2,13 @@ This is a BETA release, as such it's not guaranteed to work perfectly any
 problems let me know, they'll be sorted out in the next Beta release. At the
 point at which people stop complaining the non-beta release will be let out.
 
+You can get beta version from CVS on sf.net there are tagged fsp-281-bXX.
+
 FSP Development Battle plan:
 ============================
 * for next 2.8 Stable version (will be called 2.8.2)
 - add FSP Rename command
-- add FSP info command
+- add FSP Info command
 - go out this version as soon as possible. 2.8.1b3 and lower are buggy.
 * for next point Stable version 2.8.3
 - add native symbolic link support

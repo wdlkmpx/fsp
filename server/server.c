@@ -296,20 +296,6 @@ int server_loop PROTO2(int, fd, time_t, timeout)
 }
 
 /****************************************************************************
- * Routine to return a 16-bit key with random number.
- ****************************************************************************/
-
-static unsigned short gen_next_key PROTO0((void))
-{
-  unsigned long k;
-  
-  k = random();
-  k = k ^ (k >> 8) ^ (k >> 16) ^ (k << 8);
-  
-  return(k & 0xffff);
-}
-
-/****************************************************************************
  * Generic routine for sending reply back to clients.
  *        from: client address structure.
  *          ub: pointer to the message buffer.

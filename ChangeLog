@@ -1,4 +1,4 @@
-Version 2.8.1b18 - 24 Nov 24 2003
+Version 2.8.1b18 - 25 Nov 24 2003
         This is MINIMUM REQUIRED VERSION for applicatins which are using
 	 javafsp library, only download machine atm. javafsp library will
 	 be released shortly as separate package.
@@ -26,6 +26,8 @@ Version 2.8.1b18 - 24 Nov 24 2003
 	parsecheck added to 'make check' 
 	support for multiple \n in filename - in future there will be
 	 used for symlinks.
+	random generator changed to one recommended by Jiann-Ming Su.
+	new test program tests/randomcheck.c - tests random number generators.
 	
 Version 2.8.1b17 -- 17 Nov 2003 
 	Allow filenames with spaces inside

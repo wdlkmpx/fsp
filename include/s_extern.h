@@ -25,7 +25,6 @@ int init_caches PROTO0((void));
 void shutdown_caches PROTO0((void));
 void stat_caches PROTO1(FILE *,fp);
 const char *validate_path PROTO0((char *, unsigned, PPATH *,DIRINFO **, int));
-const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp);
 const char *server_get_dir PROTO0((DIRLISTING **,const DIRINFO *));
 const char *server_del_file PROTO0((PPATH *, DIRINFO *));
 const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di);
@@ -47,6 +46,12 @@ const char *server_rename PROTO0((char *,unsigned int,unsigned int));
 void init_home_dir PROTO0((void));
 
 /* filecache.c, open filehandles cache */
+
+/* path.c, path parser */
+const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp);
+
+/* random.c, next key random degenerator */
+unsigned short gen_next_key PROTO0((void));
 
 /* iprange.c IP range services */
 extern IPrange *iptab;
@@ -77,7 +82,7 @@ const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,right
 
 /* main.c, startup and init code */
 
-/* log.c */
+/* log.c, log writter */
 extern int logfd;
 extern int tlogfd;
 void fsplogf PROTO0((void));

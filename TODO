@@ -1,11 +1,12 @@
-FSP SUITE TO DO LIST BY RADIM KOLAR /hsn -at- cybermail * net /
+FSP SUITE TO DO LIST BY RADIM KOLAR 
+/* maintained by hsn -at- cybermail * net */
 
 LARGEFILES64 how to turn them on:
 Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
 glibc 2.3: #define _LARGEFILE64_SOURCE off64_t
 native: _FILE_OFFSETS_BITS = 32 / 64 then use off_t
 
-Radim Kolar's personal wishlist 1997
+Radim Kolar's personal wishlist from 1997
 show loosers online (finfo command) and server statz
 rename command
 password change command
@@ -26,7 +27,6 @@ PORTING
 Sven's Slowaris 8 compile problem
 
 NEEDS IMPROVMENT:
-random number generator in server is low random quality on low bits.
 
 Client LIBRARY
 local bind address FSP_LOCALIP
