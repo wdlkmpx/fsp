@@ -15,5 +15,6 @@ depcomp
 install-sh
 missing
 mkinstalldirs
+ylwrap
 *.gz
 *.bz2
