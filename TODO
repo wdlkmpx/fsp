@@ -1,0 +1,97 @@
+FSP SUITE TO DO LIST BY RADIM KOLAR /hsn -at- cybermail * net /
+
+LARGEFILES64 how to turn them on:
+Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
+glibc 2.3: #define _LARGEFILE64_SOURCE off64_t
+native: _FILE_OFFSETS_BITS = 32 / 64 then use off_t
+
+Radim Kolar's personal wishlist 1997
+show loosers online (finfo command) and server statz
+rename command
+password change command
+
+TESTING NEEDED:
+Write a simple FSP protocol testing tool
+Write a test suite using testing tool
+test if ending slashes do not confuse directory engine
+test for /../ root escapes
+test for remote buffer overflows
+Test new command rename /when implemented/
+Test if >2GB files but <4GB works correctly with and without --disable-largefile
+
+SECURITY BUGS:
+symlink to FILE can escape from FSP root directory. OLD known problem.
+
+PROTOCOL-RELATED BUGS:
+
+PORTING
+Sven's Slowaris 8 compile problem
+
+NEEDS IMPROVMENT:
+random number generator in server is low random quality on low bits.
+
+Client LIBRARY
+local bind address FSP_LOCALIP
+remove stale lock files if not needed, port code from fspclient.
+:low:
+fver and others add support new syntax fsp://host:port/file
+add sem locking method
+flscmd does stat before directory listing, why?
+:better to write a new code instead fixing old crap
+=convert to multi threaded=
+make setup from env a separate function
+do not use global variables
+
+CLIENTS 
+ALL: normalize return error codes of all clients
+write new clients for new commands - fsprencmd fpasswd finfo
+fgetcmd deletes partially transfered file on errors?
+:low:
+add support for more sane fsplist file format (as used by warez
+ppl) to fhostcmd
+clients do not freeing memory allocated from glob()
+
+FUTURE FEATURES FOR SERVER:
+:high:
+can be run multiple times on the same port, how to check?
+write RENAME FSP command
+bind-ip-address for server (and client via FSP_LOCAL_IP)
+report number of clients connected, size of hostable in new command
+ CC_INFO command
+special defence against rapid/double fire clients
+write FSP_CHANGE_PASSWORD command
+new transfer log wuftpd file format
+new common log format
+
+:midle:may not be in 2.8.2
+Native Supports for symbolic links (needed for mirroring Debian)
+
+:low:this will sure go after 2.8.2:
+FSP_GET/SET OWNERS like file transfer
+hashed passwords
+add switch for dir vs global access priority, override table
+use ntons a podobne funkce v iprange.c
+pouzivat nejaky jiny typ nez unsigned long pro ip adresu
+hard coded directory access rights in configuration instead of loading from FS
+support for user directory namespace ~hsn / public_html, check links to outside!
+privileged Hosts, excluded from Byte transfer Limit (hard to do)
+FSP Proxy repeater
+
+PERFORMANCE:
+host hashtable shrinking sometimes
+stat cache pro FSP_STAT a ostatni
+background time() alarm() caller 
+
+MAN:
+update FAQ - urgent!!
+separate manpage for 7 fsp (protocol definition) == write FSP RFC
+
+libraries and support for FSP protocol
+======================================
+
+new small,light fsplib for C.
+FSP plugin do Netscape/MSIE
+FSP library for Java
+Transfer HTTP over fsp transport
+FSP backend for APT
+FSP support to lftp
