@@ -64,12 +64,12 @@ void save_access_rights (DIRINFO *di)
    if(!use_access_files) return;
 
    /* step2 save flagfiles */
-   if(! (di->protection & DIR_GET) )   touch(FSP_NOGET);
-   if(di->protection & DIR_DEL)    touch(FSP_DEL);
-   if(di->protection & DIR_ADD)    touch(FSP_ADD);
-   if(di->protection & DIR_MKDIR)  touch(FSP_MKDIR);
-   if(di->protection & DIR_RENAME) touch(FSP_RENAME);
-   if(!di->protection& DIR_LIST)   touch(FSP_NOLIST);
+   if(! (di->protection & DIR_GET) )	touch(FSP_NOGET);
+   if(di->protection & DIR_DEL)		touch(FSP_DEL);
+   if(di->protection & DIR_ADD)		touch(FSP_ADD);
+   if(di->protection & DIR_MKDIR)	touch(FSP_MKDIR);
+   if(di->protection & DIR_RENAME) 	touch(FSP_RENAME);
+   if(! (di->protection& DIR_LIST))   	touch(FSP_NOLIST);
 
    /* step3 pazzwordz */
    if(di->public_password) save_password(FSP_PASSWORD,di->public_password);

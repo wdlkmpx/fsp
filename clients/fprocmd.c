@@ -66,6 +66,7 @@ int main (int argc, char ** argv)
   env_client();
 
   if(argv[1] && (argv[1][0] == '+' || argv[1][0] == '-') && !argv[1][2]) {
+    /* set pro command */   
     key = *++argv;
     while(*++argv) {
       if(!(av = glob(*argv))) {

@@ -37,9 +37,9 @@ fver and others add support new syntax fsp://host:port/file
 add sem locking method, possible?
 flscmd should not to do stat before directory listing.
 directory listing should not need to get 0 sized block. Needs total code
-   rewrite. 
+  rewrite. 
 better support for persistent keys - do not send cc_bye ? this should
- be probably configurable
+  be probably configurable
 
 :long-term goals:
 :better to write a new code instead of fixing 10 yo crap.
@@ -49,6 +49,7 @@ do not use global variables
 
 CLIENTS 
 :high: 
+fpro without directory name do not works
 normalize return error codes of all clients
 write new clients for new commands - fpasswd finfo
 :low:

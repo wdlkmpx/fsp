@@ -1,3 +1,8 @@
+	fixed sf bug 1060594: fspd: owner can't rename files
+	fixed sf bug 1060558: fpro 'l' sets 'm' flag instead
+	fixed sf bug 1060558: fpro 'l' flag was not correctly saved
+	  into filesystem
+	fmvcmd: do not send trailing junk to the server
 	print key=, seq= in fspd debugs with fixed width for easy reading
 	added BUGS and HISTORY sections to fspscan.1 manual page
 	Lamerpack: disable most of command line options in fspd and print

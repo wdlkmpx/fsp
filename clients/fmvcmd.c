@@ -63,7 +63,7 @@ static void rename_file (const char *fname,const char *target)
    }
 
    /* send our nicely crafted junk to the server */
-   reply=client_interact (CC_RENAME,0,n+l,buf,0,NULL);
+   reply=client_interact (CC_RENAME,0,n,buf,0,NULL);
   
    if(reply->cmd==CC_ERR) 
    {

@@ -752,6 +752,7 @@ const char *server_set_pro (DIRINFO *di, const char * key)
       break;
     case 'l':
       act=DIR_LIST;
+      break;
     case 'r':
       act=DIR_RENAME;
       break;
@@ -1091,6 +1092,11 @@ const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
       else
 	  return ("Refusing to operate on special files");
   /* validate source object */
+  /* we must turn \0 back into \n in password field */
+  if(src.passwd)
+  {
+      ub[n-strlen(src.passwd)-2]='\n';
+  }
   pe=validate_path(ub,n,&src,&sdir,0);
   if(pe) return pe;
   
@@ -1121,11 +1127,11 @@ const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
       /* no, do simple rename */
       
       pe=require_access_rights( sdir,DIR_RENAME,inet,src.passwd);
-      if(pe[0]!='N')
+      if(pe[0]!='N' && pe[0]!='O')
 	  return ("Permission denied");
       if(istargetdir==0)
          pe=require_access_rights( sdir,DIR_DEL,inet,src.passwd);
-      if(pe[0]!='N')
+      if(pe[0]!='N' && pe[0]!='O')
 	  return ("No permission for overwriting files");
       /* now go to the action */	  
       if (rename(src.fullp,dest.fullp))
