@@ -14,3 +14,4 @@ FSP Version	CPU         OS        	Compiler         C library
 2.8.1 Beta 14   i386        Debian/testing-unstable
 2.8.1 Beta 14   i386        RedHat 7.3
 2.8.1 Beta 14   i386        Conectiva Linux 9
+2.8.1 Beta 19   i386        FreeBSD 5.x gcc-3.3
