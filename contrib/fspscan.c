@@ -31,7 +31,7 @@ suite. Don't blame me for the code, i have not touched it.
 #include "fspscan.h"
 #include <netdb.h>
 #include <errno.h>
-#include <getopt.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>

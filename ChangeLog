@@ -1,3 +1,7 @@
+Version NEXT
+	use getopt from stdio.h instead of getopt.h in fspscan.c 
+	  fspscan now compiles on AIX and other OS without glibc (hoaxter)
+	
 Version 2.8.1b23 - 14 Jan 2005
 	use srandomdev for seeding of client seq. number generator
 	make dirlister smarter - save one RTT per each directory listings
