@@ -18,3 +18,4 @@ fspmerge
 fstatcmd
 fver
 .deps
+fspprof.c
