@@ -1,0 +1,7 @@
+Makefile
+Makefile.in
+*.o
+*.pyc
+mklargefile
+fspscan
+.deps
