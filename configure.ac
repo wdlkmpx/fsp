@@ -77,7 +77,9 @@ AC_SYS_LARGEFILE
 if test "${enable_maintainer_mode+set}" = set; then
    CFLAGS="-g3 $ac_cv_prog_gcc_flags"
 AC_CHECK_LIB(efence,EF_Abort)   
-fi   
+fi
+AC_MSG_CHECKING([if enable extra debug code])
+AC_ARG_ENABLE(debug,[Enable client library debuging],AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_HEADER_STDC
 AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h)
 AC_CHECK_HEADERS(string.h memory.h strings.h unistd.h sys/resource.h utime.h)

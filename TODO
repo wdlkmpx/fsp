@@ -88,6 +88,7 @@ libraries and support for FSP protocol
 ======================================
 
 DONE: FSP library for Java
+DONE: FSP over HTTP
 WIP:  new small,light fsplib for C.
 FSP backend for APT
 FSP plugin do Netscape/MSIE
