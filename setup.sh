@@ -7,7 +7,7 @@
 #  Humberto Massa - basic porting
 #  Hanno Hecker   - resolved globing problem
 #  Radim Kolar    - zsh setopt
-#  Sven Hoexter   - minor fix
+#  Sven Hoexter   - minor fix, fspget code
 #
 #  visit our homepage for porting story
 #

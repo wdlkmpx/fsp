@@ -1,4 +1,4 @@
-Version NEXT
+Version 2.8.1b23 - 14 Jan 2005
 	use srandomdev for seeding of client seq. number generator
 	make dirlister smarter - save one RTT per each directory listings
 	Locking uses unsigned int sized key, not unsigned short
@@ -56,6 +56,15 @@ Version NEXT
 	fhostcmd: ignore servers without port number set
 	new command fsetup: C rewrite of old Perl script. This command is
 	  like fhostcmd but uses standard fspsites file format
+	man: new manpage for fspsites.5
+	merged client: added support for fbye
+	added man page fstat.1 -> fstatcmd.1
+	added man page for fmvcmd.1
+	removed -Wconversion GCC compile option
+	setup.sh give Sven credits for fgetcmd
+	added man page for fsetup.1
+	fhostcmd, fsetupcmd - report error on non numeric on zero port number
+	fspsites.l - allow multiple aliases per site. Non standard, but nice.
 
 Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files

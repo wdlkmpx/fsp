@@ -170,7 +170,7 @@ int print_host_setup(struct fsp_host *setup,int csh,int lhost)
 	    lhost=NAME;
 	else
 	if (lhost==NAME && !setup->hostname)
-	    host=NUMBER;
+	    lhost=NUMBER;
     }
     printf("%s", (lhost==NAME)? setup->hostname : setup->hostaddr);
     if (csh) printf(";\n");

@@ -119,16 +119,16 @@ int main (int argc, char ** argv)
       if (!isdigit(*p) && *p!='.') setup->hostname=argv[optind];
     if (!setup->hostname) setup->hostaddr=argv[optind];
     setup->port=atol(argv[optind+1]);
+    if(setup->port==0)
+	setup=init_host();
     if (argc > optind + 1) setup->dir=argv[optind+2]; /* directory given, too */
   } else if (argc > optind) { /* abbreviation given */
     parse_prof_file_new(filename);
     setup=find_host(argv[optind]);
     if(!setup) setup=init_host();
   } else { /* list or set command-line options */
-    if (filename || argc==1) {  /* list only */
-      parse_prof_file_new(filename);
-      list_prof_file();
-      exit(EX_OK);
+    if (filename || argc==1) {  /* no arguments */
+      setup_usage();
     }
   }
   if(setup->hostname==NULL && setup->hostaddr==NULL)

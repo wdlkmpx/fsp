@@ -72,8 +72,7 @@ then
       -Wno-system-headers -Wredundant-decls \
       -Wmissing-noreturn -pedantic \
       -Wlong-long -Wundef -Winline \
-      -Wno-unused-parameter \
-      -Wconversion# -Wunreachable-code 
+      -Wno-unused-parameter # -Wconversion -Wunreachable-code
   do
        if $CC $i $ac_cv_prog_gcc_flags -c configure-dummy.c >/dev/null 2>&1 
        then ac_cv_prog_gcc_flags="$ac_cv_prog_gcc_flags $i"

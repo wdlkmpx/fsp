@@ -154,6 +154,8 @@ int main (int argc, char ** argv)
       if (!isdigit(*p) && *p!='.') setup->hostname=argv[optind];
     if (!setup->hostname) setup->hostaddr=argv[optind];
     setup->port=atol(argv[optind+1]);
+    if(setup->port==0)
+	setup=init_host();
     if (argc > optind + 1) setup->dir=argv[optind+2]; /* directory given, too */
   } else if (argc > optind) { /* abbreviation given */
     parse_prof_file_new(filename);

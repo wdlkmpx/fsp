@@ -41,7 +41,7 @@ HOSTNAME [[:alpha:]][\-._[:alnum:]]+
 			BEGIN(sport);
 			}
 <sport>{NUMBER} 	host->port=atoi(yytext);BEGIN(salias);
-<salias>{HOSTNAME}      add_host_alias(host,yytext);BEGIN(sdir);
-<sdir,salias>\/[[:graph:]]*    host->dir=strdup(yytext);BEGIN(INITIAL);
+<salias>{HOSTNAME}      add_host_alias(host,yytext);
+<salias>\/[[:graph:]]*  host->dir=strdup(yytext);BEGIN(INITIAL);
 {EOL}			add_host(host);host=NULL;BEGIN(INITIAL);
 <<EOF>>			add_host(host);host=NULL;BEGIN(INITIAL);yyterminate();

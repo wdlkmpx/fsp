@@ -47,7 +47,7 @@ FUTURE FEATURES FOR SERVER:
 :high: required for 2.8.2 final
 report number of clients connected, size of hostable in new command
  CC_INFO command
-special defence against rapid/double fire clients (burst command in fspclient)
+possible? special defence against rapid/double fire clients (burst command in fspclient)
 Native Supports for symbolic links (needed for mirroring Debian)
 new LSTAT COMMAND, new MAKELINK command
 
@@ -69,9 +69,6 @@ use ntons a podobne funkce v iprange.c
 ipv6 socket support
 privileged Hosts, excluded from Byte transfer Limit (hard to do)
 
-new toy
-FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
-  today.
 
 PERFORMANCE:
 do host hashtable shrinking/clearing sometimes
@@ -82,9 +79,13 @@ Current performance 1925648B/s
 
 MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
-Register udp/21 for FSP in iana. FSP RFC needed!
-manual page for fmvcmd.1
+Register udp/21 for FSP in http://www.iana.org/ FSP RFC needed!
 manual page for fsetup.1
+
+POSSIBLE NEW PROJECTS
+FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
+  today.
+Experimental transfer HTTP over fsp transport
 
 libraries and support for FSP protocol
 ======================================
@@ -94,10 +95,10 @@ DONE: FSP over HTTP
 DONE: new small,light fsplib for C.
 
 FSP plugin for Netscape/MSIE. 
-  Not possible to write protocol plugins with Netscape 3 SDK 
+  Not possible to write protocol plugins with Netscape 3 SDK,
+  not sure about MSIE or Mozilla 
   we have fsproxy now.
 FSP backend for APT
-Experimental transfer HTTP over fsp transport
 FSP support in major ftp programs: lftp,wget,curl
 AVFS plugin http://sourceforge.net/projects/avf
 
