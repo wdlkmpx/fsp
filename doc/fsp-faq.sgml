@@ -1,0 +1,188 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+<!-- define some ENTITYs -->
+<!ENTITY fsp "File Service Protocol">
+]>
+<article id="fsp-faq" lang="en">
+  <articleinfo>
+    <title>FSP - &fsp; FAQ</title>
+    <author>
+      <firstname>Sven</firstname>
+      <othername>"Hoaxter"</othername>
+      <surname>Hoexter</surname>
+    </author>
+<!-- I'll call it 0.1 later
+    <revhistory>
+      <revision>
+	<revnumber>0.1</revnumber>
+	<date>2003.09.10</date>
+      </revision>
+    </revhistory>
+-->
+    <!-- starting with some general stuff -->
+    <abstract>
+      <para>
+	This document is a major rewrite of the old 
+	<ulink url="http://fsp.sourceforge.net/doc/faq.html">FSP FAQ</ulink>.
+	I started with this FAQ from scratch cause nearly all parts of the old FAQ where outdated. This new FAQ is maintained
+	in DocBook SGML. Send patches to the fsp-devel Mailinglist (FIXME link to id gethelpml) or directly to me
+	<email>sven@du-gehoerst-mir.de-nospam</email>. You should be able to find the latest SGML version of this FAQ in the 
+	<ulink url="http://sourceforge.net/cvs/?group_id=89835">fsp CVS at sf.net</ulink> or here
+	<ulink url="http://sven.stormbind.net/fsp/fsp-doc/fsp-faq.sgml">http://sven.stormbind.net/fsp/fsp-doc/fsp-faq.sgml</ulink>
+	(be aware the sf.net public CVS is often about a week behind the "real" CVS :( )
+      </para>
+    </abstract>
+      </articleinfo>
+  <!-- end of the general stuff -->
+
+  <!-- starting with the main document -->   
+
+<!-- starting with the introduction -->  
+<sect1 id="introduction">
+    <title>Introduction</title>
+
+    <sect2 id="whatisfsp">
+      <title>What is FSP?</title>
+      <para>
+	FSP stands for &fsp;. In general FSP is what anonymous ftp should be, a fast and bandwith friendly
+	way to access publicly avaible data. FSP is UDP based so it doesn't have all the protocol overhead you've with TCP
+	based transfer protocols. You can find the latest protocol definition right here
+	<ulink url="http://fsp.sourceforge.net/doc/PROTOCOL.txt">http://fsp.sourceforge.net/doc/PROTOCOL.txt</ulink>
+	or in the source distribution in the "doc" subdirectory.
+      </para>
+
+      <para>
+	In the past various people maintained the FSP code base. At the moment Radim Kolar <email>hsn@cybermail.net-nospam</email>
+	is maintaining FSP. If you like to get involved take a look at the FSP
+	<ulink url="http://fsp.sourceforge.net">Homepage</ulink> and the 
+	<ulink url="http://www.sourceforge.net/projects/fsp/">FSP project page</ulink>.
+      </para>
+    </sect2>
+
+    <sect2 id="whatisitfor">
+      <title>Why and for what should I use FSP?</title>
+      <para>
+	The &fsp; has its strengths on slow lines and connections with a high package lose like a Wireless LAN. In general the &fsp; is
+	what anonymous FTP should be - a fast and bandwith friendly way for anonymous file access.
+      </para>
+    </sect2>
+   
+    <sect2 id="wherecanifind">
+      <title>Where can I download FSP?</title>
+      <para>
+	You can Download the FSP source Distribtuion from the
+	<ulink url="http://sourceforge.net/project/showfiles.php?group_id=89835">sf.net mirror network</ulink>
+	or from 
+	<ulink url="http://ibiblio.org/pub/linux/system/network/file-transfer/">ibblio</ulink>.
+      </para>
+    </sect2>
+
+    <sect2 id="gethelp">
+      <title>Where can I find help?</title>
+      <sect3 id="gethelpdocs">
+	<title>RTFM - Read the fine Manuals</title>
+	<para>
+	  FIXME
+	  Various people took the time to write nice documents on fsp releated issue. Please read those
+	  fine documents bevor you start writing to the mailinglists.
+	</para>
+      </sect3>
+          <sect3 id="gethelpml">
+	<title>The Mailinglists</title>
+	<para>
+	  For developing issue writte to the fsp-dev mainlinglist. For end-user questions
+	  and questions on how to configure your server/client write to the fsp-user Mailinglist.
+	  You can find more information on how to subscribe/unsubscribe to the mailinglist and
+	  the archiv on the
+	  <ulink url="http://sourceforge.net/mail/?group_id=89835">FSP mailinglist page</ulink>
+	  on sf.net.
+	  Please bevor you write to one of the provided mailinglists read and understand
+	  <ulink url="http://www.catb.org/~esr/faqs/smart-questions.html">ESRs HowTo ask smart questions</ulink>
+	  and
+	  <ulink url="http://www.netmeister.org/news/learn2quote.html">learn.to/quote</ulink>
+	</para>
+      </sect3>  
+    </sect2>
+    
+    <sect2 id="licence">
+      <title>Licence and redistribution of FSP</title>
+      <para>
+	FIXME
+	name and link to the licence
+      </para>
+    </sect2>
+   
+    <sect2 id="projecthistory">
+      <title>Project history</title>
+      <para>
+	FIXME
+	A short summary about the Project History
+      </para>
+    </sect2>
+    
+    <sect2 id="credits">
+      <title>Developers and contributors</title>
+      <para>
+	FIXME
+	Give credit to the past developers and people who have contributed
+      </para>
+    </sect2>
+
+  </sect1>
+<!-- end of the introduction -->
+  
+ <!-- start with the installation instructions-->
+<sect1 id="installation">
+<title>Installation instructions</title>
+    <sect2 id="getfsp">
+      <title>How to get FSP</title>
+      <sect3 id="getsource">
+	<title>How to obtain the source distribution</title>
+	<para>
+	  FIXME
+	  Link back to the id whrecanifind  and tell how to download a tar.gz file ;)
+	</para>
+      </sect3>
+      <sect3 id="getbinary">
+	<title>How to obtain a binary copy</title>
+	<para>
+	  FIXME
+	  Well maybe we can provide binary builds some time in the future
+	  I startet a spec file for RH 7.3 (should be generic cause fsp is nearly dependencie free)
+	  some time ago but never finished it
+	</para>
+      </sect3>
+    </sect2>
+
+<sect2 id="compilesource">
+      <title>How to compile the source code</title>
+      <para>
+	FIXME
+	Tell the normal shit again, tar zxf, ./configure make make install
+      </para>
+    </sect2>
+</sect1>
+<!-- end of the installation instructions -->  
+
+<!-- start how to use on the server side -->
+<sect1 id="serverside">
+    <title>How to set up your FSP server</title>
+    <para>
+      FIXME
+      Information about the fspd
+      </para>
+  </sect1>
+<!-- end how to use the server -->
+
+<!-- start how to use on the client side -->
+<sect1 id="clientside">
+    <title>How to use the fsp client tools</title>
+    <para>
+      FIXME
+      Explain client tools and those f*cking shell script wrappers *hrhr*
+      Check the X based fsp tools, maybe they'll compile ...
+      </para>
+  </sect1>
+<!-- end how to use the client -->
+
+
+</article>
