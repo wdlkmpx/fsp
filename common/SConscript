@@ -1,0 +1,7 @@
+Import(Split("env PREFIX VERSION PACKAGE TARBALL"))
+
+common=env.StaticLibrary(target = 'common', source = Split('''
+random.c udp_io.c getsl.c
+'''))
+
+Export(Split("common"))

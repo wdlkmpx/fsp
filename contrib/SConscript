@@ -1,0 +1,3 @@
+Import(Split("env PREFIX VERSION PACKAGE TARBALL"))
+
+env.Program(target = 'fspscan', source = 'fspscan.c')
