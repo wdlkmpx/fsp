@@ -257,7 +257,7 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
     wrote = fwrite(ub->buf,1,rlen,fp);
     /* check for long integer pos overflow */
 #if SIZEOF_LONG > 4
-    if(pos+bytes>FOURGIGS)
+    if(pos+wrote>FOURGIGS)
 	break;
 #else
     if(pos+wrote<pos)
