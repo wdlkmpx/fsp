@@ -41,6 +41,10 @@ Version NEXT
 	FAQ: added section about key locking, dmachine, FSP stack libraries,
 	  lamah FSP Win32 suite.
 	print packet stats after up/downloads if client tracing is enabled.
+	fbye: lower timeout to 10 sec on CC_BYE
+	FAQ: Added two section making FSP slower/faster, version bumped
+	  to 0.2
+	do not use exit code -1 in fspscan
 
 Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files

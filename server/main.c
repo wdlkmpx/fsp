@@ -234,11 +234,11 @@ int main (int argc, char ** argv)
 	fprintf(stderr,"listening on port %d\n",udp_port);
 	fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
     }
-#ifdef LAMERPACK    
+#ifdef LAMERPACK
     display_version();
     fprintf(stderr,"rocking on port %d\n",udp_port);
     fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
-#endif    
+#endif
   }
 
   /* Moved setuid to here from below because log file was getting opened

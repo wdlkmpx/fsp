@@ -127,7 +127,7 @@ int main(int argc,char **argv)
     if (host == NULL) {
         fprintf(stderr, "host/ip not specified, unable to continue\n");
 	printhelp(argc, argv);
-	exit(-1);
+	exit(1);
     }
 
     if (outputfile == NULL) {

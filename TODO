@@ -15,7 +15,7 @@ Test if >2GB files but <4GB works correctly with and without --disable-largefile
 
 SECURITY BUGS:
 symlink to FILE can escape from FSP root directory. OLD known problem.
-symlink support must be reworked before final release.
+symlink support must be reworked before `final` release.
 
 PROTOCOL-RELATED BUGS:
 we should add real,portable error codes support to CC_ERR extended data area.
@@ -101,7 +101,7 @@ FSP plugin for Netscape/MSIE.
   we have fsproxy now.
 FSP backend for APT
 Experimental transfer HTTP over fsp transport
-FSP support in major ftp programs: lftp,wget,curl,gftp
+FSP support in major ftp programs: lftp,wget,curl
 AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:

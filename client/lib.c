@@ -255,6 +255,7 @@ void init_client (const char * host, unsigned short port, unsigned short myport)
 
 void client_finish(void)
 {
+  env_timeout=10;  
   (void) client_interact(CC_BYE, 0L, 0, (unsigned char *)NULLP, 0,
 			 (unsigned char *)NULLP);
   client_destroy_key();

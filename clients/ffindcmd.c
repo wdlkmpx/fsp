@@ -120,5 +120,5 @@ int main (int argc, char **  argv)
 static void usage_ffind (void)
 {
   fprintf(stderr,"usage: ffind file [file ...] expression\n");
-  exit(1);
+  exit(EX_USAGE);
 }

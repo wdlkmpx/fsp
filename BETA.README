@@ -22,7 +22,6 @@ Code fixups:
 - fspd: add special defence against rapid/double fire clients (burst command in fspclient)
 
 * for next point Stable version 2.8.3
-- retune alg. for links with high packet loss
 - hard coded access list, do not load it from filesystem
 - support for ~user namespace
 

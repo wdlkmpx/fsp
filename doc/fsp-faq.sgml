@@ -27,8 +27,8 @@
     </copyright>
     <revhistory>
       <revision>
-        <revnumber>0.1</revnumber>
-        <date>2004.12.17</date>
+        <revnumber>0.2</revnumber>
+        <date>2005.01.03</date>
       </revision>
     </revhistory>
     <!-- starting with some general stuff -->
@@ -658,7 +658,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
     There are several methods how to do this key sharing. Best method is
     to use semop+shmget, second is to use lockf on file in /tmp. All FSP
     clients running on the same machine must use the same locking method.
-    <sect2>
+    <sect2 id="largepackets">
     <title>Why not use bigger packet size?</title>
     <para>
        &fsp; defines maximum packet size 1024 bytes of data + header.
@@ -691,6 +691,18 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
       Second library is called <ulink url="http://fsp.sourceforge.net/fsplib.html">FSPlib</ulink>. This is FSP library for C language with POSIX-like API.
     <para>
       FSP support for Python <ulink url="http://fsp.sourceforge.net/pyfsp.html">PyFSP</ulink> is currently work in progress. Note: PyFSP uses GPL license, not MIT/X11 like other libraries.
+    <sect2 id="faster">
+    <title>How can I make FSP faster?</title>
+    <para>
+      Set FSP server and client to use bigger block size (<xref linkend="largepackets">), decrease server retry timeout to 1 sec, and descrease client delay also. Using this methods, FSP can run about 1.7 faster than before.
+      If you need even higher transfer speed, switch to HTTP protocol.
+    <sect2 id="slower">
+    <title>How can I make FSP slower?</title>
+    <para>
+      If your FSP server eats too much bandwidth, the best is to use
+      smaller packets. FSP server has builtin output thruput limiting, you
+      can slow down it in fspd.conf file. Slightly increasing server retry
+      timer also helps.
 </sect1>
 </article>
 <!-- vim: set expandtab: -->

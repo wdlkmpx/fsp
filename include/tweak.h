@@ -46,6 +46,10 @@
 #endif
 #endif
 
+#ifdef HAVE_SYSEXITS_H
+#include <sysexits.h>
+#endif
+
 #if !defined(BYTE)
   #if SIZEOF_CHAR == 1
     #define BYTE char

@@ -186,14 +186,6 @@ static void read_configuration (const char * name)
     }
     else if(strcasecmp(p, "packetsize") == 0) {
       packetsize = atoi(q);
-      if(packetsize == 0) 
-	  packetsize = DEFAULT_SPACE;
-      else
-      if(packetsize < 64 )
-	  packetsize = 64;
-      else	  
-      if(packetsize > UBUF_MAXSPACE ) 
-	  packetsize = UBUF_MAXSPACE;
     }
     else if(strcasecmp(p, "filecache") == 0) {
       fp_cache_limit = atoi(q);
@@ -213,7 +205,7 @@ static void read_configuration (const char * name)
     }
     else if(strcasecmp(p, "timeout") == 0) {
       session_timeout = atoi(q);
-      if(session_timeout <= 5 ) session_timeout = 60;
+      if(session_timeout < 7 ) session_timeout = 60;
     }
     else if(strcasecmp(p, "statcache_timeout") == 0) {
       session_timeout = atoi(q);

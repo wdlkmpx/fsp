@@ -183,7 +183,7 @@ AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[define if you 
 ,[#include <dirent.h>])
 AC_HEADER_SYS_WAIT
 AC_HEADER_STAT
-AC_CHECK_HEADER(tzfile.h)
+AC_CHECK_HEADERS(tzfile.h sysexits.h)
 AC_CACHE_CHECK(for string.h declaring some functions incorrectly,fsp_cv_header_string_bogus,[
 AC_TRY_LINK([#include <sys/types.h>
 #include <string.h>],,

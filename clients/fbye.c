@@ -23,4 +23,5 @@ int main (int argc, char ** argv)
 {
     env_client();
     client_finish();
+    return 0;
 }
