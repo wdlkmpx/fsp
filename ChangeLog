@@ -22,7 +22,7 @@ Version 2.8.1b18 - 25 Nov 24 2003
 	 control chars
 	MAJOR BUGFIX: path with trailing / or starting / is now parsed correctly
 	pathes with dot after slash are now detected at parse level (side
-	 effect of prev. fix)
+	 effect of prev. fix, fixed security prob)
 	tests moved from server/ into tests/ directory
 	removed special test case for root directory in path.c -> use more
 	 general alg. instead. This fixed "/" dir.

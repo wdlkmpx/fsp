@@ -56,7 +56,7 @@ write RENAME FSP command
 bind-ip-address for server (and client via FSP_LOCAL_IP)
 report number of clients connected, size of hostable in new command
  CC_INFO command
-special defence against rapid/double fire clients
+special defence against rapid/double fire clients (burst command in fspclient)
 common log format - replace custom fspd log
 
 :midle:may not be in 2.8.2
@@ -88,7 +88,7 @@ libraries and support for FSP protocol
 ======================================
 
 DONE: FSP library for Java
-new small,light fsplib for C.
+WIP:  new small,light fsplib for C.
 FSP backend for APT
 FSP plugin do Netscape/MSIE
 Transfer HTTP over fsp transport
