@@ -27,6 +27,7 @@ static void display_version PROTO0((void))
 	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2003 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
 	  "Portions copyright by BSD, Wen-King Su, Philip G. Richards, Michael Meskes.\n"
+	  "pidfile.[c|h] is GPL code, copyright Martin Schulze.\n"
 #ifdef __GNUC__
 	  "Compiled "__DATE__" by GCC "__VERSION__"\n"
 #endif
