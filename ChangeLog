@@ -1,3 +1,8 @@
+Version - not yet released
+	Added pidfile.[c|h] from sysklogd written by Martin 'Joey' Schulze
+	Added pidfile support, config option is 'pidlogname', the option
+	is required to start fspd, hope that's ok for most people
+	
 Version 2.8.1b19 - 11 Jan 2004
 	sven has added fspget URL command to setup.sh.
 	fixed case for mklargefile.py in tests/Makefile.am
