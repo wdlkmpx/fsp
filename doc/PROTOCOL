@@ -1,0 +1,372 @@
+			  File Service Protocol (FSP)
+				   definition
+
+			      Document version 0.8
+			   Last updated 29 Sep 2003 
+
+				 Also known as 
+			    File Slurping Protocol, 
+			    Flaky Stream Protocol, 
+			     FTP's Sexier Partner,
+			     File Sharing Protocol or
+			     Fucking Slow Protocol.
+
+		    `FSP is what anonymous FTP *should* be'
+		    
+This document was created by Radim Kolar, because there is no RFC for
+FSP. It was planed, but never comes out. Based on sources of FSP 2.8.1 Beta 13.
+This document is not copyrighted and is placed into public domain.
+
+Data formats used in this document
+  byte - unsigned 1 byte integer 0-255
+  word - unsigned 2 byte integer 0-65535
+  long - unsigned 4 byte integer 0-4294967295 
+  bits - counted from right to left. bit 0 is the lowest.
+  NULL - byte 00
+  ASCIIZ - ASCII string terminated with one NULL (the same as used in C
+           language)
+  numbers are stored in network byte order (high byte first).
+  File or directory names uses '/' as directory separator, they do not
+    need to start or end with it. There are in ASCIIZ format.
+    FSP servers starting from version 2.8 can have optional password
+    protection. To get password protected file, append '\n' followed
+    by password to filename.
+  Numbers starting with 0x are in hexadecimal (base 16) notation.
+
+Transport
+  FSP uses UDP datagrams as transport medium. Minimum UDP packet size (not
+  including size of UDP, IP and link layer headers) is 12 bytes, maximum UDP
+  packet size is 1024+12 bytes.
+
+FSP Packet format:
+  HEADER 		- size = Fixed size 12 bytes. Always present.
+  DATA         		- size = defined in header (DATA_LENGTH)
+  XTRA DATA		- size = packet_size - header_size (12) - DATA_LENGTH
+
+Maximal data size DATA_LENGTH + XTRA_DATA length is 1024. Clients and servers
+are not required to support XTRA DATA (but in current FSP implementation does).
+If XTRA DATA are provided, there must be also contained in MESSAGE_CHECKSUM.
+
+HEADER FORMAT (12 bytes)
+ byte FSP_COMMAND
+ byte MESSAGE_CHECKSUM
+ word KEY
+ word SEQUENCE
+ word DATA_LENGTH
+ long FILE_POSITION
+
+MESSAGE_CHECKSUM
+Entire packet (HEADER + DATA + XTRA DATA) is checksumed.  When computing a
+checksum use zero in place of MESSAGE_CHECKSUM header field. Checksums are
+computed as follows:
+ 
+ unsigned int sum,checksum;
+ for(t = packet_start, sum = 0; t < packet_end; sum += *t++);
+ checksum= sum + (sum >> 8);
+
+KEY
+Client's message to server contain a KEY value that is the same as the KEY
+value of the previous message received from the server. KEY is choosen random
+by server.
+
+TIMEOUTS
+Resends:
+Server will accept resent message from client with old KEY after 3 seconds.
+Client MUST wait at least 1 second before resending a message.
+Session:
+Server will accept message with bad key after 60 seconds. Clients should
+sent CC_BYE at end of their session, CC_BYE terminates a session.
+After session is terminated, sever will accept any next key.
+
+SEQUENCE
+Similarly, the server's message to client contains a SEQUENCE value
+that is the same as the SEQUENCE value of the previous message from the client.
+Client can choose any SEQUENCE number and can use it for detection of lost
+packets (increase sequence number on retry).
+
+DATA_LENGTH
+Size of DATA field in packet. Packet can also contain XTRA DATA field but
+size of this field is not included in header and must be computed from
+received packet size.
+
+FILE POSITION
+When transfering files, this field shows current position of requested
+data.
+
+FSP COMMANDS
+============
+
+ CC_VERSION     0x10		- Get server version string and setup
+ 
+                request
+                file position: ignored
+                data:          not used
+		xtra data:     not used
+		
+		reply
+		file position:  size of optional extra version data
+		data:           ASCIIZ Server version string
+		xtra data:      optional extra version data
+				byte - FLAGS
+				        bit 0 set - server does logging
+					bit 1 set - server is read only
+					bit 2 set - reverse lookup required
+					bit 3 set - server is in private mode
+					bit 4 set - thruput control
+				long - max_thruput allowed (in bytes/sec)
+
+				
+ CC_ERR      0x40                -  error response from server
+
+ 		If you want to get a error from server, send
+		any unknown client command (for example CC_ERR).
+		CC_ERRs are normally sent only by server on
+		errors.
+
+		request (not used)
+                file position: not used
+                data:          not used
+		xtra data:     not used
+
+		reply
+		file position:  not used
+		data:           ASCIIZ Error string
+		xtra data:	not used
+
+ CC_GET_DIR  0x41		- get a directory listing
+
+ 		request
+		file position:  position in directory
+		data:           ASCIIZ directory name
+		xtra data:	(not required)
+		                word - size of reply's optional data block
+
+		reply
+		file position:  same as in request
+		data:           directory listing (format follows)
+		xtra data:	not used
+
+RDIRENT is the structure of a directory entry contained in a directory listing.
+Each entry contains a HEADER, which has 4 bytes quantity 'time' in Unix
+standard format, a 4 bytes quantity 'size', and 1 byte of 'type'.  Header is
+followed by ASCIIZ encoded 'name'. RDIRENT is followed by enough number of
+padding to fill to an 4-byte boundary.  
+
+At this point, if the next RDIRENT entry to follow will spread across 1k
+boundary, then two possible things will happen:
+
+  1) if the HEADER fits between this entry and the 1k boundary,
+  a complete header will be filled in with a 'type' set to RDTYPE_SKIP.
+  And then enough bytes to pad to 1k boundary.  
+  2) if the HEADER does not fit, then simply pad to the 1k boundary.  
+  
+  This will make sure that messages carrying directory information carry only
+  complete directory entries and no fragmented entries.
+  
+The last entry is type RDTYPE_END.
+
+        struct RDIRENT { 
+	       struct HEADER {
+	                      long  time;
+                              long  size;
+                              byte  type;
+			     }
+	       ASCIIZ name;
+		       }
+
+RDIRENT.HEADER types:
+  RDTYPE_END      0x00
+  RDTYPE_FILE     0x01
+  RDTYPE_DIR      0x02
+  RDTYPE_SKIP     0x2A
+
+ CC_GET_FILE 0x42		- get a file
+
+ 		request
+		file position:	offset in file
+		data:           ASCIIZ filename
+		xtra data:	(not required)
+		                word - size of reply's optional data block
+
+		reply
+		file position:  same as in request
+		data:           binary file data
+		xtra data:	not used
+		
+ CC_UP_LOAD 0x43		- open a file for writing
+
+ 		request
+		file position:	offset in file
+		data:           binary file data
+		xtra data:	not used
+
+		reply
+		file position:  same as in request
+		data:           not used
+		xtra data:	not used
+		
+ CC_INSTALL 0x44		- close and install file opened for writing
+
+ 		request
+		file position:	not used
+		data:           ASCIIZ filename
+		xtra data:	(not required)
+		                long - timestamp in Unix format
+
+		reply
+		file position:  not used
+		data:           not used
+		xtra data:	not used
+		
+ CC_DEL_FILE 0x45		- delete a file
+ 
+ 		request
+		file position:	not used
+		data:           ASCIIZ filename
+		xtra data:	not used
+
+		reply
+		file position:  not used
+		data:           not used
+		xtra data:	not used
+		
+ CC_DEL_DIR 0x46		- delete a directory
+
+ 		request
+		file position:	not used
+		data:           ASCIIZ directory
+		xtra data:	not used
+
+		reply
+		file position:  not used
+		data:           not used
+		xtra data:	not used
+
+ CC_GET_PRO 0x47 		- get directory protection
+
+ 		request
+		file position:	not used
+		data:           ASCIIZ directory
+		xtra data:	(not required)
+		                word - size of reply's optional data block
+				
+		reply
+		file position:  number of extra protection bytes (now 1)
+		data:           ASCIIZ directory readme
+		xtra data:	extra protection data (format follows)
+
+Protection bits:
+   0 - caller owns the directory
+   1 - files can be deleted from this dir
+   2 - files can be added to this dir
+   3 - new subdirectories can be created
+   4 - files are NOT readable by non-owners
+   5 - directory contain an readme file
+   6 - directory can be listed
+   7 - files can be renamed in this directory
+
+ CC_SET_PRO 0x48		- set directory protection
+
+ 		request
+		file position:	not used
+		data:           ASCIIZ directory
+		xtra data:	2 bytes of protection change command
+		                1st byte:
+		                 <'+'|'-'> set or remove protection
+				2nd byte:
+				<'c'|'d'|'g'|'m'|'l'|'r'>
+				 c    public can create files
+				 d    public can delete files
+				 g    public can get files
+				 m    public can create directories here
+				 l    public can list directory
+				 r    public can rename files
+
+		reply
+		  same as CC_GET_PRO
+
+ CC_MAKE_DIR 0x49		- create a directory
+ 
+ 		request
+		file position:	not used
+		data:           ASCIIZ directory name
+		xtra data:	not used
+
+ 		reply
+		  same as CC_GET_PRO
+
+ CC_BYE 0x4A			- finish a session
+ 		request
+		file position:	not used
+		data:           not used
+		xtra data:	not used
+
+ 		reply
+		file position:	not used
+		optional data:  not used
+		xtra data:	not used
+
+Commands starting from FSP version 2.4 ( released March 27, 1992 )
+ 
+ CC_GRAB_FILE 0x4B		- atomic get+delete a file
+ 
+                same format as CC_GET_FILE, but file is deleted after
+		sucessfull transfer is done. If there are multiple
+		grabs for the same file, only one will succeed.
+ 
+ CC_GRAB_DONE 0x4C		- atomic get+delete a file done
+				
+				same format as CC_INSTALL. File is not
+				installed, but deleted.
+
+Commands starting from FSP 2.8.1 Beta 11
+
+ CC_STAT      0x4D		- get information about file/directory
+
+ 		request
+		file position:  not used
+		data:           ASCIIZ directory or file name
+		xtra data:	not used
+
+		reply
+		file position:  not used
+		data:           file stat info (format follows)
+		xtra data:	not used
+
+	data format is the same as in directory listing with exception
+	that there is no file name appended. If file do not exists or
+	there is other problem (no access rights) return type of file is
+	0. CC_ERR message is NOT returned in this case.
+	
+	       struct STAT  {
+	                      long  time;
+                              long  size;
+                              byte  type;
+			     }
+			     
+ CC_RENAME    0x4E 		- rename file or directory
+ 		request
+		file position:  not used
+		data:           ASCIIZ source file or directory
+				ASCIIZ destination file or directory
+		xtra data:	not used
+		
+		Note: It is possible to do cross-directory rename. In this
+		case you must have rights to DELETE in source directory and
+		to CREATE in target directory.
+
+		reply
+		file position:  not used
+		data:           not used
+		xtra data:	not used
+
+ CC_CH_PASSW    0x4F        - change password
+                not yet specified
+
+Reserved commands:
+
+ CC_LIMIT 0x80			- commands > 0x7F will have extended
+ 				    header. No such extensions or commands
+				    which uses that are known today.
+				    
+ CC_TEST  0x81			- reserved for testing of new header
