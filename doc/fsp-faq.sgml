@@ -64,6 +64,26 @@
 	The &fsp; has its strengths on slow lines and connections with a high package lose like a Wireless LAN. In general the &fsp; is
 	what anonymous FTP should be - a fast and bandwith friendly way for anonymous file access.
       </para>
+      </sect2>
+      <sect2 id="comparison">
+	<title>Comparison between fsp and other protocols</title>
+	<para>
+	  We did some benchmarking so that you can see how fsp performce
+	  compared to various other command protocols used to transfer
+	  files.
+	</para>
+	<sect3 id="comparehttp">
+	  <title>FSP vs. http</title>
+	  <para>FIXME</para>
+	</sect3>
+	<sect3 id="compareftp">
+	  <title>FSP vs. ftp</title>
+	  <para>FIXME</para>
+	</sect3>
+	<sect3 id="comparetftp">
+	  <title>FSP vs. tftp</title>
+	  <para>FIXME</para>
+	</sect3>
     </sect2>
    
     <sect2 id="wherecanifind">
