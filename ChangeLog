@@ -1,11 +1,15 @@
-W.I.P
+Version 2.8.1b16 -- 8 Nov 2003 
+	This version fixes 2 major bugs in beta 15 release.
 	fspd: update mtime for directory listing after .FSP_CONTENT write
 	flscmd: do not list file size > 2GB as negative, same for block count
 	fspscan: install it when doing make install
 	fspd: -l logfile switch
-	removed crash when logfile is in use
+	fixed crash when logfile is in use. (from betat15)
 	fixed memory leak in client/util.c:get_dir_blk
 	fixed memory leak in client/util.c:open_dir
+	fixed error from 2.8.1b15 in util_stat which brokes recursive
+	 directory listings
+	do not delete partial file on FSP timeout in fgetcmd
 
 Version 2.8.1b15 -- 15 Oct 2003 
         Sven writes manpage for fspscan.1

@@ -33,6 +33,7 @@ random number generator in server is low random quality on low bits.
 Client LIBRARY
 local bind address FSP_LOCALIP
 remove stale lock files if not needed, port code from fspclient.
+FSP_TIMEOUT should be total number of seconds, not delay between retrys.
 :low:
 fver and others add support new syntax fsp://host:port/file
 add sem locking method
@@ -45,7 +46,6 @@ do not use global variables
 CLIENTS 
 ALL: normalize return error codes of all clients
 write new clients for new commands - fsprencmd fpasswd finfo
-fgetcmd deletes partially transfered file on errors?
 :low:
 add support for more sane fsplist file format (as used by warez
 ppl) to fhostcmd

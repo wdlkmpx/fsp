@@ -530,10 +530,11 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
   RDIRENT **dep;
   DDLIST *ddp;
   UBUF *ub;
-  char *fpath, *ppath, *p1, *pfile;
+  char *fpath,*fpath2, *ppath, *p1, *pfile;
   int cached=0;
   
   fpath = util_abs_path(path);
+  fpath2 = strdup(fpath);
   
   if(!strcmp(fpath,env_dir)) {
     ppath = fpath;
@@ -542,6 +543,7 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     util_split_path(fpath,&ppath,&p1,&pfile);
     *p1='\0';
   }
+  /*  printf("ppath `%s` pfile '%s'\n",ppath,pfile); */
 
   /* check if we have ppath cached */
   /* printf("Finding `%s` in cache.\n",ppath); */
@@ -555,23 +557,14 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     }
   }
 
-  free(fpath); 
-  
-  fpath = util_abs_path(path);
-  if(!strcmp(fpath,env_dir)) {
-    ppath = fpath;
-    pfile = ".";
-  } else {
-    util_split_path(fpath,&ppath,&p1,&pfile);
-  }
-
   /*  if(cached) printf("Record found in cache.\n",ppath); */
   if(statworks && !cached)
   {
     /* send a new FSP_STAT command to server */
-    ub = client_interact(CC_STAT,0L, strlen(fpath),
-			 (unsigned char *) fpath+1, 0, 0);
-    if(ub->cmd == CC_STAT) {
+    ub = client_interact(CC_STAT,0L, strlen(fpath2),
+			 (unsigned char *) fpath2+1, 0, 0);
+    if(ub->cmd == CC_STAT) 
+    {
 	sbuf->st_uid = 0;
 	sbuf->st_gid = 0;
 	sbuf->st_atime = sbuf->st_mtime = 
@@ -587,6 +580,9 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
 	    sbuf->st_mode = 0666 | S_IFREG;
 	    sbuf->st_nlink  = 1;
 	}
+
+	free(fpath);
+	free(fpath2);
 	      
 	if(ub->buf[8]==0) 
 	{
@@ -601,14 +597,22 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     }
   } /* CC_STAT */
   
-  if( (drp = util_opendir(ppath)) ) {
-    for(dep = drp->dep; *dep; dep++) {
-      if(!strcmp((*dep)->name,pfile)) {
-	if((*dep)->type & RDTYPE_DIR) sbuf->st_mode = 0777 | S_IFDIR;
-	else sbuf->st_mode = 0666 | S_IFREG;
+  if( (drp = util_opendir(ppath)) ) 
+  {
+    for(dep = drp->dep; *dep; dep++) 
+    {
+      if(!strcmp((*dep)->name,pfile)) 
+      {
+	if((*dep)->type == RDTYPE_DIR) 
+	    sbuf->st_mode = 0777 | S_IFDIR;
+	else 
+	    sbuf->st_mode = 0666 | S_IFREG;
 	      
-	if((*dep)->type & RDTYPE_DIR) sbuf->st_nlink  = 2;
-	else sbuf->st_nlink  = 1;
+	if((*dep)->type == RDTYPE_DIR) 
+	    sbuf->st_nlink  = 2;
+	else 
+	    sbuf->st_nlink  = 1;
+	
 	sbuf->st_uid = 0;
 	sbuf->st_gid = 0;
 	sbuf->st_size  = BB_READ4((*dep)->bb_size);
@@ -616,6 +620,7 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
 			 sbuf->st_ctime = BB_READ4((*dep)->bb_time);
 	util_closedir(drp);
 	free(fpath);
+	free(fpath2);
 	return(0);
       }
     }
@@ -623,6 +628,7 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
   }
   
   free(fpath);
+  free(fpath2);
   errno = ENOENT;
   return(-1);
 }

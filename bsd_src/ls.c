@@ -187,10 +187,13 @@ static void displaydir PROTO2(LS *, stats, register int, num)
 
   printfcn(stats, num);
 
-  if (f_recursive) {
+  if (f_recursive) 
+  {
     savedpath = endofpath;
-    for (lp = stats; num--; ++lp) {
-      if (!(S_ISDIR(lp->lstat.st_mode))) continue;
+    for (lp = stats; num--; ++lp) 
+    {
+      if (!(S_ISDIR(lp->lstat.st_mode))) 
+	  continue;
       p = lp->name;
       if (p[0] == '.' && (!p[1] || (p[1] == '.' && !p[2]))) continue;
       if (endofpath != path && endofpath[-1] != '/') *endofpath++ = '/';

@@ -112,16 +112,19 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
             fprintf(stderr,"Cannot create %s\n",name);
   }
   
-  if(fp) {
+  if(fp) 
+  {
     if(
 #ifdef COMMAND_GET
 	    util_download
 #else
 	    util_grab_file
 #endif
-	    (path,fp, start_from) == -1) {
+	    (path,fp, start_from) == -1) 
+    {
       fclose(fp);
-      unlink(name);
+      if(clobbertype==C_TEMPNAME)
+	 unlink(name);
     } else
       fclose(fp);
   } else fprintf(stderr,"Cannot write %s\n",name);
