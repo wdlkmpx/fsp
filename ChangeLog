@@ -21,6 +21,8 @@ Version NEXT
 	pathes with dot after slash are now detected at parse level (side
 	 effect of prev. fix)
 	tests moved from server/ into tests/ directory
+	removed special test case for root directory in path.c -> use more
+	 general alg. instead. This fixed "/" dir.
 	
 Version 2.8.1b17 -- 17 Nov 2003 
 	Allow filenames with spaces inside

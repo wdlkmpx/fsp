@@ -40,18 +40,11 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
   int state;
 
   if(len < 1) return("Path must have non-zero length");
-  if(fullp[len-1]) return("Path not null terminated");
+  if(fullp[len-1]) return("Path must be null terminated");
   
   pp->passwd = NULL; 			/* default, no password */
   pp->d_len = 0;
 
-  if(len == 1 && fullp[0] == 0)	
-  { 
-    /* null path --> root */
-    pp->fullp = pp->f_ptr = pp->d_ptr = ".";
-    pp->f_len = pp->d_len = 1;
-    return(NULLP);
-  }
 
   for(s = pp->fullp = pp->f_ptr = pp->d_ptr = fullp, state = 0; *s; s++) 
   {
@@ -113,6 +106,13 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
   {
     pp->f_ptr = ".";
     pp->f_len = 1;
+  }
+  
+  /* turn empty fullp into "." */
+  if(pp->fullp[0] == 0)	
+  { 
+    /* null path --> root */
+    pp->fullp = ".";
   }
       
   return(NULLP);

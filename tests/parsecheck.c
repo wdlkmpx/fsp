@@ -12,7 +12,7 @@
 int dbug=0;
 
 const char *testcases[]={ "", ".","filename","/filename","//filename","//dirname/filename","//dirname//filename","dirname//dir3name//","filename\npasswd",
-    "file/.dir","directory.ext/filename.",
+    "file/.dir","directory.ext/filename.","/",
     NULL};
 
 static void print_path(PPATH *pp)
