@@ -13,6 +13,7 @@
 #include "s_extern.h"
 #include "co_extern.h"
 #include "my-string.h"
+#include "pidfile.h"
 
 #define NULL_DEV "/dev/null"
 
@@ -268,10 +269,24 @@ int main PROTO2(int, argc, char **, argv)
     /* Fork and die to drop daemon into background   */
     /* Added Alban E J Fellows 12 Jan 93             */
     /* Moved by JT Traub to only do this if not running under inetd. */
+
+    /* check the pidlog before we fork */
+    if (!check_pid(pidlogname)) {
+      /* pidfile empty, not existing or prozess already dead */
+    } else {
+      exit(1); /* fspd already running */
+    }
+
     if(daemonize) {
 #if HAVE_FORK	
-      if (fork() > 0)
+      pid_t forkpid;
+      forkpid = fork();
+      if (forkpid == 0) { /* child prozess */
+	if (!write_pid(pidlogname))
+	  exit(1);/* cannot write pid file - exit */
+      } else if (forkpid > 0) { /* father prozess */
 	_exit(0);
+      }
 #endif
 #if HAVE_SETSID
       setsid();
@@ -285,6 +300,7 @@ int main PROTO2(int, argc, char **, argv)
     if(inetd_mode||dbug||shutdowning) break;
   }
 
+  (void) remove_pid(pidlogname);
   shutdown_caches();
   destroy_configuration();
   exit(0);
