@@ -114,7 +114,7 @@ static PLAN *palloc (enum ntype t, int (*f)())
     return(new);
   }
   perror("palloc");
-  exit(1);
+  exit(EX_OSERR);
 }
 
 extern int isoutput;
@@ -154,7 +154,7 @@ static long find_parsenum (PLAN * plan, const char * option, char * str,
   if ( (!value && endchar == str) || (endchar[0] &&
       (!endch || endchar[0] != *endch))) {
     fprintf(stderr,"%s: %s", option, "illegal numeric value");
-    exit(1);
+    exit(EX_USAGE);
   }
   if (endch)
     *endch = endchar[0];
@@ -203,7 +203,7 @@ static void brace_subst (char * orig, char ** store, char * path, int len)
         if (!(*store = (char *)realloc(*store, len *= 2))) {
           perror("realloc");
           client_done();
-          exit(1);
+          exit(EX_OSERR);
         }
       bcopy(path, p, plen);
       p += plen;
@@ -279,11 +279,11 @@ static int find_exec (PLAN * plan, struct stat * sbuf, char * path)
    {
     case -1:
       perror ("fork");
-      exit(1);
+      exit(EX_OSERR);
     case 0:
       execvp(plan->e_argv[0], plan->e_argv);
       perror ("execvp");
-      exit(1);
+      exit(EX_OSERR);
   }
   pid = wait(&status);
 
@@ -296,7 +296,7 @@ static char *emalloc_ffind (unsigned int len)
 
   if ( (p = (char *)malloc(len))) return((char *)p);
   perror("malloc");
-  exit(1);
+  exit(EX_OSERR);
 }
 
 /*
@@ -320,7 +320,7 @@ PLAN *c_exec (char *** argvp, int isok)
   for (ap = argv = *argvp;; ++ap) {
     if (!*ap) {
       fprintf(stderr,"%s: no terminating", isok ? "-ok" : "-exec");
-      exit(1);
+      exit(EX_USAGE);
     }
     if (**ap == ';') break;
   }
@@ -445,7 +445,7 @@ PLAN *c_newer (char * filename)
 
   if (stat(filename, &sb)) {
     perror("stat");
-    exit(1);
+    exit(EX_NOINPUT);
   }
   new = palloc(N_NEWER, find_newer);
   new->t_data = sb.st_mtime;
@@ -541,7 +541,7 @@ PLAN *c_type (char * typestring)
       break;
     default:
       fprintf(stderr,"-type: unknown type");
-      exit(1);
+      exit(EX_USAGE);
   }
 
   new = palloc(N_TYPE, find_type);

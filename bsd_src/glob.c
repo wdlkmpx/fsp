@@ -118,7 +118,7 @@ static char *strspl (register char * cp, register const char * dp)
 
   if (ep == (char *)0) {
     perror("Out of memory 1");
-    exit(1);
+    exit(EX_OSERR);
   }
   (void) strcpy(ep, cp);
   (void) strcat(ep, dp);
@@ -405,7 +405,7 @@ static char **copyblk (register char ** v)
   nv = (char **)malloc((unsigned)((blklen(v) + 1) * sizeof(char **)));
   if (nv == (char **)0) {
     perror("Out of memory 2");
-    exit(2);
+    exit(EX_OSERR);
   }
   return (blkcpy(nv, v));
 }

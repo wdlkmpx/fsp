@@ -94,5 +94,5 @@ int main (int argc, char ** argv)
 
   client_done();
 
-  exit(0);
+  exit(EX_OK);
 }

@@ -1,11 +1,11 @@
 FSP SUITE TO DO LIST
+====================
+
 /* maintained by hsn -at- netmag * cz */
 
 Radim Kolar's personal wishlist from 1997
 *-high priority-*
  - show loosers online (finfo command) and server statz
-* l o w *
- - password change command !?
 
 TESTSUITE NEEDED:
 Write a simple FSP protocol testing tool
@@ -38,16 +38,9 @@ LOCKING
 
 CLIENTS 
 :high: 
-normalize return error codes of all clients
-write new clients for new commands - fpasswd finfo
+some client commands should exit with nonzero rc on failure
 
 :low:
-add support for more sane fsplist file format (as used by warez
-ppl) to fhostcmd
-it looks like
-#FSP Sites list
-genie.lut.ac.uk        21   genie    / # small UK site
-
 clients do not freeing memory allocated from glob()
 
 FUTURE FEATURES FOR SERVER:
@@ -57,7 +50,10 @@ report number of clients connected, size of hostable in new command
 special defence against rapid/double fire clients (burst command in fspclient)
 Native Supports for symbolic links (needed for mirroring Debian)
 new LSTAT COMMAND, new MAKELINK command
+
+SERVER DIR LISTINGS
 Server should save .FSP_CONTENT using 1k size directory blocks
+Server should support sending different sized directory blocks
 
 :midle:may not be in 2.8.2
 write FSP_CHANGE_PASSWORD command
@@ -79,14 +75,14 @@ FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
 
 PERFORMANCE:
 do host hashtable shrinking/clearing sometimes
-stat cache pro FSP_STAT a other stat() calls
+stat cache for FSP_STAT a other stat() calls
 chage O(N) fifo cache to some more sane lru hashtable code.
 background time() alarm() caller 
 Current performance 1925648B/s
 
 MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
-Register udp/21 for FSP in iana
+Register udp/21 for FSP in iana. FSP RFC needed!
 manual page for fmvcmd.1
 
 libraries and support for FSP protocol

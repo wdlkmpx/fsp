@@ -95,10 +95,10 @@ int main (int argc, char ** argv)
   else
     {
       fprintf(stderr,"%s source target\n", argv[0]);
-      exit(1);
+      exit(EX_USAGE);
     }
 
   client_done();
 
-  exit(0);
+  exit(EX_OK);
 }

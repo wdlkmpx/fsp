@@ -1,16 +1,7 @@
 %option nounput
-%option noyyget_lineno
-%option noyyset_lineno
-%option noyyget_debug
-%option noyyset_debug
-%option noyyget_in
-%option noyyget_out
-%option noyyget_leng
-%option noyyget_text
-%option noyyset_in
-%option noyyset_out
 %option case-insensitive
 %option never-interactive
+%option noyylineno
 
 %{
 #include <string.h>

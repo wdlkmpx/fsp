@@ -19,5 +19,7 @@ fstatcmd
 fver
 .deps
 fspprof.c
+fspsites.c
 fmvcmd
 fbye
+fsetupcmd

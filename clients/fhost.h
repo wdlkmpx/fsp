@@ -12,11 +12,11 @@ struct fsp_host {
     char *password;
 };
 
+#define NUMBER 1
+#define NAME 2
 struct fsp_host * init_host(void);
 void add_host(struct fsp_host *h);
 void add_host_alias(struct fsp_host *h, const char *name);
-
-/* lex parser */
-extern FILE *yyin;
-int yylex(void);
-int yywrap(void);
+struct fsp_host *find_host(const char *name);
+void list_prof_file (void); /* list resource file */
+int print_host_setup(struct fsp_host *setup,int csh,int lhost);

@@ -33,8 +33,9 @@ static void display_version (void)
 #endif
 #else
 	  "FSP server "PACKAGE_VERSION"\n"
-	  "For lamerZ by Elite!\n"	  
-#endif	  
+	  "Antiscan protection actived!\n"
+	  "For lamah by FSP Gods!\n"
+#endif
 	    );
 }
 
@@ -58,11 +59,11 @@ static void check_required_vars (void)
   daemonize = 0;
   dbug = 0;
   dir_cache_limit = 500;
+  udp_port = 80;
 #endif    
 
   if(!inetd_mode && udp_port==0) {
 #ifdef LAMERPACK
-    udp_port = 53;
 #else            
     fprintf(stderr, "Error: No port set. (Use 65535 for random port)\n");
     exit(1);
@@ -86,6 +87,7 @@ static void check_required_vars (void)
   if(!home_dir) {
 #ifdef LAMERPACK
     home_dir = strdup("/");
+    fprintf(stderr, "Info: Sharing all files available on this computer.\n");
 #else            
     fprintf(stderr, "Error: No home directory set.\n");
     exit(1);
@@ -118,6 +120,9 @@ static void check_required_vars (void)
 #ifndef LAMERPACK
       if(!inetd_mode)
 	  fprintf(stderr,"Warning: no tmpdir set, switching to readonly mode.\n");
+#else
+
+	  fprintf(stderr,"Info: Writes disabled because tmpdir not set.\n");
 #endif
       read_only = 1;
   }

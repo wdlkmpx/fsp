@@ -42,7 +42,7 @@ int main (int argc, char ** argv)
   else if(!strcmp(q,"fmvcmd")) fmvcmd_main(argc,argv);
   else {
     fprintf(stderr,"Unknown FSP client command: %s\n",q);
-    exit(1);
+    exit(EX_USAGE);
   }
-  exit(0);
+  exit(EX_OK);
 }

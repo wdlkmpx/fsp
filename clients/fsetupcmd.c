@@ -1,7 +1,7 @@
     /*********************************************************************\
     *  Copyright (c) 1993 by Michael Meskes                               *
     *  (meskes@ulysses.informatik.rwth-aachen.de)                         *
-    *  Copyright (c) 2003 by Radim Kolar (hsn@cybermail.net)              *
+    *  Copyright (c) 2003-5by Radim Kolar (hsn@cybermail.net)             *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
@@ -24,12 +24,7 @@
 #endif
 #include <ctype.h>
 
-#ifdef HOST_LOOKUP
-#include <netdb.h>
-#endif
-
 #define FSP_STAT stat
-
 
 #include "fhost.h"
 
@@ -42,12 +37,9 @@ extern FILE *yyin;
 int yylex(void);
 int yywrap(void);
 
-static void host_usage (void) /* print usage message */
+static void setup_usage (void) /* print usage message */
 {
-  fprintf(stderr,"Usage: fhost [-d delay] [-p local port] [-l local dir]\n");
-  fprintf(stderr,"             [-o timeout] [-t trace] [-w password]\n");
-  fprintf(stderr,"             [-f filename] [-h [number|name]] [-c | -b]\n");
-  fprintf(stderr,"             [host port [directory] | abbreviation]\n");
+  fprintf(stderr,"Usage: fsetup [ -b | -c ] host port [directory] | abbreviation \n");
   exit(EX_OK);
 }
 
@@ -106,46 +98,19 @@ int main (int argc, char ** argv)
   }
 
   setup=init_host();
-  while ((optletter=getopt(argc, argv,"d:p:l:t:o:f:h:w:bc?")) != EOF)
+  while ((optletter=getopt(argc, argv,"hbc?")) != EOF)
     switch (optletter) {
       case '?':
-        host_usage();
-      case 'd':
-        setup->delay=atol(optarg); /* FSP_DELAY */
-	break;
-      case 'p':
-	setup->local_port=atol(optarg); /* FSP_LOCAL_PORT */
-	break;
+      case 'h':
+        setup_usage();
       case 'b':
 	csh=0;
 	break;
       case 'c':
 	csh=1;
 	break;
-      case 'w':
-	setup->password=optarg; /* FSP_PASSWORD */
-	break;
-      case 'l':
-	setup->local_dir=optarg; /* FSP_LOCAL_DIR */
-	break;
-      case 'o':
-	setup->timeout=atol(optarg); /* FSP_TIMEOUT */
-	break;
-      case 't':
-	if (!strcmp(optarg,"on")) setup->trace=1;  /* FSP_TRACE */
-	else if (!strcmp(optarg,"off")) setup->trace=0;
-	else host_usage();
-	break;
-      case 'f':
-	filename=optarg; /* file name */
-	break;
-      case 'h':
-	if (!strcmp(optarg,"number")) lhost=NUMBER; /* host mode */
-	else if (!strcmp(optarg,"name")) lhost=NAME;
-	else host_usage();
-	break;
       default:
-	host_usage();
+	setup_usage();
 	break;
     }
 
@@ -196,21 +161,21 @@ int yywrap(void)
   {
       case 0:
 	     /* file in cur. dir */
-             yyin=fopen(FSPPROF,"r");
+             yyin=fopen(FSPSITES,"r");
 	     break;
       case 1:
 	     /* file in home dir */
-	     f2=(char *)malloc (strlen(home) + strlen(FSPPROF) + 2);
+	     f2=(char *)malloc (strlen(home) + strlen(FSPSITES) + 2);
 	     if (!f2) {
 		perror("malloc");
 		return(1);
 	     }
-             sprintf (f2,"%s/%s",home,FSPPROF);
+             sprintf (f2,"%s/%s",home,FSPSITES);
 	     yyin=fopen(f2,"r");
 	     free(f2);
 	     break;
       case 2:
-	     yyin=fopen(FSPRC,"r");
+	     yyin=fopen(FSPSITESRC,"r");
 	     break;
       default:
 	     return 1;

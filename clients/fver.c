@@ -134,5 +134,5 @@ int main (int argc, char ** argv)
     printf("no\n");
 #endif
   }
-  exit(0);
+  exit(EX_OK);
 }

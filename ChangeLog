@@ -45,6 +45,17 @@ Version NEXT
 	FAQ: Added two section making FSP slower/faster, version bumped
 	  to 0.2
 	do not use exit code -1 in fspscan
+	LAMAH fspd: improve some error messages, run on port 80 by default
+	Changed all exit() calls to use standard EX_* values. Some utilities
+	  still do not returns error exit when they should.
+	fhostcmd: split host managing functions into fhost.c
+	fhost.c: do not output partial results when dns resolving fails  
+	fhost.c: fallback to other display method (host/ip name) on
+	  resolving failure
+	common lib: When doing addr resolving turn port 0 into 21.
+	fhostcmd: ignore servers without port number set
+	new command fsetup: C rewrite of old Perl script. This command is
+	  like fhostcmd but uses standard fspsites file format
 
 Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files

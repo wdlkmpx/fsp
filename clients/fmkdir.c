@@ -47,5 +47,5 @@ int main (int argc, char ** argv)
   while(*++argv) make_dir(*argv);
   client_done();
 
-  exit(0);
+  exit(EX_OK);
 }

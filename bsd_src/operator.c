@@ -93,7 +93,7 @@ static PLAN *yankexpr (PLAN ** planp)
       if (next->type == N_CLOSEPAREN) {
 	if (subplan == NULL) {
 	  fprintf(stderr,"(): empty inner expression");
-	  exit(1);
+	  exit(EX_USAGE);
 	}
 	node->p_data[0] = subplan;
 	node->type = N_EXPR;
@@ -134,7 +134,7 @@ PLAN *paren_squish (PLAN * plan)
      */
     if (expr->type == N_CLOSEPAREN) {
       fprintf(stderr,"): no beginning '('");
-      exit(1);
+      exit(EX_USAGE);
     }
 
     /* add the expression to our result plan */
@@ -183,11 +183,11 @@ PLAN *not_squish (PLAN * plan)
       }
       if (node == NULL) {
 	fprintf(stderr,"!: no following expression");
-	exit(1);
+	exit(EX_USAGE);
       }
       if (node->type == N_OR) {
 	fprintf(stderr,"!: nothing between ! and -o");
-	exit(1);
+	exit(EX_USAGE);
       }
       if (notlevel % 2 != 1) next = node;
       else next->p_data[0] = node;
@@ -234,13 +234,13 @@ PLAN *or_squish (PLAN * plan)
     if (next->type == N_OR) {
       if (result == NULL) {
 	fprintf(stderr,"-o: no expression before -o");
-	exit(1);
+	exit(EX_USAGE);
       }
       next->p_data[0] = result;
       next->p_data[1] = or_squish(plan);
       if (next->p_data[1] == NULL) {
 	fprintf(stderr,"-o: no expression after -o");
-	exit(1);
+	exit(EX_USAGE);
       }
       return(next);
     }

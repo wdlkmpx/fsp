@@ -237,7 +237,7 @@ elif test "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes"; then
 elif test "x$ac_cv_func_shmget" = "xyes" -a "x$ac_cv_func_lockf" = "xyes"; then
      AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1)
 elif test "x$ac_cv_func_lockf" = "xyes"; then AC_DEFINE(FSP_USE_LOCKF,1)
-elif "x$ac_cv_func_flock" = "xyes"; then AC_DEFINE(FSP_USE_FLOCK,1)    
+elif test "x$ac_cv_func_flock" = "xyes"; then AC_DEFINE(FSP_USE_FLOCK,1)    
 else
 AC_DEFINE(FSP_NOLOCKING,1)
 AC_MSG_NOTICE([no suitable locking method detected])

@@ -65,7 +65,7 @@ static RETSIGTYPE upload_cleanup (int signum)
   if(ub->cmd==CC_UP_LOAD)
      ub=client_interact(CC_INSTALL,0L, 1, "", 0, (unsigned char *)NULLP);
   client_done();
-  exit(1);
+  exit(EX_TEMPFAIL);
 }
 
 int main (int argc, char ** argv)
@@ -76,7 +76,7 @@ int main (int argc, char ** argv)
   env_client();
   if (strcmp(env_local_dir,".") && chdir(env_local_dir)) {
     perror("chdir");
-    exit(1);
+    exit(EX_NOINPUT);
   }
 
   signal(SIGHUP,SIG_IGN);
@@ -100,7 +100,7 @@ int main (int argc, char ** argv)
       case 'h':
       case '?':
 	       usage();
-	       exit(0);
+	       exit(EX_OK);
       case 'p':
 	       timestamps=1;
     }
@@ -125,5 +125,5 @@ int main (int argc, char ** argv)
 
   client_done();
 
-  exit(0);
+  exit(EX_OK);
 }

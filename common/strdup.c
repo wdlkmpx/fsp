@@ -15,7 +15,7 @@ char *strdup PROTO1(char *, str)
 
   if (nstr == (char*)0) {
     fprintf(stderr, "strdup(): not enough memory to duplicate `%s'\n", str);
-    exit(1);
+    exit(EX_OSERR);
   }
 
   strcpy(nstr, str);

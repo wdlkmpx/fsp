@@ -71,6 +71,9 @@ int _x_adr (const char *host, int port, struct sockaddr_in * his)
           host=myhost;
   }
 
+  if(port <= 0)
+      port=21;
+
   /* if((his->sin_addr.s_addr = inet_addr(host)) != -1) */
   if(inet_aton(host,&his->sin_addr)) {
     his->sin_family = AF_INET;

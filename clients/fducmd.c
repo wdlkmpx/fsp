@@ -87,7 +87,7 @@ int main (int argc, char ** argv)
 	break;
       default:
 	fprintf(stderr,"Usage: du [-r|a|s] directory name.\n");
-	exit(0);
+	exit(EX_USAGE);
     }
 
   /* special case `du' without file arguments -- becomes `du .' */

@@ -104,7 +104,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 #ifdef CLIENT_TIMEOUT
 	if (total_delay/1000 >= env_timeout ) {
 	  fprintf(stderr, "\rRemote server not responding.\n");
-	  exit(1);
+	  exit(EX_UNAVAILABLE);
 	}
 #endif
 	idle_delay = idle_delay * 4 / 3;
@@ -128,7 +128,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	       continue;
 	  default:     
                perror("sendto");
-               exit(1);
+               exit(EX_IOERR);
       }
     }
     /* Check if w_delay is within limits */
@@ -204,7 +204,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 
 	if(client_intr_state == 2) {
 	  if(!key_persists) client_done();
-	  exit(1);
+	  exit(EX_TEMPFAIL);
 	}
 
 #ifdef DEBUG
@@ -221,9 +221,9 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 static RETSIGTYPE client_intr (int signum)
 {
   switch(client_intr_state) {
-    case 0: exit(2);
+    case 0: exit(EX_TEMPFAIL);
     case 1: client_intr_state = 2; break;
-    case 2: exit(3);
+    case 2: exit(EX_TEMPFAIL);
   }
 #ifndef RELIABLE_SIGNALS
   signal(SIGINT,client_intr);
@@ -241,12 +241,12 @@ void init_client (const char * host, unsigned short port, unsigned short myport)
 
   if((myfd = _x_udp(env_listen_on,&myport)) == -1) {
     perror("socket open");
-    exit(1);
+    exit(EX_OSERR);
   }
 
   if(_x_adr(host,port,&server_addr) == -1) {
     perror("server addr");
-    exit(1);
+    exit(EX_OSERR);
   }
 
   client_init_key(server_addr.sin_addr.s_addr,port,getpid());

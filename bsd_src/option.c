@@ -85,13 +85,13 @@ PLAN *find_create (char *** argvp)
 
   if ((p = option(*argv)) == NULL) {
     (void)fprintf(stderr, "find: unknown option %s.\n", *argv);
-    exit(1);
+    exit(EX_USAGE);
   }
   ++argv;
   if (p->flags & (O_ARGV|O_ARGVP) && !*argv) {
     (void)fprintf(stderr, "find: %s requires additional arguments.\n",
 		  *--argv);
-    exit(1);
+    exit(EX_USAGE);
   }
 
   switch(p->flags) {

@@ -62,14 +62,14 @@ unsigned short client_get_key (void)
 {
   if(flock(lock_fd,LOCK_EX) == -1) {
     perror("flock");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(read(lock_fd,&okey,sizeof(okey)) == -1) {
-    perror("read"); exit(1);
+    perror("read"); exit(EX_OSERR);
   }
   if(lseek(lock_fd,0L,0) == -1) {
     perror("seek");
-    exit(1);
+    exit(EX_OSERR);
   }
   return(okey);
 }
@@ -80,15 +80,15 @@ void client_set_key (unsigned short nkey)
   key=nkey;  
   if(write(lock_fd,&key,sizeof(key)) == -1) {
     perror("write");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(lseek(lock_fd,0L,0) == -1) {
     perror("seek");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(flock(lock_fd,LOCK_UN) == -1) {
     perror("unflock");
-    exit(1);
+    exit(EX_OSERR);
   }
 }
 
@@ -129,15 +129,15 @@ unsigned short client_get_key (void)
 {
   if(lockf(lock_fd,F_LOCK,sizeof(okey)) == -1) {
     perror("lockf");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(read(lock_fd,&okey,sizeof(okey)) == -1) {
     perror("read");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(lseek(lock_fd,0L,0) == -1) {
     perror("seek");
-    exit(1);
+    exit(EX_OSERR);
   }
   return(okey);
 }
@@ -148,15 +148,15 @@ void client_set_key (unsigned short nkey)
   key=nkey;  
   if(write(lock_fd,&key,sizeof(key)) == -1) {
     perror("write");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(lseek(lock_fd,0L,0) == -1) {
     perror("seek");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(lockf(lock_fd,F_ULOCK,sizeof(key)) == -1) {
     perror("unlockf");
-    exit(1);
+    exit(EX_OSERR);
   }
 }
 
@@ -199,7 +199,7 @@ unsigned short client_get_key (void)
 {
   if(lockf(lock_fd,F_LOCK,2) == -1) {
     perror("lockf");
-    exit(1);
+    exit(EX_OSERR);
   }
   return(*share_key);
 }
@@ -209,7 +209,7 @@ void client_set_key (unsigned short key)
   *share_key = key;
   if(lockf(lock_fd,F_ULOCK,2) == -1) {
     perror("unlockf");
-    exit(1);
+    exit(EX_OSERR);
   }
 }
 
@@ -228,15 +228,15 @@ void client_init_key (unsigned long server_addr,
 
   if((lock_key = ftok(key_string,238)) == -1) {
     perror("ftok");
-    exit(1);
+    exit(EX_OSERR);
   }
   if((lock_shm = shmget(lock_key,2*sizeof(unsigned int),IPC_CREAT|0666)) == -1) {
     perror("shmget");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(!(share_key = (unsigned int *) shmat(lock_shm,(char*)0,0))) {
     perror("shmat");
-    exit(1);
+    exit(EX_OSERR);
   }
 }
 
@@ -317,7 +317,7 @@ unsigned short client_get_key (void)
   if(semop(lock_sem,&sem,1) == -1 )
   {
       perror("semop");
-      exit(1);
+      exit(EX_OSERR);
   }
   return(*share_key);
 }
@@ -333,7 +333,7 @@ void client_set_key (unsigned short key)
   *share_key = key;
   if(semop(lock_sem,&sem,1) == -1) {
     perror("semop");
-    exit(1);
+    exit(EX_OSERR);
   }
 }
 
@@ -356,15 +356,15 @@ void client_init_key (unsigned long server_addr,
 
   if((lock_key = ftok(key_string,238)) == -1) {
     perror("ftok");
-    exit(1);
+    exit(EX_OSERR);
   }
   if((lock_shm = shmget(lock_key,2*sizeof(unsigned int),IPC_CREAT|0666)) == -1) {
     perror("shmget");
-    exit(1);
+    exit(EX_OSERR);
   }
   if(!(share_key = (unsigned int *) shmat(lock_shm,(char*)0,0))) {
     perror("shmat");
-    exit(1);
+    exit(EX_OSERR);
   }
 
   if((lock_sem = semget(lock_key,0,0)) == -1) {
@@ -377,7 +377,7 @@ void client_init_key (unsigned long server_addr,
       if(semctl(lock_sem,0,SETVAL,sun) == -1)
       {
 	  perror("semctl setval");
-	  exit(1);
+	  exit(EX_OSERR);
       }
       *share_key = key;
   }
@@ -389,7 +389,7 @@ void client_init_key (unsigned long server_addr,
 
   if(semop(lock_sem,&sem,1) == -1) {
       perror("semop");
-      exit(1);
+      exit(EX_OSERR);
   }
 }
 
@@ -400,14 +400,14 @@ void client_destroy_key(void)
     if (shmdt((char *)share_key) < 0)
     {
 	perror("shmdt");
-	exit(1);
+	exit(EX_OSERR);
     }
     /* check if we are only one process holding lock */
     rc = semctl(lock_sem,1,GETVAL);
     if (rc == -1)
     {
 	perror("semctl");
-	exit(1);
+	exit(EX_OSERR);
     }
     if (rc == 1)
     {

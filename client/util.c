@@ -460,11 +460,11 @@ static void util_get_env (void)
 
   if(!(env_host = getenv("FSP_HOST"))) {
     fputs("No FSP_HOST specified.\n",stderr);
-    exit(1);
+    exit(EX_CONFIG);
   }
   if(!(env_port = getenv("FSP_PORT"))) {
     fputs("No FSP_PORT specified.\n",stderr);
-    exit(1);
+    exit(EX_CONFIG);
   }
   if(!(env_dir  = getenv("FSP_DIR"))) {
     env_dir = "/";

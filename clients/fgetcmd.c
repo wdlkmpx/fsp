@@ -48,7 +48,7 @@ static RETSIGTYPE fsp_cleanup (int signum)
   char filename[20];
   sprintf(filename,".fsp.%d",getpid());
   unlink(filename);
-  exit(1);
+  exit(EX_TEMPFAIL);
 }
 
 static void
@@ -231,7 +231,7 @@ int main (int argc, char ** argv)
   env_client();
   if (strcmp(env_local_dir,".") && chdir(env_local_dir)) {
     perror("chdir");
-    exit(1);
+    exit(EX_NOINPUT);
   }
 
   while ((optletter=getopt(argc, argv,"ofutnacrph?")) != EOF)
@@ -262,7 +262,7 @@ int main (int argc, char ** argv)
       case 'h':
       case '?':
 	usage();
-	exit(0);
+	exit(EX_OK);
     }
 
   if(argc > optind) {
@@ -324,5 +324,5 @@ int main (int argc, char ** argv)
 
   client_done();
 
-  exit(0);
+  exit(EX_OK);
 }

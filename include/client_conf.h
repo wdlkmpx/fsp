@@ -8,11 +8,13 @@
  * It is only checked if neither ./.fsp_prof nor ~/.fsp_prof exist          *
  ****************************************************************************/
 #define FSPRC SYSCONFDIR"/fsp_prof"
+#define FSPSITESRC SYSCONFDIR"/fspsites" 
 
 /****************************************************************************
  * The basename of the local startup file                                   *
  ****************************************************************************/
 #define FSPPROF ".fsp_prof"
+#define FSPSITES ".fspsites"
 
 /****************************************************************************
  * Define the CLIENT_TIMEOUT if you want the client programs to time out
