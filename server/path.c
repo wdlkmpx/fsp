@@ -37,6 +37,7 @@
 const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
 {
   char *s;
+  char *p;
   int state;
 
   if(len < 1) return("Path must have non-zero length");
@@ -46,13 +47,19 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
   pp->d_len = 0;
 
 
-  for(s = pp->fullp = pp->f_ptr = pp->d_ptr = fullp, state = 0; *s; s++) 
+  for(
+      s = pp->fullp = pp->f_ptr = pp->d_ptr = fullp, state = 0;
+      *s; 
+      s++
+     ) 
   {
     if(*s == '\n') 
     {
-      pp->passwd = s+1; 
+      p=strrchr(pp->fullp,'\n');
+      pp->passwd = p+1; 
+      *p = '\0';
       *s = '\0';
-      if(dbug) fprintf(stderr,"parse_path: found password field %s\n", s+1);
+      if(dbug) fprintf(stderr,"parse_path: found password field %s\n", p+1);
       break;
     }
     else 

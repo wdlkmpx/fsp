@@ -1,4 +1,7 @@
-Version NEXT
+Version 2.8.1b18 - 24 Nov 24 2003
+        This is MINIMUM REQUIRED VERSION for applicatins which are using
+	 javafsp library, only download machine atm. javafsp library will
+	 be released shortly as separate package.
         PROTOCOL updated. Made rules about breaking directory header on
 	 packet boundary more clear. Previous text was from fspd code comment
 	 and was bad.
@@ -10,19 +13,19 @@ Version NEXT
 	 in PROTOCOL
 	support for MIN_DELAY, MAX_DELAY and DEFAULT_DELAY in source
 	path parsing moved to separate file server/path.c
-	new test tool parsecheck
+	new test tool parsecheck for testing server path parser
 	reworked parse path: separate error messages for high bit chars,
 	 control chars
-	do not segfault when parsing password protected files. Looks like
-	 nobody used password protected files for a long time. This means
-	 that in future version of FSP I can change protocol definition
-	 without worry about breaking anything
-	path with trailing / or starting / is now parsed correctly
+	MAJOR BUGFIX: path with trailing / or starting / is now parsed correctly
 	pathes with dot after slash are now detected at parse level (side
 	 effect of prev. fix)
 	tests moved from server/ into tests/ directory
 	removed special test case for root directory in path.c -> use more
 	 general alg. instead. This fixed "/" dir.
+	parsecheck turned into test suite with hard coded test results
+	parsecheck added to 'make check' 
+	support for multiple \n in filename - in future there will be
+	 used for symlinks.
 	
 Version 2.8.1b17 -- 17 Nov 2003 
 	Allow filenames with spaces inside

@@ -13,8 +13,6 @@ password change command
 TESTING NEEDED:
 Write a simple FSP protocol testing tool
 Write a test suite using testing tool
-test if ending slashes do not confuse directory engine
-test for /../ root escapes
 test for remote buffer overflows
 Test new command rename /when implemented/
 Test if >2GB files but <4GB works correctly with and without --disable-largefile
@@ -89,9 +87,9 @@ separate manpage for 7 fsp (protocol definition) == write FSP RFC
 libraries and support for FSP protocol
 ======================================
 
+DONE: FSP library for Java
 new small,light fsplib for C.
-FSP plugin do Netscape/MSIE
-FSP library for Java
-Transfer HTTP over fsp transport
 FSP backend for APT
+FSP plugin do Netscape/MSIE
+Transfer HTTP over fsp transport
 FSP support to lftp,wget,curl

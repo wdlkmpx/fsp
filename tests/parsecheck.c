@@ -9,11 +9,26 @@
 #endif
 #include "my-string.h"
 
-int dbug=0;
+int dbug=1;
 
-const char *testcases[]={ "", ".","filename","/filename","//filename","//dirname/filename","//dirname//filename","dirname//dir3name//","filename\npasswd",
-    "file/.dir","directory.ext/filename.","/",
+const char *testcases[]={ 
+    "", ".","/",
+    "filename","/filename","//filename",
+    "dirname/filename","//dirname/filename","//dirname//filename",
+    "dir1name/dir2name/","//dir1name//dir2name//",
+    "filename\npasswd","filename\nsymlink\npasswd",
+    "file/.dir","../updir","file/../dir",
     NULL};
+PPATH testresults[]={
+    {".",".",1,".",1,NULL}, {NULL}, {".",".",1,".",1,NULL},
+    {"filename","filename",8,".",1,NULL} , {"filename","filename",8,".",1,NULL} , {"filename","filename",8,".",1,NULL},
+    {"dirname/filename","filename",8,"dirname",7,NULL} , {"dirname/filename","filename",8,"dirname",7,NULL} , {"dirname//filename","filename",8,"dirname",7,NULL},
+    {"dir1name/dir2name/",".",1,"dir1name/dir2name",17}, {"dir1name//dir2name//",".",1,"dir1name//dir2name",18},
+    {"filename","filename",8,".",1,"passwd"}, {"filename","filename",8,".",1,"passwd"},
+    {NULL},{NULL},{NULL},
+    
+
+};
 
 static void print_path(PPATH *pp)
 {
@@ -29,8 +44,27 @@ static void print_path(PPATH *pp)
 	printf("passwd: %s",pp->passwd);
 }
 
-static void runtestcase(void)
+/* returns: 0 okay, 1 different */
+                     
+static int compareresults(PPATH *p1,PPATH *p2)
 {
+    if(p1->fullp==NULL && p2->fullp==NULL)  return  0;
+    if(p1->fullp==NULL || p2->fullp==NULL)  return  -1;
+    if(strcmp(p1->fullp,p2->fullp)) return -1;
+    if(p1->f_len!=p2->f_len) return -1;
+    if(strcmp(p1->f_ptr,p2->f_ptr)) return -1;
+    if(p1->d_len!=p2->d_len) return -1;
+    if(strncmp(p1->d_ptr,p2->d_ptr,p1->d_len)) return -1;
+    if(p1->passwd==NULL && p2->passwd==NULL)
+	return 0;
+    if(p1->passwd==NULL || p2->passwd==NULL) return -1;
+    if(strcmp(p1->passwd,p2->passwd)) return -1;
+    return 0;
+}
+
+static int runtestcase(void)
+{
+    int rc=0;
     int i=0;
     PPATH pp;
     const char *err;
@@ -39,24 +73,33 @@ static void runtestcase(void)
     for(;testcases[i];i++)
     {
 	test=strdup(testcases[i]);
+	pp.fullp=NULL;
        	err=parse_path(test,strlen(test)+1,&pp);
 	printf("parsing: '%s'",test);
 	if(err) 
 	{
-	    printf(" err: %s\n",err);
-	    free(test);
-	    continue;
+	    printf(" parse err: '%s'. ",err);
+	    pp.fullp=NULL;
 	} else
-	    printf(" okay.\n");
-        printf("  ");
-	print_path(&pp);
-        printf("\n");
+	    printf(" parsed okay. ");
+	if(compareresults(&pp,&testresults[i]))
+	{
+	    printf("!!!TEST FAILED!!!\a\n");
+	    rc=1;
+	} else
+	    printf(" Test passed.\n");
+	if(!err)
+	{
+          printf("  ");
+	  print_path(&pp);
+          printf("\n");
+	}
 	free(test);
     }
+    return rc;
 }
 
 int main(int argc,const char *argv[])
 {
-    runtestcase();
-    return 0;
+    return runtestcase();
 }
