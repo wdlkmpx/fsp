@@ -8,9 +8,7 @@
     \*********************************************************************/
 
 #include "tweak.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include <time.h>
 #include "client_def.h"
 #include "c_extern.h"

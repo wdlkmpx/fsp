@@ -10,9 +10,7 @@
 
 #include "tweak.h"
 #include <stdio.h>
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include <ctype.h>
 #include "server_def.h"
 #include "s_extern.h"

@@ -1,4 +1,5 @@
 .deps
+.sconsign
 Makefile
 Makefile.in
 mklargefile

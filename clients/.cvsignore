@@ -18,6 +18,7 @@ fspmerge
 fstatcmd
 fver
 .deps
+.sconsign
 fspprof.c
 fspsites.c
 fmvcmd

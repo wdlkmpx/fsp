@@ -41,9 +41,7 @@
 #include <sys/errno.h>
 #include <stdio.h>
 #include "my-string.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "find.h"
 
 extern int isoutput;

@@ -3,11 +3,6 @@
 
 /* common routines for both server and clients */
 
-#ifndef HAVE_STRDUP
-/* strdup.c */
-char *strdup (const char *);
-#endif
-
 #ifndef HAVE_RANDOM
 /* random.c */
 void srandom (unsigned int);

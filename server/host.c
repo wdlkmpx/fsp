@@ -12,9 +12,7 @@
 #include "s_extern.h"
 #include <ctype.h>
 #include <netdb.h>
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "my-string.h"
 
 /****************************************************************************

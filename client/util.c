@@ -10,9 +10,7 @@
 #include "tweak.h"
 #include "client_def.h"
 #include "c_extern.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "my-string.h"
 
 static int env_dir_malloced = 0;

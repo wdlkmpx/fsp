@@ -38,9 +38,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "find.h"
 
 /*

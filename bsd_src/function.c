@@ -42,9 +42,7 @@
 #endif
 #endif
 #include <stdio.h>
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "my-string.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -205,7 +203,7 @@ static void brace_subst (char * orig, char ** store, char * path, int len)
           client_done();
           exit(EX_OSERR);
         }
-      bcopy(path, p, plen);
+      memmove(p,path,plen);
       p += plen;
       ++orig;
     } else

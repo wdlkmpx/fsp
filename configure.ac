@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b23,hsn@netmag.cz)
+AC_INIT(fsp,2.8.1b24,hsn@netmag.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
@@ -94,10 +94,11 @@ AC_CHECK_LIB(efence,EF_Abort)
 fi
 AC_HEADER_STDC
 AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h)
-AC_CHECK_HEADERS(string.h memory.h strings.h unistd.h sys/resource.h utime.h)
+AC_CHECK_HEADERS(string.h strings.h unistd.h sys/resource.h utime.h)
 AC_HEADER_DIRENT
 AC_HEADER_TIME
 AC_CHECK_SIZEOF(unsigned)
+AC_CHECK_SIZEOF(penis)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(char)
@@ -123,7 +124,7 @@ AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not fo
 AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
 AC_TYPE_SIGNAL
 AC_FUNC_CLOSEDIR_VOID
-AC_CHECK_FUNCS(random srandomdev strdup bcopy flock lockf getrlimit fork setsid semop)
+AC_CHECK_FUNCS(random srandomdev flock lockf getrlimit fork setsid semop)
 AC_CHECK_TYPE(union semun, ,AC_DEFINE(_SEM_SEMUN_UNDEFINED,1,[Define if you do not have semun in sys/sem.h]),
 [#include <sys/types.h>
 #include <sys/ipc.h>
@@ -182,16 +183,7 @@ AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[define if you 
 ,[#include <dirent.h>])
 AC_HEADER_SYS_WAIT
 AC_HEADER_STAT
-AC_CHECK_HEADERS(tzfile.h sysexits.h)
-AC_CACHE_CHECK(for string.h declaring some functions incorrectly,fsp_cv_header_string_bogus,[
-AC_TRY_LINK([#include <sys/types.h>
-#include <string.h>],,
-  fsp_cv_header_string_bogus="no",
-  fsp_cv_header_string_bogus="yes"
-)  
-])
-if test "x$fsp_cv_header_string_bogus" = "xyes"; then AC_DEFINE(STRING_H_BOGUS,1,[Define if your string library is broken])
-fi
+dnl AC_CHECK_HEADERS(sysexits.h)
 AC_FUNC_VPRINTF
 AC_CACHE_CHECK(for reliable signals ,fsp_cv_sys_reliable_signals,[
 AC_TRY_RUN(

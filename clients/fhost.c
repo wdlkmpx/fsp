@@ -17,9 +17,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HOST_LOOKUP
 #include <netdb.h>
 #endif

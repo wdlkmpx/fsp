@@ -11,9 +11,7 @@
 #include "common_def.h"
 #include "co_extern.h"
 #include "my-string.h"
-#ifdef HAVE_STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

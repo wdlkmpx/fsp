@@ -50,9 +50,7 @@
 #include <sys/types.h>
 #include <time.h>
 #include <fcntl.h>
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

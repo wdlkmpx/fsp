@@ -1,9 +1,7 @@
 #include "tweak.h"
 #include "server_def.h"
 #include "s_extern.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

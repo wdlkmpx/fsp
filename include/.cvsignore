@@ -3,3 +3,4 @@ Makefile.in
 stamp-h1
 config.h
 config.h.in
+.sconsign

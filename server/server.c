@@ -12,9 +12,7 @@
 #include "server_def.h"
 #include "s_extern.h"
 #include "co_extern.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -391,7 +389,13 @@ void serve_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
     else	
 	if(len <= 0)
 	    len = UBUF_SPACE;
-  } else len  = packetsize; /* use default if it doesn't exist */
+  } else 
+  {
+     /* use default if it doesn't exist */
+     len  = packetsize;
+     if( len > UBUF_SPACE )
+	 len = UBUF_SPACE;
+  }
 
   pos = BB_READ4(ub->bb_pos);
 

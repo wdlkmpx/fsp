@@ -13,9 +13,7 @@
 #include "bsd_extern.h"
 #include "ls.h"
 #include "merge.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

@@ -32,9 +32,7 @@
 #include <sys/syslimits.h>
 #endif
 
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #include "my-string.h"
 
 #ifndef NCARGS

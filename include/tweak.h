@@ -1,6 +1,10 @@
 #ifndef _FSP_TWEAK_H_
 #define _FSP_TWEAK_H_ 1
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
+
+#include <sysexits.h>
 
 #ifndef HAVE_FSEEKO
 /* fallback to old fseek if no fseeko is available */
@@ -22,15 +26,6 @@
 #endif
 #define min(x,y)  ((x) < (y) ? (x) : (y))
 
-#if defined(HAVE_DIRENT_H)
-#define HAVE_STRUCT_DIRENT 1
-#else
-#undef HAVE_STRUCT_DIRENT
-#endif
-
-#ifdef HAVE_TZFILE_H
-#include <tzfile.h>
-#endif
 #ifndef SECSPERDAY
 #define SECSPERDAY (long)60*60*24
 #endif
@@ -44,10 +39,6 @@
 #if !defined(HAVE_D_INO) && defined(HAVE_D_FILENO)
 #define d_ino d_fileno
 #endif
-#endif
-
-#ifdef HAVE_SYSEXITS_H
-#include <sysexits.h>
 #endif
 
 #if !defined(BYTE)

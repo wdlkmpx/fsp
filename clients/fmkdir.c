@@ -10,9 +10,7 @@
 #include "tweak.h"
 #include "client_def.h"
 #include "c_extern.h"
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif

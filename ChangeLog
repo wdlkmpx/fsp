@@ -1,7 +1,14 @@
 Version NEXT
 	use getopt from stdio.h instead of getopt.h in fspscan.c 
 	  fspscan now compiles on AIX and other OS without glibc (hoaxter)
-	
+	!! fixed fatal bug from b23. Server sends large packets to clients if
+	  client request has not prefered reply size inside. This confuses
+	  all old fsp clients.
+	common/strdup.c removed  
+	bsd_src/function.c bcopy -> memmove
+	removed STDC_HEADER checks, drop support for pre-ANSI compilers
+	started work on alternate SCons based build system
+
 Version 2.8.1b23 - 14 Jan 2005
 	use srandomdev for seeding of client seq. number generator
 	make dirlister smarter - save one RTT per each directory listings

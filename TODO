@@ -22,7 +22,6 @@ we should add real,portable error codes support to CC_ERR extended data area.
 
 PORTING
 Sven's Slowaris 8 compile problem
-Fixed? Sven's AIX compile problem
 still not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
 
 NEEDS IMPROVMENT:
@@ -38,6 +37,8 @@ LOCKING
 
 CLIENTS 
 :high: 
+bug in directory listing parsing code, fspclient has it also
+  pyfsp and fsplib seems to be ok.
 some client commands should exit with nonzero rc on failure
 
 :low:
