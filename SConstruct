@@ -1,5 +1,6 @@
 # Process this file with http://www.scons.org to build FSP
 
+import os
 # init Scons
 EnsureSConsVersion(0,96)
 PREFIX='/usr/local'
@@ -7,15 +8,21 @@ PACKAGE='fsp'
 VERSION='2.8.1b24'
 
 env = Environment(CPPPATH='#/include')
+env.Append( ENV = {'HOME': os.environ.get('HOME')}  )
+env.Append( ENV = {'DISTCC_HOSTS': os.environ.get('DISTCC_HOSTS')}  )
+if os.environ.get('CC'):
+    env.Replace(CC =  os.environ.get('CC'))
+
 # Turn CPPFLAGS to list
 env.Append( CPPFLAGS = [])
+# Get CC from commandline
+if ARGUMENTS.get('CC', 0):
+    env.Replace(CC =  ARGUMENTS.get('CC'))
 
 #################### Tests ###################
 
 # check for other GCC options
 def checkForGCCOption(conf,option):
-   if not conf.env['CC'].startswith('gcc'):
-       return 0
    conf.Message("checking whether GCC supports "+option+" ")
    lastCFLAGS=conf.env['CCFLAGS']
    conf.env.Append(CCFLAGS = option)
