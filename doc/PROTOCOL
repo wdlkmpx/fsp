@@ -1,7 +1,7 @@
 			FILE SERVICE PROTOCOL VERSION 2
 
-			     Document version 0.10
-			    Last updated 18 Oct 2004
+			     Document version 0.11
+			    Last updated 24 Oct 2004
 
 				 Also known as
 			    File Slurping Protocol,
@@ -184,12 +184,23 @@ FSP File servers MUST supports following commands:
 		file position:  position in directory
 		data:           ASCIIZ directory name
 		xtra data:	(not required)
-		                word - size of reply's optional data block
+		                word - prefered size of directory block
 
 		reply
 		file position:  same as in request
 		data:           directory listing (format follows)
 		xtra data:	not used
+
+Directory listing is transfered in similar way as file transfer. Directory
+listing is divided into blocks of equal size, only exception is last block
+which can be shorter. Default and maximum size of directory listing block is
+1024 bytes. Size of directory block can be changed by server using extra
+data information sent by client. 
+
+Directory blocks can't be split accross message boundary and client
+can't do seeking to any arbitary offset, which can broke dirblock
+into 2 messages. In short: Every message can contain only one
+unsplited directory block.
 
 RDIRENT is the structure of a directory entry contained in a directory listing.
 Each entry contains a HEADER, which has 4 bytes quantity 'time' in Unix
@@ -201,8 +212,9 @@ At this point, if the next RDIRENT entry to follow will spread across 1k
 boundary, then two possible things will happen:
 
   1) if the HEADER fits between this entry and the 1k boundary,
-  a complete header will be filled in with a 'type' set to RDTYPE_SKIP.
-  Repeat this step as neceseary until no HEADER fits.
+  a complete header will be filled in with a 'type' set to RDTYPE_SKIP
+  and no name followed - just pad to 1k boundary. Clients which sees
+  RDTYPE_SKIP header skips over next data in packet.
   2) if the HEADER does not fit, then simply pad to the 1k boundary.
 
   This will make sure that messages carrying directory information carry only
