@@ -301,7 +301,9 @@ int main (int argc, char ** argv)
   /* set timeouts */
   if(inetd_mode)
   {
-      if(inetd_timeout==0) inetd_timeout=120*1000L; /* 2. minutes */
+      if(inetd_timeout==0)
+	  /* 5. minutes is maximum resend timeout required by protocol */
+	  inetd_timeout=300*1000L; 
   }else
   {
       if(inetd_timeout==0 || !dbug)

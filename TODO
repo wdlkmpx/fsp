@@ -18,17 +18,17 @@ symlink to FILE can escape from FSP root directory. OLD known problem.
 symlink support must be reworked before final release.
 
 PROTOCOL-RELATED BUGS:
-add real,portable error codes support to CC_ERR extended data area.
+we should add real,portable error codes support to CC_ERR extended data area.
 
 PORTING
 Sven's Slowaris 8 compile problem
 Sven's AIX compile problem
-not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
+still not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
 
 NEEDS IMPROVMENT:
 
 Client LIBRARY
-:high:
+:mid:
 we should retune retry algoritm for better support lines with higher
   packed loss. On common internet lines current one works okay.
 add more detailed stats from retry alg.
@@ -46,7 +46,6 @@ drop this library and use libfsp instead
 
 CLIENTS 
 :high: 
-fpro without directory name do not works
 normalize return error codes of all clients
 write new clients for new commands - fpasswd finfo
 :low:
@@ -69,9 +68,9 @@ report number of clients connected, size of hostable in new command
 special defence against rapid/double fire clients (burst command in fspclient)
 Native Supports for symbolic links (needed for mirroring Debian)
 new LSTAT COMMAND
-write FSP_CHANGE_PASSWORD command
 
 :midle:may not be in 2.8.2
+write FSP_CHANGE_PASSWORD command
 improve RENAME FSP command
   * cross directory renames are unsuported for now
   * server can send error reply even to denied per directory clients
@@ -105,10 +104,10 @@ libraries and support for FSP protocol
 
 DONE: FSP library for Java
 DONE: FSP over HTTP
+ALMOST DONE:  new small,light fsplib for C.
 FSP plugin for Netscape/MSIE. 
   Not possible to write protocol plugins with Netscape 3 SDK 
   we have fsproxy now.
-WIP:  new small,light fsplib for C.
 FSP backend for APT
 Transfer HTTP over fsp transport
 FSP support to lftp,wget,curl,gftp

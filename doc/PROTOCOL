@@ -53,6 +53,11 @@ Transport
   packets with this, underlying transport must make size of received
   packet available to FSP protocol stack at server side.  Without this
   information, full support for extra data area is not possible.
+  Partial support for extra data is still possible: Some
+  commands are carrying size of extra data in file position field and
+  client side checksums contains total packet size. Using checksums
+  for decoding of length of extra data is last resort, because
+  checksums are only one byte in size.
 
   Servers can still send extra data in reply to CC_VERSION and
   CC_GET_PRO because length of extra data is recorded in position
@@ -85,7 +90,7 @@ Security
   many people wants it and there were hacked version of FSP with
   password support floating around. Passwords are transmitted in clear
   text over network which makes them a weak protection for determined
-  intruder.
+  intruder when transfered over unsecured network.
 
 FSP Packet format:
   HEADER 		- size = Fixed size 12 bytes. Always present.
@@ -125,7 +130,11 @@ protocols, which are using at least CRC16 checksum types. FSP server
 fed by random data can resist for hours without falsely accepting
 random data as valid FSP packet. This demonstration shows, that these
 checksums when very easy to compute, are sufficient for guarding
-against line noise.
+against line noise. 
+
+Note:
+IP/UDP packet has its own crc16 checksum, but FSP protocol checksum is
+used as protection against received non FSPv2 UDP packets.
 
 KEY
 Client's message to server contain a KEY value that is the same as the KEY

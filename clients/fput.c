@@ -48,11 +48,23 @@ static int put_file (char * path)
     if(*t2 == '/') name = t2 + 1;
 
   if( (fp = fopen(path,"rb"))) {
-    util_upload(name,fp,timestamps==1?sb.st_mtime:0);
+    util_upload(name,fp,timestamps==1?sb.st_mtime:0L);
     fclose(fp);
   } else fprintf(stderr,"Cannot read %s\n",path);
 
   return(0);
+}
+
+static RETSIGTYPE upload_cleanup (int signum)
+{
+  UBUF *ub;
+
+  env_timeout = 10;
+  ub=client_interact(CC_INSTALL,0L, 1, "", 0, (unsigned char *)NULLP);
+  if(ub->cmd==CC_UP_LOAD)
+     ub=client_interact(CC_INSTALL,0L, 1, "", 0, (unsigned char *)NULLP);
+  client_done();
+  exit(1);
 }
 
 int main (int argc, char ** argv)
@@ -66,7 +78,23 @@ int main (int argc, char ** argv)
     exit(1);
   }
 
+  signal(SIGHUP,upload_cleanup);
+  signal(SIGINT,upload_cleanup);
+  signal(SIGQUIT,upload_cleanup);
+  signal(SIGILL,upload_cleanup);
+  signal(SIGTRAP,upload_cleanup);
+  signal(SIGFPE,upload_cleanup);
+  signal(SIGSEGV,upload_cleanup);
+#ifndef __linux__
+  signal(SIGEMT,upload_cleanup);
+  signal(SIGBUS,upload_cleanup);
+  signal(SIGSYS,upload_cleanup);
+#endif
+  signal(SIGPIPE,upload_cleanup);
+  signal(SIGTERM,upload_cleanup);
+
   while ((optletter=getopt(argc, argv,"ph?")) != EOF)
+  {
     switch (optletter) {
       case 'h':
       case '?':
@@ -75,8 +103,12 @@ int main (int argc, char ** argv)
       case 'p':
 	       timestamps=1;
     }
+  }
   if(argc > optind)
-    while(*++argv) put_file(*argv);
+  {
+    while(argc > optind)
+      put_file(argv[optind++]);
+  }
   else {
     prompt = isatty(0);
     while(1) {

@@ -334,7 +334,7 @@
         in March 1996. This version is used on some
         servers today because Debian Woody has it, but 2.7.1 is still
         used on some forgotten machines in universities. It has also
-        known security issues (fspd follows symlinks), but at this
+        known security issues (fspd follows all symlinks), but at this
         time there were viewed as feature, not a bug. 
 
         <para>

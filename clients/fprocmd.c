@@ -47,8 +47,8 @@ static int set_pro (char * p, char * key)
 
   op = util_abs_path(p);
 
-  ub = client_interact(CC_SET_PRO,0L, strlen(op), (unsigned char *)op+1,
-		       strlen(key)+1, (unsigned char *)key);
+  ub = client_interact(CC_SET_PRO,strlen(key), strlen(op), (unsigned char *)op+1,
+		       strlen(key), (unsigned char *)key);
   if(ub->cmd == CC_ERR) {
     fprintf(stderr, "ERR: %s\n",ub->buf);
     return(1);
@@ -66,17 +66,22 @@ int main (int argc, char ** argv)
   env_client();
 
   if(argv[1] && (argv[1][0] == '+' || argv[1][0] == '-') && !argv[1][2]) {
-    /* set pro command */   
-    key = *++argv;
-    while(*++argv) {
-      if(!(av = glob(*argv))) {
-	av = av2;
-	av2[0] = *argv;
-	av2[1] = 0;
-      }
-      while(*av) set_pro(*av++,key);
+    /* set pro command */
+    if (argc > 2)
+    {
+	key = *++argv;
+	while(*++argv) {
+	  if(!(av = glob(*argv))) {
+	    av = av2;
+	    av2[0] = *argv;
+	    av2[1] = 0;
+	  }
+	  while(*av) set_pro(*av++,key);
+	}
     }
+    else set_pro(env_dir,key);
   } else {
+    /* get pro command */  
     if(argv[1]) while(*++argv) {
       if(!(av = glob(*argv))) {
 	av = av2;

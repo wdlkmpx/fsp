@@ -892,7 +892,7 @@ const char *server_install (PPATH * pp, unsigned long inet_num,
   if (dbug)
     fprintf(stderr,"server_install: tname: %s, pp->fullp: %s\n",tname, pp->fullp);
   /* zero length filename */
-  if( pp->f_len + pp->d_len == 0 )
+  if( strcmp(pp->fullp,".") == 0 )
    {
        if (dbug)
 	   fprintf(stderr,"server_install: zero length name. aborting upload.\n");

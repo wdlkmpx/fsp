@@ -405,7 +405,7 @@ int util_upload (char * path, FILE * fp, time_t stamp)
     else
     {
       BB_WRITE4(buf,stamp);
-      ub = client_interact(CC_INSTALL,pos,strlen(fpath),
+      ub = client_interact(CC_INSTALL,stamp==0?0:4,strlen(fpath),
 			   (unsigned char *)fpath+1, stamp==0?0:4,
 			   (unsigned char *)buf);
     }

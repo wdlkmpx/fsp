@@ -687,7 +687,9 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
             send_error(from, ub, pe) ;
 	    return;
 	  }
-	  CHECK_ACCESS_RIGHTS(DIR_ADD,L_INSTALL);
+	  if(l1>1) {
+	      CHECK_ACCESS_RIGHTS(DIR_ADD,L_INSTALL);
+	  }    
           pe = server_install(&pp,inet_num,port_num,pe,di,l2,s2);
 	  if(pe)
 	  {
