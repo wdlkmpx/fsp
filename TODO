@@ -84,6 +84,7 @@ MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
 Register udp/21 for FSP in iana. FSP RFC needed!
 manual page for fmvcmd.1
+manual page for fsetup.1
 
 libraries and support for FSP protocol
 ======================================
