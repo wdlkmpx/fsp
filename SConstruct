@@ -5,7 +5,7 @@ import os
 EnsureSConsVersion(0,96)
 PREFIX='/usr/local'
 PACKAGE='fsp'
-VERSION='2.8.1b24'
+VERSION='2.8.1b25'
 
 env = Environment(CPPPATH='#/include')
 # Turn CPPFLAGS to list

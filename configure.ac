@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b24,hsn@netmag.cz)
+AC_INIT(fsp,2.8.1b25,hsn@netmag.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
@@ -98,7 +98,6 @@ AC_CHECK_HEADERS(string.h strings.h unistd.h sys/resource.h utime.h)
 AC_HEADER_DIRENT
 AC_HEADER_TIME
 AC_CHECK_SIZEOF(unsigned)
-AC_CHECK_SIZEOF(penis)
 AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(char)

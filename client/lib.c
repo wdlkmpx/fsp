@@ -206,7 +206,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	    cmd == CC_GET_FILE || cmd == CC_UP_LOAD || cmd == CC_INFO ||
 	    cmd == CC_GRAB_FILE))
 	{
-	    /* wrong seq # */
+	    /* wrong pos */
             if (client_trace) write(2,"P",1);
 	    stat_bad++;
 	    continue;

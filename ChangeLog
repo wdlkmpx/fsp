@@ -1,3 +1,7 @@
+Version NEXT
+	removed test for size of penis in configure.ac
+	corrected misleading comment in client/lib.c
+
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
 	  fspscan now compiles on AIX and other OS without glibc (hoaxter)
