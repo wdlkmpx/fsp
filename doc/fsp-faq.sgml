@@ -26,7 +26,7 @@
 	I started with this FAQ from scratch cause nearly all parts of the old FAQ where outdated. This new FAQ is maintained
 	in DocBook SGML. Send patches to the fsp-devel Mailinglist (FIXME link to id gethelpml) or directly to me
 	<email>sven@du-gehoerst-mir.de-nospam</email>. You should be able to find the latest SGML version of this FAQ in the 
-	<ulink url="http://sourceforge.net/cvs/?group_id=89835">fsp CVS at sf.net</ulink> or here
+	<ulink url="http://sourceforge.net/cvs/?group_id=93841">fsp CVS at sf.net</ulink> or here
 	<ulink url="http://sven.stormbind.net/fsp/fsp-doc/fsp-faq.sgml">http://sven.stormbind.net/fsp/fsp-doc/fsp-faq.sgml</ulink>
 	(be aware the sf.net public CVS is often about a week behind the "real" CVS :( )
       </para>
@@ -70,20 +70,34 @@
       <title>Where can I download FSP?</title>
       <para>
 	You can Download the FSP source Distribtuion from the
-	<ulink url="http://sourceforge.net/project/showfiles.php?group_id=89835">sf.net mirror network</ulink>
+	<ulink url="http://sourceforge.net/project/showfiles.php?group_id=93841">sf.net mirror network</ulink>
 	or from 
 	<ulink url="http://ibiblio.org/pub/linux/system/network/file-transfer/">ibblio</ulink>.
+	If you have the FSP tools already you can access the latest FSP release
+	via fsp on hxt.homelinux.org port 2221.
       </para>
+      <para>
+	When you're interesseted in the latest, and of course greates,
+	development done in FSP please try a CVS checkout.
+	Explanation and all needed information to do this can be found
+	on the
+	<ulink url="http://sourceforge.net/cvs/?group_id=93841">sf.net CVS page</ulink>.
     </sect2>
 
     <sect2 id="gethelp">
       <title>Where can I find help?</title>
+      <para>
+	First of all various people took the time to write nice documentation on FSP including the fspd Server
+	and the client tools. Please read those fine documents bevor you start writing to the mailinglists.
+      </para>
       <sect3 id="gethelpdocs">
 	<title>RTFM - Read the fine Manuals</title>
 	<para>
 	  FIXME
-	  Various people took the time to write nice documents on fsp releated issue. Please read those
-	  fine documents bevor you start writing to the mailinglists.
+	  The &fsp; definition:
+	  The latest version of the FAQ
+	  The old FAQ
+	  
 	</para>
       </sect3>
           <sect3 id="gethelpml">
@@ -93,7 +107,7 @@
 	  and questions on how to configure your server/client write to the fsp-user Mailinglist.
 	  You can find more information on how to subscribe/unsubscribe to the mailinglist and
 	  the archiv on the
-	  <ulink url="http://sourceforge.net/mail/?group_id=89835">FSP mailinglist page</ulink>
+	  <ulink url="http://sourceforge.net/mail/?group_id=93841">FSP mailinglist page</ulink>
 	  on sf.net.
 	  Please bevor you write to one of the provided mailinglists read and understand
 	  <ulink url="http://www.catb.org/~esr/faqs/smart-questions.html">ESRs HowTo ask smart questions</ulink>
