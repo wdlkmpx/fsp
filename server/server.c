@@ -49,7 +49,7 @@ do { if((logging & (FLAG)) && !old) { \
 #define ACTIONLOG2(FLAG,X) \
 do { if((logging & (FLAG)) && !old) { \
   fsplogs(); \
-  fsploga("%s %-8s /%.*s %s %s", inetstr, (X), l1, s1, s1+l1); \
+  fsploga("%s %-8s /%.*s /%.*s", inetstr, (X), l1, s1, l2, s2); \
 } } while (0)
 
 #define ACTIONINFO(FLAG,F) \
@@ -102,6 +102,8 @@ static const char * print_command(unsigned char cmd)
 	    return "BYE";
 	case CC_VERSION:
             return "VER";
+	case CC_INFO:
+	    return "INFO";    
 	case CC_ERR:
 	    return "ERR";
 	case CC_GET_DIR:
@@ -875,15 +877,88 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
       }
       if(!old)
       {
+	  DIRINFO *srcdir;
+	  PPATH srcpath;
+	  int istargetdir;
+	  struct stat sb;
+
 	  ACTIONLOG2(L_RENAME,"RENAME");
-	  if ( (pe = server_rename(ub->buf,l1,inet_num)) )
+
+	  /* validate source file */
+          pe = validate_path(s1,l1,&pp,&di,0);
+
+	  if (pe)
 	  {
-		ACTIONLOG1(L_RENAME|L_ERR,"RENAME");
+	     ACTIONLOG2(L_ERR|L_RENAME,"RENAME");
+	     ACTIONFAILED(L_ERR|L_RENAME,pe);
+             send_error(from, ub, pe) ;
+	     return;
+          }
+      
+          CHECK_ACCESS_RIGHTS(DIR_RENAME,L_RENAME);
+          
+	  srcdir=di;
+	  srcpath=pp;
+
+          /* validate target */
+	  pe = NULL;
+          /* check if target path is zero terminated */
+          if(s2[l2-1])
+	      pe = ("Target path is not zero terminated");
+	  else
+	  {
+	      if(FSP_STAT(s2,&sb))
+                  istargetdir=-1; /* non - existent! */
+              else    
+                  if(S_ISDIR(sb.st_mode))
+                    istargetdir=1;
+                  else
+                    if(S_ISREG(sb.st_mode))
+	              istargetdir=0;
+                    else
+	              pe = ("Refusing to operate on special files");
+	  }
+	  
+	  if (!pe)
+	  {
+	      if (istargetdir == 1)
+                 pe = validate_path(s2,l2,&pp,&di,1);
+	      else
+                 pe = validate_path(s2,l2,&pp,&di,0);
+	  }
+
+	  if (pe)
+	  {
+	     ACTIONLOG2(L_ERR|L_RENAME,"RENAME");
+	     ACTIONFAILED(L_ERR|L_RENAME,pe);
+             send_error(from, ub, pe) ;
+	     return;
+          }
+
+	  /* check ACL in target directory */
+	  if (istargetdir == 0)
+	  {
+	       /* we need delete right in the target directory */
+	       pe = require_access_rights(di,DIR_DEL,inet_num,pp.passwd);
+	       if(pe[0]!='N' && pe[0]!='O')
+		  pe=("No permission for overwriting files");
+	       else
+		  pe=NULL;
+	  }
+
+	  /* execute rename */
+	  if (!pe)
+	     pe = server_rename(&srcpath,&pp,srcdir,di);
+	  if ( pe )
+	  {
+		ACTIONLOG2(L_RENAME|L_ERR,"RENAME");
 		ACTIONFAILED(L_RENAME|L_ERR,pe);
 		send_error(from, ub, pe);
 		return;
 	  }
       }
+      /* clear position field */
+      memset(ub->bb_pos,0,4);
       server_reply(from,ub,0,0);
       ACTIONOK(L_RENAME);
       return;

@@ -15,12 +15,10 @@
 #define FSPPROF ".fsp_prof"
 
 /****************************************************************************
- * Define the following if you want the client programs to time out and     *
- * abort after a certain period (period is settable via an environment      *
- * variable.  See the INFO, client man pages, and ChangeLog files for       *
- * details                                                                  *
+ * Define the CLIENT_TIMEOUT if you want the client programs to time out
+ * and abort after a certain period. Period is settable via an environment
+ * variable FSP_TIMEOUT. See the fsp_env(7) for details
  ****************************************************************************/
-#define CLIENT_TIMEOUT 1
 
 /****************************************************************************
  * Define the following if you want fhostcmd to attempt to perform name     *
@@ -39,18 +37,22 @@
 
 /* find the best locking method, defines one of USE_SHAREMEM_AND_LOCKF,
  * USE_FLOCK,USE_LOCKF,NOLOCKING 1 */
-#if defined(HAVE_SHMEM) && defined(HAVE_LOCKF)
-     #define USE_SHAREMEM_AND_LOCKF 1
-#else
-     #ifdef HAVE_LOCKF
-        #define USE_LOCKF 1
-     #else
-        #ifdef HAVE_FLOCK
-           #define USE_FLOCK 1
-        #else
-           #define NOLOCKING
-        #endif
-     #endif
-#endif
+#if defined(HAVE_SHMEM) && defined(HAVE_SEMOP)
+     #define USE_SHAREMEM_AND_SEMOP 1
+#else     
+  #if defined(HAVE_SHMEM) && defined(HAVE_LOCKF)
+       #define USE_SHAREMEM_AND_LOCKF 1
+  #else
+       #ifdef HAVE_LOCKF
+          #define USE_LOCKF 1
+       #else
+          #ifdef HAVE_FLOCK
+             #define USE_FLOCK 1
+          #else
+             #define NOLOCKING
+          #endif
+       #endif
+  #endif
+#endif /* locking story */
 
 #endif /* _FSP_CLIENT_CONF_H_ */

@@ -93,6 +93,8 @@ int main (int argc, char ** argv)
     printf("LOCKF");
 #elif defined(NOLOCKING)
     printf("None");
+#elif defined(USE_SHAREMEM_AND_SEMOP)
+    printf("SHAREMEM_AND_SEMOP");
 #else
 #error "We do not have any locking method defined!"
 #endif

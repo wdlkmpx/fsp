@@ -1,8 +1,8 @@
 			FILE SERVICE PROTOCOL VERSION 2
 				     FSP v2
 
-			     Document version 0.15
-			    Last updated  2 Dec 2004
+			     Document version 0.16
+			    Last updated  15 Dec 2004
 
 				 Also known as
 			    File Slurping Protocol,
@@ -496,10 +496,9 @@ Commands starting from FSP 2.8.1 Beta 11
 
  CC_RENAME    0x4E 		- rename file or directory
  		request
-		file position:  not used
+		file position:  size of extra data
 		data:           ASCIIZ source file or directory
-				ASCIIZ destination file or directory
-		xtra data:	not used
+		xtra data:	ASCIIZ destination file or directory
 
 		Note: It is possible to do cross-directory rename. In this
 		case you must have rights to DELETE in source directory and

@@ -21,7 +21,7 @@
 #include "merge.h"
 #include "printpro.h"
 
-static int f_cd (const char * p)
+static int f_cd (char * p)
 {
   UBUF *ub;
   
@@ -32,6 +32,7 @@ static int f_cd (const char * p)
     fprintf(stderr, "ERR: %s\n",ub->buf);
     return(0);
   } else {
+    util_junk_password(p);
     fprintf(stderr, "directory %s\nmode: ",p);
     print_pro(ub,stderr);
     return(1);
@@ -45,8 +46,9 @@ int main (int argc, char ** argv)
 
   env_client();
   if(argc == 1) {
-    f_cd("/");
-    puts("/");
+    np=util_abs_path("/");  
+    f_cd(np);
+    puts(np);
   } else {
     if(!(av = glob(argv[1]))) {
       av = av2;
@@ -56,7 +58,6 @@ int main (int argc, char ** argv)
     np = util_abs_path(*av);
     if(f_cd(np))
     {
-	util_junk_password(np);
 	puts(np);
     }
     else {

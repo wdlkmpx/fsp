@@ -186,7 +186,15 @@ static void usage (void)
 #else
     printf("fgrabcmd");
 #endif
-    printf(" -[<f|o>|u|t|n|<a|c>] -r -p -h -?\n");
+    printf(" [options] [filename] ...\n");
+    printf("Options:\n");
+    printf("-f,-o\toverwrite existing files\n");
+    printf("-u\tuse unique names\n");
+    printf("-t\tdownload into temporary file\n");
+    printf("-n\tnever overwrite existing files\n");
+    printf("-a,-c\tappend to files\n");
+    printf("-p\tpreserve timestamp of remote files\n");
+    printf("-r\trecursively get directories\n");
 }
 	
   /* Parse options

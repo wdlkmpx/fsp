@@ -1,4 +1,4 @@
-Version NEXT
+Version 2.8.1b22 - 17 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files
 	fixed sf bug 1060558: fpro 'l' sets 'm' flag instead (dairiki)
 	fixed sf bug 1060558: fpro 'l' flag was not correctly saved
@@ -23,7 +23,36 @@ Version NEXT
 	  directory from environment is used instead
 	fput: use request position for sizing of extra (timestamp) data.
 	  use new upload cancel feature on user abort/kill.
-	fspd: default inetd timeout increased to 5 minutes.  
+	fspd: default inetd timeout increased to 5 minutes.
+	udpio: Do not set reuse flag when binding socket
+	nicer help from configure --help
+	!! configure option --disable-timeout for disabling timeout code
+	  in client util. This will switch clients into classic FSP
+	  infinite retry mode.
+	some shell portability fixes in configure.ac shell tests
+	cleaned outdated information from INSTALL file
+	fcdcmd: do not print password to standard output. really
+	  support cd into password protected root directory
+	!! Protocol Wire definiton of rename command has changed
+	PROTOCOL: CC_RENAME updated
+	fmvcmd,fspd: now supports this new definition.
+	fmvcmd: do not sent bye packet to server on bad command line arguments
+	client locking subsystem: do not report errors on deleting shm segment
+	!! shmem+semop client-side locking method added. This should solve all
+	  problems with shmem+lockf locks.
+	autogen.sh updated for FreeBSD-5 + automake 1.9
+	lamerguide: added section on upload area setup.
+	sgml faq: added inetd fspd install
+	sgml faq: client commands updated, added more fspd info
+	fspd: default dirlistcache increased to 100
+	fspd: default fp cache increased to 20 and moved into server_conf.h
+	fget/grab cmd: better -h help
+	fput: add help on -p option
+	fmv alias added to both setup.c?sh scripts
+	fspd: logging of RENAME command fixed
+	fspd.conf: logging of stat and rename added to comments.
+	FILES: file somewhat updated
+	sgml fsp faq released as version 0.1, first public version
 
 Version 2.8.1b21 - 1 Nov 2004
 	check for errors while copying files in fspd.

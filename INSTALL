@@ -1,18 +1,18 @@
-Compilation:
 	The first step in running this fine software (:) is to get it to
 	compile.  Every effort on my part will be made to make this code
 	compile and run on any reasonable system.  The information in this
 	file CURRENTLY pertains only to Unix and Cygwin users.
 
+Configuration:
 	The first step is to run the configure script provided in this
 	directory.  This will generate a good makefile and a file called
-	tweak.h in the include directory.  These files are vital for the
+	config.h in the include directory.  These files are vital for the
 	compilation of the system.
 
-	You must also edit the files include/client_conf.h and
-	include server_conf.h as they contain parameters which must
-	still at this point be manually set by the person compiling
-	the code.
+	configure can take several optional switches. Most important
+	switch is --disable-timeout. This option switches fsp clients
+	into classic infinite retry mode which is preferred by people
+	with very flaky networks.
 
 >>	By default, the configure script will set up the Makefile
 >>	to install the code in /usr/local/bin and the man pages under
@@ -21,6 +21,7 @@ Compilation:
 >>	machine, I install the files under /usr/jt/bin and /usr/jt/man.
 >>	To do this, I type configure --prefix=/usr/jt
 
+Compilation:
 	At this point, you should just be able to type 'make' 
 	and then 'make install'.  This will compile and (if
 	you do an install) install the clients in the directory specified
@@ -72,20 +73,13 @@ Client utilities:
         all data will be transferred.
 
 Server Administration:
-	The only things you need for setting up a FSP server is a work
-        directory for the service the FSP server itself (fspd) and
-	an fspd.conf file in the place you specified in include/server_conf.h.
-
-	To create an fspd.conf file, copy the example.conf file
-	provided to the correct place and edit to suit your tastes.
-
         fspd can run independently or it can be run under inetd.  When
         running independently, fspd waits for messages through a UDP
         socket whoes port number is defined in the fspd.conf file. 
 	When runing under inetd, fspd is invoked as in.fspd.  Inetd will
 	spawn fspd when a message arrives for the FSP socket.  The fspd
 	process will take over and stick around to wait on additional
-	messages.  After 2 minutes pass with no messages, fspd will exit
+	messages.  After 5 minutes pass with no messages, fspd will exit
 	and return control to inted.
 
         Sample setup for inetd operation:
@@ -96,7 +90,7 @@ Server Administration:
 
             In /etc/inetd.conf file:
 
-                fsp dgram   udp wait ftp /usr/etc/fspd in.fspd
+                fsp dgram   udp wait ftp /usr/local/bin/fspd in.fspd
 
             In this sample, the same port number for ftp is used for the
             fsp socket.  There will not be a conflict because ftp uses
@@ -107,31 +101,11 @@ Server Administration:
 	the fspd.conf file.  Please read the comments in the fspd.conf
 	file for details.
 
-	FSPD provides directory security through a series of . files created
-	in the directories serviced by fspd.  These files are invisible to
-	the clients, and can (mostly) be changed via the fprocmd client
-	utility (or by the server administrator manually).  The only file
-	that can not be changed in this manner is the ownership of a
-	directory.  The files and their meanings are:
-
-	.OWN.XXXXXXXX	specifies that the machine whose IP number is
-			encoded as XXXXXXXX owns the directory.  The owner
-			of a directory automatically has all other rights to
-			a directory and is the only one that can change the
-			other protections.  It is created when a directory
-			is initially created in the archive via fmkdir.
-
-	Information about all other directory security . files is
-	maintained in 'man 1 fspd'.
-
         Clients do not get to read the directory information directly.
         Instead, fspd maintains a directory listing for each directory
         in a cache file.  If the directory is writable by fspd, or if a
         writable file in it is prepared beforehand, fspd will store the
         directory information in .FSP_CONTENT file in that directory.
-        Otherwise, it will store the information in a pair of files (with
-        hashed names) in a special directory specified in the fspd.conf
-	file.  The latter allows read-only directories to be exported.
 
         When a client requests information for a directory, the cache
         file is created if it doesn't exist, and it is rebuilt if it is

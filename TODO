@@ -1,4 +1,4 @@
-FSP SUITE TO DO LIST BY RADIM KOLAR 
+FSP SUITE TO DO LIST BY RADIM KOLAR
 /* maintained by hsn -at- netmag * cz */
 
 Radim Kolar's personal wishlist from 1997
@@ -34,20 +34,22 @@ we should retune retry algoritm for better support lines with higher
 add more detailed stats from retry alg.
 :low:
 fver and others add support new syntax fsp://host:port/file
-add sem locking method, possible?
 flscmd should not to do stat before directory listing.
 directory listing should not need to get 0 sized block. Needs total code
   rewrite. 
-better support for persistent keys - do not send cc_bye ? this should
-  be probably configurable
 
 :long-term goals:
 drop this library and use libfsp instead
+
+LOCKING
+better support for persistent keys - do not send cc_bye ? this should
+  be probably configurable
 
 CLIENTS 
 :high: 
 normalize return error codes of all clients
 write new clients for new commands - fpasswd finfo
+
 :low:
 add support for more sane fsplist file format (as used by warez
 ppl) to fhostcmd
@@ -59,10 +61,6 @@ clients do not freeing memory allocated from glob()
 
 FUTURE FEATURES FOR SERVER:
 :high: required for 2.8.2 final
-can be run multiple times on the same port, how to check? 
-  drop reuse flag from socket bind?
-  Currently looks fine with flag on bsd. Fails on lin-suck.
-
 report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients (burst command in fspclient)
@@ -73,8 +71,6 @@ new LSTAT COMMAND
 write FSP_CHANGE_PASSWORD command
 improve RENAME FSP command
   * cross directory renames are unsuported for now
-  * server can send error reply even to denied per directory clients
-     - minor security flaw
 
 :low:this will sure go after 2.8.2:
 hashed passwords. Do we really needs them?
@@ -86,7 +82,8 @@ ipv6 socket support
 privileged Hosts, excluded from Byte transfer Limit (hard to do)
 
 new toy
-FSP Proxy repeater - look at old code.
+FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
+  today.
 
 PERFORMANCE:
 host hashtable shrinking sometimes
@@ -96,8 +93,8 @@ background time() alarm() caller
 Current performance 1925648B/s
 
 MAN:
-finish sgml FAQ
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
+manual page for fmvcmd.1
 
 libraries and support for FSP protocol
 ======================================
@@ -109,8 +106,8 @@ FSP plugin for Netscape/MSIE.
   Not possible to write protocol plugins with Netscape 3 SDK 
   we have fsproxy now.
 FSP backend for APT
-Transfer HTTP over fsp transport
-FSP support to lftp,wget,curl,gftp
+Experimental transfer HTTP over fsp transport
+FSP support in major ftp programs: lftp,wget,curl,gftp
 AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:

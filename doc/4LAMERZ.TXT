@@ -19,7 +19,7 @@
  ###         #       #    ###              L8mer guide to FSP
  ###         ##     ##    ###       
  ###         ###    #     ###                 LQ Version
-#####       # ######     #####                 Oct 2004
+#####       # ######     #####                 Dec 2004
                                 
 Why you need it
 
@@ -31,16 +31,18 @@ Why you need it
 - 100% attack resistant
 - net adminz do not like it
 - lamerz can not handle it
-               
+- bandwidth friendly
+
 STuFF firSt!
 
 you neeeed to get a p-file called cygwin1.dll. lamerz at www.cygwin.com
 have some. Grab a copy, man. Copy it to your winlost sistema32 dyr.
 
-Have it? Right.
+Have it? Right! You are ready now.
 
+------------------------ sharing -------------------
 
-Now rock!                                
+FSP server rocks!
 
 There is a p-file fspd.exe. This is for stuff sharing. Server. You know.
 Right. Running this is easy:
@@ -50,11 +52,31 @@ fspd.exe -d c:\your\stuff\to\share -p 53
 this number is important. Recommended numbers for stealth
 operation are: 53, 2090, 137-139, 13, 80, 443
 
-You can be catched more easily with bad number, so chooze wisely. Rememmber,
+You can be catched more easily with bad number, so chooze wisely. Remember,
 some numbers like 2221, 21, 2000, 2001 are used only by Elite!
 do not try it at home; bad thingz can hepen. you know. police will certainly
 take a visit. Lamers can detect you more easily on this ports, so be
 wise a little. Remember: You are c000l.
+
+Upload area
+
+You want uploads from users. Of course. You need to setup an upload
+area. This is easy.
+
+In your FSP homedir create subdirectory upload and and create file named
+".FSP_OK_ADD" there.  Content of this file dosnot matter. Copy your favourite
+music into it if you want. Do something nice.
+
+Last point is to add upload directory to server invocation arguments:
+ 
+fspd.exe -d c:\your\stuff\to\share -p 53 -T c:\your\stuff\to\share\upload
+
+that's all.
+
+Wait! If you want to stop users from downloading files from your upload area,
+simply create ".FSP_NO_GET" file here.
+
+------------------------- leeching ------------------
 
 Get more stuff!
 
@@ -96,7 +118,7 @@ much better guide -  hq version. Try to offer something.
 192.168.45.21 108
 10.20.30.40 5060
 
-never try to flood fsp server, this does not work, elite will lauch
+never try to flood fsp server, this does not work, elite will laugh
 at you and cut your accez down. remember, you ar elite, not a kiddie!
 
 -----**************------*******************----------************---
@@ -107,10 +129,9 @@ for HQ version of this guide send
       number 550694
 
 Features included:
-      list of hq quality sitez
-      how to setup upload facility
+      list of 5 hq quality sitez
       how to search for new sitez
-      special seek tool
+      special fsp sites seek tool
       and 3 secret bonuzez
 
 !We Do NOT sEnDZ hQ guiDe to LAmeRZ! Prove yourself first.

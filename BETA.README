@@ -15,12 +15,10 @@ FSP Protocol wire changes:
     with older software versions.
 - security: symlink to FILE can escape from FSP root directory, this will
 be fixed as part of symlink support.
-- add FSP change password command (??)
+- add FSP change password command (do we really need this ??)
 Code fixups:
 - fix Sven's compiling problems on various unixes
 - normalize return error codes of all clients
-- server can be run multiple times on the same port, how to check?
-    on freebsd this works okay. needs re-testing on linux.
 - fspd: add special defence against rapid/double fire clients (burst command in fspclient)
 
 * for next point Stable version 2.8.3

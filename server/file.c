@@ -1066,32 +1066,15 @@ const char *server_stat (UBUF * ubuf )
 }
 
 /* rename FILE/directory object */
-const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
+const char *server_rename (PPATH *src,PPATH *dest,DIRINFO *sdir, DIRINFO *tdir)
 {
   struct stat sb;
   int issrcdir, istargetdir;
   unsigned n;
-  PPATH src,dest;
   const char *pe;
-  DIRINFO *sdir,*tdir;
   
-  /* compute size of 1st component */
-  for(n=0;n<l1;n++)
-      if(ub[n] == '\0')
-	  break;
-  n++; 
-  
-  /* parse suplied request data */
-  pe=parse_path(ub, n, &src );
-  if(pe)
-      return pe;
-  
-  pe=parse_path(ub+n,l1- n, &dest );
-  if(pe)
-      return pe;
-   
   /* explore type of source object */
-  if(FSP_STAT(src.fullp,&sb)) return("can't find source file or directory");
+  if(FSP_STAT(src->fullp,&sb)) return("can't find source file or directory");
   if(S_ISDIR(sb.st_mode))
       issrcdir=1;
   else
@@ -1099,17 +1082,9 @@ const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
 	  issrcdir=0;
       else
 	  return ("Refusing to operate on special files");
-  /* validate source object */
-  /* we must turn \0 back into \n in password field */
-  if(src.passwd)
-  {
-      ub[n-strlen(src.passwd)-2]='\n';
-  }
-  pe=validate_path(ub,n,&src,&sdir,0);
-  if(pe) return pe;
   
   /* --- explore Target --- */
-  if(FSP_STAT(dest.fullp,&sb))
+  if(FSP_STAT(dest->fullp,&sb))
       istargetdir=-1; /* non - existent! */
   else    
      if(S_ISDIR(sb.st_mode))
@@ -1120,20 +1095,13 @@ const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
          else
 	     return ("Refusing to operate on special files");
 
-  /* validate target */ 
-  if(istargetdir==1)
-     pe=validate_path(ub+n,l1 - n,&dest,&tdir,1);
-  else   
-     pe=validate_path(ub+n,l1 - n,&dest,&tdir,0);
-  if(pe) return pe;
-  
   /* --=== now check ACL and do it ===-- */
   
   /* Cross - directory rename? */
   if  (sdir == tdir)
   {
       /* no, do simple rename */
-      
+      /* not needed checked at upper level   
       pe=require_access_rights( sdir,DIR_RENAME,inet,src.passwd);
       if(pe[0]!='N' && pe[0]!='O')
 	  return ("Permission denied");
@@ -1141,8 +1109,9 @@ const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
          pe=require_access_rights( sdir,DIR_DEL,inet,src.passwd);
       if(pe[0]!='N' && pe[0]!='O')
 	  return ("No permission for overwriting files");
+      */
       /* now go to the action */	  
-      if (rename(src.fullp,dest.fullp))
+      if (rename(src->fullp,dest->fullp))
 	  return ("Rename failed");
       /* update dir listing */	  
       sdir->lastcheck=cur_time;

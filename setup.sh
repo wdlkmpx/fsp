@@ -52,6 +52,8 @@ alias frmdir='set -f;_frmdir'
 ftouch() { touch "$1"; fput "$1"; rm "$1" ;}
 _fcd()    { export FSP_DIR=$(fcdcmd "$@"); set +f;}
 alias fcd='set -f;_fcd'
+_fmv()    { fmvcmd "$@"; set +f;}
+alias fmv='set -f;_fmv'
 
 ####something like wget emulation####
 _fspget() {

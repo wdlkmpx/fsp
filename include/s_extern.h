@@ -25,6 +25,7 @@ void destroy_configuration (void);
 int init_caches (void);
 void shutdown_caches (void);
 void stat_caches (FILE *fp);
+void init_home_dir (void);
 const char *validate_path (char *, unsigned, PPATH *,DIRINFO **, int);
 const char *server_get_dir (DIRLISTING **,const DIRINFO *);
 const char *server_del_file (PPATH *, DIRINFO *);
@@ -43,8 +44,7 @@ const char *server_grab_file (FILE **, unsigned long,
 				      unsigned short);
 const char *server_grab_done (unsigned long, unsigned short);
 const char *server_stat (UBUF * buf);
-const char *server_rename (char *,unsigned int,unsigned long);
-void init_home_dir (void);
+const char *server_rename (PPATH *src,PPATH *dest,DIRINFO *sdir, DIRINFO *tdir);
 
 /* filecache.c, open filehandles cache */
 

@@ -37,15 +37,15 @@ static int append_to_buf(const char *what,size_t len)
 static void rename_file (const char *fname,const char *target)
 {
    char *fpath;
-   unsigned int l;
    UBUF *reply;
+   unsigned int srclen,dstlen;
    
    /* reset buffer */
    n=0;
    /* append source file */
    fpath = util_abs_path(fname);
-   l=strlen(fpath)+1;
-   if(append_to_buf(fpath,l))
+   srclen=strlen(fpath)+1;
+   if(append_to_buf(fpath,srclen))
    {
        printf("path too long: %s.\n",fpath);
        free(fpath);
@@ -54,8 +54,8 @@ static void rename_file (const char *fname,const char *target)
    free(fpath);
    /* add dest */
    fpath=util_abs_path(target);
-   l=strlen(fpath)+1;
-   if(append_to_buf(fpath,l))
+   dstlen=strlen(fpath)+1;
+   if(append_to_buf(fpath,dstlen))
    {
        printf("path too long: %s.\n",fpath);
        free(fpath);
@@ -63,7 +63,7 @@ static void rename_file (const char *fname,const char *target)
    }
 
    /* send our nicely crafted junk to the server */
-   reply=client_interact (CC_RENAME,0,n,buf,0,NULL);
+   reply=client_interact (CC_RENAME,dstlen,srclen,buf,dstlen,buf+srclen);
   
    if(reply->cmd==CC_ERR) 
    {
@@ -92,8 +92,11 @@ int main (int argc, char ** argv)
 	  rename_file(*av++,argv[argc-1]);
     }
   }
-  else  
+  else
+    {
       fprintf(stderr,"%s source target\n", argv[0]);
+      exit(1);
+    }
 
   client_done();
 

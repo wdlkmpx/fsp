@@ -31,11 +31,19 @@ AC_MSG_CHECKING([if building for Cygwin])
 case $host_os in
            *cygwin* ) AC_DEFINE(OS_CYGWIN,1,[Define if you are building for cygwin]) AC_MSG_RESULT(yes);;
                   * ) AC_MSG_RESULT(no);;
-esac		  
+esac
 AC_MSG_CHECKING([if we are building lamer pack])
-AC_ARG_ENABLE(lamerpack,[Build for lamers],AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disabled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
-AC_MSG_CHECKING([if enable extra debug code])
-AC_ARG_ENABLE(debug,[Enable client library debuging],AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
+AC_ARG_ENABLE(lamerpack,AS_HELP_STRING([--enable-lamerpack],[Build fspd tuned for lamers (default no)]),AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disabled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
+AC_MSG_CHECKING([if enabling of extra debug code is requested])
+AC_ARG_ENABLE(debug,AS_HELP_STRING([--enable-debug],[Enable client library debuging output (default no)]),AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(yes),AC_MSG_RESULT(no))
+AC_MSG_CHECKING([If client commands can time out])
+AC_ARG_ENABLE(timeout,AS_HELP_STRING([--disable-timeout],[Disable timeouts in client commands (default enabled)]),,enable_timeout=yes)
+if test "x${enable_timeout}" = xyes; then
+   AC_DEFINE(CLIENT_TIMEOUT,1,[Define if you want client commands timeout])
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
+fi
 AC_PROG_RANLIB
 AM_PROG_LEX
 AC_PROG_LN_S
@@ -43,7 +51,7 @@ AC_PROG_CC
 dnl If we're using gcc, enable some warnings
 AC_CACHE_CHECK(for additional compiler options, ac_cv_prog_gcc_flags, [
 ac_cv_prog_gcc_flags=""
-if test "$GCC" = yes
+if test "x$GCC" = xyes
 then
   echo "void dummy(void);" >configure-dummy.c
   echo "void dummy(void) {}" >>configure-dummy.c
@@ -79,7 +87,6 @@ AC_C_CONST
 AC_C_VOLATILE
 AC_PROG_CPP
 AC_ISC_POSIX
-AC_SYS_LARGEFILE
 if test "${enable_maintainer_mode+set}" = set; then
    CFLAGS="-g3 $ac_cv_prog_gcc_flags"
 AC_CHECK_LIB(efence,EF_Abort)   
@@ -94,15 +101,16 @@ AC_CHECK_SIZEOF(short)
 AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(void)
+AC_SYS_LARGEFILE
 AC_FUNC_FSEEKO
 AC_CHECK_SIZEOF(off_t)
-if test $ac_cv_sizeof_off_t -ge 8 -a "$ac_cv_func_fseeko" = yes; then
+if test $ac_cv_sizeof_off_t -ge 8 -a "x$ac_cv_func_fseeko" = xyes; then
 AC_DEFINE(NATIVE_LARGEFILES,1,[Define if we have 64bit off_t and fseeko])
 AC_MSG_NOTICE([Native large file support enabled])
 else
 AC_MSG_NOTICE([No native 64 bit files support, fallback to fopen64])
 AC_CHECK_FUNC(fopen64)
-if test "$ac_cv_func_fopen64" = yes -a "$enable_largefile" = yes; then
+if test "x$ac_cv_func_fopen64" = xyes -a "x$enable_largefile" = xyes; then
   AC_MSG_ERROR([You have fopen64 but no native LFS support. This configuration is not currently supported. Report compiler version, os version and library version to Radim Kolar. Thank you for your cooperation.])
 fi
 fi
@@ -114,7 +122,7 @@ AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not fo
 AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
 AC_TYPE_SIGNAL
 AC_FUNC_CLOSEDIR_VOID
-AC_CHECK_FUNCS(random strdup bcopy flock lockf getrlimit fork setsid)
+AC_CHECK_FUNCS(random strdup bcopy flock lockf getrlimit fork setsid semop nanosleep)
 AC_CACHE_CHECK(for working shmget ,fsp_cv_func_shmget,
 [LOCKPATH="conftestlock"
 AC_TRY_RUN([

@@ -26,7 +26,8 @@ static int optletter;
 static void usage (void)
 {
     printf("fput");
-    printf(" [-p | [ -h | -? ] ] file ...\n");
+    printf(" [-p | -h | -? ] file ...\n");
+    printf("-p\tPreserve file modification time\n");
 }
 
 static int put_file (char * path)

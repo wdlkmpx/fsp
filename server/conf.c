@@ -64,16 +64,7 @@ unsigned int dir_cache_limit = DEFAULT_DIRLISTCACHE_SIZE;
 unsigned int stat_cache_limit = DEFAULT_DIRSTATCACHE_SIZE;
 mode_t upload_umask = 0033;
 mode_t system_umask = 0077;
-
-/****************************************************************************
- * Set this value to the maximum number of open files you wish your system  *
- * to keep around at any given time.  The smaller this number is, the more  *
- * likely the server is to be opening and closing files, but the less file  *
- * descriptors need to be taken up by the server itself                     *
- * Five seems to work reasonably well on my system                          *
- ****************************************************************************/
-unsigned int fp_cache_limit=10;
-
+unsigned int fp_cache_limit= DEFAULT_FPCACHE_SIZE;
 
 static void log_set (int flag, int neg)
 {
@@ -98,7 +89,6 @@ static int get_boolean (const char *q)
 	
       fprintf(stderr,"Bogus boolean value '%s'. Exiting.\n",q);
       exit(1);
-      return -1;
 }
 
 static void read_configuration (const char * name)

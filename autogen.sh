@@ -31,7 +31,10 @@ if [ `uname -s` = 'FreeBSD' ]; then
     AUTOHEADER=autoheader259; export AUTOHEADER
     AUTOCONF=autoconf259; export AUTOCONF
     export LDFLAGS=-L/usr/local/lib
-    autoreconf259 -iv
+    $ACLOCAL -I /usr/local/share/aclocal
+    $AUTOMAKE -a
+    $AUTOCONF
+    #autoreconf259 -iv -I /usr/local/share/aclocal
 else
     echo "Using your default auto* tools"
     #this should work with recent autotools

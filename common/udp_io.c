@@ -45,7 +45,10 @@ int _x_udp (const char * bindaddress, unsigned short * port)
   
   if(f == -1) return(-1);
 
-  if(setsockopt(f,SOL_SOCKET,SO_REUSEADDR,(char *)&zz,sizeof(zz)) < 0 ||
+  if(
+#ifdef REUSE_SOCKET      
+      setsockopt(f,SOL_SOCKET,SO_REUSEADDR,(char *)&zz,sizeof(zz)) < 0 ||
+#endif      
      bind(f,(struct sockaddr *) &me,len) < 0 ||
      getsockname(f,(struct sockaddr *)&myadr,&len) < 0) {
     SAVE_ERRNO(((void) close(f)));
