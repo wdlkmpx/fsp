@@ -2,7 +2,7 @@
 .SH NAME
 fspd, in.fspd \- File Service Protocol (FSP) server
 .SH SYNOPSIS
-.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile]
+.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile] [-P pidlogname]
 .SH DESCRIPTION
 .B fspd
 is the server for an anonymous-ftp style archive called FSP. The main
@@ -65,6 +65,12 @@ clients. Using directory inside FSP home is not a security risk.
 .TP 20
 .B -l logfile
 Write log output to file.
+
+.PD 0
+.TP 20
+.B -P pidlogname
+Write pid to the given file name. This Option is required, if it's
+not given in your fspd.conf or on command line fspd will fail to start.
 
 .LP
 .SH FILES
