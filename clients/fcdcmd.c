@@ -18,6 +18,7 @@
 #include "c_extern.h"
 #include "bsd_extern.h"
 #include "my-string.h"
+#include "merge.h"
 #include "printpro.h"
 
 static int f_cd PROTO1(const char *, p)

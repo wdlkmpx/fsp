@@ -13,6 +13,7 @@
 #include "c_extern.h"
 #include "bsd_extern.h"
 #include "co_extern.h"
+#include "merge.h"
 #ifdef STDC_HEADERS
 #include <stdlib.h>
 #endif

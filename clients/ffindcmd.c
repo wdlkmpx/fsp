@@ -45,6 +45,7 @@
 #include "client_def.h"
 #include "c_extern.h"
 #include "bsd_extern.h"
+#include "merge.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>

@@ -18,6 +18,7 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
+#include "merge.h"
 
 static int remove_it PROTO1(char *, p)
 {

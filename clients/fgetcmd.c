@@ -24,6 +24,7 @@
 #include <utime.h>
 #endif
 #include "my-string.h"
+#include "merge.h"
 
 #if !defined(COMMAND_GRAB) && !defined(COMMAND_GET)
 #error "#define COMMAND_XXX to GET or GRAB when compiling this file"

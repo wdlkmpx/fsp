@@ -14,6 +14,7 @@
 #include "c_extern.h"
 #include <stdio.h>
 #include "my-string.h"
+#include "merge.h"
 #include <pwd.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

@@ -16,23 +16,7 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
-
-/* prototypes */
-int fcatcmd_main PROTO2(int, argc, char **, argv);
-int fcdcmd_main PROTO2(int, argc, char **, argv);
-int fgetcmd_main PROTO2(int, argc, char **, argv);
-int fgrabcmd_main PROTO2(int, argc, char **, argv);
-int flscmd_main PROTO2(int, argc, char **, argv);
-int fmkdir_main PROTO2(int, argc, char **, argv);
-int fprocmd_main PROTO2(int, argc, char **, argv);
-int fput_main PROTO2(int, argc, char **, argv);
-int frmcmd_main PROTO2(int, argc, char **, argv);
-int frmdircmd_main PROTO2(int, argc, char **, argv);
-int fver_main PROTO2(int, argc, char **, argv);
-int fducmd_main PROTO2(int, argc, char **, argv);
-int fhostcmd_main PROTO2(int, argc, char **, argv);
-int ffindcmd_main PROTO2(int, argc, char **, argv);
-int fstatcmd_main PROTO2(int, argc, char **, argv);
+#include "merge.h"
 
 int main PROTO2(int, argc, char **, argv)
 {

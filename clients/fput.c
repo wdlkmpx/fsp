@@ -18,6 +18,7 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
+#include "merge.h"
 
 static int timestamps=0;
 static int optletter;

@@ -17,6 +17,7 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
+#include "merge.h"
 
 static int make_dir PROTO1(char *, p)
 {

@@ -11,6 +11,7 @@
 #include "tweak.h"
 #include "client_def.h"
 #include "c_extern.h"
+#include "merge.h"
 #include <stdio.h>
 #ifdef STDC_HEADERS
 #include <stdlib.h>
