@@ -181,13 +181,12 @@ static RDIRENT **get_dir_blk (char * path)
 	  dirblocksize = rlen;
       else
 	  if (rlen < dirblocksize) at_eof = 1;	  
-      /* if(rlen < RDHSIZE) at_eof = 1; */
-      for(p1 = ub->buf, p2 = buf + acc, k = rlen; k--; ) *p2++ = *p1++;
+      memcpy(buf + acc, ub->buf, rlen);
       acc += rlen;
       pos += rlen;
     }
 
-    if(acc >= UBUF_MAXSPACE) len = UBUF_MAXSPACE;
+    if(acc >= dirblocksize) len = dirblocksize;
     else len = acc;
 
     for(p2 = buf, rem = len, k = 0; ; k++) {
@@ -231,12 +230,12 @@ static RDIRENT **get_dir_blk (char * path)
       }
     }
 
-    if(acc < UBUF_MAXSPACE) {
+    if(acc < dirblocksize) {
       dp[cnt] = 0;
       free(fpath);
       return(dp);
     }
-    for(p1 = buf + UBUF_MAXSPACE, p2 = buf, k = (acc -= UBUF_MAXSPACE); k--;)
+    for(p1 = buf + dirblocksize, p2 = buf, k = (acc -= dirblocksize); k--;)
       *p2++ = *p1++;
   }
   free(fpath);

@@ -11,6 +11,10 @@
 #define fseeko fseek
 #endif
 
+#ifndef RETSIGTYPE
+#define RETSIGTYPE void
+#endif
+
 #ifdef STAT_MACROS_BROKEN
 #define S_ISREG(mode) ((mode) & S_IFREG)
 #define S_ISDIR(mode) ((mode) & S_IFDIR)

@@ -88,11 +88,7 @@ extern int logfd;
 extern int tlogfd;
 void fsplogf (void);
 void fsplogs (void);
-#ifdef __STDC__
 void fsploga(const char *fmt, ...);
-#else
-void fsploga(va_alist);
-#endif
 void xferlog(char direction, const char *filename,unsigned long filesize,const char *hostname);
 
 #endif /* _FSP_S_EXTERN_H_ */

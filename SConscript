@@ -6,7 +6,7 @@ Import(Split("env PREFIX VERSION PACKAGE TARBALL"))
 env.Alias("install",[ PREFIX+'/bin', PREFIX+'/man'] )
 
 #Add build target
-env.Alias("build", Split('server/fspd clients/ contrib/') )
+env.Alias("build", Split('server/fspd clients/ contrib/ tests/') )
 
 #Change default target to build
 env.Default(None)

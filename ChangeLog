@@ -9,6 +9,8 @@ Version NEXT
 	removed STDC_HEADER checks, drop support for pre-ANSI compilers
 	started work on alternate SCons based build system
 	fspd: use urandom, not random -> avoid hangs on Lin suck 2.6
+	build system converted to SCons
+	fixed directory listing bug in client library introduced in beta23
 
 Version 2.8.1b23 - 14 Jan 2005
 	use srandomdev for seeding of client seq. number generator

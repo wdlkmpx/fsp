@@ -38,7 +38,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <sys/errno.h>
+#include <errno.h>
 #include <stdio.h>
 #include "my-string.h"
 #include <stdlib.h>

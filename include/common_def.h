@@ -1,5 +1,6 @@
     /*********************************************************************\
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
+    *  Copyright (c) 2003-2005 by Radim Kolar                             *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
@@ -17,49 +18,19 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#endif
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#endif
 
-#if TIME_WITH_SYS_TIME
-    # include <sys/time.h>
-    # include <time.h>
-#else
-    # if HAVE_SYS_TIME_H
-       # include <sys/time.h>
-    # else
-       # include <time.h>
-    #endif
-#endif
-
+#include <time.h>
 #include <fcntl.h>
-
 #include <signal.h>
-
-#ifdef HAVE_DIRENT_H
 #include <dirent.h>
-#else
-#ifdef HAVE_SYS_DIR_H
-#include <sys/dir.h>
-#else
-#ifdef HAVE_SYS_NDIR_H
-#include <sys/ndir.h>
-#else
-#ifdef HAVE_NDIR_H
-#include <ndir.h>
-#endif
-#endif
-#endif
-#endif
 
 /****************************************************************************
 *  UBUF is the structure of message exchanged between server and clients.
