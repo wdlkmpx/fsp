@@ -7,4 +7,4 @@ fspd_SOURCES=file.c host.c main.c conf.c server.c fifocache.c \
 fspd_CFLAGS=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
 fspd_LDADD=-L../common -lcommon
 
-noinst_HEADERS=fifocache.h
+noinst_HEADERS=fifocache.h pidfile.h

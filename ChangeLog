@@ -45,6 +45,15 @@ Version - not yet released
 	client: use random starting seq. number - better for avoiding
 	  seq. number clash with another client
 	fixed compiler warning on BB_READ4(const char *);
+	PROTOCOL: Added more information about directory blocks
+	Add pidfile.h to distribution
+	default FSP_DIR to / if not set
+	improved Sven's fsp-faq.sgml
+	Added local bind port support for server
+	added FSP_LOCALIP env variable for clients
+	--enable-lamerpack == build specialy tuned fspd for lamers
+	lamerz guide added
+	text rotate tool added
 
 Version 2.8.1b19 - 11 Jan 2004
 	sven has added fspget URL command to setup.sh.

@@ -56,6 +56,7 @@ char *pidlogname = NULL;
 char *dumpname = NULL;
 char *home_dir = NULL;
 char *tmp_dir = NULL;
+char *listen_on = NULL;
 int homedir_restricted = 1;
 int permit_passwordless_owners = 0;
 char *readme_file = NULL;
@@ -132,6 +133,9 @@ static void read_configuration PROTO1(const char *, name)
     } else if(strcasecmp(p, "readme") == 0) {
       if(readme_file) free(readme_file);
       readme_file = strdup(q);
+    } else if(strcasecmp(p, "ListenAddress") == 0) {
+      if(listen_on) free(listen_on);
+      listen_on = strdup(q);
     } else if(strcasecmp(p, "homedir") == 0) {
       if(home_dir) free(home_dir);
       home_dir = strdup(q);
@@ -264,6 +268,9 @@ static void read_configuration PROTO1(const char *, name)
 
 void load_configuration PROTO1(const char *,config_file)
 {
+#ifdef LAMERPACK
+    return;
+#endif        
   if(config_file == NULL) return;
 
   /* destroy_configuration(); */
@@ -287,8 +294,10 @@ void destroy_configuration PROTO0((void))
     if(tmp_dir) free(tmp_dir);
     if(dumpname) free(dumpname);
     if(iptab) free_ip_table(iptab);
+    if(listen_on) free(listen_on);
 
     readme_file = home_dir = logname = tmp_dir = dumpname = NULL;
     iptab = NULL;
     pidlogname = NULL;
+    listen_on = NULL;
 }

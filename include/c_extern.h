@@ -19,7 +19,7 @@ void client_init_key PROTO0((unsigned long, unsigned long,
 				    unsigned short));
 
 /* util.c */
-extern const char *env_dir,*env_passwd,*env_local_dir,*env_port,*env_myport,*env_host;
+extern const char *env_dir,*env_passwd,*env_local_dir,*env_port,*env_myport,*env_host,*env_listen_on;
 extern unsigned int env_timeout;
 extern unsigned short client_buf_len,client_net_len;
 char *util_abs_path PROTO0((const char *));

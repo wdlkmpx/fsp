@@ -22,6 +22,7 @@ const char *env_myport;
 const char *env_host;
 const char *env_port;
 const char *env_local_dir;
+const char *env_listen_on;
 unsigned int env_timeout;
 unsigned short client_buf_len;
 unsigned short client_net_len;
@@ -434,10 +435,11 @@ static void util_get_env PROTO0((void))
     exit(1);
   }
   if(!(env_dir  = getenv("FSP_DIR"))) {
-    fputs("No FSP_DIR specified.\n",stderr);
-    exit(1);
+    env_dir = "/";
+    env_dir_malloced = 0;
   }
   if(!(env_myport = getenv("FSP_LOCALPORT"))) env_myport = "0";
+  if(!(env_listen_on = getenv("FSP_LOCALIP"))) env_listen_on = NULL;
   if(!(env_passwd = getenv("FSP_PASSWORD"))) env_passwd = "\0";
   client_trace  = !!getenv("FSP_TRACE");
   if( (p = getenv("FSP_BUF_SIZE")) ) client_buf_len = atoi(p);

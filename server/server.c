@@ -417,8 +417,11 @@ static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
 {
   char buf[UBUF_SPACE], verflags = 0;
   unsigned int xtra = VER_BYTES;
-
+#ifndef LAMERPACK
   strcpy(buf, "fspd " PACKAGE_VERSION);
+#else
+  strcpy(buf, "fsp server " PACKAGE_VERSION" for lamerz");
+#endif
   strcat(buf, "\n");
 
   if (logging)       verflags |= VER_LOG;

@@ -15,7 +15,7 @@ long random PROTO0((void));
 #endif
 
 /* udp_io.c */
-int _x_udp PROTO0((unsigned short *));
+int _x_udp PROTO0((const char *, unsigned short *));
 int _x_adr PROTO0((const char *, int, struct sockaddr_in *));
 int _x_select PROTO0((fd_set *, long));
 

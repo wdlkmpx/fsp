@@ -26,7 +26,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 
-int _x_udp PROTO1(unsigned short *, port)
+int _x_udp PROTO2(const char *, bindaddress, unsigned short *, port)
 {
   int f;
   socklen_t len;
@@ -34,14 +34,16 @@ int _x_udp PROTO1(unsigned short *, port)
   struct sockaddr_in myadr;
   int zz=1;
 
-  memset(&me,0,sizeof(me));
-
-  me.sin_port = htons(*port);
-  me.sin_family = AF_INET;
+  if(bindaddress == NULL || _x_adr (bindaddress, *port,&me ) != 0) {
+     memset(&me,0,sizeof(me));
+     me.sin_port = htons(*port);
+     me.sin_family = AF_INET;
+  };   
 
   len=sizeof(me);
-
-  if((f=socket(AF_INET,SOCK_DGRAM,0)) == -1) return(-1);
+  f=socket(AF_INET,SOCK_DGRAM,0);
+  
+  if(f == -1) return(-1);
 
   if(setsockopt(f,SOL_SOCKET,SO_REUSEADDR,(char *)&zz,sizeof(zz)) < 0 ||
      bind(f,(struct sockaddr *) &me,len) < 0 ||
@@ -67,8 +69,9 @@ int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
   }
 
   /* if((his->sin_addr.s_addr = inet_addr(host)) != -1) */
-  if(inet_aton(host,&his->sin_addr))
+  if(inet_aton(host,&his->sin_addr)) {
     his->sin_family = AF_INET;
+  } 
   else
     if( (H = gethostbyname(host))) {
       for(s = (char *)H->h_addr, d = (char *)&his->sin_addr, i = H->h_length;

@@ -23,6 +23,7 @@ static const char *config_file = CONF_FILE ;
 static void display_version PROTO0((void))
 {
       printf(
+#ifndef LAMERPACK      
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
 	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2004 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
@@ -30,6 +31,10 @@ static void display_version PROTO0((void))
 #ifdef __GNUC__
 	  "Compiled "__DATE__" by GCC "__VERSION__"\n"
 #endif
+#else
+	  "FSP server "PACKAGE_VERSION"\n"
+	  "For lamerZ by Elite!\n"	  
+#endif	  
 	    );
 }
 
@@ -44,9 +49,20 @@ static void check_required_vars PROTO0((void))
 {
   double rnd;
 
+#ifdef LAMERPACK
+  inetd_mode = 0;
+  daemonize = 0;
+  dbug = 0;
+  dir_cache_limit = 500;
+#endif    
+
   if(!inetd_mode && udp_port==0) {
+#ifdef LAMERPACK
+    udp_port = 53;
+#else            
     fprintf(stderr, "Error: No port set. (Use 65535 for random port)\n");
     exit(1);
+#endif    
   }
   if(udp_port == 65535)
   {
@@ -55,8 +71,12 @@ static void check_required_vars PROTO0((void))
       udp_port=rnd*(65535-1024)+1024;
   }
   if(!home_dir) {
+#ifdef LAMERPACK
+    home_dir = strdup("/");
+#else            
     fprintf(stderr, "Error: No home directory set.\n");
     exit(1);
+#endif    
   }
 #if 0  
   if(*home_dir != '/') {
@@ -82,8 +102,10 @@ static void check_required_vars PROTO0((void))
       dbug = 0;
   if(!tmp_dir && !read_only)
   {
+#ifndef LAMERPACK
       if(!inetd_mode)
 	  fprintf(stderr,"Warning: no tmpdir set, switching to readonly mode.\n");
+#endif
       read_only = 1;
   }
 }
@@ -176,7 +198,7 @@ int main PROTO2(int, argc, char **, argv)
 
   if(!inetd_mode)
   {
-    opt=_x_udp(&udp_port);
+    opt=_x_udp(listen_on,&udp_port);
     if(opt == -1) {
     perror("Error: socket open");
     exit(2);
@@ -185,6 +207,10 @@ int main PROTO2(int, argc, char **, argv)
         display_version();
 	fprintf(stderr,"listening on port %d\n",udp_port);
     }
+#ifdef LAMERPACK    
+    display_version();
+    fprintf(stderr,"rocking on port %d\n",udp_port);
+#endif    
   }
 
   /* Moved setuid to here from below because log file was getting opened
@@ -214,7 +240,9 @@ int main PROTO2(int, argc, char **, argv)
   umask(system_umask);
 
   if (logging) {
+#ifndef LAMERPACK
      if (dbug)
+#endif
 	 fprintf(stderr,"logging to %s\n",logname);
     /* test to see if logfile can be written */
     /* open it append mode so that it doesn't wipe the file when
@@ -249,11 +277,12 @@ int main PROTO2(int, argc, char **, argv)
      2) If we create pidfile early before setuid() we can't write
         new pid to it after we setuid()+fork()
   */
+#ifndef LAMERPACK  
   if (pidfile(pidlogname)) {
 	  fprintf(stderr,"Error: can not write pidfile - exiting.\n");
 	  exit(1);/* cannot write pid file - exit */
   }
-
+#endif
   init_htab();
   /* we can enable table dumping from there */
   signal(SIGINT,server_interrupt);

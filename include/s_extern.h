@@ -14,6 +14,7 @@ extern unsigned short udp_port,packetsize;
 extern time_t retry_timeout,session_timeout,stat_cache_timeout;
 extern char *logname,*tlogname,*readme_file,*dumpname;
 extern char *home_dir,*pidlogname;
+extern char *listen_on;
 extern unsigned int dir_cache_limit, stat_cache_limit,fp_cache_limit;
 extern char *tmp_dir;
 extern mode_t upload_umask, system_umask;

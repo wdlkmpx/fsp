@@ -17,7 +17,9 @@ SECURITY BUGS:
 symlink to FILE can escape from FSP root directory. OLD known problem.
 
 PROTOCOL-RELATED BUGS:
-none known
+it is not clear how to generate directory items with type skip. append
+  \0 name to them or not? All known clients stops reading the directory
+  when sees skip item in block. 
 
 PORTING
 Sven's Slowaris 8 compile problem
@@ -27,7 +29,6 @@ NEEDS IMPROVMENT:
 
 Client LIBRARY
 :high:
-local bind address FSP_LOCALIP
 we should retune retry algoritm for better support lines with higher
   packed loss.
 add more detailed stats from retry alg.  
@@ -58,7 +59,6 @@ FUTURE FEATURES FOR SERVER:
 can be run multiple times on the same port, how to check? 
   Currently looks fine on bsd.
 write RENAME FSP command
-bind-ip-address for server (and client via FSP_LOCAL_IP)
 report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients (burst command in fspclient)

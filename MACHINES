@@ -15,4 +15,4 @@ FSP Version	CPU         OS        	Compiler         C library
 2.8.1 Beta 14   i386        RedHat 7.3
 2.8.1 Beta 14   i386        Conectiva Linux 9
 2.8.1 Beta 19   i386        FreeBSD 5.2 gcc-3.3
-2.8.1 Beta 19   i386        FreeBSD 5.3 gcc-3.4
+2.8.1 Beta 20   i386        FreeBSD 5.3 gcc-3.4

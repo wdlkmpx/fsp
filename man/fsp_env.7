@@ -1,4 +1,4 @@
-.TH "FSP ENVIRONMENT" 7 "Jul 2003" FSP "FSP Environment Variables"
+.TH "FSP ENVIRONMENT" 7 "Oct 2004" FSP "FSP Environment Variables"
 .SH NAME
 Environment variables used by FSP Clients programs
 .SH SYNOPSIS
@@ -8,10 +8,16 @@ setenv VARIABLE value | export VARIABLE=value
 The following variables are used for access FSP servers:
 .TP
 .B FSP_HOST
-The name or internet number of the machine with the FSP server.
+The name or internet number of the machine with the FSP server. Required.
 .TP
 .B FSP_PORT
-The port number of the UDP socket used by the FSP server.
+The port number of the UDP socket used by the FSP server. Required.
+.TP
+.B FSP_LOCALIP
+Local Address of UDP socket used by FSP client utilities. This
+IP address must be one of your local IP addresses. If not used,
+TCP protocol stack sets the default. This variable is mainly
+used for multi-homed hosts.
 .TP
 .B FSP_LOCALPORT
 The port number of the UDP socket used by FSP client utilities.
@@ -32,7 +38,7 @@ packets from server.
 .TP
 .B FSP_DIR
 The current working directory of the client in the FSP server.
-The root of the database is /.
+The server's root is /.
 .TP
 .B FSP_TRACE
 If this variable is set to any value, program

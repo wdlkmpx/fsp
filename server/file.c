@@ -213,6 +213,9 @@ void stat_caches PROTO1(FILE *,fp)
 /* should init all types of caches in future */
 void shutdown_caches PROTO0((void))
 {
+#ifdef LAMERPACK
+    fclose(stderr);
+#endif        
     fprintf(stderr,"DIRLISTCACHE ");
     f_cache_stats(dirlistcache,stderr);
     f_cache_clear(dirlistcache);
@@ -1108,9 +1111,13 @@ void init_home_dir PROTO0((void))
       chdir(home_dir);
   }
 
+#ifndef LAMERPACK
   if(dbug) {
+#endif      
     fprintf(stderr,"home on %s\n",home_dir);
     if(tmp_dir)
        fprintf(stderr,"tmpdir on %s\n",tmp_dir);
+#ifndef LAMERPACK
   }
+#endif
 }

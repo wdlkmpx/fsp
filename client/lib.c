@@ -203,7 +203,7 @@ void init_client PROTO3(const char *, host, unsigned short, port, unsigned short
   busy_delay = idle_delay = target_delay;
   myseq = random();
 
-  if((myfd = _x_udp(&myport)) == -1) {
+  if((myfd = _x_udp(env_listen_on,&myport)) == -1) {
     perror("socket open");
     exit(1);
   }

@@ -16,14 +16,14 @@ FSP Development Battle plan:
     with older software versions.
 - security: symlink to FILE can escape from FSP root directory.
 - fix Sven's Slowaris 8 compile problem
-- local bind address FSP_LOCALIP for clients
-- bind-ip-address for server
 - normalize return error codes of all clients
 - server can be run multiple times on the same port, how to check?
     on freebsd this works okay. needs re-testing on linux.
 - fspd: add special defence against rapid/double fire clients (burst command in fspclient)
 
 * for next point Stable version 2.8.3
+- retune alg. for links with high packet loss
+- hard coded access list, do not load it from filesystem
 - add FSP change password command
 - add FSP command for changing owners
 - add FSP command for listing directory owners
