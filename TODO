@@ -1,11 +1,6 @@
 FSP SUITE TO DO LIST BY RADIM KOLAR 
 /* maintained by hsn -at- netmag * cz */
 
-LARGEFILES64 how to turn them on:
-Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
-glibc 2.3: #define _LARGEFILE64_SOURCE off64_t
-native: _FILE_OFFSETS_BITS = 32 / 64 then use off_t
-
 Radim Kolar's personal wishlist from 1997
 show loosers online (finfo command) and server statz
 rename command
@@ -95,3 +90,9 @@ FSP plugin do Netscape/MSIE
 Transfer HTTP over fsp transport
 FSP support to lftp,wget,curl
 AVFS plugin http://sourceforge.net/projects/avf
+
+LARGEFILES64 how to turn them on:
+
+Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
+glibc 2.3: #define _LARGEFILE64_SOURCE off64_t
+native: _FILE_OFFSETS_BITS = 32 / 64 then use off_t
