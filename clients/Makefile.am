@@ -1,0 +1,86 @@
+## Process this file with automake to produce Makefile.in
+
+bin_PROGRAMS=fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
+             flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
+	     fstatcmd
+
+LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp
+fspmerge_SOURCES=merge.c printpro.c fspprof.l
+fcdcmd_SOURCES=fcdcmd.c printpro.c
+fprocmd_SOURCES=printpro.c fprocmd.c
+noinst_HEADERS=printpro.h fhost.h
+fhostcmd_SOURCES=fhostcmd.c fspprof.l
+fhostcmd_LDADD=$(LDADD)
+
+fspmerge_LDADD=fcatcmd_m.o fcdcmd_m.o fducmd_m.o ffindcmd_m.o fgetcmd_m.o \
+    fgrabcmd_m.o fhostcmd_m.o flscmd_m.o fmkdir_m.o fprocmd_m.o \
+    fput_m.o frmcmd_m.o frmdircmd_m.o fver_m.o \
+    fstatcmd_m.o $(LDADD)
+
+
+fgetcmd_CFLAGS:=-DCOMMAND_GET
+
+AM_CFLAGS:=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
+
+fcatcmd_m.o:
+	@echo '#include "fcatcmd.c"' > fcatcmd_m.c
+	$(COMPILE) -Dmain=fcatcmd_main -c fcatcmd_m.c
+	@${RM} -f fcatcmd_m.c
+fcdcmd_m.o: 
+	@echo '#include "fcdcmd.c"' > fcdcmd_m.c
+	${COMPILE} -Dmain=fcdcmd_main -c fcdcmd_m.c
+	@${RM} -f fcdcmd_m.c
+fducmd_m.o:
+	@echo '#include "fducmd.c"' > fducmd_m.c
+	${COMPILE} -Dmain=fducmd_main -c fducmd_m.c
+	@${RM} -f fducmd_m.c
+ffindcmd_m.o:
+	@echo '#include "ffindcmd.c"' > ffindcmd_m.c
+	${COMPILE} -Dmain=ffindcmd_main -c ffindcmd_m.c
+	@${RM} -f ffindcmd_m.c
+fgetcmd_m.o:
+	@echo '#define COMMAND_GET' > fgetcmd_m.c
+	@echo '#include "fgetcmd.c"' >> fgetcmd_m.c
+	${COMPILE} -Dmain=fgetcmd_main -c fgetcmd_m.c
+	@${RM} -f fgetcmd_m.c
+fgrabcmd_m.o:
+	@echo '#include "fgrabcmd.c"' > fgrabcmd_m.c
+	${COMPILE} -Dmain=fgrabcmd_main -c fgrabcmd_m.c
+	@${RM} -f fgrabcmd_m.c
+fhostcmd_m.o:
+	@echo '#include "fhostcmd.c"' > fhostcmd_m.c
+	${COMPILE} -Dmain=fhostcmd_main -c fhostcmd_m.c
+	@${RM} -f fhostcmd_m.c
+flscmd_m.o:
+	@echo '#include "flscmd.c"' > flscmd_m.c
+	${COMPILE} -Dmain=flscmd_main -c flscmd_m.c
+	@${RM} -f flscmd_m.c
+fmkdir_m.o:
+	@echo '#include "fmkdir.c"' > fmkdir_m.c
+	${COMPILE} -Dmain=fmkdir_main -c fmkdir_m.c
+	@${RM} -f fmkdir_m.c
+fprocmd_m.o:
+	@echo '#include "fprocmd.c"' > fprocmd_m.c
+	$(COMPILE) -Dmain=fprocmd_main -c fprocmd_m.c
+	@${RM} -f fprocmd_m.c
+fput_m.o:
+	@echo '#include "fput.c"' > fput_m.c
+	${COMPILE} -Dmain=fput_main -c fput_m.c
+	@${RM} -f fput_m.c
+frmcmd_m.o:
+	@echo '#include "frmcmd.c"' > frmcmd_m.c
+	${COMPILE} -Dmain=frmcmd_main -c frmcmd_m.c
+	@${RM} -f frmcmd_m.c
+frmdircmd_m.o:
+	@echo '#include "frmdircmd.c"' > frmdircmd_m.c
+	${COMPILE} -Dmain=frmdircmd_main -c frmdircmd_m.c
+	@${RM} -f frmdircmd_m.c
+fver_m.o:
+	@echo '#include "fver.c"' > fver_m.c
+	${COMPILE} -Dmain=fver_main -c fver_m.c
+	@${RM} -f fver_m.c
+fstatcmd_m.o:
+	@echo '#include "fstatcmd.c"' > fstatcmd_m.c
+	${COMPILE} -Dmain=fstatcmd_main -c fstatcmd_m.c
+	@${RM} -f fstatcmd_m.c
+
