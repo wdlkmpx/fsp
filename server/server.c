@@ -582,6 +582,7 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
       if (!pos) {
 	FSP_STAT(pp.fullp,&sd); /* log filesizes */
         ACTIONINFO(L_GETFILE,(" (%d)",sd.st_size));
+        xferlog('o',pp.fullp,sd.st_size,inetstr);
       }
       send_file(from,ub,fp,l2,s2);
       if (!pos) ACTIONOK(L_GETFILE);

@@ -1,5 +1,12 @@
+Version 2.8.1b17 -- 17 Nov 2003 
 	Allow filenames with spaces inside
 	check for fork() and setsid() in configure.ac
+	wu-ftpd compatible `xferlog` -- usernames are not supported, all
+	  transfers are logged as anonymous
+	flex output is included in the distribution archive, you do not
+	need flex to build fsp
+	MACHINES file updated
+
 Version 2.8.1b16 -- 8 Nov 2003 
 	This version fixes 2 major bugs in beta 15 release.
 	fspd: update mtime for directory listing after .FSP_CONTENT write

@@ -51,6 +51,7 @@ time_t retry_timeout = 3;
 time_t session_timeout = 60;
 time_t stat_cache_timeout = 25;
 char *logname = NULL;
+char *tlogname = NULL;
 char *dumpname = NULL;
 char *home_dir = NULL;
 char *tmp_dir = NULL;
@@ -139,6 +140,9 @@ static void read_configuration PROTO1(const char *, name)
     } else if(strcasecmp(p, "logfile") == 0) {
       if(logname) free(logname);
       logname = strdup(q);
+    } else if(strcasecmp(p, "xferlog") == 0) {
+      if(tlogname) free(tlogname);
+      tlogname = strdup(q);
     } else if(strcasecmp(p, "dumpfile") == 0) {
       if(dumpname) free(dumpname);
       dumpname = strdup(q);
@@ -274,6 +278,7 @@ void destroy_configuration PROTO0((void))
     if(readme_file) free(readme_file);
     if(home_dir) free(home_dir);
     if(logname) free(logname);
+    if(tlogname) free(tlogname);
     if(tmp_dir) free(tmp_dir);
     if(dumpname) free(dumpname);
     if(iptab) free_ip_table(iptab);

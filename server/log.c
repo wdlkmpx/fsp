@@ -15,6 +15,7 @@
 #include <stdarg.h>
 
 int logfd = -1;  /* logfile file descriptor */
+int tlogfd = -1; /* transfer log file descriptor */
 
 /****************************************************************************
  * A slightly better logging function.. It now takes a format string and    *
@@ -62,4 +63,25 @@ void fsplogf PROTO0((void))
 	   }
    write(logfd, logbuf, logpos);
    logpos = 0;
+}
+
+/* wu ftpd xferlog subsystem */
+static char tlogbuf[LOGBUFFER];	/* buffer for log message */
+
+void xferlog(char direction, const char *filename,unsigned long filesize,const char *hostname)
+{
+    size_t pos=0,timelen;
+    char *timestr;
+    
+    if(!tlogname) return; /* xfer logging is not enabled */
+
+    /* current-time */
+    timestr = (char *)ctime(&cur_time);
+    timelen = strlen(timestr) - 1; /* strip the CR */
+    timestr[timelen] = '\0';
+    strcpy(tlogbuf, timestr);
+    pos = timelen;
+    /* transfer-time, remote-host, file-size, file-name, ... */
+    pos+=sprintf(tlogbuf+pos," 1 %s %lu %s b * %c a fsp fsp 0 * c\n",hostname,filesize,filename,direction);
+   write(tlogfd, tlogbuf, pos);
 }

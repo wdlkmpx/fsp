@@ -12,7 +12,7 @@ extern gid_t run_gid;
 extern unsigned int maxthcallowed;
 extern unsigned short udp_port,packetsize;
 extern time_t retry_timeout,session_timeout,stat_cache_timeout;
-extern char *logname,*readme_file,*dumpname;
+extern char *logname,*tlogname,*readme_file,*dumpname;
 extern char *home_dir;
 extern unsigned int dir_cache_limit, stat_cache_limit,fp_cache_limit;
 extern char *tmp_dir;
@@ -78,6 +78,7 @@ const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,right
 
 /* log.c */
 extern int logfd;
+extern int tlogfd;
 void fsplogf PROTO0((void));
 void fsplogs PROTO0((void));
 #ifdef __STDC__
@@ -85,5 +86,6 @@ void fsploga(const char *fmt, ...);
 #else
 void fsploga(va_alist);
 #endif
+void xferlog(char direction, const char *filename,unsigned long filesize,const char *hostname);
 
 #endif /* _FSP_S_EXTERN_H_ */

@@ -59,12 +59,11 @@ bind-ip-address for server (and client via FSP_LOCAL_IP)
 report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients
-write FSP_CHANGE_PASSWORD command
-new transfer log wuftpd file format
 new common log format
 
 :midle:may not be in 2.8.2
 Native Supports for symbolic links (needed for mirroring Debian)
+write FSP_CHANGE_PASSWORD command
 
 :low:this will sure go after 2.8.2:
 FSP_GET/SET OWNERS like file transfer

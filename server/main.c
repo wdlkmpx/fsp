@@ -212,6 +212,21 @@ int main PROTO2(int, argc, char **, argv)
     }
   }
 
+  if(tlogname)
+  {
+     if (dbug) 
+	 fprintf(stderr,"logging transfers to %s\n",tlogname);
+
+    /* test to see if logfile can be written */
+    if((tlogfd=open(tlogname, O_WRONLY | O_APPEND | O_CREAT, 0640)) < 0) 
+    {
+	if(! inetd_mode )
+	    fprintf(stderr, "Error opening transferfile: %s, transfer logging disabled.\n",tlogname);
+        free(tlogname);
+        tlogname=NULL; /* no logging */
+    }
+  }
+
   init_htab();
   /* we can enable table dumping from there */
   signal(SIGINT,server_interrupt);
