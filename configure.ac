@@ -33,7 +33,7 @@ case $host_os in
                   * ) AC_MSG_RESULT(no);;
 esac		  
 AC_MSG_CHECKING([if we are building lamer pack])
-AC_ARG_ENABLE(lamerpack,[Build for lamers],AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disbled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
+AC_ARG_ENABLE(lamerpack,[Build for lamers],AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disabled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_MSG_CHECKING([if enable extra debug code])
 AC_ARG_ENABLE(debug,[Enable client library debuging],AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_PROG_RANLIB

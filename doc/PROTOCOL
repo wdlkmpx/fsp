@@ -1,8 +1,8 @@
 			FILE SERVICE PROTOCOL VERSION 2
 				     FSP v2
 
-			     Document version 0.13
-			    Last updated  1 Nov 2004
+			     Document version 0.14
+			    Last updated  29 Nov 2004
 
 				 Also known as
 			    File Slurping Protocol,
@@ -325,6 +325,11 @@ RDIRENT.HEADER types:
 		file position:  not used
 		data:           not used
 		xtra data:	not used
+
+		To cancel upload in progress without installing any
+		file send CC_INSTALL command with zero length (only 00
+		terminator) filename. This removes temporary data
+		created by upload.
 
  CC_DEL_FILE 0x45		- delete a file
 

@@ -891,14 +891,22 @@ const char *server_install (PPATH * pp, unsigned long inet_num,
 
   if (dbug)
     fprintf(stderr,"server_install: tname: %s, pp->fullp: %s\n",tname, pp->fullp);
-	
+  /* zero length filename */
+  if( pp->f_len + pp->d_len == 0 )
+   {
+       if (dbug)
+	   fprintf(stderr,"server_install: zero length name. aborting upload.\n");
+       unlink(tname);
+       return (NULLP);
+   }
+
   if(fexist(pp->fullp) &&
 	( (di->protection & DIR_DEL) || acc[0]=='O' )
     )
   {
       unlink(tname);
       if(dbug)
-	  fprintf(stderr,"File %s already exists, but there is no user is not directory owner and public can't delete files.\n",pp->fullp);
+	  fprintf(stderr,"File %s already exists, but user is not directory owner and public can't delete files.\n",pp->fullp);
       return("no permission for replacing that file. Not an owner.");
   }
 
