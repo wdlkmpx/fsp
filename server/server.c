@@ -311,7 +311,7 @@ int server_reply (struct sockaddr_in *from, UBUF * ub,
   unsigned int thcsum;
 
   if(dbug)
-      fprintf(stderr,"snd (%s,key=0x%0X,seq=0x%0X,len=%d,len2=%d,pos=%u) ---> %d.%d.%d.%d\n",
+      fprintf(stderr,"snd (%s,key=0x%04X,seq=0x%04X,len=%d,len2=%d,pos=%u) ---> %d.%d.%d.%d\n",
 		   print_command(ub->cmd), BB_READ2(ub->bb_key), BB_READ2(ub->bb_seq),len1, len2, BB_READ4(ub->bb_pos),
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[0],
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[1],
@@ -491,7 +491,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
     }
   }
 
-  if(dbug) fprintf(stderr,"rcv (%s,key=0x%0X,seq=0x%0X,len=%d,len2=%d,pos=%lu) <--- %s\n", print_command(ub->cmd), BB_READ2(ub->bb_key),BB_READ2(ub->bb_seq),l1, l2,
+  if(dbug) fprintf(stderr,"rcv (%s,key=0x%04X,seq=0x%04X,len=%d,len2=%d,pos=%lu) <--- %s\n", print_command(ub->cmd), BB_READ2(ub->bb_key),BB_READ2(ub->bb_seq),l1, l2,
 		   pos, inetstr);
 
   if(!old) {

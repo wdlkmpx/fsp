@@ -12,14 +12,13 @@ Write a simple FSP protocol testing tool
 Write a test suite using testing tool
 test for remote buffer overflows
 Test if >2GB files but <4GB works correctly with and without --disable-largefile
-Test new command rename /when implemented/
 
 SECURITY BUGS:
 symlink to FILE can escape from FSP root directory. OLD known problem.
 symlink support must be reworked before final release.
 
 PROTOCOL-RELATED BUGS:
-fprocmd/fcdcmd do not support embedded servers correctly
+none
 
 PORTING
 Sven's Slowaris 8 compile problem
@@ -108,12 +107,13 @@ libraries and support for FSP protocol
 
 DONE: FSP library for Java
 DONE: FSP over HTTP
-FSP plugin do Netscape/MSIE. Not possible to write protocol plugins? 
+FSP plugin for Netscape/MSIE. 
+  Not possible to write protocol plugins with Netscape 3 SDK 
   we have fsproxy now.
 WIP:  new small,light fsplib for C.
 FSP backend for APT
 Transfer HTTP over fsp transport
-FSP support to lftp,wget,curl
+FSP support to lftp,wget,curl,gftp
 AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:

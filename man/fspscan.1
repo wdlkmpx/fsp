@@ -1,7 +1,7 @@
-.TH FSPSCAN 1 "28 September 2003" FSP
+.TH FSPSCAN 1 "Oct 2004" FSP
 
 .SH NAME
-fspscan is a small tool to scan hosts for a running fsp server
+fspscan is a small tool to scan host for a running fsp server
 
 .SH SYNOPSIS
 .B fspscan
@@ -38,8 +38,15 @@ the server version and the port.
 -- help, print out a short help and the default values
 
 .SH BUGS
-fspscan is not fastest scanning tool on the earth.
-
+fspscan is not fastest scanning tool on the earth. This program is
+known in the wild as FSP exploit. Detection can be avoided by
+disabling CC_VERSION command on server side.
+.SH HISTORY
+This program was written in late 1992 by Cuda and quickly becomes must have
+tool for every FSP fan. In September 2003
+it was adapted to modern C compilers and added to FSP suite by Radim
+Kolar. Because most value of this program is purely historic, fixes
+to this program are kept at minimal amount.
 .SH "SEE ALSO"
 .PD
 fcatcmd(1), fcdcmd(1), fgetcmd(1), fgrabcmd(1), flscmd(1), fmkdir(1),

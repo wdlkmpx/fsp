@@ -6,3 +6,4 @@ noinst_DATA = fsp-faq.html
 SUFFIXES = .html .sgml
 .sgml.html:
 	sgmlfmt -d docbook -f html $<
+#	jade -t sgml -d /usr/local/share/sgml/docbook/dsssl/modular/html/docbook.dsl  $<

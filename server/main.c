@@ -1,5 +1,5 @@
     /*********************************************************************\
-    *  Copyright (c) 2003 by Radim Kolar (hsn@cybermail.net)              *
+    *  Copyright (c) 2003,2004  by Radim Kolar (hsn netmag.cz    )        *
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
@@ -42,7 +42,11 @@ static void display_version (void)
 
 static void arg_err (void)
 {
+#ifndef LAMERPACK
   fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec]\n", stderr);
+#else
+  fputs("Usage: fspd [-d directory] [-p port] [-T temporary directory] [-l logfile] [-b bytes/sec]\n", stderr);
+#endif
 }
 
 static void check_required_vars (void)
@@ -133,8 +137,13 @@ int main (int argc, char ** argv)
 
   if(strlen(argv[0])>=7)
 	  inetd_mode = !strcasecmp(&argv[0][strlen(argv[0])-7],"in.fspd");
-
-  while( (opt=getopt(argc,argv,"h?Xd:f:vVip:t:FT:l:P:b:"))!=EOF)
+  while( (opt=getopt(argc,argv,
+#ifndef LAMERPACK
+      "h?Xd:f:vVip:t:FT:l:P:b:"
+#else
+      "d:p:T:l:b:h?"
+#endif
+                                ))!=EOF)
   {
 	  switch(opt)
 	  {

@@ -96,6 +96,7 @@ typedef struct UBUF {   unsigned char       cmd; /* message code.             */
 /* definition of cmds */
 
 #define CC_VERSION	0x10	/* return server's version string.	*/
+#define CC_INFO		0x11	/* return server's extended info block  */
 #define CC_ERR          0x40    /* error response from server.          */
 #define CC_GET_DIR      0x41    /* get a directory listing.             */
 #define CC_GET_FILE     0x42    /* get a file.                          */
