@@ -1,7 +1,8 @@
 Version - not yet released
-	Added pidfile.[c|h] from sysklogd written by Martin 'Joey' Schulze
+	Added pidfile.[c|h] from FreeBSD and modified it to fit in (hoaxter)
 	Added pidfile support, config option is 'pidlogname', the option
-	is required to start fspd, hope that's ok for most people
+	is required to start fspd, hope that's ok for most people (hoaxter)
+	Replaced . file information from INSTALL with a hint to man 1 fspd (hoaxter)
 	
 Version 2.8.1b19 - 11 Jan 2004
 	sven has added fspget URL command to setup.sh.

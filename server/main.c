@@ -27,7 +27,6 @@ static void display_version PROTO0((void))
 	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2003 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
 	  "Portions copyright by BSD, Wen-King Su, Philip G. Richards, Michael Meskes.\n"
-	  "pidfile.[c|h] is GPL code, copyright Martin Schulze.\n"
 #ifdef __GNUC__
 	  "Compiled "__DATE__" by GCC "__VERSION__"\n"
 #endif
@@ -270,20 +269,12 @@ int main PROTO2(int, argc, char **, argv)
     /* Fork and die to drop daemon into background   */
     /* Added Alban E J Fellows 12 Jan 93             */
     /* Moved by JT Traub to only do this if not running under inetd. */
-
-    /* check the pidlog before we fork */
-    if (!check_pid(pidlogname)) {
-      /* pidfile empty, not existing or prozess already dead */
-    } else {
-      exit(1); /* fspd already running */
-    }
-
     if(daemonize) {
 #if HAVE_FORK	
       pid_t forkpid;
       forkpid = fork();
       if (forkpid == 0) { /* child prozess */
-	if (!write_pid(pidlogname))
+	if (pidfile(pidlogname))
 	  exit(1);/* cannot write pid file - exit */
       } else if (forkpid > 0) { /* father prozess */
 	_exit(0);
@@ -301,7 +292,7 @@ int main PROTO2(int, argc, char **, argv)
     if(inetd_mode||dbug||shutdowning) break;
   }
 
-  (void) remove_pid(pidlogname);
+  pidfile_cleanup(pidlogname);
   shutdown_caches();
   destroy_configuration();
   exit(0);
