@@ -52,3 +52,22 @@ alias frmdir='set -f;_frmdir'
 ftouch() { touch "$1"; fput "$1"; rm "$1" ;}
 _fcd()    { export FSP_DIR=$(fcdcmd "$@"); set +f;}
 alias fcd='set -f;_fcd'
+
+####something like wget emulation####
+_fspget() {
+    FSP_HOST=$(echo $1|awk -F"/" '{print $3}'|awk -F":" '{print $1}')
+    FSP_DIR=$(dirname $(echo $1|sed -e 's/fsp:\/\/.*:[0-9]*\//\//g'))
+    
+    fsp_port=$(echo $1|awk -F"/" '{print $3}'|awk -F":" '{print $2}')
+    if [ -n $fsp_port ]
+	then
+	FSP_PORT=$fsp_port
+    fi
+    filename=$(basename $(echo $1|sed -e 's/fsp:\/\/.*:[0-9]*\//\//g'))  
+
+    echo "Retrieving $filename from $FSP_HOST with FSPd running on port $FSP_PORT"
+    fver
+    fget $filename
+    echo "DONE"
+}
+alias fspget='set -f;_fspget'

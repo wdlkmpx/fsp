@@ -1,6 +1,6 @@
 Version 2.8.1b18 - 25 Nov 24 2003
-        This is MINIMUM REQUIRED VERSION for applicatins which are using
-	 javafsp library, only download machine atm. javafsp library will
+        This is MINIMUM REQUIRED VERSION for applications which are using
+	 javafsp library, only download machine atm. Javafsp library will
 	 be released shortly as separate package.
         PROTOCOL updated. Made rules about breaking directory header on
 	 packet boundary more clear. Previous text was from fspd code comment
