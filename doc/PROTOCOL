@@ -124,6 +124,7 @@ Checksums in server->client direction are computed as follows:
 
  /* assume that we have already zeroed checksum in packet */
  unsigned int sum,checksum;
+ unsigned char *t;
  for(t = packet_start, sum = 0; t < packet_end; sum += *t++);
  checksum= sum + (sum >> 8);
 
