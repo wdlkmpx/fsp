@@ -7,7 +7,7 @@
  */
 
 #include "tweak.h"
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include "fifocache.h"

@@ -1,5 +1,5 @@
 FSP SUITE TO DO LIST BY RADIM KOLAR 
-/* maintained by hsn -at- cybermail * net */
+/* maintained by hsn -at- netmag * cz */
 
 LARGEFILES64 how to turn them on:
 Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
@@ -94,3 +94,4 @@ FSP backend for APT
 FSP plugin do Netscape/MSIE
 Transfer HTTP over fsp transport
 FSP support to lftp,wget,curl
+AVFS plugin http://sourceforge.net/projects/avf
