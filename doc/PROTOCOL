@@ -1,23 +1,24 @@
-			FILE SERVICE PROTOCOL VERSION 2
-				     FSP v2
+		   FILE SERVICE PROTOCOL VERSION 2
+		     OFFICIAL PROTOCOL DEFINITION
+				FSP v2
 
-			     Document version 0.16
-			    Last updated  15 Dec 2004
+			Document version 0.16
+		      Last updated  15 Dec 2004
 
-				 Also known as
-			    File Slurping Protocol,
-			    Flaky Stream Protocol,
-			     FTP's Sexier Partner,
-			     File Sharing Protocol or
-			     Fucking Slow Protocol.
+			    Also known as
+		       File Slurping Protocol,
+			Flaky Stream Protocol,
+			FTP's Sexier Partner,
+		       File Sharing Protocol or
+			Fucking Slow Protocol.
 
-		    `FSP is what anonymous FTP *should* be'
+	       `FSP is what anonymous FTP *should* be'
 
 This document was created by Radim Kolar, because there is no RFC for
 FSP. It was planed, but never comes out. See FSP Project Home page
 http://fsp.sourceforge.net/ for up-to-date version of this document.
-Also contact Radim Kolar with questions and if you need to help with
-an implementation of this protocol in productivity environment.
+Also contact Radim Kolar with questions and if you need help with an
+implementation of this protocol in productivity environment.
 
 This document is not copyrighted and is placed into public domain.
 
@@ -43,11 +44,11 @@ Transport
   FSP uses UDP datagrams as standard transport medium for operation in
   Internet Networks.
   
-  FSP protocol uses checksum and payload size, so it do not require
-  any underlying transport protocol and can be used as very simple
-  raw-protocol (for example for sending data over serial line). This
-  makes it very popular in embedded devices area, because it is
-  extremely easy to implement.
+  FSP datagram header has checksum and payload size recorded.  Because
+  of this FSP do not require any underlying transport protocol on
+  layer 2 and can be used as very simple raw-protocol (for example for
+  sending data over serial line). This makes it very popular in
+  embedded devices area, because it is extremely easy to implement.
 
   FSP packets can have an optional extra data area. For supporting
   packets with this, underlying transport must make size of received
@@ -65,10 +66,11 @@ Transport
   checksums of received packets of that kind and process these extra
   bytes.
 
-  Minimum UDP packet size (not including size of UDP, IP and link
+  Minimum FSP packet size (not including size of UDP, IP and link
   layer headers) is 12 bytes (FSP v2 header only), maximum standard
-  UDP packet size is 1024+12 bytes.  Server can accept longer packets,
-  but must send longer packets only when requested by client. All
+  FSP packet size is 12 bytes of FSP v2 header and 1024 bytes of
+  payload.  Server can optionaly accept longer packets, but must not
+  send longer packets to client unless specially requested. All
   servers and clients must support receiving 1024+12 bytes long
   packets.
 
@@ -116,7 +118,7 @@ checksum use zero in place of MESSAGE_CHECKSUM header field.
 
 Method of computing checksums is different in each direction. For
 packets traveling from server to client initial checksum value is
-zero, otherwise it is size of (HEADER + DATA + XTRA DATA).
+zero, otherwise initial value is packet size (HEADER + DATA + XTRA DATA).
 
 Checksums in server->client direction are computed as follows:
 
@@ -130,7 +132,7 @@ protocols, which are using at least CRC16 checksum types. FSP server
 fed by random data can resist for hours without falsely accepting
 random data as valid FSP packet. This demonstration shows, that these
 checksums when very easy to compute, are sufficient for guarding
-against line noise. 
+against random line noise.
 
 Note:
 IP/UDP packet has its own crc16 checksum, but FSP protocol checksum is
@@ -148,12 +150,13 @@ Server will accept resent message from client with old KEY after 3
 seconds.  Client MUST wait at least 1 second before resending a
 message.  It is recommended to use initial delay of 1.34 second and
 after each unsuccessful resend multiply delay time by 1.5. Maximum
-delay time is 300 seconds.
+delay time is 300 seconds. Recommended maximum delay between resends
+is 60 seconds.
 
 2. Session
 
 Server will accept message with bad key after 60 seconds. Clients
-should sent CC_BYE at end of their session, CC_BYE terminates a
+should sent CC_BYE at end of their session because CC_BYE terminates a
 session.  After session is terminated, sever will accept any next key.
 
 SEQUENCE
@@ -165,7 +168,8 @@ packets (increase sequence number on message resend).
 DATA_LENGTH
 Size of DATA field in packet. Packet can also contain XTRA DATA field but
 size of this field is not included in header and must be computed from
-received packet size.
+received packet size or from knowledge of FSP v2 packets formats (some
+packets carries length of extra data in position field).
 
 FILE POSITION
 When transferring files, this field shows current position of requested
@@ -182,6 +186,8 @@ FSP File servers MUST supports following commands:
 - file status CC_STAT
 - information about directory flags CC_GET_PRO
 - terminate session CC_BYE
+If server supports packets with payload size over 1024 bytes, supporting
+CC_VERSION is recommended.
 
 
  CC_VERSION     0x10		- Get server version string and setup
@@ -203,7 +209,7 @@ FSP File servers MUST supports following commands:
 					bit 4 set - thruput control
 					bit 5 set - server accept XTRA
 					            DATA on input
-					
+
 			        if bit 4 is set thruput info follows
 				long - max_thruput allowed (in bytes/sec)
 				word - max. payload size supported by server
@@ -248,15 +254,15 @@ FSP File servers MUST supports following commands:
 		data:           directory listing (format follows)
 		xtra data:	not used
 
-Directory listing is transfered in similar way as file transfer. Directory
-listing is divided into blocks of equal size, only exception is last block
-which can be shorter. Default and maximum size of directory listing block is
-1024 bytes. Size of directory block can be changed by server using extra
-data information sent by client. 
+Directory listing is transfered in similar way as file transfer.
+Directory listing is divided into blocks of equal size, only exception
+is last block which can be shorter. Default size of directory listing
+block is 1024 bytes. Server can use prefered block size sent by client
+and split directory listing into blocks with size prefered by client.
 
 Directory blocks can't be split across message boundary and client
 can't do seeking to any arbitrary offset, which can broke dirblock
-into 2 messages. In short: Every message can contain only one
+into 2 messages. In short: Every message must contain only one
 unsplited directory block.
 
 RDIRENT is the structure of a directory entry contained in a directory listing.
@@ -279,7 +285,7 @@ directory block boundary, then two possible things will happen:
   This will make sure that messages carrying directory information carry only
   complete directory entries and no fragmented entries.
 
-The last entry is type RDTYPE_END.
+The last entry has type RDTYPE_END.
 
         struct RDIRENT {
 	       struct HEADER {
@@ -394,9 +400,8 @@ RDIRENT.HEADER types:
 	        Compatibility
 		
 		Versions older than 2.8.1b6 do not uses bits 6 and 7. This
-		causes that directory can be listable even it do not have
+		causes that directory can be listable even if do not have
 		6th bit set.
-
 
  CC_SET_PRO 0x48		- set directory protection
 

@@ -29,7 +29,8 @@ static void make_key_string(	unsigned long server_addr,
   char *p;
 
   strcpy(key_string,KEY_PREFIX);
-  for(p = key_string; *p; p++);
+  for(p = key_string; *p; p++)
+      ;
   v1 = server_addr;
   v2 = server_port;
 
@@ -289,7 +290,17 @@ void client_destroy_key(void)
 #include <sys/shm.h>
 #include <sys/sem.h>
 
-int key_persists = 0;
+#ifdef _SEM_SEMUN_UNDEFINED
+union semun
+{
+  int val;
+  struct semid_ds *buf;
+  unsigned short int *array;
+  struct seminfo *__buf;
+};
+#endif
+
+int key_persists = 1;
 static unsigned short *share_key;
 static int   lock_shm;
 static int   lock_sem;
@@ -378,12 +389,6 @@ void client_init_key (unsigned long server_addr,
       perror("semop");
       exit(1);
   }
-  /*
-  fd=semctl(lock_sem,0,GETVAL);
-  printf("sem value: %d\n",fd);
-  fd=semctl(lock_sem,0,GETNCNT);
-  printf("sem ncnt: %d\n",fd);
-  */
 }
 
 void client_destroy_key(void)

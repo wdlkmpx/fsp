@@ -1,4 +1,4 @@
-Version 2.8.1b22 - 17 Dec 2004
+Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files
 	fixed sf bug 1060558: fpro 'l' sets 'm' flag instead (dairiki)
 	fixed sf bug 1060558: fpro 'l' flag was not correctly saved
@@ -53,6 +53,7 @@ Version 2.8.1b22 - 17 Dec 2004
 	fspd.conf: logging of stat and rename added to comments.
 	FILES: file somewhat updated
 	sgml fsp faq released as version 0.1, first public version
+	new locking semop code compiles on Linux systems also.
 
 Version 2.8.1b21 - 1 Nov 2004
 	check for errors while copying files in fspd.

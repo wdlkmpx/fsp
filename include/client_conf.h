@@ -36,7 +36,7 @@
 #define KEY_PREFIX "/tmp/.FSPL"
 
 /* find the best locking method, defines one of USE_SHAREMEM_AND_LOCKF,
- * USE_FLOCK,USE_LOCKF,NOLOCKING 1 */
+ * USE_FLOCK,USE_LOCKF,NOLOCKING */
 #if defined(HAVE_SHMEM) && defined(HAVE_SEMOP)
      #define USE_SHAREMEM_AND_SEMOP 1
 #else     
@@ -49,7 +49,7 @@
           #ifdef HAVE_FLOCK
              #define USE_FLOCK 1
           #else
-             #define NOLOCKING
+             #define NOLOCKING 1
           #endif
        #endif
   #endif
