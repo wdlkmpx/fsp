@@ -2,7 +2,7 @@
 .SH NAME
 fspd, in.fspd \- File Service Protocol (FSP) server
 .SH SYNOPSIS
-.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bandwidth]
+.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bandwidth] [-s packetsize]
 .SH DESCRIPTION
 .B fspd
 is the server for an anonymous-ftp style archive called FSP. The main
@@ -77,6 +77,13 @@ Write pid to the given file name.
 Enable bandwidth limiting. Limit output to
 .I bandwidth
 bytes per second.
+
+.PD 0
+.TP 20
+.B -s packetsize
+Sets maximum allowed packet size or prefered packet size. Server must
+support packets up to 1024, but may prefer to send smaller packets.
+It may accept packets over 1024 bytes. Default value is 1024 bytes.
 
 .LP
 .SH FILES

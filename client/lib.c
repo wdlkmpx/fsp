@@ -167,8 +167,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	myseq = (myseq + 0x0004) & 0xfffc;  /* seq for next request */
 	key = BB_READ2(rbuf.bb_key); /* key for next request */
 	
-	if(rbuf.cmd != CC_BYE) 
-	    client_set_key(key);
+	client_set_key(key);
 	
 	if(client_intr_state == 2) {
 	  if(!key_persists) client_done();
@@ -201,6 +200,9 @@ static RETSIGTYPE client_intr (int signum)
 void init_client (const char * host, unsigned short port, unsigned short myport)
 {
   busy_delay = idle_delay = target_delay;
+#ifdef HAVE_SRANDOMDEV
+  srandomdev();
+#endif    
   myseq = random();
 
   if((myfd = _x_udp(env_listen_on,&myport)) == -1) {
@@ -217,10 +219,16 @@ void init_client (const char * host, unsigned short port, unsigned short myport)
   signal(SIGINT,client_intr);
 }
 
-int client_done (void)
+void client_finish(void)
 {
   (void) client_interact(CC_BYE, 0L, 0, (unsigned char *)NULLP, 0,
 			 (unsigned char *)NULLP);
   client_destroy_key();
+}
+
+int client_done (void)
+{
+  if(!key_persists) 
+      client_finish();  
   return(0);
 }

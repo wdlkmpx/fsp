@@ -26,6 +26,7 @@ const char *env_listen_on;
 unsigned int env_timeout;
 unsigned short client_buf_len;
 unsigned short client_net_len;
+int statworks=1;
 
 #define TWOGIGS  0x7fffffffUL
 #define FOURGIGS 0xffffffffUL
@@ -145,16 +146,19 @@ char *util_getwd (char * p)
 static RDIRENT **get_dir_blk (char * path)
 {
   RDIRENT **dp;
-  char *p1, *p2, *fpath, buf[2*UBUF_SPACE];
+  char *p1, *p2, *fpath, buf[NBSIZE];
   unsigned long pos;
   int cnt, k, len, rem, acc, at_eof, rlen;
+  unsigned short dirblocksize;
   UBUF *ub;
 
   fpath = util_abs_path(path);
+  
+  dirblocksize = 0;
 
   for(pos = 0, at_eof = acc = cnt = 0; ; )
   {
-    while((acc < UBUF_SPACE) && !at_eof)
+    while((acc < UBUF_MAXSPACE) && !at_eof)
     {
       ub = client_interact(CC_GET_DIR,pos, strlen(fpath),
 			   (unsigned char *)fpath+1, 2,
@@ -168,13 +172,17 @@ static RDIRENT **get_dir_blk (char * path)
       }
 
       rlen = BB_READ2(ub->bb_len);
-      if(rlen < RDHSIZE) at_eof = 1;
+      if(dirblocksize == 0 )
+	  dirblocksize = rlen;
+      else
+	  if (rlen < dirblocksize) at_eof = 1;	  
+      /* if(rlen < RDHSIZE) at_eof = 1; */
       for(p1 = ub->buf, p2 = buf + acc, k = rlen; k--; ) *p2++ = *p1++;
       acc += rlen;
       pos += rlen;
     }
 
-    if(acc >= UBUF_SPACE) len = UBUF_SPACE;
+    if(acc >= UBUF_MAXSPACE) len = UBUF_MAXSPACE;
     else len = acc;
 
     for(p2 = buf, rem = len, k = 0; ; k++) {
@@ -218,12 +226,12 @@ static RDIRENT **get_dir_blk (char * path)
       }
     }
 
-    if(acc < UBUF_SPACE) {
+    if(acc < UBUF_MAXSPACE) {
       dp[cnt] = 0;
       free(fpath);
       return(dp);
     }
-    for(p1 = buf + UBUF_SPACE, p2 = buf, k = (acc -= UBUF_SPACE); k--;)
+    for(p1 = buf + UBUF_MAXSPACE, p2 = buf, k = (acc -= UBUF_MAXSPACE); k--;)
       *p2++ = *p1++;
   }
   free(fpath);
@@ -243,7 +251,7 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
 
     if(client_trace && (udp_sent_time != sent_time)) {
       sent_time = udp_sent_time;
-      if(client_buf_len == UBUF_SPACE) fprintf(stderr,"\r%luk  ",1+(pos>>10));
+      if(client_buf_len >= UBUF_SPACE) fprintf(stderr,"\r%luk  ",1+(pos>>10));
       else fprintf(stderr,"\r%lu   ", pos);
       fflush(stderr);
     }
@@ -332,7 +340,7 @@ int util_upload (char * path, FILE * fp, time_t stamp)
 {
   unsigned long pos;
   unsigned bytes, first, tmax, sent_time;
-  char *fpath, buf[UBUF_SPACE];
+  char *fpath, buf[UBUF_MAXSPACE];
   UBUF *ub;
   time_t t = time(NULL);
   char *dpath,*p1,*p2;
@@ -396,7 +404,7 @@ int util_upload (char * path, FILE * fp, time_t stamp)
       if(client_trace && (udp_sent_time != sent_time))
       {
 	sent_time = udp_sent_time;
-	if(client_buf_len == UBUF_SPACE)
+	if(client_buf_len >= UBUF_SPACE)
 	  fprintf(stderr,"\r%luk  ",1+(pos>>10));
 	else fprintf(stderr,"\r%lu   ",   pos     );
 	fflush(stderr);
@@ -460,7 +468,7 @@ static void util_get_env (void)
   if( (p = getenv("FSP_BUF_SIZE")) ) client_buf_len = atoi(p);
   else client_buf_len = UBUF_SPACE;
 
-  if(client_buf_len > UBUF_SPACE) client_buf_len = UBUF_SPACE;
+  if(client_buf_len > UBUF_MAXSPACE) client_buf_len = UBUF_MAXSPACE;
   client_net_len = htons(client_buf_len);
 
   if( (p = getenv("FSP_DELAY")) ) target_delay = atol(p);
@@ -553,11 +561,10 @@ void util_junk_password(char *path)
     if(pos != NULL)
 	/* terminate them! */
 	*pos='\0';
-}	
+}
 
 int util_stat (char * path, struct stat * sbuf)
 {
-  static int statworks=1;
   RDIR *drp;
   RDIRENT **dep;
   DDLIST *ddp;

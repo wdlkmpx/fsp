@@ -2,7 +2,7 @@
 
 bin_PROGRAMS=fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
              flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
-	     fstatcmd fmvcmd
+	     fstatcmd fmvcmd fbye
 
 LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
 
@@ -16,7 +16,7 @@ fhostcmd_LDADD=$(LDADD)
 fspmerge_LDADD=fcatcmd_m.o fcdcmd_m.o fducmd_m.o ffindcmd_m.o fgetcmd_m.o \
     fgrabcmd_m.o fhostcmd_m.o flscmd_m.o fmkdir_m.o fprocmd_m.o \
     fput_m.o frmcmd_m.o frmdircmd_m.o fver_m.o fmvcmd_m.o \
-    fstatcmd_m.o $(LDADD)
+    fstatcmd_m.o fbye_m.o $(LDADD)
 
 fgetcmd_CFLAGS:=-DCOMMAND_GET
 
@@ -87,4 +87,7 @@ fmvcmd_m.o:
 	@echo '#include "fmvcmd.c"' > fmvcmd_m.c
 	${COMPILE} -Dmain=fmvcmd_main -c fmvcmd_m.c
 	@rm -f fmvcmd_m.c
-
+fbye_m.o:
+	@echo '#include "fbye.c"' > fbye_m.c
+	${COMPILE} -Dmain=fbye_main -c fbye_m.c
+	@rm -f fbye_m.c

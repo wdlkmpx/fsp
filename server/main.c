@@ -43,9 +43,9 @@ static void display_version (void)
 static void arg_err (void)
 {
 #ifndef LAMERPACK
-  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec]\n", stderr);
+  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t inetd timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec] [-s packetsize]\n", stderr);
 #else
-  fputs("Usage: fspd [-d directory] [-p port] [-T temporary directory] [-l logfile] [-b bytes/sec]\n", stderr);
+  fputs("Usage: fspd [-d directory] [-p port] [-T temporary directory] [-l logfile] [-b bytes/sec] [-s packetsize]\n", stderr);
 #endif
 }
 
@@ -74,6 +74,15 @@ static void check_required_vars (void)
       rnd=(random())/(double)RAND_MAX;
       udp_port=rnd*(65535-1024)+1024;
   }
+  if(packetsize > UBUF_MAXSPACE)
+      packetsize = UBUF_MAXSPACE;
+  else
+      if (packetsize == 0)
+	  packetsize = UBUF_SPACE;
+      else
+	  if(packetsize < 64)
+	      packetsize = 64;	  
+
   if(!home_dir) {
 #ifdef LAMERPACK
     home_dir = strdup("/");
@@ -139,9 +148,9 @@ int main (int argc, char ** argv)
 	  inetd_mode = !strcasecmp(&argv[0][strlen(argv[0])-7],"in.fspd");
   while( (opt=getopt(argc,argv,
 #ifndef LAMERPACK
-      "h?Xd:f:vVip:t:FT:l:P:b:"
+      "h?Xd:f:vVip:t:FT:l:P:b:s:"
 #else
-      "d:p:T:l:b:h?"
+      "d:p:T:l:b:h?s:"
 #endif
                                 ))!=EOF)
   {
@@ -177,6 +186,9 @@ int main (int argc, char ** argv)
 			  break;
 		  case 'p':
 			  udp_port = atoi (optarg);
+			  break;
+		  case 's':
+			  packetsize = atoi (optarg);
 			  break;
 		  case 'b':
 			  maxthcallowed = atoi (optarg);
@@ -215,10 +227,12 @@ int main (int argc, char ** argv)
     if(dbug) {
         display_version();
 	fprintf(stderr,"listening on port %d\n",udp_port);
+	fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
     }
 #ifdef LAMERPACK    
     display_version();
     fprintf(stderr,"rocking on port %d\n",udp_port);
+    fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
 #endif    
   }
 

@@ -1,10 +1,12 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b22,hsn@netmag.cz)
+AC_INIT(fsp,2.8.1b23,hsn@netmag.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 AC_CONFIG_HEADERS(include/config.h)
+AC_ARG_WITH(lockprefix,AS_HELP_STRING([--with-lockprefix=path],[Set lock prefix path to (default /tmp/.FSPL)]))
+AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/shmget/lockf/flock],[Set client locking type (default autodetected)]))
 AC_CANONICAL_HOST
 AC_MSG_CHECKING([if bulding for DYNIX/ptx])
 dnl check for dynix/ptx
@@ -71,7 +73,7 @@ then
       -Wmissing-noreturn -pedantic \
       -Wlong-long -Wundef -Winline \
       -Wno-unused-parameter \
-      -Wunreachable-code -Wconversion 
+      -Wconversion# -Wunreachable-code 
   do
        if $CC $i $ac_cv_prog_gcc_flags -c configure-dummy.c >/dev/null 2>&1 
        then ac_cv_prog_gcc_flags="$ac_cv_prog_gcc_flags $i"
@@ -122,13 +124,13 @@ AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not fo
 AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
 AC_TYPE_SIGNAL
 AC_FUNC_CLOSEDIR_VOID
-AC_CHECK_FUNCS(random strdup bcopy flock lockf getrlimit fork setsid semop)
+AC_CHECK_FUNCS(random srandomdev strdup bcopy flock lockf getrlimit fork setsid semop)
 AC_CHECK_TYPE(union semun, ,AC_DEFINE(_SEM_SEMUN_UNDEFINED,1,[Define if you do not have semun in sys/sem.h]),
 [#include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 ])
-AC_CACHE_CHECK(for working shmget ,fsp_cv_func_shmget,
+AC_CACHE_CHECK(for working shmget ,ac_cv_func_shmget,
 [LOCKPATH="conftestlock"
 AC_TRY_RUN([
 #include <sys/types.h>
@@ -153,10 +155,10 @@ main() {
     else shmctl(sh, IPC_RMID, &foo);
   }
   close(fd);
-  exit(rv); }],fsp_cv_func_shmget="yes",fsp_cv_func_shmget="no")
+  exit(rv); }],ac_cv_func_shmget="yes",ac_cv_func_shmget="no")
 rm -f $LOCKPATH conftest.c
 ])
-if test "x$fsp_cv_func_shmget" = "xyes"; then 
+if test "x$ac_cv_func_shmget" = "xyes"; then 
             AC_DEFINE(HAVE_SHMEM,1,[Define the following if you have working shared memory])
 fi
 AC_CHECK_MEMBER(struct dirent.d_ino,AC_DEFINE(HAVE_D_INO,1,[define if you have d_ino in struct dirent]), AC_CHECK_MEMBER(struct direct.d_ino,AC_DEFINE(HAVE_D_INO,1,[do you have d_ino in struct direct]), ,[
@@ -215,6 +217,35 @@ main() {
 }],
 fsp_cv_sys_reliable_signals="yes",fsp_cv_sys_reliable_signals="no")])
 if test "x$fsp_cv_sys_reliable_signals" = "xyes"; then AC_DEFINE(RELIABLE_SIGNALS,1,[undefine If your signal handlers don't reinstall automatically])
+fi
+
+#Parse user locking choice
+if test "x$with_locking" = "xno" -o "x$with_locking" = "xnone" ; then
+AC_DEFINE(FSP_NOLOCKING,1,[Define if you do not want to use any locking])
+AC_MSG_NOTICE(locking disabled by user)
+elif test "x$with_locking" = "xlockf" -a "x$ac_cv_func_lockf" = "xyes"; then
+    AC_DEFINE(FSP_USE_LOCKF,1,[Define for lockf style locking])
+elif test "x$with_locking" = "xsemop" -a "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes";then
+     AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1,[Define for sharemem+semop locking])
+elif test "x$with_locking" = "xshmget" -a "x$ac_cv_func_shmget" = "xyes" -a "x$ac_cv_func_lockf" = "xyes"; then
+     AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1,[Define for lockf locking])
+elif test "x$with_locking" = "xflock" -a "x$ac_cv_func_flock" = "xyes"; then
+     AC_DEFINE(FSP_USE_FLOCK,1,[Define for flock style locks])
+#Autodetect locking 
+elif test "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes"; then
+    AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1)
+elif test "x$ac_cv_func_shmget" = "xyes" -a "x$ac_cv_func_lockf" = "xyes"; then
+     AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1)
+elif test "x$ac_cv_func_lockf" = "xyes"; then AC_DEFINE(FSP_USE_LOCKF,1)
+elif "x$ac_cv_func_flock" = "xyes"; then AC_DEFINE(FSP_USE_FLOCK,1)    
+else
+AC_DEFINE(FSP_NOLOCKING,1)
+AC_MSG_NOTICE([no suitable locking method detected])
+fi
+
+#locking prefix
+if test "x$with_lockprefix" != "xno" -a "x$with_lockprefix" != "xyes" -a "x$with_lockprefix" != "x" ; then
+    AC_DEFINE_UNQUOTED(FSP_KEY_PREFIX,"$with_lockprefix",[Key locking prefix])
 fi
 AC_CONFIG_FILES(Makefile bsd_src/Makefile common/Makefile client/Makefile server/Makefile clients/Makefile man/Makefile include/Makefile contrib/Makefile doc/Makefile tests/Makefile)
 AC_OUTPUT

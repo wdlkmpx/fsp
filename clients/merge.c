@@ -39,6 +39,7 @@ int main (int argc, char ** argv)
   else if(!strcmp(q,"fhostcmd")) fhostcmd_main(argc,argv);
   else if(!strcmp(q,"ffindcmd")) ffindcmd_main(argc,argv);
   else if(!strcmp(q,"fstatcmd")) fstatcmd_main(argc,argv);
+  else if(!strcmp(q,"fmvcmd")) fmvcmd_main(argc,argv);
   else {
     fprintf(stderr,"Unknown FSP client command: %s\n",q);
     exit(1);

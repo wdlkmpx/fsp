@@ -213,6 +213,7 @@ static void doargs (int argc, char ** argv)
   struct stat sb;
   char top[2*1024 + 1], **av, *av2[2];
   unsigned long blocks;
+  RDIR * dl;
 
   /*
    * walk through the operands, building separate arrays of LS
@@ -220,6 +221,8 @@ static void doargs (int argc, char ** argv)
    */
   dstats = rstats = NULL;
   dirmax = regmax = 0;
+  /* disable use of new CC_STAT command for performance reasons */
+  statworks = 0;
 
   for (dircnt = regcnt = 0; *argv; ++argv)  {
     if(!(av = glob(*argv))) {
@@ -229,13 +232,12 @@ static void doargs (int argc, char ** argv)
     }
 
     for( ; *av; av++) {
-      /* TODO: this stat call should be avoided for performance speedups */	
-      /* Better is turn it to get_dirblk or something like this */
       if (util_stat(*av, &sb)) {
 	perror(*av);
 	if (errno == ENOENT) continue;
 	ls_bad(1);
       }
+
       if ((S_ISDIR(sb.st_mode)) && !f_listdir) {
 	if(dirmax == dircnt) {
           dirmax += 10;

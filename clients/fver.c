@@ -82,25 +82,26 @@ int main (int argc, char ** argv)
   } else
   {
     printf("Local FSP version: %s\n\n",PACKAGE_VERSION);
+    printf("Max. packet size supported by client: %d\n",UBUF_MAXSPACE);
     printf("System startup file: %s\n",FSPRC);
     printf("Local startup file: %s\n",FSPPROF);
     printf("Locking method is: ");
-#if defined(USE_SHAREMEM_AND_LOCKF)
+#if defined(FSP_USE_SHAREMEM_AND_LOCKF)
     printf("SHAREMEM_AND_LOCKF");
-#elif defined(USE_FLOCK)
+#elif defined(FSP_USE_FLOCK)
     printf("FLOCK");
-#elif defined(USE_LOCKF)
+#elif defined(FSP_USE_LOCKF)
     printf("LOCKF");
-#elif defined(NOLOCKING)
+#elif defined(FSP_NOLOCKING)
     printf("None");
-#elif defined(USE_SHAREMEM_AND_SEMOP)
+#elif defined(FSP_USE_SHAREMEM_AND_SEMOP)
     printf("SHAREMEM_AND_SEMOP");
 #else
 #error "We do not have any locking method defined!"
 #endif
     printf("\n");
-#ifndef NOLOCKING
-    printf("Lock prefix is: %s\n",KEY_PREFIX);
+#ifndef FSP_NOLOCKING
+    printf("Lock prefix is: %s\n",FSP_KEY_PREFIX);
 #endif
     printf("Timestamping supported: ");
 #ifdef HAVE_UTIME_H

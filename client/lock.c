@@ -16,8 +16,8 @@
 #include "c_extern.h"
 #include "my-string.h"
 
-#ifndef NOLOCKING
-static char key_string[sizeof(KEY_PREFIX)+32];
+#ifndef FSP_NOLOCKING
+static char key_string[sizeof(FSP_KEY_PREFIX)+32];
 
 static char code_str[] =
     "0123456789:_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -28,7 +28,7 @@ static void make_key_string(	unsigned long server_addr,
   unsigned long v1, v2;
   char *p;
 
-  strcpy(key_string,KEY_PREFIX);
+  strcpy(key_string,FSP_KEY_PREFIX);
   for(p = key_string; *p; p++)
       ;
   v1 = server_addr;
@@ -50,15 +50,15 @@ static void make_key_string(	unsigned long server_addr,
 /********************************************************************/
 /******* For those systems that has flock function call *************/
 /********************************************************************/
-#ifdef USE_FLOCK
+#ifdef FSP_USE_FLOCK
 
 #include <sys/file.h>
 
 int key_persists = 1;
 static unsigned int lock_fd;
-static unsigned short okey;
+static unsigned int okey;
 
-unsigned short client_get_key PROTO0((void))
+unsigned short client_get_key (void)
 {
   if(flock(lock_fd,LOCK_EX) == -1) {
     perror("flock");
@@ -74,8 +74,10 @@ unsigned short client_get_key PROTO0((void))
   return(okey);
 }
 
-void client_set_key PROTO1(unsigned short, key)
+void client_set_key (unsigned short nkey)
 {
+  unsigned int key;
+  key=nkey;  
   if(write(lock_fd,&key,sizeof(key)) == -1) {
     perror("write");
     exit(1);
@@ -90,11 +92,11 @@ void client_set_key PROTO1(unsigned short, key)
   }
 }
 
-void client_init_key PROTO3(unsigned long, server_addr,
-			    unsigned long, server_port,
-			    unsigned short, key)
+void client_init_key (unsigned long server_addr,
+			    unsigned long server_port,
+			    unsigned short key)
 {
-  unsigned long omask;
+  mode_t omask;
   okey = key;
 
   make_key_string(server_addr,server_port);
@@ -113,7 +115,7 @@ void client_destroy_key(void)
 /********************************************************************/
 /******* For those systems that has lockf function call *************/
 /********************************************************************/
-#ifdef USE_LOCKF
+#ifdef FSP_USE_LOCKF
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -121,9 +123,9 @@ void client_destroy_key(void)
 
 int key_persists = 1;
 static unsigned int lock_fd;
-static unsigned short okey;
+static unsigned int okey;
 
-unsigned short client_get_key PROTO0((void))
+unsigned short client_get_key (void)
 {
   if(lockf(lock_fd,F_LOCK,sizeof(okey)) == -1) {
     perror("lockf");
@@ -140,8 +142,10 @@ unsigned short client_get_key PROTO0((void))
   return(okey);
 }
 
-void client_set_key PROTO1(unsigned short, key)
+void client_set_key (unsigned short nkey)
 {
+  unsigned int key;
+  key=nkey;  
   if(write(lock_fd,&key,sizeof(key)) == -1) {
     perror("write");
     exit(1);
@@ -156,11 +160,11 @@ void client_set_key PROTO1(unsigned short, key)
   }
 }
 
-void client_init_key PROTO3(unsigned long, server_addr,
-			    unsigned long, server_port,
-			    unsigned short, key)
+void client_init_key (unsigned long server_addr,
+			    unsigned long server_port,
+			    unsigned short key)
 {
-  unsigned long omask;
+  mode_t omask;
   okey = key;
 
   make_key_string(server_addr,server_port);
@@ -173,13 +177,12 @@ void client_init_key PROTO3(unsigned long, server_addr,
 void client_destroy_key(void)
 {
     (void)close(lock_fd);
-    unlink(key_string);
 }
 #endif
 /********************************************************************/
 /******* For those systems that has SysV shared memory + lockf ******/
 /********************************************************************/
-#ifdef USE_SHAREMEM_AND_LOCKF
+#ifdef FSP_USE_SHAREMEM_AND_LOCKF
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -187,8 +190,8 @@ void client_destroy_key(void)
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-int key_persists = 0;
-static unsigned short *share_key;
+int key_persists = 1;
+static unsigned int *share_key;
 static unsigned int lock_fd;
 static int   lock_shm;
 
@@ -214,7 +217,7 @@ void client_init_key (unsigned long server_addr,
 			    unsigned long server_port,
 			    unsigned short key)
 {
-  unsigned long omask;
+  mode_t omask;
   key_t lock_key;
 
   make_key_string(server_addr,server_port);
@@ -227,11 +230,11 @@ void client_init_key (unsigned long server_addr,
     perror("ftok");
     exit(1);
   }
-  if((lock_shm = shmget(lock_key,sizeof(short),IPC_CREAT|0666)) == -1) {
+  if((lock_shm = shmget(lock_key,2*sizeof(unsigned int),IPC_CREAT|0666)) == -1) {
     perror("shmget");
     exit(1);
   }
-  if(!(share_key = (unsigned short *) shmat(lock_shm,(char*)0,0))) {
+  if(!(share_key = (unsigned int *) shmat(lock_shm,(char*)0,0))) {
     perror("shmat");
     exit(1);
   }
@@ -245,13 +248,12 @@ void client_destroy_key(void)
 	perror("shmdt");
     }
     shmctl(lock_shm,IPC_RMID,NULL); 
-    unlink(key_string);
 }
 #endif
 /********************************************************************/
 /******* For those who does not want to use locking *****************/
 /********************************************************************/
-#ifdef NOLOCKING
+#ifdef FSP_NOLOCKING
 
 int key_persists = 0;
 static unsigned short okey;
@@ -281,7 +283,7 @@ void client_destroy_key(void)
 /********************************************************************/
 /******* For those systems that has SysV shared memory + semop ******/
 /********************************************************************/
-#ifdef USE_SHAREMEM_AND_SEMOP
+#ifdef FSP_USE_SHAREMEM_AND_SEMOP
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -301,7 +303,7 @@ union semun
 #endif
 
 int key_persists = 1;
-static unsigned short *share_key;
+static unsigned int *share_key;
 static int   lock_shm;
 static int   lock_sem;
 
@@ -339,7 +341,7 @@ void client_init_key (unsigned long server_addr,
 			    unsigned long server_port,
 			    unsigned short key)
 {
-  unsigned long omask;
+  mode_t omask;
   key_t lock_key;
   int fd;
   union semun sun;
@@ -356,11 +358,11 @@ void client_init_key (unsigned long server_addr,
     perror("ftok");
     exit(1);
   }
-  if((lock_shm = shmget(lock_key,sizeof(short),IPC_CREAT|0666)) == -1) {
+  if((lock_shm = shmget(lock_key,2*sizeof(unsigned int),IPC_CREAT|0666)) == -1) {
     perror("shmget");
     exit(1);
   }
-  if(!(share_key = (unsigned short *) shmat(lock_shm,(char*)0,0))) {
+  if(!(share_key = (unsigned int *) shmat(lock_shm,(char*)0,0))) {
     perror("shmat");
     exit(1);
   }

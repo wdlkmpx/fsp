@@ -186,7 +186,14 @@ static void read_configuration (const char * name)
     }
     else if(strcasecmp(p, "packetsize") == 0) {
       packetsize = atoi(q);
-      if(packetsize <= 64 || packetsize > UBUF_SPACE ) packetsize = UBUF_SPACE;
+      if(packetsize == 0) 
+	  packetsize = UBUF_SPACE;
+      else
+      if(packetsize < 64 )
+	  packetsize = 64;
+      else	  
+      if(packetsize > UBUF_MAXSPACE ) 
+	  packetsize = UBUF_MAXSPACE;
     }
     else if(strcasecmp(p, "filecache") == 0) {
       fp_cache_limit = atoi(q);

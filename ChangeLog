@@ -1,3 +1,29 @@
+Version NEXT
+	use srandomdev for seeding of client seq. number generator
+	make dirlister smarter - save one RTT per each directory listings
+	Locking uses unsigned int sized key, not unsigned short
+	Locking type can be specified by ./configure --with-locking=
+	Lock prefix can be specified by ./configure --with-lockprefix=
+	All 5 locking subsystems synced against fsplib and fspclient code base
+	Do not use CC_STAT when doing directory listing -- performace gain.
+	  This saves 1 RTT per directory listing.
+	clients: do not send CC_BYE to the server on exit if we can keep server
+	  key for next invocation. Saves 1 RTT.
+	!! Major client utils speedup: Directory listings are now 3 RTT
+	  times faster.
+	fmvcmd added to merged client
+	new command fbye(1). Sends CC_BYE to the server and possibly removes
+	 cached session key.
+	fbye added to merged client
+	PROTOCOL: Add note about client key multiplexing
+	we have incorrectly recovered requested size of reply packet sent
+	  by client
+	!! LARGE PACKET SUPPORT !! FSP can be quite Faaaast now.
+	fver -l displays maximum packet size supported by client
+	fsp_env.7: added info about larger packets
+	send_file function renamed to serve_file for avoiding name clash
+	  on AIX.
+
 Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files
 	fixed sf bug 1060558: fpro 'l' sets 'm' flag instead (dairiki)

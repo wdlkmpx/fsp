@@ -20,3 +20,4 @@ fver
 .deps
 fspprof.c
 fmvcmd
+fbye

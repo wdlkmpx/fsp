@@ -26,33 +26,19 @@
  ****************************************************************************/
 #define HOST_LOOKUP 1
 
-/****************************************************************************
- * The following code tries to set the file locking mechanism to the one    *
- * best suited for your system.  This should only be changed if the auto    *
- * configuration code fails and it doesn't compile.  That sort of bug       *
- * should also be immediately reported to the maintainers listed in the     *
- * INFO file                                                                *
- ****************************************************************************/
-#define KEY_PREFIX "/tmp/.FSPL"
+/* Key lock prefix, works best on local filesystem */
+#ifndef FSP_KEY_PREFIX 
+# define FSP_KEY_PREFIX "/tmp/.FSPL"
+#endif
 
-/* find the best locking method, defines one of USE_SHAREMEM_AND_LOCKF,
- * USE_FLOCK,USE_LOCKF,NOLOCKING */
-#if defined(HAVE_SHMEM) && defined(HAVE_SEMOP)
-     #define USE_SHAREMEM_AND_SEMOP 1
-#else     
-  #if defined(HAVE_SHMEM) && defined(HAVE_LOCKF)
-       #define USE_SHAREMEM_AND_LOCKF 1
-  #else
-       #ifdef HAVE_LOCKF
-          #define USE_LOCKF 1
-       #else
-          #ifdef HAVE_FLOCK
-             #define USE_FLOCK 1
-          #else
-             #define NOLOCKING 1
-          #endif
-       #endif
-  #endif
-#endif /* locking story */
+/* check if we have at least one lock type configured */
+#ifdef FSP_USE_SHAREMEM_AND_SEMOP
+#elif defined(FSP_NOLOCKING)
+#elif defined(FSP_USE_LOCKF)
+#elif defined(FSP_USE_FLOCK)
+#elif defined(FSP_USE_SHAREMEM_AND_LOCKF)
+#else
+# error "Locking type is not configured"
+#endif
 
 #endif /* _FSP_CLIENT_CONF_H_ */

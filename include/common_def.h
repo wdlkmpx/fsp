@@ -81,7 +81,10 @@
 ****************************************************************************/
 
 #define UBUF_HSIZE 12                           /* 12 bytes for the header */
-#define UBUF_SPACE 1024			        /* maximum payload.        */
+#define UBUF_SPACE 1024			        /* maximum standard payload. */
+#define UBUF_MAXSPACE 2800                      /* maximum payload supported by server */
+
+#define NBSIZE (UBUF_MAXSPACE+UBUF_SPACE)
 
 typedef struct UBUF {   unsigned char       cmd; /* message code.             */
                         unsigned char       sum; /* message checksum.         */
@@ -90,7 +93,7 @@ typedef struct UBUF {   unsigned char       cmd; /* message code.             */
                         unsigned char bb_len[2]; /* number of bytes in buf 1. */
                         unsigned char bb_pos[4]; /* location in the file.     */
 
-                        char   buf[UBUF_SPACE];
+                        char   buf[UBUF_MAXSPACE];
                     } UBUF;
 
 /* definition of cmds */

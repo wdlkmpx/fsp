@@ -13,7 +13,6 @@
 #include "common_def.h"
 #include "server_conf.h"
 
-#define NBSIZE (2*sizeof(UBUF))
 
 /****************************************************************************
 *  HTAB is structure for storing client information for one client machine.

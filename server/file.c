@@ -409,10 +409,11 @@ static void build_dir_listing (DIRLISTING * dl,const char *directory)
   struct stat    sb;   /* stat data of record */
   register char  *s;   /* pointer to filename */
   size_t nlen;         /* filename length including zero terminator */
-  char buffer[UBUF_SPACE]; /* buffer for building packet */
+  char buffer[UBUF_SPACE]; /* buffer for building dirblock packet */
   char name[NBSIZE];   /* buffer for stat name */
   int namelen;         /* directory name length */
   unsigned int bufpos; /* current write pos. in buffer */
+  unsigned int dirblocksize;
 
   /* init pointers */
   dl->listing=NULL;
@@ -423,13 +424,17 @@ static void build_dir_listing (DIRLISTING * dl,const char *directory)
     fprintf(stderr,"Can't open dir during listing initialization\n");
     return;
   }
-
-  memset(buffer,0,packetsize); /* clear memory on the stack */
+  /* do not build longer directory blocks than 1024 bytes */
+  if(packetsize > UBUF_SPACE)
+      dirblocksize=UBUF_SPACE;
+  else
+      dirblocksize = packetsize;    
+  memset(buffer,0,dirblocksize); /* clear memory on the stack */
   strcpy(name,directory);
   namelen=strlen(directory);
   name[namelen++]='/'; /* add directory separator to name */
 
-  for(rem = packetsize; (dp = readdir(dir_f)); ) {
+  for(rem = dirblocksize; (dp = readdir(dir_f)); ) {
     if (dp->d_ino == 0) continue;
     s = dp->d_name;
 	
@@ -448,12 +453,12 @@ static void build_dir_listing (DIRLISTING * dl,const char *directory)
       /* fill rest of buffer with '*' */
       memset(buffer+bufpos,RDTYPE_SKIP,rem);
       /* append this buffer */
-      if(append_dir_listing(dl,buffer,packetsize))
+      if(append_dir_listing(dl,buffer,dirblocksize))
       {
 	  closedir(dir_f);
 	  return;
       }
-      rem = packetsize;
+      rem = dirblocksize;
       bufpos = 0;
     }
 	
@@ -481,7 +486,7 @@ static void build_dir_listing (DIRLISTING * dl,const char *directory)
       /* no, make a new packet */
       memset(buffer+bufpos,RDTYPE_SKIP,rem);
       /* append this buffer */
-      if(append_dir_listing(dl,buffer,packetsize))
+      if(append_dir_listing(dl,buffer,dirblocksize))
 	  return;
 
       bufpos = 0;

@@ -73,8 +73,8 @@ RETSIGTYPE server_interrupt (int signum);
 RETSIGTYPE server_dump (int signum);
 int server_loop (int fd,time_t timeout);
 int server_reply (struct sockaddr_in *, UBUF *, unsigned int, unsigned int);
-void send_file (struct sockaddr_in *, UBUF *, FILE *, unsigned int,
-			      char *);
+void serve_file (struct sockaddr_in *, UBUF *, FILE *, unsigned int,
+			      unsigned char *);
 
 /* acl.c, security code */
 void load_access_rights (DIRINFO *di);

@@ -9,6 +9,7 @@ UBUF *client_interact (unsigned char, unsigned long, unsigned int,
 				     unsigned const char *);
 void init_client (const char *, unsigned short, unsigned short);
 int client_done (void);
+void client_finish(void);
 
 /* lock.c */
 extern int key_persists;
@@ -21,6 +22,7 @@ void client_init_key (unsigned long, unsigned long,
 /* util.c */
 extern const char *env_dir,*env_passwd,*env_local_dir,*env_port,*env_myport,*env_host,*env_listen_on;
 extern unsigned int env_timeout;
+extern int statworks;
 extern unsigned short client_buf_len,client_net_len;
 char *util_abs_path (const char *);
 void util_junk_password(char *path);

@@ -2,8 +2,8 @@
 		     OFFICIAL PROTOCOL DEFINITION
 				FSP v2
 
-			Document version 0.16
-		      Last updated  15 Dec 2004
+			Document version 0.17
+		      Last updated  25 Dec 2004
 
 			    Also known as
 		       File Slurping Protocol,
@@ -143,6 +143,12 @@ Client's message to server contain a KEY value that is the same as the KEY
 value of the previous message received from the server. KEY is chosen random
 by server.
 
+Server uses one KEY per client network address. If multiple fsp clients
+on the same host wants access same fsp server at the same time, they
+must implement some local method of key exchange. If they don't server
+will serve only one client from host, because other clients do not
+have valid key.
+
 TIMEOUTS
 1. Resend
 
@@ -223,6 +229,12 @@ CC_VERSION is recommended.
 
 		Bit 5 - accept xtra data flag is set only by fspd
 		2.8.1 b21 or newer.
+
+		Note
+
+		Some fsp servers do not responds to this command,
+		because this command is used by FSP scanners and
+		servers do not wishes to be detected.
 
  CC_ERR      0x40                -  error response from server
 

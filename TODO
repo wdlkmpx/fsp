@@ -34,16 +34,11 @@ we should retune retry algoritm for better support lines with higher
 add more detailed stats from retry alg.
 :low:
 fver and others add support new syntax fsp://host:port/file
-flscmd should not to do stat before directory listing.
-directory listing should not need to get 0 sized block. Needs total code
-  rewrite. 
 
 :long-term goals:
 drop this library and use libfsp instead
 
 LOCKING
-better support for persistent keys - do not send cc_bye ? this should
-  be probably configurable
 
 CLIENTS 
 :high: 

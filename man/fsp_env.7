@@ -33,7 +33,9 @@ provided a correct password. There are 2 access levels: public and owner.
 .TP
 .B FSP_BUF_SIZE
 Prefered size of server reply. Default is 1024 which is also maximum
-allowed value. You can lower that value if you want to get smaller
+allowed value by all servers. Some servers can accept larger packets and
+you will get some extra speed with them.
+You can lower that value if you want to get smaller
 packets from server.
 .TP
 .B FSP_DIR

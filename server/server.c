@@ -376,8 +376,8 @@ return(0);
  * message buffer.
  ****************************************************************************/
 
-void send_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
-		      unsigned int has_len, char * lp)
+void serve_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
+		      unsigned int has_len, unsigned char * lp)
 {
   size_t bytes;
   unsigned len;
@@ -386,7 +386,11 @@ void send_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
   if(has_len == 2) {	/* recover length field if it exists */
     len=lp[0] << 8;
     len  = len + lp[1];
-    if(len > packetsize || len <= 0) len = packetsize;
+    if(len > packetsize )
+	len = packetsize;
+    else	
+	if(len <= 0)
+	    len = UBUF_SPACE;
   } else len  = packetsize; /* use default if it doesn't exist */
 
   pos = BB_READ4(ub->bb_pos);
@@ -541,16 +545,22 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
 	    return;
       }
       /* copy directory listing to client buffer */
-      if(pos>=dl->listing_size) l1=0;
+      if(pos>=dl->listing_size) 
+	  l1=0;
       else
       {
+	  /* limit directory blocks to 1k max */
+	  if(packetsize>UBUF_SPACE)
+	      l2=UBUF_SPACE;
+	  else
+	      l2=packetsize;    
 	  l1=dl->listing_size-pos;
-	  if(l1>packetsize) l1=packetsize;
+	  if(l1>l2) l1=l2;
           memcpy( ub->buf, dl->listing+pos, l1);
       }
-      if( (l1>0) && (pos % packetsize != 0) )
+      if( (l1>0) && (pos % l2 != 0) )
       {
-	  send_error(from,ub,"Invalid seek offset");
+	  send_error(from,ub,"Invalid directory seek offset");
       }
       else
       {
@@ -582,7 +592,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
         ACTIONINFO(L_GETFILE,(" (%d)",sd.st_size));
         xferlog('o',pp.fullp,sd.st_size,inetstr);
       }
-      send_file(from,ub,fp,l2,s2);
+      serve_file(from,ub,fp,l2,s2);
       if (!pos) ACTIONOK(L_GETFILE);
       return;
     case CC_DEL_FILE:
@@ -827,7 +837,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
           send_error(from, ub, pe) ;
 	  return;
       }
-      send_file(from,ub,fp,l2,s2);
+      serve_file(from,ub,fp,l2,s2);
       fclose(fp);
       if (!pos) ACTIONOK(L_GRABFILE);
       return;
