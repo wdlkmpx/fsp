@@ -1,0 +1,12 @@
+This is a list of machines and architectures under which this code has been
+successfully compiled out of the box using configure script.  If you get it to
+compile on an architecture/compiler combination other than one listed here,
+PLEASE SEND ME DETAILS of the fsp version, the type of machine, the OS, the
+compiler used and C library used; As well as what changes (if any) were needed
+to for a clean compile. My email address is hsn/at/cybermail.net. Thanks
+for your cooperation.
+
+FSP Version	CPU         OS        	Compiler         C library
+--------------------------------------------------------------------------
+2.8.1 Beta 5	i386        Linux 2.4   GCC-3.2          GLIBC 2.3.1
+2.8.1 Beta 10	i386        Linux 2.4   GCC-2.95         GLIBC 2.3.1
