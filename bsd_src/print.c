@@ -48,7 +48,7 @@
 
 #define BLK(A) (((A)+1023)/1024)
 
-static int printtype PROTO1(mode_t, mode)
+static int printtype (mode_t mode)
 {
   switch(mode & S_IFMT) {
     case S_IFDIR:
@@ -62,7 +62,7 @@ static int printtype PROTO1(mode_t, mode)
  * print [inode] [size] name
  * return # of characters printed, no trailing characters
  */
-static int printaname PROTO1(LS *, lp)
+static int printaname (LS * lp)
 {
   int chcnt;
 
@@ -85,7 +85,7 @@ static int printaname PROTO1(LS *, lp)
   return(chcnt);
 }
 
-void printscol PROTO2(LS *, stats, int, num)
+void printscol (LS * stats, int num)
 {
   for (; num--; ++stats) {
     printaname(stats);
@@ -93,12 +93,12 @@ void printscol PROTO2(LS *, stats, int, num)
   }
 }
 
-static void printtime PROTO1(time_t, ftime)
+static void printtime (time_t ftime)
 {
   int i;
   char *longstring;
 
-  longstring = (char *)ctime((long *)&ftime);
+  longstring = (char *)ctime(&ftime);
   for (i = 4; i < 11; ++i) (void)putchar(longstring[i]);
 
 #define	SIXMONTHS	((365 / 2) * 24 * 60 * 60)
@@ -112,7 +112,7 @@ static void printtime PROTO1(time_t, ftime)
   (void)putchar(' ');
 }
 
-void printlong PROTO2(LS *, stats, int, num)
+void printlong (LS * stats, int num)
 {
   const char *modep;
 
@@ -138,7 +138,7 @@ void printlong PROTO2(LS *, stats, int, num)
 
 extern int termwidth;
 
-void printcol PROTO2(LS *, stats, int, num)
+void printcol (LS * stats, int num)
 {
   register int base, chcnt, cnt, col, colwidth;
   int endcol, numcols, numrows, row;

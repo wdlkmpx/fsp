@@ -20,14 +20,14 @@
 #include <unistd.h>
 #endif
 
-static RETSIGTYPE dont_die PROTO1(int, signum)
+static RETSIGTYPE dont_die (int signum)
 {
 #ifndef RELIABLE_SIGNALS	
   signal(SIGPIPE,dont_die);
 #endif
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char **av;
 

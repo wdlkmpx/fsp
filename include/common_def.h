@@ -123,6 +123,7 @@ typedef struct UBUF {   unsigned char       cmd; /* message code.             */
 #define VER_REVNAME	0x04	/* does the server refuse non reversables */
 #define VER_PRIVMODE	0x08	/* Is the server being run 'private' mode */
 #define VER_THRUPUT	0x10	/* does the server enforce thruput control*/
+#define VER_XTRADATA    0x20    /* server accept packets with xtra data  */
 
 /* definition of directory bitfield for directory information */
 /* directory information is just going to be a bitfield encoding

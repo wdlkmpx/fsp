@@ -24,7 +24,7 @@ IPrange *iptab=NULL;
 /* check if inet_number matches entry in IPrange table */
 /* return pointer to specified message                 */
 
-static char *check_ip PROTO2(unsigned long, inet_num, const IPrange *, iprange)
+static char *check_ip (unsigned long inet_num, const IPrange * iprange)
 {
   unsigned int j;
   unsigned char val[4];
@@ -43,7 +43,7 @@ static char *check_ip PROTO2(unsigned long, inet_num, const IPrange *, iprange)
 }
 
 
-const char *check_ip_table PROTO2(unsigned long, inet_num,IPrange *,table)
+const char *check_ip_table (unsigned long inet_num,IPrange *table)
 {
     char *res;
 
@@ -57,7 +57,7 @@ const char *check_ip_table PROTO2(unsigned long, inet_num,IPrange *,table)
     return NULL;
 }
 
-void free_ip_table PROTO1(IPrange *,table)
+void free_ip_table (IPrange *table)
 {
     IPrange *head=table;
     /* free strings */
@@ -74,7 +74,7 @@ void free_ip_table PROTO1(IPrange *,table)
    if there is any error in forming the value (e.g., the text string
    isn't an integer, or the integer value is too large) then make the
    text string NULL */
-static unsigned char parse_ipcomponentnum PROTO1(const char * *, textp)
+static unsigned char parse_ipcomponentnum (const char * * textp)
 {
   unsigned long val = 0;
 
@@ -99,8 +99,8 @@ static unsigned char parse_ipcomponentnum PROTO1(const char * *, textp)
    integer '-' integer	>> range of values
    '*'			>> same as 0-255
    */
-static const char *parse_ipcomponent PROTO3(const char *, text, unsigned char *, lo,
-				      unsigned char *, hi)
+static const char *parse_ipcomponent (const char * text, unsigned char * lo,
+				      unsigned char * hi)
 {
   if (*text == '*') {
     *lo = 0x00;
@@ -119,7 +119,7 @@ static const char *parse_ipcomponent PROTO3(const char *, text, unsigned char *,
   return text;
 }
 
-static IPrange *parse_ipnumber PROTO1(const char *, text)
+static IPrange *parse_ipnumber (const char * text)
 {
   IPrange *reply;
   int i;
@@ -148,7 +148,7 @@ static IPrange *parse_ipnumber PROTO1(const char *, text)
   return reply;
 }
 
-static IPrange *parse_hostname PROTO2(const char *, text, unsigned int, len)
+static IPrange *parse_hostname (const char * text, unsigned int len)
 {
   IPrange *reply;
   struct hostent *hostaddr;
@@ -186,7 +186,7 @@ static IPrange *parse_hostname PROTO2(const char *, text, unsigned int, len)
 #   128.4-8.*.* -- (* acts as the range 0 - 255)
 */
 
-static IPrange *parse_ipline PROTO1(const char *, text)
+static IPrange *parse_ipline (const char * text)
 {
   IPrange *reply;
   char type = 0;
@@ -253,7 +253,7 @@ static IPrange *parse_ipline PROTO1(const char *, text)
 }
 
 
-void add_ipline PROTO2(const char *, text, IPrange **, table)
+void add_ipline (const char * text, IPrange ** table)
 {
       IPrange *nl;
       IPrange *newtab;
@@ -285,7 +285,7 @@ void add_ipline PROTO2(const char *, text, IPrange **, table)
  * Write out the IP table in the .IPTAB_DUMP file.
  ****************************************************************************/
 
-void dump_iptab PROTO2(IPrange *,table,FILE *, fp)
+void dump_iptab (IPrange *table,FILE * fp)
 {
 
   if(fp==NULL)

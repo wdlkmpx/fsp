@@ -39,7 +39,7 @@ void fsploga(const char *fmt, ...)
 }
 
 /* add a datestamp to begining of the log message, clear text in buffer */
-void fsplogs PROTO0((void))
+void fsplogs (void)
 {
 
     int timelen;
@@ -54,7 +54,7 @@ void fsplogs PROTO0((void))
 }
 
 /* flush logfile */
-void fsplogf PROTO0((void))
+void fsplogf (void)
 {
   if(dbug) {
 	     fwrite("[LOG] ",6,1,stdout);

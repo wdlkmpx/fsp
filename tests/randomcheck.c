@@ -10,7 +10,7 @@ static int result;
 #define MAX_WORST_ALLOWED 0.1f
 
 /* FSP classic algo */
-static unsigned short classic PROTO0((void))
+static unsigned short classic (void)
 {
   unsigned long k;
 
@@ -21,13 +21,13 @@ static unsigned short classic PROTO0((void))
 }
 
 /* get low bits from random result */
-static unsigned short simple PROTO0((void))
+static unsigned short simple (void)
 {
   return random();
 }
 
 /* get high bits from random result - better */
-static unsigned short simple2 PROTO0((void))
+static unsigned short simple2 (void)
 {
   return (random() >> 15);
 }

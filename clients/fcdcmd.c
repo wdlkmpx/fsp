@@ -21,10 +21,10 @@
 #include "merge.h"
 #include "printpro.h"
 
-static int f_cd PROTO1(const char *, p)
+static int f_cd (const char * p)
 {
   UBUF *ub;
-
+  
   ub = client_interact(CC_GET_PRO,0L, strlen(p), (unsigned const char *)p+1, 0,
 		       (unsigned char *)NULLP);
 
@@ -38,7 +38,7 @@ static int f_cd PROTO1(const char *, p)
   }
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char *np;
   char **av, *av2[2];
@@ -54,7 +54,11 @@ int main PROTO2(int, argc, char **, argv)
       av2[1] = 0;
     }
     np = util_abs_path(*av);
-    if(f_cd(np))puts(np);
+    if(f_cd(np))
+    {
+	util_junk_password(np);
+	puts(np);
+    }
     else {
       puts(env_dir);
     }

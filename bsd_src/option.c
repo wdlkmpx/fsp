@@ -75,7 +75,7 @@ OPTION options[] = {
  *	add create/process function pointers to node, so we can skip
  *	this switch stuff.
  */
-PLAN *find_create PROTO1(char ***, argvp)
+PLAN *find_create (char *** argvp)
 {
   register OPTION *p;
   PLAN *new;
@@ -112,12 +112,12 @@ PLAN *find_create PROTO1(char ***, argvp)
   return(new);
 }
 
-static int typecompare PROTO2(const void *, a, const void *, b)
+static int typecompare (const void * a, const void * b)
 {
   return(strcmp(((const OPTION *)a)->name, ((const OPTION *)b)->name));
 }
 
-OPTION *option PROTO1(char *, name)
+OPTION *option (char * name)
 {
   OPTION tmp;
 

@@ -18,76 +18,76 @@ extern char *listen_on;
 extern unsigned int dir_cache_limit, stat_cache_limit,fp_cache_limit;
 extern char *tmp_dir;
 extern mode_t upload_umask, system_umask;
-void load_configuration PROTO1(const char *, conffile);
-void destroy_configuration PROTO0((void));
+void load_configuration (const char * conffile);
+void destroy_configuration (void);
 
 /* file.c, file based disk i/o operations */
-int init_caches PROTO0((void));
-void shutdown_caches PROTO0((void));
-void stat_caches PROTO1(FILE *,fp);
-const char *validate_path PROTO0((char *, unsigned, PPATH *,DIRINFO **, int));
-const char *server_get_dir PROTO0((DIRLISTING **,const DIRINFO *));
-const char *server_del_file PROTO0((PPATH *, DIRINFO *));
-const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di);
-const char *server_make_dir PROTO0((PPATH *, unsigned long,DIRINFO **));
-const char *server_get_file PROTO0((PPATH *, FILE **, unsigned long,
-				     unsigned short,DIRINFO *));
-const char *server_get_pro PROTO3(DIRINFO *, di, char *, result, const char *, acc);
-const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key);
-const char *server_up_load PROTO0((char *, unsigned int, unsigned long, unsigned long,
-				    unsigned short));
-const char *server_install PROTO0((PPATH *, unsigned long, unsigned short,const char *,DIRINFO *,unsigned int,const char *));
-const char *server_secure_file PROTO0((PPATH *, unsigned long,
-					unsigned short,DIRINFO *));
-const char *server_grab_file PROTO0((FILE **, unsigned long,
-				      unsigned short));
-const char *server_grab_done PROTO0((unsigned long, unsigned short));
-const char *server_stat PROTO1(UBUF *, buf);
-const char *server_rename PROTO0((char *,unsigned int,unsigned int));
-void init_home_dir PROTO0((void));
+int init_caches (void);
+void shutdown_caches (void);
+void stat_caches (FILE *fp);
+const char *validate_path (char *, unsigned, PPATH *,DIRINFO **, int);
+const char *server_get_dir (DIRLISTING **,const DIRINFO *);
+const char *server_del_file (PPATH *, DIRINFO *);
+const char *server_del_dir (PPATH * pp, DIRINFO * di);
+const char *server_make_dir (PPATH *, unsigned long,DIRINFO **);
+const char *server_get_file (PPATH *, FILE **, unsigned long,
+				     unsigned short,DIRINFO *);
+int server_get_pro (DIRINFO * di, char * result, const char * acc);
+const char *server_set_pro (DIRINFO * di, const char * key);
+const char *server_up_load (char *, unsigned int, unsigned long, unsigned long,
+				    unsigned short);
+const char *server_install (PPATH *, unsigned long, unsigned short,const char *,DIRINFO *,unsigned int,const char *);
+const char *server_secure_file (PPATH *, unsigned long,
+					unsigned short,DIRINFO *);
+const char *server_grab_file (FILE **, unsigned long,
+				      unsigned short);
+const char *server_grab_done (unsigned long, unsigned short);
+const char *server_stat (UBUF * buf);
+const char *server_rename (char *,unsigned int,unsigned long);
+void init_home_dir (void);
 
 /* filecache.c, open filehandles cache */
 
 /* path.c, path parser */
-const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp);
+const char *parse_path (char * fullp, unsigned int len, PPATH * pp);
 
 /* random.c, next key random degenerator */
-unsigned short gen_next_key PROTO0((void));
+unsigned short gen_next_key (void);
 
 /* iprange.c IP range services */
 extern IPrange *iptab;
-const char *check_ip_table PROTO2(unsigned long, inet_num,IPrange *,table);
-void free_ip_table PROTO1(IPrange *,table);
-void add_ipline PROTO2(const char *, text, IPrange **, table);
-void dump_iptab PROTO2(IPrange *,table,FILE *, fp);
+const char *check_ip_table (unsigned long inet_num,IPrange *table);
+void free_ip_table (IPrange *table);
+void add_ipline (const char * text, IPrange ** table);
+void dump_iptab (IPrange *table,FILE * fp);
 
 /* host.c, DNS and IP host databases */
-HTAB *find_host PROTO0((unsigned long));
-int init_htab PROTO0((void));
-int dump_htab PROTO1(FILE *,fn);
+HTAB *find_host (unsigned long);
+int init_htab (void);
+int dump_htab (FILE *fn);
 
 /* server.c, network server operations */
 extern time_t cur_time;
 extern int shutdowning;
-RETSIGTYPE server_interrupt PROTO1(int, signum);
-RETSIGTYPE server_dump PROTO1(int, signum);
-int server_loop PROTO2(int,fd,time_t,timeout);
-int server_reply PROTO0((struct sockaddr_in *, UBUF *, unsigned int, unsigned int));
-void send_file PROTO0((struct sockaddr_in *, UBUF *, FILE *, unsigned int,
-			      char *));
+RETSIGTYPE server_interrupt (int signum);
+RETSIGTYPE server_dump (int signum);
+int server_loop (int fd,time_t timeout);
+int server_reply (struct sockaddr_in *, UBUF *, unsigned int, unsigned int);
+void send_file (struct sockaddr_in *, UBUF *, FILE *, unsigned int,
+			      char *);
 
 /* acl.c, security code */
-void load_access_rights PROTO1(DIRINFO *,di);
-void save_access_rights PROTO1(DIRINFO *,di);
-const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,rights,unsigned long, ip_addr, const char *, passwd);
+void load_access_rights (DIRINFO *di);
+void save_access_rights (DIRINFO *di);
+const char * require_access_rights (const DIRINFO *di,unsigned char rights,unsigned long ip_addr, const char * passwd);
 
 /* main.c, startup and init code */
 
 /* log.c, log writter */
 extern int logfd;
 extern int tlogfd;
-void fsplogf PROTO0((void));
-void fsplogs PROTO0((void));
+void fsplogf (void);
+void fsplogs (void);
 #ifdef __STDC__
 void fsploga(const char *fmt, ...);
 #else

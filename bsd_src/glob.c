@@ -62,21 +62,21 @@ static	int globbed;
 static	char *entp;
 static	char **sortbas;
 
-static int any PROTO2(register int, c, register const char *, s)
+static int any (register int c, register const char * s)
 {
   while (*s)
     if (*s++ == c) return(1);
   return(0);
 }
 
-static int tglob PROTO1(char, c)
+static int tglob (char c)
 {
   if (any(c, globchars))
     gflag |= c == '{' ? 2 : 1;
   return (c);
 }
 
-static int addpath PROTO1(char, c)
+static int addpath (char c)
 {
   if (gpathp >= lastgpathp) globerr = "Pathname too long";
   else {
@@ -86,14 +86,14 @@ static int addpath PROTO1(char, c)
   return(0);
 }
 
-static int ginit PROTO1(char **, agargv)
+static int ginit (char ** agargv)
 {
   agargv[0] = 0; gargv = agargv; sortbas = agargv; gargc = 0;
   gnleft = NCARGS - 4;
   return(0);
 }
 
-static void sort PROTO0((void))
+static void sort (void)
 {
   register char **p1, **p2, *c;
   char **Gvp = &gargv[gargc];
@@ -112,7 +112,7 @@ static void sort PROTO0((void))
   sortbas = Gvp;
 }
 
-static char *strspl PROTO2(register char *, cp, register const char *, dp)
+static char *strspl (register char * cp, register const char * dp)
 {
   register char *ep = (char *)malloc((unsigned)(strlen(cp) + strlen(dp) + 1));
 
@@ -125,7 +125,7 @@ static char *strspl PROTO2(register char *, cp, register const char *, dp)
   return (ep);
 }
 
-static int Gcat PROTO2(char *, s1, const char *, s2)
+static int Gcat (char * s1, const char * s2)
 {
   register int len = strlen(s1) + strlen(s2) + 1;
 
@@ -139,10 +139,10 @@ static int Gcat PROTO2(char *, s1, const char *, s2)
   return(0);
 }
 
-static int execbrc PROTO0((char *, char *));
-void matchdir PROTO0((char *));
+static int execbrc (char *, char *);
+void matchdir (char *);
 
-static void expand PROTO1(char *, as)
+static void expand (char * as)
 {
   register char *cs;
   register char *sgpathp, *oldcs;
@@ -180,7 +180,7 @@ static void expand PROTO1(char *, as)
   *gpathp = 0;
 }
 
-static int amatch PROTO2(char *, s, char *, p)
+static int amatch (char * s, char * p)
 {
   register int scc;
   int ok, lc;
@@ -251,7 +251,7 @@ slash:
   }
 }
 
-static int match PROTO2(char *, s, char *, p)
+static int match (char * s, char * p)
 {
   register int c;
   register char *sentp;
@@ -266,7 +266,7 @@ static int match PROTO2(char *, s, char *, p)
   return (c);
 }
 
-void matchdir PROTO1(char *, pattern)
+void matchdir (char * pattern)
 {
   struct stat stb;
   register struct rdirent *dp;
@@ -297,7 +297,7 @@ void matchdir PROTO1(char *, pattern)
   util_closedir(dirp);
 }
 
-static int execbrc PROTO2(char *, p, char *, s)
+static int execbrc (char * p, char * s)
 {
   char restbuf[BUFSIZ + 2];
   register char *pe, *pm, *pl;
@@ -358,7 +358,7 @@ doit:
     return (0);
 }
 
-static void acollect PROTO1(register char *, as)
+static void acollect (register char * as)
 {
   register int ogargc = gargc;
 
@@ -367,7 +367,7 @@ static void acollect PROTO1(register char *, as)
   if (gargc != ogargc) sort();
 }
 
-static void collect PROTO1(register char *, as)
+static void collect (register char * as)
 {
   if (eq(as, "{") || eq(as, "{}")) {
     Gcat(as, "");
@@ -375,14 +375,14 @@ static void collect PROTO1(register char *, as)
   } else acollect(as);
 }
 
-static void blkfree PROTO1(char **, av0)
+static void blkfree (char ** av0)
 {
   register char **av = av0;
 
   while (*av) free(*av++);
 }
 
-static int blklen PROTO1(register char **, av)
+static int blklen (register char ** av)
 {
   register int i = 0;
 
@@ -390,7 +390,7 @@ static int blklen PROTO1(register char **, av)
   return (i);
 }
 
-static char **blkcpy PROTO2(char **, oav, register char **, bv)
+static char **blkcpy (char ** oav, register char ** bv)
 {
   register char **av = oav;
 
@@ -398,7 +398,7 @@ static char **blkcpy PROTO2(char **, oav, register char **, bv)
   return (oav);
 }
 
-static char **copyblk PROTO1(register char **, v)
+static char **copyblk (register char ** v)
 {
   register char **nv;
 
@@ -410,23 +410,13 @@ static char **copyblk PROTO1(register char **, v)
   return (blkcpy(nv, v));
 }
 
-#ifdef PROTOTYPES
 typedef int (*charfunc) (char) ;
 static void rscan (register char **t, charfunc f)
-#else
-static void rscan(t, f)
-    register char **t;
-    int (*f)();
-#endif
 {
   register char *p, c;
 
   while ((p = *t++)) {
-#ifdef PROTOTYPES
     if (f == (charfunc) tglob)
-#else
-    if (f == tglob)
-#endif
     {
       if (*p == '~') gflag |= 2;
       else if (eq(p, "{") || eq(p, "{}")) continue;
@@ -435,7 +425,7 @@ static void rscan(t, f)
   }
 }
 
-char **glob PROTO1(register char *, v)
+char **glob (register char * v)
 {
   char agpath[BUFSIZ];
   char *agargv[GAVSIZ];
@@ -443,11 +433,7 @@ char **glob PROTO1(register char *, v)
   vv[0] = v;
   vv[1] = 0;
   gflag = 0;
-#ifdef PROTOTYPES
   rscan(vv, (charfunc) tglob);
-#else
-  rscan(vv, tglob);
-#endif
   if (gflag == 0) return (copyblk(vv));
 
   globerr = 0;

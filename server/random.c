@@ -8,7 +8,7 @@
 
 
 /* get high bits from random result - better */
-unsigned short gen_next_key PROTO0((void))
+unsigned short gen_next_key (void)
 {
   return (random() >> 15);
 }

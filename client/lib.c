@@ -34,9 +34,9 @@ unsigned long busy_delay   = DEFAULT_DELAY;	/* busy retransmit timer */
 unsigned long idle_delay   = DEFAULT_DELAY;	/* idle retransmit timer */
 unsigned long udp_sent_time;
 
-UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
-			     unsigned int, l1, unsigned const char *, p1,
-			     unsigned int, l2, unsigned const char *, p2)
+UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
+			     unsigned int l1, unsigned const char * p1,
+			     unsigned int l2, unsigned const char * p2)
 {
   struct sockaddr_in from;
   UBUF sbuf;
@@ -186,7 +186,7 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
   }
 }
 
-static RETSIGTYPE client_intr PROTO1(int, signum)
+static RETSIGTYPE client_intr (int signum)
 {
   switch(client_intr_state) {
     case 0: exit(2);
@@ -198,7 +198,7 @@ static RETSIGTYPE client_intr PROTO1(int, signum)
 #endif
 }
 
-void init_client PROTO3(const char *, host, unsigned short, port, unsigned short, myport)
+void init_client (const char * host, unsigned short port, unsigned short myport)
 {
   busy_delay = idle_delay = target_delay;
   myseq = random();
@@ -217,7 +217,7 @@ void init_client PROTO3(const char *, host, unsigned short, port, unsigned short
   signal(SIGINT,client_intr);
 }
 
-int client_done PROTO0((void))
+int client_done (void)
 {
   (void) client_interact(CC_BYE, 0L, 0, (unsigned char *)NULLP, 0,
 			 (unsigned char *)NULLP);

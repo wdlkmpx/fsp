@@ -21,7 +21,7 @@
 #endif
 #include "printpro.h"
 
-static int get_pro PROTO1(const char *, p)
+static int get_pro (const char * p)
 {
   char *op;
   UBUF *ub;
@@ -40,7 +40,7 @@ static int get_pro PROTO1(const char *, p)
   return(0);
 }
 
-static int set_pro PROTO2(char *, p, char *, key)
+static int set_pro (char * p, char * key)
 {
   char *op;
   UBUF *ub;
@@ -59,7 +59,7 @@ static int set_pro PROTO2(char *, p, char *, key)
   return(0);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char **av, *av2[2], *key;
 

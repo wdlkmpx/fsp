@@ -47,7 +47,7 @@
  * yanknode --
  *	destructively removes the top from the plan
  */
-static PLAN *yanknode PROTO1(PLAN **, planp)
+static PLAN *yanknode (PLAN ** planp)
 {
   PLAN *node;		/* top node removed from the plan */
 
@@ -63,7 +63,7 @@ static PLAN *yanknode PROTO1(PLAN **, planp)
  *	paren_squish.  In comments below, an expression is either a
  *	simple node or a N_EXPR node containing a list of simple nodes.
  */
-static PLAN *yankexpr PROTO1(PLAN **, planp)
+static PLAN *yankexpr (PLAN ** planp)
 {
   register PLAN *next;	/* temp node holding subexpression results */
   PLAN *node;           /* pointer to returned node or expression */
@@ -115,7 +115,7 @@ static PLAN *yankexpr PROTO1(PLAN **, planp)
  * paren_squish --
  *	replaces "parentheisized" plans in our search plan with "expr" nodes.
  */
-PLAN *paren_squish PROTO1(PLAN *, plan)
+PLAN *paren_squish (PLAN * plan)
 {
   register PLAN *expr;	/* pointer to next expression */
   register PLAN *tail;	/* pointer to tail of result plan */
@@ -152,7 +152,7 @@ PLAN *paren_squish PROTO1(PLAN *, plan)
  * not_squish --
  *	compresses "!" expressions in our search plan.
  */
-PLAN *not_squish PROTO1(PLAN *, plan)
+PLAN *not_squish (PLAN * plan)
 {
   register PLAN *next;	/* next node being processed */
   register PLAN *node;	/* temporary node used in N_NOT processing */
@@ -208,7 +208,7 @@ PLAN *not_squish PROTO1(PLAN *, plan)
  * or_squish --
  *	compresses -o expressions in our search plan.
  */
-PLAN *or_squish PROTO1(PLAN *, plan)
+PLAN *or_squish (PLAN * plan)
 {
   register PLAN *next;	/* next node being processed */
   register PLAN *tail;	/* pointer to tail of result plan */

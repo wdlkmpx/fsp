@@ -31,7 +31,7 @@
 #endif
 #include "ls.h"
 
-void prcopy PROTO3(char *, src, char *, dest, int, len)
+void prcopy (char * src, char * dest, int len)
 {
   register int ch;
 
@@ -41,13 +41,13 @@ void prcopy PROTO3(char *, src, char *, dest, int, len)
   }
 }
 
-void nomem PROTO0((void))
+void nomem (void)
 {
   (void)fprintf(stderr, "ls: out of memory.\n");
   ls_bad(1);
 }
 
-char *emalloc PROTO1(int, size)
+char *emalloc (int size)
 {
   char *retval;
 
@@ -55,7 +55,7 @@ char *emalloc PROTO1(int, size)
   return(retval);
 }
 
-void usage PROTO0((void))
+void usage (void)
 {
   (void)fprintf(stderr, "usage: ls [-1ACFLRacdfgiklqrstu] [file ...]\n");
   ls_bad(1);

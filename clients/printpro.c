@@ -23,17 +23,18 @@
 #define N_or_Y(y) ((flags & (y)) ?  "N" : "Y")
 #define Machine(y) ((flags & (y)) ? "YOU" : "other")
 
-int print_pro PROTO2(UBUF *, ub, FILE *, where)
+int print_pro (UBUF * ub, FILE * where)
 {
   char flags;
   unsigned len, len1;
   char *pro1, *pro2;
 
+  /* length of readme */
   len = BB_READ2(ub->bb_len);
+  /* len1= size of extended protection data */
   len1 = BB_READ4(ub->bb_pos);
   pro1 = ub->buf;
   pro2 = ub->buf+len;
-
   if(len1) {
     flags = *pro2;
     fprintf(where,"owner: %s, del: %s, create: %s, mkdir: %s, get: %s, list: %s, rename: %s.\n",
@@ -41,7 +42,7 @@ int print_pro PROTO2(UBUF *, ub, FILE *, where)
 	   Y_or_N(DIR_MKDIR), N_or_Y(DIR_GET), Y_or_N(DIR_LIST),
 	   Y_or_N(DIR_RENAME));
   }
-  fprintf(where,"%s", pro1);
+  if(len) fprintf(where,"%s", pro1);
   fprintf(where,"\n");
 
   return(0);

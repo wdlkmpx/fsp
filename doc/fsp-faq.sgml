@@ -1,4 +1,4 @@
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
 <!-- define some ENTITYs -->
 <!ENTITY fsp "File Service Protocol">
 ]>
@@ -542,6 +542,19 @@
         fine-tune its retry algorithm
         by computing packet loss ratio of network, and duplicate
         packet rate.
+    <sect2>
+    <title>Why not use bigger packet size?</title>
+    <para>
+       &fsp; defines maximum packet size 1024 bytes of data + header.
+       Because MTU of most networks is about 1500 bytes. It is true, that
+       we can use slightly bigger packets for gaining some speed.
+       We have performed some benchmarks and they shows only minor
+       performance increase, about 10-15 percent. Similar testing
+       was performed by HP in <ulink url="http://www.ietf.org/rfc/rfc2348.txt">RFC 2348</ulink>.
+    <para>
+       For bigger performance enhancement we need to use at least 2KB,
+       but packets of that size must be fragmented on most network and fragmenting increases possibility of packet loss. We will not increase packet size
+       in FSP v2, but we are willing to do some experiments in FSP v3.  
 </sect1>
 </article>
 <!-- vim: set expandtab: -->

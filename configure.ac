@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b20,hsn@netmag.cz)
+AC_INIT(fsp,2.8.1b21,hsn@netmag.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
@@ -32,6 +32,10 @@ case $host_os in
            *cygwin* ) AC_DEFINE(OS_CYGWIN,1,[Define if you are building for cygwin]) AC_MSG_RESULT(yes);;
                   * ) AC_MSG_RESULT(no);;
 esac		  
+AC_MSG_CHECKING([if we are building lamer pack])
+AC_ARG_ENABLE(lamerpack,[Build for lamers],AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disbled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
+AC_MSG_CHECKING([if enable extra debug code])
+AC_ARG_ENABLE(debug,[Enable client library debuging],AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_PROG_RANLIB
 AM_PROG_LEX
 AC_PROG_LN_S
@@ -58,8 +62,8 @@ then
       -Wno-system-headers -Wredundant-decls \
       -Wmissing-noreturn -pedantic \
       -Wlong-long -Wundef -Winline \
-      -Wno-unused-parameter
-#     -Wunreachable-code -Wconversion 
+      -Wno-unused-parameter \
+      -Wunreachable-code -Wconversion 
   do
        if $CC $i $ac_cv_prog_gcc_flags -c configure-dummy.c >/dev/null 2>&1 
        then ac_cv_prog_gcc_flags="$ac_cv_prog_gcc_flags $i"
@@ -71,7 +75,6 @@ rm -f configure-dummy.c configure-dummy.o
 CFLAGS="$CFLAGS $ac_cv_prog_gcc_flags"
 AC_SUBST(CFLAGS)
 AC_AIX
-AC_C_PROTOTYPES
 AC_C_CONST
 AC_C_VOLATILE
 AC_PROG_CPP
@@ -81,10 +84,6 @@ if test "${enable_maintainer_mode+set}" = set; then
    CFLAGS="-g3 $ac_cv_prog_gcc_flags"
 AC_CHECK_LIB(efence,EF_Abort)   
 fi
-AC_MSG_CHECKING([if enable extra debug code])
-AC_ARG_ENABLE(debug,[Enable client library debuging],AC_DEFINE(DEBUG,1,[Define if you want more debug messages]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
-AC_MSG_CHECKING([if we are building lamer pack])
-AC_ARG_ENABLE(lamerpack,[Build for lamers],AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disbled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_HEADER_STDC
 AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h)
 AC_CHECK_HEADERS(string.h memory.h strings.h unistd.h sys/resource.h utime.h)

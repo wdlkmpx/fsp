@@ -43,7 +43,7 @@ static unsigned long start_from;
 
 static int len;
 
-static RETSIGTYPE fsp_cleanup PROTO1(int, signum)
+static RETSIGTYPE fsp_cleanup (int signum)
 {
   char filename[20];
   sprintf(filename,".fsp.%d",getpid());
@@ -57,7 +57,7 @@ get_file
 #else
 grab_file
 #endif
-PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
+(char * path, struct stat * sbufp, int mode, int level)
 {
   char *name = path + len;
   FILE *fp;
@@ -150,7 +150,7 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
   return;
 }
 
-static int make_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, mode)
+static int make_dir (char * name, struct stat * sbufp, u_long * mode)
 {
     struct stat sbuf;
 
@@ -178,7 +178,7 @@ static int make_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, mode)
     return (0);
 }
 
-static void usage PROTO0((void))
+static void usage (void)
 {
 
 #ifdef COMMAND_GET
@@ -200,7 +200,7 @@ static void usage PROTO0((void))
    *   -r recursively get directories
    *   -p preserve date/times of original file on downloaded copy
    */
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char **av, *av2[2], n[1024];
   int prompt, mode = 0;

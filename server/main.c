@@ -20,7 +20,7 @@
 static int inetd_mode = 0;
 static const char *config_file = CONF_FILE ;
 
-static void display_version PROTO0((void))
+static void display_version (void)
 {
       printf(
 #ifndef LAMERPACK      
@@ -40,12 +40,12 @@ static void display_version PROTO0((void))
 
 /* flush the log message to file */
 
-static void arg_err PROTO0((void))
+static void arg_err (void)
 {
   fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec]\n", stderr);
 }
 
-static void check_required_vars PROTO0((void))
+static void check_required_vars (void)
 {
   double rnd;
 
@@ -110,7 +110,7 @@ static void check_required_vars PROTO0((void))
   }
 }
 
-static void init_random PROTO0((void))
+static void init_random (void)
 {
   unsigned int seed;
   FILE *f;
@@ -126,7 +126,7 @@ static void init_random PROTO0((void))
   srandom(seed);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   int opt;
   long inetd_timeout=0;

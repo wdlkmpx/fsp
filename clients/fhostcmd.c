@@ -115,7 +115,7 @@ static struct fsp_host *find_host(const char *name)
     return NULL;
 }
 
-static void host_usage PROTO0((void)) /* print usage message */
+static void host_usage (void) /* print usage message */
 {
   fprintf(stderr,"Usage: fhost [-d delay] [-p local port] [-l local dir]\n");
   fprintf(stderr,"             [-o timeout] [-t trace] [-w password]\n");
@@ -125,7 +125,7 @@ static void host_usage PROTO0((void)) /* print usage message */
 }
 
 /* get data out of resource file */
-static void parse_prof_file_new PROTO1(const char *, filename)
+static void parse_prof_file_new (const char * filename)
 {
 
   FILE *input=NULL;
@@ -150,7 +150,7 @@ static void parse_prof_file_new PROTO1(const char *, filename)
       fclose(input);
 }
 
-static void list_prof_file PROTO0((void)) /* list resource file */
+static void list_prof_file (void) /* list resource file */
 {
   int i;
   for(i=0;i<hostsize;i++)
@@ -161,7 +161,7 @@ static void list_prof_file PROTO0((void)) /* list resource file */
   return;
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   int optletter,csh,lhost=0;
   register char *p;

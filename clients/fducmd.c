@@ -34,8 +34,8 @@
 
 static u_long total_file_size;
 
-static void add_file_size PROTO4(char *, name, struct stat *, sbufp,
-				 int, mode, int,  level)
+static void add_file_size (char * name, struct stat * sbufp,
+				 int mode, int  level)
 {
   register u_long file_size;
 
@@ -45,13 +45,13 @@ static void add_file_size PROTO4(char *, name, struct stat *, sbufp,
      ((mode & EACH) && level < 2)) printf("%-7ld %s\n", file_size, name);
 }
 
-static int start_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, sum)
+static int start_dir (char * name, struct stat * sbufp, u_long * sum)
 {
   *sum = total_file_size;
   return(0);
 }
 
-static void end_dir PROTO4(char *, path, int, mode, u_long, sum, int, level)
+static void end_dir (char * path, int mode, u_long sum, int level)
 {
   /* directories are printed as default */
   /* but, check recursion level */
@@ -64,7 +64,7 @@ static void end_dir PROTO4(char *, path, int, mode, u_long, sum, int, level)
 }
 
 /* ARGSUSED */
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   int mode=0;
   int filcnt = 0;

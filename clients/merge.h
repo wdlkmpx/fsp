@@ -10,18 +10,19 @@
 /* spliting the prototypes from merge.c to merge.h */
 
 /* prototypes */
-int fcatcmd_main PROTO2(int, argc, char **, argv);
-int fcdcmd_main PROTO2(int, argc, char **, argv);
-int fgetcmd_main PROTO2(int, argc, char **, argv);
-int fgrabcmd_main PROTO2(int, argc, char **, argv);
-int flscmd_main PROTO2(int, argc, char **, argv);
-int fmkdir_main PROTO2(int, argc, char **, argv);
-int fprocmd_main PROTO2(int, argc, char **, argv);
-int fput_main PROTO2(int, argc, char **, argv);
-int frmcmd_main PROTO2(int, argc, char **, argv);
-int frmdircmd_main PROTO2(int, argc, char **, argv);
-int fver_main PROTO2(int, argc, char **, argv);
-int fducmd_main PROTO2(int, argc, char **, argv);
-int fhostcmd_main PROTO2(int, argc, char **, argv);
-int ffindcmd_main PROTO2(int, argc, char **, argv);
-int fstatcmd_main PROTO2(int, argc, char **, argv);
+int fcatcmd_main (int argc, char ** argv);
+int fcdcmd_main (int argc, char ** argv);
+int fgetcmd_main (int argc, char ** argv);
+int fgrabcmd_main (int argc, char ** argv);
+int flscmd_main (int argc, char ** argv);
+int fmkdir_main (int argc, char ** argv);
+int fprocmd_main (int argc, char ** argv);
+int fput_main (int argc, char ** argv);
+int frmcmd_main (int argc, char ** argv);
+int frmdircmd_main (int argc, char ** argv);
+int fver_main (int argc, char ** argv);
+int fducmd_main (int argc, char ** argv);
+int fhostcmd_main (int argc, char ** argv);
+int ffindcmd_main (int argc, char ** argv);
+int fstatcmd_main (int argc, char ** argv);
+int fmvcmd_main (int argc, char ** argv);

@@ -5,7 +5,7 @@ Complete content of the FSP package:
    FILES	   This list.
    INFO		   Information about the purpose of FSP
    INSTALL	   Installation instructions for FSP
-   PROTOCOL	   Unofficial FSP protocol definition
+   PROTOCOL	   FSP protocol definition
    MACHINES        Where FSP compiles out of box
    faq.html        FSP FAQ
    Makefile.in	   input file for building makefile from configure script.

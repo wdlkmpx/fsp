@@ -2,9 +2,10 @@ FSP SUITE TO DO LIST BY RADIM KOLAR
 /* maintained by hsn -at- netmag * cz */
 
 Radim Kolar's personal wishlist from 1997
-show loosers online (finfo command) and server statz
-rename command
-password change command
+*-high priority-*
+ - show loosers online (finfo command) and server statz
+* l o w *
+ - password change command
 
 TESTSUITE NEEDED:
 Write a simple FSP protocol testing tool
@@ -15,36 +16,42 @@ Test new command rename /when implemented/
 
 SECURITY BUGS:
 symlink to FILE can escape from FSP root directory. OLD known problem.
+symlink support must be reworked before final release.
 
 PROTOCOL-RELATED BUGS:
-it is not clear how to generate directory items with type skip. append
-  \0 name to them or not? All known clients stops reading the directory
-  when sees skip item in block. 
+fprocmd/fcdcmd do not support embedded servers correctly
 
 PORTING
 Sven's Slowaris 8 compile problem
-not builds on freebsd 4 and non intel platforms?
+Sven's AIX compile problem
+not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
 
 NEEDS IMPROVMENT:
 
 Client LIBRARY
 :high:
 we should retune retry algoritm for better support lines with higher
-  packed loss.
+  packed loss. On common internet lines current one works okay.
 add more detailed stats from retry alg.  
 :low:
 fver and others add support new syntax fsp://host:port/file
 add sem locking method, possible?
-flscmd does stat before directory listing, why?
+flscmd should not to do stat before directory listing.
+directory listing should not need to get 0 sized block. Needs total code
+   rewrite. 
+better support for persistent keys - do not send cc_bye ? this should
+ be probably configurable
+
 :long-term goals:
-:better to write a new code instead fixing old crap
+:better to write a new code instead of fixing 10 yo crap.
 =convert to multi threaded=
 make setup from env a separate function
 do not use global variables
 
 CLIENTS 
-ALL: normalize return error codes of all clients
-write new clients for new commands - fsprencmd fpasswd finfo
+:high: 
+normalize return error codes of all clients
+write new clients for new commands - fpasswd finfo
 :low:
 add support for more sane fsplist file format (as used by warez
 ppl) to fhostcmd
@@ -57,35 +64,43 @@ clients do not freeing memory allocated from glob()
 FUTURE FEATURES FOR SERVER:
 :high: required for 2.8.2 final
 can be run multiple times on the same port, how to check? 
-  Currently looks fine on bsd.
-write RENAME FSP command
+  drop reuse flag from socket bind?
+  Currently looks fine with flag on bsd. Fails on lin-suck.
+
 report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients (burst command in fspclient)
-
-:midle:may not be in 2.8.2
 Native Supports for symbolic links (needed for mirroring Debian)
+new LSTAT COMMAND
 write FSP_CHANGE_PASSWORD command
 
+:midle:may not be in 2.8.2
+improve RENAME FSP command
+  * cross directory renames are unsuported for now
+  * server can send error reply even to denied per directory clients
+     - minor security flaw
+
 :low:this will sure go after 2.8.2:
-FSP_GET/SET OWNERS like file transfer
-hashed passwords
-add switch for dir vs global access priority, override table
-use ntons a podobne funkce v iprange.c
-pouzivat nejaky jiny typ nez unsigned long pro ip adresu
-hard coded directory access rights in configuration instead of loading from FS
+hashed passwords. Do we really needs them?
+add switch for directory vs global ACL overide
+hard code acl into server configuration, do not use .FSP_ filez.
 support for user directory namespace ~hsn / public_html, check links to outside!
+use ntons a podobne funkce v iprange.c
+ipv6 socket support
 privileged Hosts, excluded from Byte transfer Limit (hard to do)
-FSP Proxy repeater
+
+new toy
+FSP Proxy repeater - look at old code.
 
 PERFORMANCE:
 host hashtable shrinking sometimes
-stat cache pro FSP_STAT a ostatni
+stat cache pro FSP_STAT a ostatni staty
+chage O(N) fifo cache to some more sane lru hashtable code. 
 background time() alarm() caller 
 Current performance 1925648B/s
 
 MAN:
-update FAQ - urgent!!
+finish sgml FAQ
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
 
 libraries and support for FSP protocol
@@ -93,9 +108,10 @@ libraries and support for FSP protocol
 
 DONE: FSP library for Java
 DONE: FSP over HTTP
+FSP plugin do Netscape/MSIE. Not possible to write protocol plugins? 
+  we have fsproxy now.
 WIP:  new small,light fsplib for C.
 FSP backend for APT
-FSP plugin do Netscape/MSIE
 Transfer HTTP over fsp transport
 FSP support to lftp,wget,curl
 AVFS plugin http://sourceforge.net/projects/avf

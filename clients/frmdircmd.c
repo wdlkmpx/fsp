@@ -20,7 +20,7 @@
 #include "my-string.h"
 #include "merge.h"
 
-static int remove_it PROTO1(char *, p)
+static int remove_it (char * p)
 {
   char *op;
   UBUF *ub;
@@ -38,7 +38,7 @@ static int remove_it PROTO1(char *, p)
   return(0);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char **argv)
 {
   char **av, *av2[2];
 

@@ -28,8 +28,8 @@ static int thc[THCCOUNT];
 static time_t thcbase;
 static int myfd;
 
-static void server_process_packet PROTO0((unsigned, UBUF *, int, HTAB *,
-				      struct sockaddr_in *));
+static void server_process_packet (unsigned, UBUF *, int, HTAB *,
+				      struct sockaddr_in *);
 
 /* log 1 argument */
 #define ACTIONLOG0(FLAG,X) \
@@ -81,12 +81,12 @@ do { if((logging & (FLAG)) && !old) { \
 	      return; \
       } \
 
-RETSIGTYPE server_interrupt PROTO1(int, signum)
+RETSIGTYPE server_interrupt (int signum)
 {
   shutdowning = 1;
 }
 
-RETSIGTYPE server_dump PROTO1(int, signum)
+RETSIGTYPE server_dump (int signum)
 {
   dump = 1;
 #ifndef RELIABLE_SIGNALS
@@ -139,7 +139,7 @@ static const char * print_command(unsigned char cmd)
  * Send an error string to client.
  ****************************************************************************/
 
-static void send_error PROTO3(struct sockaddr_in *, from, UBUF *, ub, const char *, msg)
+static void send_error (struct sockaddr_in * from, UBUF * ub, const char * msg)
 {
   size_t sz;
 
@@ -157,7 +157,7 @@ static void send_error PROTO3(struct sockaddr_in *, from, UBUF *, ub, const char
  *  Those message that passed get sent to the dispatch loop.
  ****************************************************************************/
 
-int server_loop PROTO2(int, fd, time_t, timeout)
+int server_loop (int fd, time_t timeout)
 {
   HTAB *hp;
   const char *ir;
@@ -302,8 +302,8 @@ int server_loop PROTO2(int, fd, time_t, timeout)
  *  len1, len2: lengths of the two data regions in the message buffer.
  ****************************************************************************/
 
-int server_reply PROTO4(struct sockaddr_in *, from, UBUF *, ub,
-			unsigned int, len1,unsigned int, len2)
+int server_reply (struct sockaddr_in *from, UBUF * ub,
+			unsigned int len1,unsigned int len2)
 {
   unsigned char *s, *t, *d;
   unsigned sum;
@@ -374,8 +374,8 @@ return(0);
  * message buffer.
  ****************************************************************************/
 
-void send_file PROTO5(struct sockaddr_in *, from, UBUF *, ub, FILE *, fp,
-		      unsigned int, has_len, char *, lp)
+void send_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
+		      unsigned int has_len, char * lp)
 {
   size_t bytes;
   unsigned len;
@@ -413,15 +413,12 @@ void send_file PROTO5(struct sockaddr_in *, from, UBUF *, ub, FILE *, fp,
 * Note: no bounds checking is currently performed.  As version information
 *       grows, this will become required.
 ****************************************************************************/
-static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
+#ifndef LAMERPACK
+static void server_show_version (struct sockaddr_in * from, UBUF * ub)
 {
   char buf[UBUF_SPACE], verflags = 0;
   unsigned int xtra = VER_BYTES;
-#ifndef LAMERPACK
   strcpy(buf, "fspd " PACKAGE_VERSION);
-#else
-  strcpy(buf, "fsp server " PACKAGE_VERSION" for lamerz");
-#endif
   strcat(buf, "\n");
 
   if (logging)       verflags |= VER_LOG;
@@ -429,7 +426,12 @@ static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
   if (no_unnamed)    verflags |= VER_REVNAME;
   if (priv_mode)     verflags |= VER_PRIVMODE;
   if (maxthcallowed) verflags |= VER_THRUPUT;
+  
+  /* we are accepting xtra data on input */
+  /* because UDP tranport provides data size */
 
+  verflags |= VER_XTRADATA;
+  
   strcpy(ub->buf, buf);
   ub->buf[strlen(ub->buf)] = '\0';
   ub->buf[strlen(ub->buf)+1] = verflags;
@@ -444,7 +446,7 @@ static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
   BB_WRITE4(ub->bb_pos,xtra);
   server_reply(from, ub, strlen(ub->buf)+1, xtra);
 }
-
+#endif
 /****************************************************************************
 *  This is the dispatch loop for message that has been accepted.
 *  Serves command in message and sends out a reply.
@@ -455,8 +457,8 @@ static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
 *     from: pointer to the socket address structure of the client host.
 ****************************************************************************/
 
-static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
-			      HTAB *, hp, struct sockaddr_in *, from)
+static void server_process_packet (unsigned bytes, UBUF * ub, int old,
+			      HTAB * hp, struct sockaddr_in * from)
 {
   unsigned long  inet_num, pos;
   unsigned short port_num;
@@ -503,10 +505,16 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 
   switch(ub->cmd) {
     case CC_VERSION:
-      if(! ver_enabled) return;
+#ifdef LAMERPACK
+      ACTIONLOG0(L_VER,"AVOIDED SCAN DETECTION");
+      ACTIONOK(L_VER);
+#else
+      if(! ver_enabled) 
+	  return;
       ACTIONLOG0(L_VER,"VERSION");
       server_show_version(from, ub);
       ACTIONOK(L_VER);
+#endif
       return;
     case CC_BYE:
       hp->active = 0; /* was: if(!old)   before, why? */
@@ -723,16 +731,9 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	}
       }
       CHECK_ACCESS_RIGHTS(0,L_MAKEDIR);
-      pe = server_get_pro(di,ub->buf,pe);
-      if(pe)
-      {
-	    ACTIONLOG1(L_MAKEDIR|L_ERR,"GETPRO");
-	    ACTIONFAILED(L_MAKEDIR|L_ERR,pe);
-            send_error(from, ub, pe) ;
-	    return;
-      }
+      l1 = server_get_pro(di,ub->buf,pe);
       BB_WRITE4(ub->bb_pos,PRO_BYTES);
-      server_reply(from,ub,strlen(ub->buf)+1,PRO_BYTES);
+      server_reply(from,ub,l1,PRO_BYTES);
       ACTIONOK(L_MAKEDIR);
       return;
     case CC_GET_PRO :
@@ -746,16 +747,9 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	return;
       }
       CHECK_ACCESS_RIGHTS(0,L_GETPRO);
-      pe=server_get_pro(di,ub->buf,pe);
-      if(pe)
-      {
-        ACTIONLOG1(L_GETPRO|L_ERR,"GETPRO");
-	ACTIONFAILED(L_GETPRO|L_ERR,pe);
-        send_error(from, ub, pe) ;
-	return;
-      }
+      l1=server_get_pro(di,ub->buf,pe);
       BB_WRITE4(ub->bb_pos,PRO_BYTES);
-      server_reply(from,ub,strlen(ub->buf)+1,PRO_BYTES);
+      server_reply(from,ub,l1,PRO_BYTES);
       ACTIONOK(L_GETPRO);
       return;
     case CC_SET_PRO :
@@ -786,16 +780,9 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	  return;
 	}
       }
-      pe = server_get_pro(di,ub->buf,"O");
-      if( pe )
-      {
-          ACTIONLOG1(L_SETPRO|L_ERR,"SETPRO");
-	  ACTIONFAILED(L_SETPRO|L_ERR,pe);
-          send_error(from, ub, pe) ;
-	  return;
-      }
+      l1 = server_get_pro(di,ub->buf,"O");
       BB_WRITE4(ub->bb_pos,PRO_BYTES);
-      server_reply(from,ub,strlen(ub->buf)+1,PRO_BYTES);
+      server_reply(from,ub,l1,PRO_BYTES);
       ACTIONOK(L_SETPRO);
       return;
     case CC_GRAB_FILE:
@@ -878,14 +865,22 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
       ACTIONOK(L_STAT);
       return;
     case CC_RENAME :
-      ACTIONLOG2(L_RENAME,"RENAME");
-      /* CHECK_ACCESS_RIGHTS(DIR_RENAME,L_RENAME); */
-      if ( (pe = server_rename(ub->buf,l1,l2)) )
+      if (read_only) {
+           ACTIONLOG1(L_RDONLY,"RENAME");
+	   ACTIONFAILED(L_RDONLY,"Server is running in read-only mode");
+           send_error(from, ub, "Server is running in read-only mode");
+	   return;
+      }
+      if(!old)
       {
-            ACTIONLOG1(L_RENAME|L_ERR,"RENAME");
-	    ACTIONFAILED(L_RENAME|L_ERR,pe);
-            send_error(from, ub, pe);
-	    return;
+	  ACTIONLOG2(L_RENAME,"RENAME");
+	  if ( (pe = server_rename(ub->buf,l1,inet_num)) )
+	  {
+		ACTIONLOG1(L_RENAME|L_ERR,"RENAME");
+		ACTIONFAILED(L_RENAME|L_ERR,pe);
+		send_error(from, ub, pe);
+		return;
+	  }
       }
       server_reply(from,ub,0,0);
       ACTIONOK(L_RENAME);

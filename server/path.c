@@ -35,7 +35,7 @@
  *  d_ptr is generally not null-terminated.
  *****************************************************************************/
 
-const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
+const char *parse_path (char * fullp, unsigned int len, PPATH * pp)
 {
   char *s;
   char *p;

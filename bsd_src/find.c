@@ -56,7 +56,7 @@ PLAN *plan;
  *	command arguments.
  */
 
-void find_formplan PROTO1(char **, argv)
+void find_formplan (char ** argv)
 {
   PLAN *tail = NULL, *new = NULL;
 

@@ -18,7 +18,7 @@
 #include "my-string.h"
 #include "merge.h"
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char *p, *q;
 

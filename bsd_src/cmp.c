@@ -26,42 +26,42 @@
 #include "ls.h"
 #include "my-string.h"
 
-int namecmp PROTO2(LS *, a, LS *, b)
+int namecmp (LS * a, LS * b)
 {
   return(strcmp(a->name, b->name));
 }
 
-int revnamecmp PROTO2(LS *, a, LS *, b)
+int revnamecmp (LS * a, LS * b)
 {
   return(strcmp(b->name, a->name));
 }
 
-int modcmp PROTO2(LS *, a, LS *, b)
+int modcmp (LS * a, LS * b)
 {
   return(-(int)(a->lstat.st_mtime - b->lstat.st_mtime));
 }
 
-int revmodcmp PROTO2(LS *, a, LS *, b)
+int revmodcmp (LS * a, LS * b)
 {
   return(-(int)(b->lstat.st_mtime - a->lstat.st_mtime));
 }
 
-int acccmp PROTO2(LS *, a, LS *, b)
+int acccmp (LS * a, LS * b)
 {
   return(-(int)(a->lstat.st_atime - b->lstat.st_atime));
 }
 
-int revacccmp PROTO2(LS *, a, LS *, b)
+int revacccmp (LS * a, LS * b)
 {
   return(-(int)(b->lstat.st_atime - a->lstat.st_atime));
 }
 
-int statcmp PROTO2(LS *, a, LS *, b)
+int statcmp (LS * a, LS * b)
 {
   return(-(int)(a->lstat.st_ctime - b->lstat.st_ctime));
 }
 
-int revstatcmp PROTO2(LS *, a, LS *, b)
+int revstatcmp (LS * a, LS * b)
 {
   return(-(int)(b->lstat.st_ctime - a->lstat.st_ctime));
 }

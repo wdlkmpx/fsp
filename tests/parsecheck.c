@@ -13,6 +13,7 @@ int dbug=1;
 
 const char *testcases[]={
     "", ".","/",
+    "\nonlypwd",
     "filename","/filename","//filename",
     "dirname/filename","//dirname/filename","//dirname//filename",
     "dir1name/dir2name/","//dir1name//dir2name//",
@@ -21,6 +22,7 @@ const char *testcases[]={
     NULL};
 PPATH testresults[]={
     {".",".",1,".",1,NULL}, {NULL}, {".",".",1,".",1,NULL},
+    {".",".",1,".",1,"onlypwd"},
     {"filename","filename",8,".",1,NULL} , {"filename","filename",8,".",1,NULL} , {"filename","filename",8,".",1,NULL},
     {"dirname/filename","filename",8,"dirname",7,NULL} , {"dirname/filename","filename",8,"dirname",7,NULL} , {"dirname//filename","filename",8,"dirname",7,NULL},
     {"dir1name/dir2name/",".",1,"dir1name/dir2name",17}, {"dir1name//dir2name//",".",1,"dir1name//dir2name",18},

@@ -36,9 +36,9 @@ static struct FifoCache *fpcache;
 #define FOURGIGS 0xffffffffUL
 #define TWOGIGS  0x7fffffffUL
 
-static FPCACHE *search_fpcache PROTO3(unsigned long, inet_num,
-	                              unsigned short, port_num,
-				      const char *, fname)
+static FPCACHE *search_fpcache (unsigned long inet_num,
+	                        unsigned short port_num,
+				const char * fname)
 {
   unsigned int i;
   FPCACHE *entry;
@@ -63,7 +63,7 @@ static FPCACHE *search_fpcache PROTO3(unsigned long, inet_num,
   return((FPCACHE *)0);
 }
 
-static void fpcache_free_entry PROTO1(void *,entry)
+static void fpcache_free_entry (void *entry)
 {
     FPCACHE *f=entry;
 
@@ -71,7 +71,7 @@ static void fpcache_free_entry PROTO1(void *,entry)
 	fclose(f->fp);
 }
 
-static unsigned int fpcache_entry_profiler PROTO1(void *,entry)
+static unsigned int fpcache_entry_profiler (void *entry)
 {
     FPCACHE *f=entry;
 
@@ -82,7 +82,7 @@ static unsigned int fpcache_entry_profiler PROTO1(void *,entry)
 }
 
 
-static void dirlistcache_free_entry PROTO1(void *, entry)
+static void dirlistcache_free_entry (void * entry)
 {
     DIRLISTING *d=entry;
 
@@ -90,14 +90,14 @@ static void dirlistcache_free_entry PROTO1(void *, entry)
 	free(d->listing);
 }
 
-static unsigned int dirlistcache_entry_profiler PROTO1(void *,entry)
+static unsigned int dirlistcache_entry_profiler (void *entry)
 {
     DIRLISTING *d=entry;
 
     return d->listing_size;
 }
 
-static void dirstatcache_free_entry PROTO1(void *, entry)
+static void dirstatcache_free_entry (void * entry)
 {
     DIRINFO *d=entry;
 
@@ -113,8 +113,9 @@ static void dirstatcache_free_entry PROTO1(void *, entry)
 	free(d->readme);
 }
 
-static unsigned int dirstatcache_entry_profiler  PROTO1(void *,entry)
+static unsigned int dirstatcache_entry_profiler  (void *entry)
 {
+   /* TODO profiling for owner ip_table */
    DIRINFO *d=entry;
    unsigned int res=0;
    if(d->realname)
@@ -132,10 +133,6 @@ static unsigned int dirstatcache_entry_profiler  PROTO1(void *,entry)
 	res+=strlen(d->public_password);
 	res++;
     }
-    /*
-    if(d->owner)
-	free_ip_table(d->owner);
-	*/
     if(d->readme)
     {
 	res+=strlen(d->readme);
@@ -145,14 +142,14 @@ static unsigned int dirstatcache_entry_profiler  PROTO1(void *,entry)
    return res;
 }
 
-static void string_free PROTO1(void *, entry)
+static void string_free (void * entry)
 {
     char **s=entry;
     if(*s!=NULL)
 	free(*s);
 }
 
-static unsigned int string_profiler PROTO1(void *,entry)
+static unsigned int string_profiler (void *entry)
 {
     char **s=entry;
 
@@ -162,7 +159,7 @@ static unsigned int string_profiler PROTO1(void *,entry)
 	return 0;
 }
 
-static int string_compare PROTO2(const void *,e1,const void *,e2)
+static int string_compare (const void *e1,const void *e2)
 {
 
     char *const *s1=e1;
@@ -177,7 +174,7 @@ static int string_compare PROTO2(const void *,e1,const void *,e2)
 }
 
 /* should init all types of caches in future */
-int init_caches PROTO0((void))
+int init_caches (void)
 {
    dirlistcache=f_cache_new(dir_cache_limit,sizeof(DIRLISTING),dirlistcache_free_entry,sizeof(char *),string_free,string_compare);
    dirstatcache=f_cache_new(stat_cache_limit,sizeof(DIRINFO),dirstatcache_free_entry,sizeof(char *),string_free,string_compare);
@@ -199,7 +196,7 @@ int init_caches PROTO0((void))
    }
 }
 
-void stat_caches PROTO1(FILE *,fp)
+void stat_caches (FILE *fp)
 {
           if(fp==NULL) fp=stderr;
  	  fprintf(fp,"DIRLISTCACHE ");
@@ -211,7 +208,7 @@ void stat_caches PROTO1(FILE *,fp)
 }
 
 /* should init all types of caches in future */
-void shutdown_caches PROTO0((void))
+void shutdown_caches (void)
 {
 #ifdef LAMERPACK
     fclose(stderr);
@@ -240,7 +237,7 @@ void shutdown_caches PROTO0((void))
  *         *di      - where to return DIRINFO information about directory
  *         want_directory - want to operate on directory, not a file
  *****************************************************************************/
-const char *validate_path PROTO5(char *, fullp, unsigned, lenfullp, PPATH *, pp,DIRINFO **,di, int, want_directory)
+const char *validate_path (char * fullp, unsigned lenfullp, PPATH * pp,DIRINFO **di, int want_directory)
 {
     char work [NBSIZE];
     const char *err;
@@ -344,7 +341,7 @@ const char *validate_path PROTO5(char *, fullp, unsigned, lenfullp, PPATH *, pp,
 }
 
 /* copy file : from -> to */
-static const char *copy_file PROTO2(const char *, n1, const char *, n2)
+static const char *copy_file (const char * n1, const char * n2)
 {
     FILE *ft,*fp;
     size_t bytes;
@@ -361,7 +358,19 @@ static const char *copy_file PROTO2(const char *, n1, const char *, n2)
   }
   /* copy temporary file to actual fput file */
   while( (bytes = fread(buf,1,sizeof(buf),ft)))
-      fwrite(buf,1,bytes,fp);
+  {    
+      if ( bytes != fwrite(buf,1,bytes,fp)) {
+	  break;
+      }	  
+  }
+
+  if ( ferror(ft) || ferror(fp) )
+  {
+      fclose(ft);
+      fclose(fp);
+      unlink(n2);
+      return ("Write error");
+  }
 
   fclose(ft);
   fclose(fp);
@@ -369,7 +378,7 @@ static const char *copy_file PROTO2(const char *, n1, const char *, n2)
 }
 
 /* appends new packet to directory listing, return 0 on success */
-static int append_dir_listing PROTO3(DIRLISTING *, dl,const char *, buf,unsigned int, size)
+static int append_dir_listing (DIRLISTING * dl,const char * buf,unsigned int size)
 {
       BYTE *newbuf;
 
@@ -391,7 +400,7 @@ static int append_dir_listing PROTO3(DIRLISTING *, dl,const char *, buf,unsigned
 /* builds directory listing into DIRLISTING structure, in case of any
  * error. nulls dl->listing
  */
-static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
+static void build_dir_listing (DIRLISTING * dl,const char *directory)
 {
   int skip;            /* how many bytes skip to next 4byte boundary */
   unsigned int rem;    /* remaining free space in UDP data space */
@@ -486,7 +495,7 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
   dl->mtime=cur_time;
 }
 
-const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
+const char *server_get_dir (DIRLISTING ** dl, const DIRINFO * di)
 {
   struct stat sf;
   char   list_p[NBSIZE];
@@ -578,7 +587,7 @@ const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
 
 /**********************************************************************/
 /* assume path and ACL is validated */
-const char *server_del_file PROTO2(PPATH *, pp, DIRINFO *, di)
+const char *server_del_file (PPATH * pp, DIRINFO * di)
 {
   struct stat sb;
 
@@ -594,7 +603,7 @@ const char *server_del_file PROTO2(PPATH *, pp, DIRINFO *, di)
 
 /**********************************************************************/
 
-const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di)
+const char *server_del_dir (PPATH * pp, DIRINFO *di)
 {
   struct stat sb;
   DIRINFO null;
@@ -623,7 +632,7 @@ const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di)
 
 /**********************************************************************/
 
-const char *server_make_dir PROTO3(PPATH *, pp, unsigned long, inet_num,DIRINFO, **di)
+const char *server_make_dir (PPATH * pp, unsigned long inet_num,DIRINFO **di)
 {
   DIRINFO newdir;
   char temp_p[NBSIZE];
@@ -658,11 +667,11 @@ const char *server_make_dir PROTO3(PPATH *, pp, unsigned long, inet_num,DIRINFO,
 
 /**********************************************************************/
 
-const char *server_get_file PROTO5(PPATH *, pp,
-	                     FILE **, fp,
-			     unsigned long,  inet_num,
-			     unsigned short, port_num,
-			     DIRINFO *, di
+const char *server_get_file (PPATH * pp,
+	                     FILE ** fp,
+			     unsigned long  inet_num,
+			     unsigned short port_num,
+			     DIRINFO * di
 			     )
 {
   struct stat sb;
@@ -702,22 +711,29 @@ const char *server_get_file PROTO5(PPATH *, pp,
 }
 
 /**********************************************************************/
-/* result and pp->fullp may overlap */
-const char *server_get_pro PROTO3(DIRINFO *, di, char *, result, const char *, acc)
+/* returns number of readme bytes
+*/
+int server_get_pro (DIRINFO * di, char * result, const char * acc)
 {
-  result[0]='\0';         /* truncate output buffer */
+  int pos=0;  
 
-  if(di->readme) strcat(result,di->readme);
-  result[strlen(result)+1] = di->protection^DIR_GET;
+  if(di->readme) 
+  {
+      strcpy(result,di->readme);
+      pos=strlen(result); /* add readme */
+      pos++;              /* add zero terminator char */
+  }
+  /* append xtra data space area */
+  result[pos] = di->protection^DIR_GET;
   if(acc[0]=='O')
-            result[strlen(result)+1] |= DIR_OWNER;
+            result[pos] |= DIR_OWNER;
 
-  return(NULLP);
+  return pos;
 }
 
 /**********************************************************************/
 
-const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key)
+const char *server_set_pro (DIRINFO *di, const char * key)
 {
   unsigned char act;
 
@@ -768,8 +784,8 @@ const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key)
  *  These two are used for file uploading.
  **********************************************************************/
 
-const char *server_up_load PROTO5(char *, data, unsigned int, len, unsigned long, pos,
-			    unsigned long, inet_num, unsigned short, port_num)
+const char *server_up_load (char * data, unsigned int len, unsigned long pos,
+			    unsigned long inet_num, unsigned short port_num)
 {
   FILE *fp;
   char  tname[NBSIZE];
@@ -856,8 +872,8 @@ const char *server_up_load PROTO5(char *, data, unsigned int, len, unsigned long
   return(NULLP);
 }
 
-const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
-			    unsigned short, port_num, const char *, acc, DIRINFO *,di, unsigned int, l2, const char *,s2)
+const char *server_install (PPATH * pp, unsigned long inet_num,
+			    unsigned short port_num, const char * acc, DIRINFO *di, unsigned int l2, const char *s2)
 {
   char tname[NBSIZE];
   const char *tmp;
@@ -911,8 +927,8 @@ const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
 /**********************************************************************/
 /* assume path is validated */
 /* start GRAB OPERATION! */
-const char *server_secure_file PROTO4(PPATH *, pp, unsigned long, inet_num,
-				unsigned short, port_num,DIRINFO *,di)
+const char *server_secure_file (PPATH * pp, unsigned long inet_num,
+				unsigned short port_num,DIRINFO *di)
 {
   struct stat sb;
   char temp_p[NBSIZE];
@@ -939,9 +955,9 @@ const char *server_secure_file PROTO4(PPATH *, pp, unsigned long, inet_num,
   return(NULLP);
 }
 
-const char *server_grab_file PROTO3(FILE **, fp,
-			      unsigned long, inet_num,
-			      unsigned short, port_num)
+const char *server_grab_file (FILE ** fp,
+			      unsigned long inet_num,
+			      unsigned short port_num)
 {
   struct stat sb;
   char temp_p[NBSIZE];
@@ -969,8 +985,8 @@ const char *server_grab_file PROTO3(FILE **, fp,
   return(NULLP);
 }
 
-const char *server_grab_done PROTO2(unsigned long, inet_num,
-			      unsigned short, port_num)
+const char *server_grab_done (unsigned long inet_num,
+			      unsigned short port_num)
 {
   struct stat sb;
   char temp_p[NBSIZE];
@@ -987,7 +1003,7 @@ const char *server_grab_done PROTO2(unsigned long, inet_num,
 }
 
 /* return STAT info about filesystem object */
-const char *server_stat PROTO1(UBUF *, ubuf )
+const char *server_stat (UBUF * ubuf )
 {
   struct stat sb;
   int rc;
@@ -1041,33 +1057,92 @@ const char *server_stat PROTO1(UBUF *, ubuf )
 }
 
 /* rename FILE/directory object */
-const char *server_rename PROTO3(char *, ub, unsigned int, l1, unsigned int, l2)
+const char *server_rename (char * ub, unsigned int l1, unsigned long inet)
 {
-  return "Not implemented (wait for next beta)";
-#if 0
   struct stat sb;
-  int srcdir; /* is source object a directory ? */
-  PPATH dest;
+  int issrcdir, istargetdir;
+  unsigned n;
+  PPATH src,dest;
   const char *pe;
-
-  if(FSP_STAT(pp->fullp,&sb)) return("can't find source file or directory");
+  DIRINFO *sdir,*tdir;
+  
+  /* compute size of 1st component */
+  for(n=0;n<l1;n++)
+      if(ub[n] == '\0')
+	  break;
+  n++; 
+  
+  /* parse suplied request data */
+  pe=parse_path(ub, n, &src );
+  if(pe)
+      return pe;
+  
+  pe=parse_path(ub+n,l1- n, &dest );
+  if(pe)
+      return pe;
+   
+  /* explore type of source object */
+  if(FSP_STAT(src.fullp,&sb)) return("can't find source file or directory");
   if(S_ISDIR(sb.st_mode))
-      srcdir=1;
+      issrcdir=1;
   else
       if(S_ISREG(sb.st_mode))
-	  srcdir=0;
+	  issrcdir=0;
       else
-	  return ("Will not rename non file/directory objects");
+	  return ("Refusing to operate on special files");
+  /* validate source object */
+  pe=validate_path(ub,n,&src,&sdir,0);
+  if(pe) return pe;
+  
+  /* --- explore Target --- */
+  if(FSP_STAT(dest.fullp,&sb))
+      istargetdir=-1; /* non - existent! */
+  else    
+     if(S_ISDIR(sb.st_mode))
+         istargetdir=1;
+     else
+         if(S_ISREG(sb.st_mode))
+	     istargetdir=0;
+         else
+	     return ("Refusing to operate on special files");
 
-  pe=parse_path(ub+strlen(fullp), l1, &dest );
-  return(NULLP);
-#endif
+  /* validate target */ 
+  if(istargetdir==1)
+     pe=validate_path(ub+n,l1 - n,&dest,&tdir,1);
+  else   
+     pe=validate_path(ub+n,l1 - n,&dest,&tdir,0);
+  if(pe) return pe;
+  
+  /* --=== now check ACL and do it ===-- */
+  
+  /* Cross - directory rename? */
+  if  (sdir == tdir)
+  {
+      /* no, do simple rename */
+      
+      pe=require_access_rights( sdir,DIR_RENAME,inet,src.passwd);
+      if(pe[0]!='N')
+	  return ("Permission denied");
+      if(istargetdir==0)
+         pe=require_access_rights( sdir,DIR_DEL,inet,src.passwd);
+      if(pe[0]!='N')
+	  return ("No permission for overwriting files");
+      /* now go to the action */	  
+      if (rename(src.fullp,dest.fullp))
+	  return ("Rename failed");
+      /* update dir listing */	  
+      sdir->lastcheck=cur_time;
+      sdir->mtime=cur_time;
+      return NULLP;
+  }
+  return ("Cross-directory renames are not implemented yet.");
+  /*  return(NULLP); */
 }
 /*********************************************************************
  test and resolve home directory
  *********************************************************************/
 
-void init_home_dir PROTO0((void))
+void init_home_dir (void)
 {
   void *newhd;
 

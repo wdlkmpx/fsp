@@ -64,17 +64,17 @@ time_t now;			/* time find was run */
 int isoutput;			/* user specified output operator */
 int process;			/* process current directory */
 
-static void usage_ffind PROTO0((void));
+static void usage_ffind (void);
 
-static void eval_file PROTO4(char *, name, struct stat *, sbufp,
-			     int,  mode, int,  level)
+static void eval_file (char * name, struct stat * sbufp,
+			     int  mode, int  level)
 {
   register PLAN *p;
 
   for (p = plan; p && (p->eval)(p, sbufp, name); p = p->next);
 }
 
-static int eval_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, sum)
+static int eval_dir (char * name, struct stat * sbufp, u_long * sum)
 {
   register PLAN *p;
 
@@ -83,7 +83,7 @@ static int eval_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, sum)
   return (process);
 }
 
-int main PROTO2(int, argc, char **,  argv)
+int main (int argc, char **  argv)
 {
   register char **p;
   char *singlefile[2], **files;
@@ -117,7 +117,7 @@ int main PROTO2(int, argc, char **,  argv)
   return(0);
 }
 
-static void usage_ffind PROTO0((void))
+static void usage_ffind (void)
 {
   fprintf(stderr,"usage: ffind file [file ...] expression\n");
   exit(1);

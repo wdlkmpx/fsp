@@ -14,7 +14,7 @@
 #include "my-string.h"
 
 /* loads a password from file in current directory */
-static char *load_password PROTO1(const char *, file)
+static char *load_password (const char * file)
 {
         /* load password */
 	FILE *f;
@@ -34,7 +34,7 @@ static char *load_password PROTO1(const char *, file)
 }
 
 /* save a password to file in current directory */
-static void save_password PROTO2(const char *,file,const char *,password)
+static void save_password (const char *file,const char *password)
 {
         /* load password */
 	FILE *f;
@@ -47,7 +47,7 @@ static void save_password PROTO2(const char *,file,const char *,password)
 }
 
 /* save access rights to filesystem */
-void save_access_rights PROTO1(DIRINFO *,di)
+void save_access_rights (DIRINFO *di)
 {
    /* step 1 - unlink everything */
    unlink(FSP_NOGET);
@@ -90,7 +90,7 @@ void save_access_rights PROTO1(DIRINFO *,di)
 
 /* called with current directory == tested directory */
 /* load access rights for validated directory */
-void load_access_rights PROTO1(DIRINFO *,di)
+void load_access_rights (DIRINFO *di)
 {
     struct stat sf;
     FILE *f;
@@ -113,7 +113,7 @@ void load_access_rights PROTO1(DIRINFO *,di)
 	     * packetsize - pro_bytes (now 1) - 1 (for /0)
 	     */
 	    s=min(packetsize-PRO_BYTES-1,sf.st_size);
-	    di->readme=malloc(s+1);
+	    di->readme=calloc(1,s+1); /* allocate also space for ending /0 */
 	    if(di->readme)
 	    {
 	       fread(di->readme,s,1,f);
@@ -126,7 +126,7 @@ void load_access_rights PROTO1(DIRINFO *,di)
     if(!use_access_files) return;
 
     /* LOAD ACCESS RIGHTS FROM FILES IN CURRENT DIRECTORY */
-    if(fexist(FSP_NOGET)) di->protection^=DIR_GET;
+    if(fexist(FSP_NOGET))   di->protection^=DIR_GET;
     if(fexist(FSP_DEL))     di->protection|=DIR_DEL;
     if(fexist(FSP_ADD))     di->protection|=DIR_ADD;
     if(fexist(FSP_MKDIR))   di->protection|=DIR_MKDIR;
@@ -159,7 +159,7 @@ void load_access_rights PROTO1(DIRINFO *,di)
  * at least 'N' record to get it, if he has DIR_README, we will send him
  * a datagram with error reply */
 
-const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,rights,unsigned long, ip_addr, const char *, passwd)
+const char * require_access_rights (const DIRINFO *di,unsigned char rights,unsigned long ip_addr, const char * passwd)
 {
     const char *acc=NULL;
 

@@ -20,7 +20,7 @@
 #include <unistd.h>
 #endif
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   UBUF *ub;
   unsigned int len, tput = 0, len2;
@@ -70,7 +70,10 @@ int main PROTO2(int, argc, char **, argv)
       {
 	  tput=0;
           tput = BB_READ2(v2);
-	  printf("\tMax. packet size supported by server is %d bytes.\n",tput);
+	  if (tput > 1024)
+	       printf("\tMax. payload size supported by server is %d bytes.\n",tput);
+	  else
+	       printf("\tPayload size prefered by server is %d bytes.\n",tput);
       }
     }
     else

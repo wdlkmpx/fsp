@@ -100,13 +100,7 @@
   return(0); \
 }
 
-#ifdef PROTOTYPES
 static PLAN *palloc (enum ntype t, int (*f)())
-#else
-static PLAN *palloc (t, f)
-    enum ntype t;
-    int (*f)();
-#endif
 {
   PLAN *new;
 
@@ -130,8 +124,8 @@ extern int process;
  * find_parsenum --
  *	Parse a string of the form [+-]# and return the value.
  */
-static long find_parsenum PROTO4(PLAN *, plan, const char *, option, char *, str,
-				 char *, endch)
+static long find_parsenum (PLAN * plan, const char * option, char * str,
+				 char * endch)
 {
   long value;
   char *endchar;		/* pointer to character ending conversion */
@@ -176,7 +170,7 @@ static long find_parsenum PROTO4(PLAN *, plan, const char *, option, char *, str
  */
 
 extern time_t now;
-static int find_time PROTO3(PLAN *, plan, struct stat *, sbuf,  char *, path)
+static int find_time (PLAN * plan, struct stat * sbuf,  char * path)
 {
 
   /* with FSP sbuf.st_atime=sbuf.st_ctime=sbuf.st_mtime */
@@ -184,7 +178,7 @@ static int find_time PROTO3(PLAN *, plan, struct stat *, sbuf,  char *, path)
 }
 
 
-PLAN * c_time PROTO1(char *, arg)
+PLAN * c_time (char * arg)
 {
   PLAN *new;
 
@@ -197,7 +191,7 @@ PLAN * c_time PROTO1(char *, arg)
  * brace_subst --
  *      Replace occurrences of {} in s1 with s2 and return the result string.
  */
-static void brace_subst PROTO4(char *, orig, char **, store, char *, path, int,len)
+static void brace_subst (char * orig, char ** store, char * path, int len)
 {
   register int plen;
   register char ch, *p;
@@ -224,7 +218,7 @@ static void brace_subst PROTO4(char *, orig, char **, store, char *, path, int,l
  *      print a message to standard error and then read input from standard
  *      input. If the input is 'y' then 1 is returned.
  */
-static int queryuser PROTO1(char **, argv)
+static int queryuser (char ** argv)
 {
   int ch, first, nl;
 
@@ -264,7 +258,7 @@ static int queryuser PROTO1(char **, argv)
  *	The primary -ok is different in that it requests affirmation of the
  *	user before executing the utility.
  */
-static int find_exec PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_exec (PLAN * plan, struct stat * sbuf, char * path)
 {
   register int cnt;
   pid_t pid;
@@ -296,7 +290,7 @@ static int find_exec PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
  return(pid != -1 && WIFEXITED(status) && !WEXITSTATUS(status));
 }
 
-static char *emalloc_ffind PROTO1(unsigned int, len)
+static char *emalloc_ffind (unsigned int len)
 {
   char *p;
 
@@ -312,7 +306,7 @@ static char *emalloc_ffind PROTO1(unsigned int, len)
  *	argv array, and one with integer values that are lengths of the
  *	strings, but also flags meaning that the string has to be massaged.
  */
-PLAN *c_exec PROTO2(char ***, argvp, int, isok)
+PLAN *c_exec (char *** argvp, int isok)
 {
   PLAN *new;			/* node returned */
   register int cnt;
@@ -355,12 +349,12 @@ PLAN *c_exec PROTO2(char ***, argvp, int, isok)
   return(new);
 }
 
-static void printtime_ffind PROTO1(time_t, ftime)
+static void printtime_ffind (time_t ftime)
 {
   int i;
   char *longstring;
 
-  longstring = (char *)ctime((long *)&ftime);
+  longstring = (char *)ctime(&ftime);
   for (i = 4; i < 11; ++i) putchar(longstring[i]);
 
 #define SIXMONTHS       ((DAYSPERNYEAR / 2) * SECSPERDAY)
@@ -376,7 +370,7 @@ static void printtime_ffind PROTO1(time_t, ftime)
 
 #define BLK(A) (((A)+1023)/1024)
 
-static void printlong_ffind PROTO2(char *, name, struct stat *, sb)
+static void printlong_ffind (char * name, struct stat * sb)
 {
   const char *modep;
 
@@ -395,13 +389,13 @@ static void printlong_ffind PROTO2(char *, name, struct stat *, sb)
  *
  *	Always true - prints the current sbuf to stdout in "ls" format.
  */
-static int find_ls PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_ls (PLAN * plan, struct stat * sbuf, char * path)
 {
   printlong_ffind(path, sbuf);
   return(1);
 }
 
-PLAN *c_ls PROTO0((void))
+PLAN *c_ls (void)
 {
   isoutput = 1;
   return(palloc(N_LS, find_ls));
@@ -413,7 +407,7 @@ PLAN *c_ls PROTO0((void))
  *	True if the basename of the filename being examined
  *	matches pattern using Pattern Matching Notation S3.14
  */
-static int find_name PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_name (PLAN * plan, struct stat * sbuf, char * path)
 {
   register char *name;
 
@@ -423,7 +417,7 @@ static int find_name PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   return(fnmatch(plan->c_data, name));
 }
 
-PLAN *c_name PROTO1(char *, pattern)
+PLAN *c_name (char * pattern)
 {
   PLAN *new;
 
@@ -439,12 +433,12 @@ PLAN *c_name PROTO1(char *, pattern)
  *	then the modification time of the file named by the pathname
  *	file.
  */
-static int find_newer PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_newer (PLAN * plan, struct stat * sbuf, char * path)
 {
   return(sbuf->st_mtime > plan->t_data);
 }
 
-PLAN *c_newer PROTO1(char *, filename)
+PLAN *c_newer (char * filename)
 {
   PLAN *new;
   struct stat sb;
@@ -464,13 +458,13 @@ PLAN *c_newer PROTO1(char *, filename)
  *	Always true, causes the current pathame to be written to
  *	standard output.
  */
-static int find_print PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_print (PLAN * plan, struct stat * sbuf, char * path)
 {
   (void)printf("%s\n", path);
   return(1);
 }
 
-PLAN *c_print PROTO0((void))
+PLAN *c_print (void)
 {
   isoutput = 1;
 
@@ -482,13 +476,13 @@ PLAN *c_print PROTO0((void))
  *
  *	Prune a portion of the hierarchy.
  */
-static int find_prune PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_prune (PLAN * plan, struct stat * sbuf, char * path)
 {
   process = -1;
   return(1);
 }
 
-PLAN *c_prune PROTO0((void))
+PLAN *c_prune (void)
 {
   return(palloc(N_PRUNE, find_prune));
 }
@@ -503,7 +497,7 @@ PLAN *c_prune PROTO0((void))
 #define	FIND_SIZE	512
 static int divsize = 1;
 
-static int find_size PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_size (PLAN * plan, struct stat * sbuf, char * path)
 {
   off_t size;
 
@@ -511,7 +505,7 @@ static int find_size PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   COMPARE(size, plan->o_data);
 }
 
-PLAN *c_size PROTO1(char *, arg)
+PLAN *c_size (char * arg)
 {
   PLAN *new;
   char endch='c';
@@ -528,12 +522,12 @@ PLAN *c_size PROTO1(char *, arg)
  *	True if the type of the file is c, where c is d or f for
  *	directory or regular file, respectively.
  */
-static int find_type PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_type (PLAN * plan, struct stat * sbuf, char * path)
 {
   return((sbuf->st_mode & S_IFMT) == plan->m_data);
 }
 
-PLAN *c_type PROTO1(char *, typestring)
+PLAN *c_type (char * typestring)
 {
   PLAN *new;
   mode_t  mask;
@@ -560,7 +554,7 @@ PLAN *c_type PROTO1(char *, typestring)
  *
  *	True if expression is true.
  */
-int find_expr PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+int find_expr (PLAN * plan, struct stat * sbuf, char * path)
 {
   register PLAN *p;
   register int state;
@@ -574,12 +568,12 @@ int find_expr PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
  * eliminated during phase 2 of find_formplan() --- the '(' node is converted
  * to a N_EXPR node containing the expression and the ')' node is discarded.
  */
-PLAN *c_openparen PROTO0((void))
+PLAN *c_openparen (void)
 {
   return(palloc(N_OPENPAREN, (int (*)())-1));
 }
 
-PLAN *c_closeparen PROTO0((void))
+PLAN *c_closeparen (void)
 {
   return(palloc(N_CLOSEPAREN, (int (*)())-1));
 }
@@ -590,7 +584,7 @@ PLAN *c_closeparen PROTO0((void))
  *
  *	Negation of a primary; the unary NOT operator.
  */
-static int find_not PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_not (PLAN * plan, struct stat * sbuf, char * path)
 {
   register PLAN *p;
   register int state;
@@ -599,7 +593,7 @@ static int find_not PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   return(!state);
 }
 
-PLAN *c_not PROTO0((void))
+PLAN *c_not (void)
 {
   return(palloc(N_NOT, find_not));
 }
@@ -610,7 +604,7 @@ PLAN *c_not PROTO0((void))
  *	Alternation of primaries; the OR operator.  The second expression is
  * not evaluated if the first expression is true.
  */
-static int find_or PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
+static int find_or (PLAN * plan, struct stat * sbuf, char * path)
 {
   register PLAN *p;
   register int state;
@@ -623,7 +617,7 @@ static int find_or PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   return(state);
 }
 
-PLAN *c_or PROTO0((void))
+PLAN *c_or (void)
 {
   return(palloc(N_OR, find_or));
 }

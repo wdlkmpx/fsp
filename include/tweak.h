@@ -105,6 +105,4 @@
 			(V)[1] = ((A)      ) & 0xff)
 #endif
 
-#include "proto.h"
-
 #endif /* _FSP_TWEAK_H_ */

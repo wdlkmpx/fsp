@@ -44,8 +44,8 @@ static char path[2*1024 + 1];
 static char *endofpath = path;
 
 typedef int (*COMPAR)(const void *, const void *);
-int (*sortfcn)PROTO0((LS *, LS *));
-void (*printfcn)PROTO0((LS *, int));
+int (*sortfcn)(LS *, LS *);
+void (*printfcn)(LS *, int);
 
 int termwidth = 80;		/* default terminal width */
 
@@ -74,7 +74,7 @@ int f_timesort;			/* sort by time vice name */
 int f_total;			/* if precede with "total" line */
 int f_type;			/* add type character for non-regular files */
 
-static int tabdir PROTO2(LS *, lp, LS **, s_stats)
+static int tabdir (LS * lp, LS ** s_stats)
 {
   register RDIR *dirp;
   register int cnt, maxentry, maxlen;
@@ -146,9 +146,9 @@ static int tabdir PROTO2(LS *, lp, LS **, s_stats)
   return(cnt);
 }
 
-static void displaydir PROTO0((LS *, register int));
+static void displaydir (LS *, register int);
 
-static void subdir PROTO1(LS *, lp)
+static void subdir (LS * lp)
 {
   LS *stats;
   int num;
@@ -170,7 +170,7 @@ static void subdir PROTO1(LS *, lp)
   }
 }
 
-static void displaydir PROTO2(LS *, stats, register int, num)
+static void displaydir (LS * stats, register int num)
 {
   register char *p, *savedpath;
   LS *lp;
@@ -205,7 +205,7 @@ static void displaydir PROTO2(LS *, stats, register int, num)
   }
 }
 
-static void doargs PROTO2(int, argc, char **, argv)
+static void doargs (int argc, char ** argv)
 {
   register LS *dstatp, *rstatp;
   register int cnt, dircnt, dirmax, maxlen, regcnt, regmax;
@@ -229,6 +229,8 @@ static void doargs PROTO2(int, argc, char **, argv)
     }
 
     for( ; *av; av++) {
+      /* TODO: this stat call should be avoided for performance speedups */	
+      /* Better is turn it to get_dirblk or something like this */
       if (util_stat(*av, &sb)) {
 	perror(*av);
 	if (errno == ENOENT) continue;
@@ -309,7 +311,7 @@ static void doargs PROTO2(int, argc, char **, argv)
   }
 }
 
-void fls_main PROTO2(int, argc, char **, argv)
+void fls_main (int argc, char ** argv)
 {
   int ch;
   char *p;

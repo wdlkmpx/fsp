@@ -52,30 +52,30 @@ extern int f_total;		/* if precede with "total" line */
 extern int f_type;		/* add type character for non-regular files */
 
 /* cmp.c */
-int namecmp PROTO0((LS *, LS *));
-int revnamecmp PROTO0((LS *, LS *));
-int modcmp PROTO0((LS *, LS *));
-int revmodcmp PROTO0((LS *, LS *));
-int acccmp PROTO0((LS *, LS *));
-int revacccmp PROTO0((LS *, LS *));
-int statcmp PROTO0((LS *, LS *));
-int revstatcmp PROTO0((LS *, LS *));
+int namecmp (LS *, LS *);
+int revnamecmp (LS *, LS *);
+int modcmp (LS *, LS *);
+int revmodcmp (LS *, LS *);
+int acccmp (LS *, LS *);
+int revacccmp (LS *, LS *);
+int statcmp (LS *, LS *);
+int revstatcmp (LS *, LS *);
 
 /* ls.c */
-void fls_main PROTO0((int, char **));
+void fls_main (int, char **);
 
 /* print.c */
-void printscol PROTO0((LS *, int));
-void printlong PROTO0((LS *, int));
-void printcol PROTO0((LS *, int));
+void printscol (LS *, int);
+void printlong (LS *, int);
+void printcol (LS *, int);
 
 /* util.c */
-void prcopy PROTO0((char *, char *, int));
-char *emalloc PROTO0((int));
-void nomem PROTO0((void));
-void usage PROTO0((void));
+void prcopy (char *, char *, int);
+char *emalloc (int);
+void nomem (void);
+void usage (void);
 
 /* clients/flscmd.c */
-int ls_bad PROTO0((int));
+int ls_bad (int);
 	
 #endif /* _FSP_LS_H_ */

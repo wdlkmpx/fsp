@@ -51,7 +51,7 @@ enum ntype {
 /* node definition */
 typedef struct _plandata {
 	struct _plandata *next;			/* next node */
-	int (*eval) PROTO0((struct _plandata *, struct stat *, char *));  /* node evaluation function */
+	int (*eval) (struct _plandata *, struct stat *, char *);  /* node evaluation function */
 	int flags;				/* private flags */
 	enum ntype type;			/* plan node type */
 	union {
@@ -98,34 +98,34 @@ typedef struct _option {
 } OPTION;
 
 /* find.c */
-void find_formplan PROTO0((char **));
+void find_formplan (char **);
 
 /* fnmatch.c */
-int fnmatch PROTO0((register char *, register char *));
+int fnmatch (register char *, register char *);
 
 /* function.c */
-PLAN * c_time PROTO0((char *));
-PLAN *c_exec PROTO0((char ***, int));
-PLAN *c_ls PROTO0((void));
-PLAN *c_name PROTO0((char *));
-PLAN *c_newer PROTO0((char *));
-PLAN *c_print PROTO0((void));
-PLAN *c_prune PROTO0((void));
-PLAN *c_size PROTO0((char *));
-PLAN *c_type PROTO0((char *));
-int find_expr PROTO0((PLAN *, struct stat *, char *));
-PLAN *c_openparen PROTO0((void));
-PLAN *c_closeparen PROTO0((void));
-PLAN *c_not PROTO0((void));
-PLAN *c_or PROTO0((void));
+PLAN * c_time (char *);
+PLAN *c_exec (char ***, int);
+PLAN *c_ls (void);
+PLAN *c_name (char *);
+PLAN *c_newer (char *);
+PLAN *c_print (void);
+PLAN *c_prune (void);
+PLAN *c_size (char *);
+PLAN *c_type (char *);
+int find_expr (PLAN *, struct stat *, char *);
+PLAN *c_openparen (void);
+PLAN *c_closeparen (void);
+PLAN *c_not (void);
+PLAN *c_or (void);
 
 /* operator.c */
-PLAN *paren_squish PROTO0((PLAN *));
-PLAN *not_squish PROTO0((PLAN *));
-PLAN *or_squish PROTO0((PLAN *));
+PLAN *paren_squish (PLAN *);
+PLAN *not_squish (PLAN *);
+PLAN *or_squish (PLAN *);
 
 /* options.c */
-PLAN *find_create PROTO0((char ***));
-OPTION *option PROTO0((char *));
+PLAN *find_create (char ***);
+OPTION *option (char *);
 
 #endif /* _FSP_FIND_H_ */

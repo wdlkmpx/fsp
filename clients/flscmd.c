@@ -20,13 +20,13 @@
 #include <unistd.h>
 #endif
 
-int ls_bad PROTO1(int, n)
+int ls_bad (int n)
 {
   client_done();
   exit(n);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   env_client();
 

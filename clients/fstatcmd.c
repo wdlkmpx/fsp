@@ -22,7 +22,7 @@
 #endif
 #include "my-string.h"
 
-static void stat_file PROTO1(const char *,fname)
+static void stat_file (const char *fname)
 {
    struct stat sb;
    struct tm *ftime;
@@ -52,7 +52,7 @@ static void stat_file PROTO1(const char *,fname)
 
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char n[1024];
   int prompt;

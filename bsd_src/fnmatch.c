@@ -51,7 +51,7 @@
 
 #define	EOS	'\0'
 
-static char *rangematch PROTO2(register char *, pattern, register char, test)
+static char *rangematch (register char * pattern, register char test)
 {
   register char c, c2;
   int negate, ok;
@@ -72,7 +72,7 @@ static char *rangematch PROTO2(register char *, pattern, register char, test)
   return(ok == negate ? NULL : pattern);
 }
 
-int fnmatch PROTO2(register char *, pattern, register char *, string)
+int fnmatch (register char * pattern, register char * string)
 {
   register char c;
   char test;

@@ -25,9 +25,12 @@ Why you need it
 
 - stealth operation
 - old proven software with 10 years history
+- Elite SitEZ has non interrupted operation by
+  lamerz for more than 10 years!
 - for EliTe only
-- attack resistant
-- lamerz hates it
+- 100% attack resistant
+- net adminz do not like it
+- lamerz can not handle it
                
 STuFF firSt!
 
@@ -35,21 +38,23 @@ you neeeed to get a p-file called cygwin1.dll. lamerz at www.cygwin.com
 have some. Grab a copy, man. Copy it to your winlost sistema32 dyr.
 
 Have it? Right.
-                                
+
 
 Now rock!                                
 
-There is a p-file fspd.exe. This is for stuff sharing.
-Running this is easy:
+There is a p-file fspd.exe. This is for stuff sharing. Server. You know.
+Right. Running this is easy:
 
 fspd.exe -d c:\your\stuff\to\share -p 53
 
 this number is important. Recommended numbers for stealth
-operation are: 53, 2090, 137-139, 13, 21, 80, 443                               
+operation are: 53, 2090, 137-139, 13, 80, 443
+
 You can be catched more easily with bad number, so chooze wisely. Rememmber,
-some numbers like 2221 are used only by Elite! do not try it at
-home; bad thingz can hepen. you know. police will certainly
-take a visit.
+some numbers like 2221, 21, 2000, 2001 are used only by Elite!
+do not try it at home; bad thingz can hepen. you know. police will certainly
+take a visit. Lamers can detect you more easily on this ports, so be
+wise a little. Remember: You are c000l.
 
 Get more stuff!
 

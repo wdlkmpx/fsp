@@ -23,13 +23,13 @@
 static int timestamps=0;
 static int optletter;
 
-static void usage PROTO0((void))
+static void usage (void)
 {
     printf("fput");
     printf(" [-p | [ -h | -? ] ] file ...\n");
 }
 
-static int put_file PROTO1(char *, path)
+static int put_file (char * path)
 {
   struct stat sb;
   char *name, *t2;
@@ -55,7 +55,7 @@ static int put_file PROTO1(char *, path)
   return(0);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   char n[1024];
   int prompt;

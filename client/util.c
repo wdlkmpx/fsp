@@ -31,19 +31,30 @@ unsigned short client_net_len;
 #define FOURGIGS 0xffffffffUL
 
 /* returns mallocated abs. path merged from s2 and env.dir */
-char *util_abs_path PROTO1(const char *, s2)
+#define APPEND_PASSWORD 	if(have_password) \
+				{ \
+ 				  strcat(path,"\n"); \
+                                  strcat(path,env_passwd); \
+                                }
+char *util_abs_path (const char * s2)
 {
   char *path, *s, *d, *t;
+  int have_password = 0;
 
   if(!env_dir) env_dir = "";
   if(!s2) s2 = "";
-
+  if(strlen(env_passwd)>0)
+      have_password=1;
   if(*s2 == '/') {
     path = malloc(strlen(s2)+2+strlen(env_passwd)+1);
     sprintf(path,"/%s",s2);
+    if(have_password)
+	util_junk_password(path);
   } else {
     path = malloc(strlen(env_dir)+strlen(s2)+3+strlen(env_passwd)+1);
     sprintf(path,"/%s/%s",env_dir,s2);
+    if(have_password)
+	util_junk_password(path);
   }
 
   for(t = path; *t; ) {
@@ -54,6 +65,7 @@ char *util_abs_path PROTO1(const char *, s2)
     if(t[0] == '.' && t[1] == '.') {
       if(t-1 == path && t[2] ==  0 ) {
 	*t = 0;
+	APPEND_PASSWORD;
 	return(path);
       }
       if(t-1 == path && t[2] == '/') {
@@ -67,6 +79,7 @@ char *util_abs_path PROTO1(const char *, s2)
 	if(t != path || *s == '/') for(d = t; (*d++ = *s++); );
 	else {
 	  t[1] = 0;
+	  APPEND_PASSWORD;
 	  return(path);
 	}
 	continue;
@@ -75,6 +88,7 @@ char *util_abs_path PROTO1(const char *, s2)
     if(t[0] == '.') {
       if(t-1 == path && t[1] ==  0 ) {
 	*t = 0;
+	APPEND_PASSWORD;
 	return(path);
       }
       if(t-1 == path && t[1] == '/') {
@@ -90,11 +104,12 @@ char *util_abs_path PROTO1(const char *, s2)
     }
     t++;
   }
+  APPEND_PASSWORD;
   return(path);
 }
 
-static int util_split_path PROTO4(char *, path, char **, p1, char **, p2,
-				  char **, p3)
+static int util_split_path (char * path, char ** p1, char ** p2,
+				  char ** p3)
 {
   char *s;
   static char junk;
@@ -121,13 +136,13 @@ static int util_split_path PROTO4(char *, path, char **, p1, char **, p2,
 }
 
 /* return current working directory (from environment) */
-char *util_getwd PROTO1(char *, p)
+char *util_getwd (char * p)
 {
   if(p) strcpy(p,env_dir);
   return(p);
 }
 
-static RDIRENT **get_dir_blk PROTO1(char *, path)
+static RDIRENT **get_dir_blk (char * path)
 {
   RDIRENT **dp;
   char *p1, *p2, *fpath, buf[2*UBUF_SPACE];
@@ -214,8 +229,8 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
   free(fpath);
 }
 
-static int util_download_main PROTO5(char *, path, char *, fpath, FILE *, fp,
-				     unsigned long, start_from, int, cmd)
+static int util_download_main (char * path, char * fpath, FILE * fp,
+				     unsigned long start_from, int cmd)
 {
   unsigned long pos, started_from = start_from, downloaded;
   unsigned tmax, wrote, sent_time, rlen;
@@ -268,7 +283,7 @@ static int util_download_main PROTO5(char *, path, char *, fpath, FILE *, fp,
   return(0);
 }
 
-int util_download PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
+int util_download (char * path, FILE * fp, unsigned long start_from)
 {
   int code, len;
   char *fpath;
@@ -284,7 +299,7 @@ int util_download PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
   return(code);
 }
 
-int util_grab_file PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
+int util_grab_file (char * path, FILE * fp, unsigned long start_from)
 {
   int code, len;
   char *fpath;
@@ -313,7 +328,7 @@ int util_grab_file PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
   return(code);
 }
 
-int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
+int util_upload (char * path, FILE * fp, time_t stamp)
 {
   unsigned long pos;
   unsigned bytes, first, tmax, sent_time;
@@ -422,7 +437,7 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
   return(0);
 }
 
-static void util_get_env PROTO0((void))
+static void util_get_env (void)
 {
   char *p;
 
@@ -463,7 +478,7 @@ static void util_get_env PROTO0((void))
 }
 
 
-void env_client PROTO0((void))
+void env_client (void)
 {
   util_get_env();
   init_client(env_host,atoi(env_port),atoi(env_myport));
@@ -471,7 +486,7 @@ void env_client PROTO0((void))
 
 static DDLIST *ddroot = 0;
 
-RDIR *util_opendir PROTO1(char *, path)
+RDIR *util_opendir (char * path)
 {
   char *fpath;
   RDIRENT **dep;
@@ -505,13 +520,13 @@ RDIR *util_opendir PROTO1(char *, path)
   return(rdirp);
 }
 
-void util_closedir PROTO1(RDIR *, rdirp)
+void util_closedir (RDIR * rdirp)
 {
   rdirp->ddp->ref_cnt--;
   free(rdirp);
 }
 
-rdirent *util_readdir PROTO1(RDIR *, rdirp)
+rdirent *util_readdir (RDIR * rdirp)
 {
   static rdirent rde;
   RDIRENT **dep;
@@ -529,8 +544,18 @@ rdirent *util_readdir PROTO1(RDIR *, rdirp)
   return(&rde);
 }
 
+/*  Removes \npassword from input */
+void util_junk_password(char *path)
+{
+    char *pos;
 
-int util_stat PROTO2(char *, path, struct stat *, sbuf)
+    pos=strchr(path,'\n');
+    if(pos != NULL)
+	/* terminate them! */
+	*pos='\0';
+}	
+
+int util_stat (char * path, struct stat * sbuf)
 {
   static int statworks=1;
   RDIR *drp;
@@ -640,7 +665,7 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
   return(-1);
 }
 
-int util_cd PROTO1(char *, p)
+int util_cd (char * p)
 {
   char *fpath;
   UBUF *ub;
@@ -671,7 +696,7 @@ int util_cd PROTO1(char *, p)
 /* Perform a cd, but don't verify path.  Assume the path has been
  * pre-verified
  */
-int util_cd2 PROTO1(char *, p)
+int util_cd2 (char * p)
 {
   char *fpath;
 
@@ -683,20 +708,11 @@ int util_cd2 PROTO1(char *, p)
   return(0);
 }
 
-#ifdef PROTOTYPES
 void util_process_file(char *path, int mode,
 		void (*process_file)(char *,struct stat *, int, int),
 		int (*process_start_dir)(char *,struct stat *,u_long *),
 		void (*process_end_dir)(char *,int,u_long,int),
 		       int level)
-#else
-void util_process_file(path, mode, process_file, process_start_dir,
-			process_end_dir, level)
-     char *path;
-     int mode, level;
-     void (*process_file)(), (*process_end_dir)();
-     int (*process_start_dir)();
-#endif
 {
   struct stat sbuf;
   RDIR *rdir;

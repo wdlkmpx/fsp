@@ -32,7 +32,7 @@ static HTAB     hzero;
  * Look up the hostname for an inet number.  Return NULL if not found.
  ****************************************************************************/
 
-static char *find_hostname PROTO1(unsigned long, inet_num)
+static char *find_hostname (unsigned long inet_num)
 {
   struct hostent *he;
   char *hostname;
@@ -53,7 +53,7 @@ static char *find_hostname PROTO1(unsigned long, inet_num)
  * Entries are searched using binary search on the array.
  ****************************************************************************/
 
-HTAB *find_host PROTO1(unsigned long, inet_num)
+HTAB *find_host (unsigned long inet_num)
 {
   unsigned l, h, m, i;
   unsigned long inum;
@@ -97,7 +97,7 @@ HTAB *find_host PROTO1(unsigned long, inet_num)
  * Client database initialization routine.
  ****************************************************************************/
 
-int init_htab PROTO0((void)) /* always have 2 entries -- 0, MAXINT */
+int init_htab (void) /* always have 2 entries -- 0, MAXINT */
 {
   if(!(htab = (HTAB *) malloc(sizeof(HTAB)*HALLOC_SIZE))) {
     perror("grow_htab malloc");
@@ -115,7 +115,7 @@ int init_htab PROTO0((void)) /* always have 2 entries -- 0, MAXINT */
  * Write out the client table in the .HTAB_DUMP file.
  ****************************************************************************/
 
-int dump_htab PROTO1(FILE *,fp)
+int dump_htab (FILE *fp)
 {
   int i;
   HTAB *hp;

@@ -21,8 +21,8 @@ static char key_string[sizeof(KEY_PREFIX)+32];
 static char code_str[] =
     "0123456789:_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-static void make_key_string PROTO2(unsigned long, server_addr,
-				   unsigned long, server_port)
+static void make_key_string(	unsigned long server_addr,
+			   	unsigned long server_port)
 {
   unsigned long v1, v2;
   char *p;
@@ -190,7 +190,7 @@ static unsigned short *share_key;
 static unsigned int lock_fd;
 static int   lock_shm;
 
-unsigned short client_get_key PROTO0((void))
+unsigned short client_get_key (void)
 {
   if(lockf(lock_fd,F_LOCK,2) == -1) {
     perror("lockf");
@@ -199,7 +199,7 @@ unsigned short client_get_key PROTO0((void))
   return(*share_key);
 }
 
-void client_set_key PROTO1(unsigned short, key)
+void client_set_key (unsigned short key)
 {
   *share_key = key;
   if(lockf(lock_fd,F_ULOCK,2) == -1) {
@@ -208,9 +208,9 @@ void client_set_key PROTO1(unsigned short, key)
   }
 }
 
-void client_init_key PROTO3(unsigned long, server_addr,
-			    unsigned long, server_port,
-			    unsigned short, key)
+void client_init_key (unsigned long server_addr,
+			    unsigned long server_port,
+			    unsigned short key)
 {
   unsigned long omask;
   key_t lock_key;
@@ -260,19 +260,19 @@ void client_destroy_key(void)
 int key_persists = 0;
 static unsigned short okey;
 
-unsigned short client_get_key PROTO0((void))
+unsigned short client_get_key (void)
 {
   return(okey);
 }
 
-void client_set_key PROTO1(unsigned short, key)
+void client_set_key (unsigned short key)
 {
   okey = key;
 }
 
-void client_init_key PROTO3(unsigned long, server_addr,
-			    unsigned long, server_port,
-			    unsigned short, key)
+void client_init_key (unsigned long server_addr,
+			    unsigned long server_port,
+			    unsigned short key)
 {
   okey = key;
 }

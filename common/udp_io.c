@@ -26,7 +26,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 
-int _x_udp PROTO2(const char *, bindaddress, unsigned short *, port)
+int _x_udp (const char * bindaddress, unsigned short * port)
 {
   int f;
   socklen_t len;
@@ -55,7 +55,7 @@ int _x_udp PROTO2(const char *, bindaddress, unsigned short *, port)
   return(f);
 }
 
-int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
+int _x_adr (const char *host, int port, struct sockaddr_in * his)
 {
   char myhost[128];
   struct hostent *H;
@@ -83,7 +83,7 @@ int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
   return(0);
 }
 
-int _x_select PROTO2(fd_set *, rf, long, tt)  /* tt is in unit of ms */
+int _x_select (fd_set * rf, long tt)  /* tt is in unit of ms */
 {
   struct timeval timeout;
 

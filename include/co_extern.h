@@ -1,23 +1,25 @@
 #ifndef _FSP_CO_EXTERN_H_
 #define _FSP_CO_EXTERN_H_ 1
 
+/* common routines for both server and clients */
+
 #ifndef HAVE_STRDUP
 /* strdup.c */
-char *strdup PROTO0((char *));
+char *strdup (const char *);
 #endif
 
 #ifndef HAVE_RANDOM
 /* random.c */
-void srandom PROTO0((unsigned int));
-char *initstate PROTO0((unsigned int, char *, int));
-char *setstate PROTO0((char *));
-long random PROTO0((void));
+void srandom (unsigned int);
+char *initstate (unsigned int, char *, int);
+char *setstate (char *);
+long random (void);
 #endif
 
 /* udp_io.c */
-int _x_udp PROTO0((const char *, unsigned short *));
-int _x_adr PROTO0((const char *, int, struct sockaddr_in *));
-int _x_select PROTO0((fd_set *, long));
+int _x_udp (const char *, unsigned short *);
+int _x_adr (const char *, int, struct sockaddr_in *);
+int _x_select (fd_set *, long);
 
 /* getsl.c */
 char *getsl(char *s, int l);

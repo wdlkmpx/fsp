@@ -75,13 +75,13 @@ mode_t system_umask = 0077;
 unsigned int fp_cache_limit=10;
 
 
-static void log_set PROTO2(int, flag, int, neg)
+static void log_set (int flag, int neg)
 {
   if(neg) logging &= ~flag;
   else logging |= flag;
 }
 
-static int get_boolean PROTO1(const char, *q)
+static int get_boolean (const char *q)
 {
       if(strcmp(q, "0") == 0) return 0;
       else
@@ -101,7 +101,7 @@ static int get_boolean PROTO1(const char, *q)
       return -1;
 }
 
-static void read_configuration PROTO1(const char *, name)
+static void read_configuration (const char * name)
 {
   FILE *fp;
   char buf[1024], *p, *q;
@@ -266,7 +266,7 @@ static void read_configuration PROTO1(const char *, name)
   fclose(fp);
 }
 
-void load_configuration PROTO1(const char *,config_file)
+void load_configuration (const char *config_file)
 {
 #ifdef LAMERPACK
     return;
@@ -284,7 +284,7 @@ void load_configuration PROTO1(const char *,config_file)
   read_configuration(config_file);
 }
 
-void destroy_configuration PROTO0((void))
+void destroy_configuration (void)
 {
     if(readme_file) free(readme_file);
     if(home_dir) free(home_dir);

@@ -2,22 +2,21 @@
 
 bin_PROGRAMS=fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
              flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
-	     fstatcmd
+	     fstatcmd fmvcmd
 
 LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
 
 fspmerge_SOURCES=merge.c printpro.c fspprof.l
 fcdcmd_SOURCES=fcdcmd.c printpro.c
 fprocmd_SOURCES=printpro.c fprocmd.c
-noinst_HEADERS=printpro.h fhost.h
+noinst_HEADERS=printpro.h fhost.h merge.h
 fhostcmd_SOURCES=fhostcmd.c fspprof.l
 fhostcmd_LDADD=$(LDADD)
 
 fspmerge_LDADD=fcatcmd_m.o fcdcmd_m.o fducmd_m.o ffindcmd_m.o fgetcmd_m.o \
     fgrabcmd_m.o fhostcmd_m.o flscmd_m.o fmkdir_m.o fprocmd_m.o \
-    fput_m.o frmcmd_m.o frmdircmd_m.o fver_m.o \
+    fput_m.o frmcmd_m.o frmdircmd_m.o fver_m.o fmvcmd_m.o \
     fstatcmd_m.o $(LDADD)
-
 
 fgetcmd_CFLAGS:=-DCOMMAND_GET
 
@@ -84,4 +83,8 @@ fstatcmd_m.o:
 	@echo '#include "fstatcmd.c"' > fstatcmd_m.c
 	${COMPILE} -Dmain=fstatcmd_main -c fstatcmd_m.c
 	@rm -f fstatcmd_m.c
+fmvcmd_m.o:
+	@echo '#include "fmvcmd.c"' > fmvcmd_m.c
+	${COMPILE} -Dmain=fmvcmd_main -c fmvcmd_m.c
+	@rm -f fmvcmd_m.c
 

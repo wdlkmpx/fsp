@@ -19,7 +19,7 @@
 #include "my-string.h"
 #include "merge.h"
 
-static int make_dir PROTO1(char *, p)
+static int make_dir (char * p)
 {
   char *op;
   UBUF *ub;
@@ -41,7 +41,7 @@ static int make_dir PROTO1(char *, p)
   return(0);
 }
 
-int main PROTO2(int, argc, char **, argv)
+int main (int argc, char ** argv)
 {
   env_client();
   while(*++argv) make_dir(*argv);
