@@ -701,6 +701,8 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	    return;
 	  }
           ACTIONOK(L_INSTALL);
+	  FSP_STAT(pp.fullp,&sd); /* log filesizes */
+          xferlog('i',pp.fullp,sd.st_size,inetstr);
       }
       server_reply(from,ub,0,0);
       return;

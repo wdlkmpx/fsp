@@ -59,7 +59,7 @@ bind-ip-address for server (and client via FSP_LOCAL_IP)
 report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients
-new common log format
+common log format - replace custom fspd log
 
 :midle:may not be in 2.8.2
 Native Supports for symbolic links (needed for mirroring Debian)
@@ -80,6 +80,7 @@ PERFORMANCE:
 host hashtable shrinking sometimes
 stat cache pro FSP_STAT a ostatni
 background time() alarm() caller 
+Current performance 1925648b/s
 
 MAN:
 update FAQ - urgent!!
@@ -93,4 +94,4 @@ FSP plugin do Netscape/MSIE
 FSP library for Java
 Transfer HTTP over fsp transport
 FSP backend for APT
-FSP support to lftp
+FSP support to lftp,wget,curl

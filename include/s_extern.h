@@ -25,6 +25,7 @@ int init_caches PROTO0((void));
 void shutdown_caches PROTO0((void));
 void stat_caches PROTO1(FILE *,fp);
 const char *validate_path PROTO0((char *, unsigned, PPATH *,DIRINFO **, int));
+const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp);
 const char *server_get_dir PROTO0((DIRLISTING **,const DIRINFO *));
 const char *server_del_file PROTO0((PPATH *, DIRINFO *));
 const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di);

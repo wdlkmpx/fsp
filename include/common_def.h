@@ -167,6 +167,8 @@ typedef struct RDIRENT { unsigned char bb_time[4];
 
 #define NULLP ((char *) 0)
 
-#define MIN_DELAY	1500L
+#define MIN_DELAY	1000L
+#define DEFAULT_DELAY	1340L
+#define MAX_DELAY       300000L			 
 
 #endif /* _FSP_COMMON_DEF_H_ */

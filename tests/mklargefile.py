@@ -7,6 +7,6 @@ if __name__ == '__main__':
    else:
        GB=1024*1024*1024
        f=open(sys.argv[1],'w')
-       f.seek(long(sys.argv[2])*GB)
+       f.seek(long(float(sys.argv[2])*GB))
        f.write('!')
        f.close();

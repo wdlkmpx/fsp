@@ -1,3 +1,27 @@
+Version NEXT
+        PROTOCOL updated. Made rules about breaking directory header on
+	 packet boundary more clear. Previous text was from fspd code comment
+	 and was bad.
+	fixed tests/mklargefile.py
+	log uploads to wuftpd logfile also
+	PROTOCOL file updated. Added required commands section.
+	PROTOCOL file updated. Added recommended delay management section.
+	default delay in clients adjusted from 1.5 to 1.34 sec as recommended
+	 in PROTOCOL
+	support for MIN_DELAY, MAX_DELAY and DEFAULT_DELAY in source
+	path parsing moved to separate file server/path.c
+	new test tool parsecheck
+	reworked parse path: separate error messages for high bit chars,
+	 control chars
+	do not segfault when parsing password protected files. Looks like
+	 nobody used password protected files for a long time. This means
+	 that in future version of FSP I can change protocol definition
+	 without worry about breaking anything
+	path with trailing / or starting / is now parsed correctly
+	pathes with dot after slash are now detected at parse level (side
+	 effect of prev. fix)
+	tests moved from server/ into tests/ directory
+	
 Version 2.8.1b17 -- 17 Nov 2003 
 	Allow filenames with spaces inside
 	check for fork() and setsid() in configure.ac

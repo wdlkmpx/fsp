@@ -1,8 +1,8 @@
-			  File Service Protocol (FSP)
-				   definition
+			File Service Protocol version 2 
+				 specification
 
-			      Document version 0.8
-			   Last updated 29 Sep 2003 
+			      Document version 0.9
+			   Last updated 18 Nov 2003 
 
 				 Also known as 
 			    File Slurping Protocol, 
@@ -72,7 +72,10 @@ by server.
 TIMEOUTS
 Resends:
 Server will accept resent message from client with old KEY after 3 seconds.
-Client MUST wait at least 1 second before resending a message.
+Client MUST wait at least 1 second before resending a message. 
+It is recommended to use initial delay of 1.34 second and after each
+unsuccessfull resend multiply delay time by 1.5. Maximum recommended delay
+time is 300 seconds.
 Session:
 Server will accept message with bad key after 60 seconds. Clients should
 sent CC_BYE at end of their session, CC_BYE terminates a session.
@@ -82,7 +85,7 @@ SEQUENCE
 Similarly, the server's message to client contains a SEQUENCE value
 that is the same as the SEQUENCE value of the previous message from the client.
 Client can choose any SEQUENCE number and can use it for detection of lost
-packets (increase sequence number on retry).
+packets (increase sequence number on message resend).
 
 DATA_LENGTH
 Size of DATA field in packet. Packet can also contain XTRA DATA field but
@@ -95,6 +98,16 @@ data.
 
 FSP COMMANDS
 ============
+
+REQUIRED COMMANDS
+FSP File servers MUST supports following commands:
+- sending error messages back to client with CC_ERR
+- directory listings CC_GET_DIR
+- file transfer CC_GET_FILE
+- file status CC_STAT
+- information about directory flags CC_GET_PRO
+- terminate session CC_BYE
+
 
  CC_VERSION     0x10		- Get server version string and setup
  
@@ -157,7 +170,7 @@ boundary, then two possible things will happen:
 
   1) if the HEADER fits between this entry and the 1k boundary,
   a complete header will be filled in with a 'type' set to RDTYPE_SKIP.
-  And then enough bytes to pad to 1k boundary.  
+  Repeat this step as neceseary until no HEADER fits.
   2) if the HEADER does not fit, then simply pad to the 1k boundary.  
   
   This will make sure that messages carrying directory information carry only

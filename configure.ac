@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b17,hsn@cybermail.net)
+AC_INIT(fsp,2.8.1b17+cvs,hsn@cybermail.net)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
@@ -53,10 +53,10 @@ then
       -Wimplicit -Wsequence-point -Wreturn-type \
       -Wfloat-equal $addopts \
       -Wno-system-headers -Wredundant-decls \
-      -Wmissing-noreturn -Wconversion -pedantic \
+      -Wmissing-noreturn -pedantic \
       -Wlong-long -Wundef -Winline \
       -Wno-unused-parameter
-#     -Wunreachable-code 
+#     -Wunreachable-code -Wconversion 
   do
        if $CC $i $ac_cv_prog_gcc_flags -c configure-dummy.c >/dev/null 2>&1 
        then ac_cv_prog_gcc_flags="$ac_cv_prog_gcc_flags $i"

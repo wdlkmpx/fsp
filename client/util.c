@@ -448,6 +448,7 @@ static void util_get_env PROTO0((void))
   
   if( (p = getenv("FSP_DELAY")) ) target_delay = atol(p);
   if(target_delay < MIN_DELAY) target_delay = MIN_DELAY;
+  if(target_delay > MAX_DELAY) target_delay = MAX_DELAY;
   
   if(!(env_local_dir = getenv("FSP_LOCAL_DIR"))) env_local_dir=".";
   

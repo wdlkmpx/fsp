@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "tweak.h"
-#include "fifocache.h"
+#include "../server/fifocache.h"
 
 static int intcompare(const int *i1,const int *i2)
 {

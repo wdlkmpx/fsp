@@ -26,9 +26,9 @@ static unsigned short key;
 
 int client_trace = 0;
 int client_intr_state = 0;
-unsigned long target_delay = MIN_DELAY;	/* expected max delay	 */
-unsigned long busy_delay = MIN_DELAY;	/* busy retransmit timer */
-unsigned long idle_delay = MIN_DELAY;	/* idle retransmit timer */
+unsigned long target_delay = DEFAULT_DELAY;	/* expected max delay	 */
+unsigned long busy_delay   = DEFAULT_DELAY;	/* busy retransmit timer */
+unsigned long idle_delay   = DEFAULT_DELAY;	/* idle retransmit timer */
 unsigned long udp_sent_time;
 
 UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
@@ -79,7 +79,8 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
       case  1:
 	busy_delay = busy_delay * 3 / 2;
 	w_delay = busy_delay;
-	if(client_trace) write(2,"R",1); break;
+	if(client_trace) write(2,"R",1); 
+	break;
 	  
       default:
 #ifdef CLIENT_TIMEOUT
