@@ -36,7 +36,7 @@ static void display_version PROTO0((void))
 
 static void arg_err PROTO0((void))
 {
-  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile]\n", stderr);
+  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname]\n", stderr);
 }
 
 static void check_required_vars PROTO0((void))
@@ -60,6 +60,10 @@ static void check_required_vars PROTO0((void))
   if(*home_dir != '/') { 
     fprintf(stderr,"home directory [%s] does not start with a /.\n", home_dir);
     exit(1); 
+  }
+  if(!pidlogname) {
+    fprintf(stderr, "No pidlogname set in your fspd.conf.\n");
+    exit(1);
   }
   if(!readme_file) {
     readme_file = strdup(".README");
@@ -103,7 +107,7 @@ int main PROTO2(int, argc, char **, argv)
   if(strlen(argv[0])>=7)
 	  inetd_mode = !strcasecmp(&argv[0][strlen(argv[0])-7],"in.fspd");
 
-  while( (opt=getopt(argc,argv,"h?Xd:f:vVip:t:FT:l:"))!=EOF)
+  while( (opt=getopt(argc,argv,"h?Xd:f:vVip:t:FT:l:P:"))!=EOF)
   {
 	  switch(opt)
 	  {
@@ -123,6 +127,10 @@ int main PROTO2(int, argc, char **, argv)
 			  logname = strdup(optarg);
 			  logging = L_ALL ^ L_RDONLY;
 			  break;
+	          case 'P':
+		          if(pidlogname) free(pidlogname);
+		          pidlogname = strdup(optarg);
+		          break;
 		  case 'T':
 			  if(tmp_dir)
 			      free(tmp_dir);
