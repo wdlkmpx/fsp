@@ -26,7 +26,12 @@ if [ `uname -s` = 'FreeBSD' ]; then
     AUTOHEADER=autoheader259; export AUTOHEADER
     AUTOCONF=autoconf259; export AUTOCONF
     autoreconf259 -v
+else
+    echo "Using your default auto* tools"
+    #this should work with recent autotools
+    autoreconf -iv
 fi
+
 echo "Now running configure $@"
 ./configure $@
 echo "done."
