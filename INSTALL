@@ -121,19 +121,8 @@ Server Administration:
 			other protections.  It is created when a directory
 			is initially created in the archive via fmkdir.
 
-	.FSP_OK_DEL	Grants any client the permission to delete any file
-			from the current directory.
-
-	.FSP_OK_ADD	Grants any client the permission to add new files to				the current directory.
-
-	.FSP_OK_MKDIR	Grants any client the permission to create new sub-
-			directories under the current directory owned by
-			the client creating the directory.
-
-	.FSP_NO_GET	If this file exists, only the owner of the directory
-			is allowed to read the contents of the files in the
-			directory.  Newly created subdirectories of this
-			directory will inherit the privacy protection.
+	Information about all other directory security . files is
+	maintained in 'man 1 fspd'.
 
         Clients do not get to read the directory information directly.
         Instead, fspd maintains a directory listing for each directory
