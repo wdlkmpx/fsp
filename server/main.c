@@ -137,7 +137,7 @@ static void init_random (void)
   unsigned int seed;
   FILE *f;
 
-  f=fopen("/dev/random","rb");
+  f=fopen("/dev/urandom","rb");
   if(f)
   {
       fread(&seed,sizeof(unsigned int),1,f);
