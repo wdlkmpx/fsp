@@ -1,0 +1,52 @@
+.TH "FSP ENVIRONMENT" 7 "Jul 2003" FSP "FSP Environment Variables"
+.SH NAME
+Environment variables used by FSP Clients programs
+.SH SYNOPSIS
+setenv VARIABLE value | export VARIABLE=value
+.SH ENVIRONMENT
+.LP
+The following variables are used for access FSP servers:
+.TP
+.B FSP_HOST
+The name or internet number of the machine with the FSP server.
+.TP
+.B FSP_PORT
+The port number of the UDP socket used by the FSP server.
+.TP
+.B FSP_LOCALPORT
+The port number of the UDP socket used by FSP client utilities.
+The only reason to define this variable is to ensure mutual
+exclusion of client commands when none of the udp packet
+multiplexing mechanisms are enabled during compile time.
+You may pick any number not currently used for other purposes.
+.TP
+.B FSP_PASSWORD
+Access password for FSP server. Directories on FSP server can be
+password protected. FSP server can change your access level if you have
+provided a correct password. There are 2 access levels: public and owner.
+.TP
+.B FSP_BUF_SIZE
+Prefered size of server reply. Default is 1024 which is also maximum
+allowed value. You can lower that value if you want to get smaller
+packets from server.
+.TP
+.B FSP_DIR
+The current working directory of the client in the FSP server.
+The root of the database is /.
+.TP
+.B FSP_TRACE
+If this variable is set to any value, program
+will display the number of kilo-byte blocks transferred as transfer
+progresses.  Also shown will be a measure of characters per second
+so that network speed has an indicator.  This variable has no effect when the
+standard output is a terminal.
+.TP
+.B FSP_TIMEOUT
+If this variable is set, it contains the timeout value. The default value is 180.
+No function if program was compiled without timeout code.
+.TP
+.B FSP_DELAY
+Minimum wait time before resending packet in milliseconds.
+.TP
+.B FSP_LOCAL_DIR
+Where to look for local files. Default is current directory.
