@@ -1,11 +1,11 @@
-FSP SUITE TO DO LIST BY RADIM KOLAR
+FSP SUITE TO DO LIST
 /* maintained by hsn -at- netmag * cz */
 
 Radim Kolar's personal wishlist from 1997
 *-high priority-*
  - show loosers online (finfo command) and server statz
 * l o w *
- - password change command
+ - password change command !?
 
 TESTSUITE NEEDED:
 Write a simple FSP protocol testing tool
@@ -22,16 +22,12 @@ we should add real,portable error codes support to CC_ERR extended data area.
 
 PORTING
 Sven's Slowaris 8 compile problem
-Sven's AIX compile problem
+Fixed? Sven's AIX compile problem
 still not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
 
 NEEDS IMPROVMENT:
 
 Client LIBRARY
-:mid:
-we should retune retry algoritm for better support lines with higher
-  packed loss. On common internet lines current one works okay.
-add more detailed stats from retry alg.
 :low:
 fver and others add support new syntax fsp://host:port/file
 
@@ -60,7 +56,8 @@ report number of clients connected, size of hostable in new command
  CC_INFO command
 special defence against rapid/double fire clients (burst command in fspclient)
 Native Supports for symbolic links (needed for mirroring Debian)
-new LSTAT COMMAND
+new LSTAT COMMAND, new MAKELINK command
+Server should save .FSP_CONTENT using 1k size directory blocks
 
 :midle:may not be in 2.8.2
 write FSP_CHANGE_PASSWORD command
@@ -81,14 +78,15 @@ FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
   today.
 
 PERFORMANCE:
-host hashtable shrinking sometimes
-stat cache pro FSP_STAT a ostatni staty
-chage O(N) fifo cache to some more sane lru hashtable code. 
+do host hashtable shrinking/clearing sometimes
+stat cache pro FSP_STAT a other stat() calls
+chage O(N) fifo cache to some more sane lru hashtable code.
 background time() alarm() caller 
 Current performance 1925648B/s
 
 MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
+Register udp/21 for FSP in iana
 manual page for fmvcmd.1
 
 libraries and support for FSP protocol
@@ -96,7 +94,8 @@ libraries and support for FSP protocol
 
 DONE: FSP library for Java
 DONE: FSP over HTTP
-ALMOST DONE:  new small,light fsplib for C.
+DONE: new small,light fsplib for C.
+
 FSP plugin for Netscape/MSIE. 
   Not possible to write protocol plugins with Netscape 3 SDK 
   we have fsproxy now.
@@ -106,6 +105,7 @@ FSP support in major ftp programs: lftp,wget,curl,gftp
 AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:
+*-------------------------------*
 
 Cygwin: #define __LARGE64_FILES fopen64,ftello64,fseeko64 _off64_t
 glibc 2.3: #define _LARGEFILE64_SOURCE off64_t

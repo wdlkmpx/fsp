@@ -19,11 +19,12 @@
  ###         #       #    ###              L8mer guide to FSP
  ###         ##     ##    ###       
  ###         ###    #     ###                 LQ Version
-#####       # ######     #####                 Dec 2004
+#####       # ######     #####                 Jan 2005
                                 
 Why you need it
 
 - stealth operation
+- few people knows what FSP is
 - old proven software with 10 years history
 - Elite SitEZ has non interrupted operation by
   lamerz for more than 10 years!
@@ -32,11 +33,16 @@ Why you need it
 - net adminz do not like it
 - lamerz can not handle it
 - bandwidth friendly
+- very ressistant to packet loss
 
 STuFF firSt!
 
 you neeeed to get a p-file called cygwin1.dll. lamerz at www.cygwin.com
-have some. Grab a copy, man. Copy it to your winlost sistema32 dyr.
+have some. Grab a copy, man. Copy it to your c:\winlost\sistema32 dyr.
+
+If you can not get it from lamerz listed above and your friends do not have
+one, last chance for getting this important p-file is to do a minimal
+installation of CygLose.
 
 Have it? Right! You are ready now.
 
@@ -131,6 +137,7 @@ for HQ version of this guide send
 Features included:
       list of 5 hq quality sitez
       how to search for new sitez
+      how to make FSP faster
       special fsp sites seek tool
       and 3 secret bonuzez
 

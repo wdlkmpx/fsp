@@ -23,7 +23,7 @@
 static RETSIGTYPE dont_die (int signum)
 {
 #ifndef RELIABLE_SIGNALS	
-  signal(SIGPIPE,dont_die);
+  signal(signum,dont_die);
 #endif
 }
 
@@ -34,7 +34,10 @@ int main (int argc, char ** argv)
   env_client();
 
   signal(SIGPIPE,dont_die);
-  if(isatty(1)) client_trace = 0;
+  if(isatty(1)) 
+      client_trace = 0;
+  else
+      signal(SIGHUP,dont_die);    
 
   while(*++argv) {
     av = glob(*argv);

@@ -1,4 +1,4 @@
-.TH "FSP ENVIRONMENT" 7 "Oct 2004" FSP "FSP Environment Variables"
+.TH "FSP ENVIRONMENT" 7 "Dec 2004" FSP "FSP Environment Variables"
 .SH NAME
 Environment variables used by FSP Clients programs
 .SH SYNOPSIS
@@ -55,7 +55,8 @@ The default value is 360.
 No function if program was compiled without timeout code.
 .TP
 .B FSP_DELAY
-Minimum wait time before resending packet in milliseconds.
+Minimum wait time before resending packet in milliseconds. This should
+be set close to expected round trip time.
 .TP
 .B FSP_MAXDELAY
 Maximum wait time before resending packet in milliseconds.

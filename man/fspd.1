@@ -1,4 +1,4 @@
-.TH FSPD 1 "18 Oct 2004" FSP
+.TH FSPD 1 "Dec 2004" FSP
 .SH NAME
 fspd, in.fspd \- File Service Protocol (FSP) server
 .SH SYNOPSIS
@@ -83,7 +83,7 @@ bytes per second.
 .B -s packetsize
 Sets maximum allowed packet size or prefered packet size. Server must
 support packets up to 1024, but may prefer to send smaller packets.
-It may accept packets over 1024 bytes. Default value is 1024 bytes.
+It may accept packets over 1024 bytes. Default value is 1200 bytes.
 
 .LP
 .SH FILES
@@ -102,7 +102,7 @@ A text file that is sent to the client when the directory is entered giving
 information about the directory.  It can only be hand created by the site
 administrator at this time. This text file should be no more than 1022
 bytes in size. Any data above this limit will be silently ignored. Name
-of this file can be configured.
+of this file can be changed in server configuration file.
 
 .TP
 .B .FSP_OK_DEL
@@ -180,7 +180,7 @@ to create it.
 .B SIGINT | SIGTERM
 Server performs cleaup and exits. All connected clients will be
 disconnected. Because FSP is stateless protocol, if you start
-server later, than can continue without breakage.
+server later, clients can continue without breakage.
 
 .SH EXIT CODES
 .B 1
@@ -211,4 +211,4 @@ Internal terror
 .PD
 fcatcmd(1), fcdcmd(1), fgetcmd(1), fgrabcmd(1), flscmd(1), fmkdir(1),
 fprocmd(1), fput(1), frmcmd(1), frmdircmd(1), fver(1), fducmd(1),
-fhostcmd(1), fspd(1), fsp_prof(5), ffindcmd(1)
+fhostcmd(1), fspd(1), fsp_prof(5), ffindcmd(1), fbye(1), fmvcmd(1)

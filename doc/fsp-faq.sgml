@@ -197,7 +197,7 @@
       <para>
       There are also some people which likes slower FSP downloads better,
       because
-      it saves their bandwidth for interactive tasks. This is often prefered
+      it saves their bandwidth for interactive tasks. This is often preferred
       way of downloading large files, like CD-ROM images.
       <para>
       It is not true that UDP based protocols are unsecure. &fsp; provides
@@ -241,7 +241,7 @@
           <sect3 id="gethelpml">
         <title>The Mailinglists</title>
         <para>
-          For developing issue writte to the fsp-dev mainlinglist. For end-user questions
+          For developing issue write to the fsp-dev mainlinglist. For end-user questions
           and questions on how to configure your server/client write to the fsp-user Mailinglist.
           You can find more information on how to subscribe/unsubscribe to the mailinglist and
           the archive on the
@@ -327,8 +327,10 @@
         <para>
         FSP development started in a very old days. From source code and man
         page time stamps we can see that it was working and alive in 1988. 
-        FSP versions 1.0 and 2.0 was born in Dec 1991. After that two first
-        releases FSP goes to the active life.
+        FSP versions 1.0 and 2.0 was born in Dec 1991. Release 2.0 was just
+        bufixed 1.0 but includes man pages.  After that two first
+        releases FSP goes to the active life. People starts using it because
+        it was superior to anonymous FTP at that time.
 
         <para>
         FSP active development era ends in May 1993 when last official
@@ -347,14 +349,21 @@
         This version is used on some servers today because Debian Woody has it.
 
         <para>
-        Last official stable FSP version was 2.7.1. This is still
-        used on some forgotten machines in universities today. It has also
+        Last official stable FSP version was still 2.7.1 from May '93.
+        This is still used on some forgotten machines in universities today.
+        It has also
         known security issue (fspd follows all symlinks), but at this
         time this was viewed as feature, not a bug.
 
         <para>
         Radim Kolar released 2.8.1b4 in 2001, which was just some bugfixed
         version of 2.8.1b3 untouched from 1997 when I ported it to OS/2.
+
+        <para>
+        With wireless networks Wi-Fi boom in 2002, it becomes clear that
+        large wireless networks can have quite a high packet loss rate
+        and TCP protocol is not very suitable for them.
+        <para> 
         Active working on FSP again starts on 25 June 2003 when Version
         2.8.1b5 goes out. Major parts of FSP server code was rewrited
         for higher performance and many old bugs in FSP code fixed.
@@ -373,7 +382,7 @@
           on the mailinglists or via e-mail <email>hsn@no.spam.sendmail.cz</email>.
           </para>
         <para>
-          Since September 2003 Sven Hoexter is working on parts of the documentation.
+          Since September 2003 Sven Hoexter is working on parts of the documentation and code. He is also doing release management and RPM, deb packaging.
           You can reach him on the mailinglists or via e-mail
           <email>sven@du-gehoerst-mir.de-nospam</email>.
     </sect2>
@@ -434,14 +443,14 @@
       server in read only mode. In this mode fspd needs to know
       only home directory and port number. Both can be supplied by command
       line arguments to fspd.
-    <para>  
+    <para>
       If you need additional features, such as
-      logging, you will need to know <xref linkend="fspd.conf">
+      logging, you will need to have <xref linkend="fspd.conf">
     </para>
     <sect2 id="installserver">
       <title>How to install fsp server</title>
       <para>
-        See <xref linkend="installation"> first.
+        FSP server is included in main FSP package. See <xref linkend="installation"> first. FSP server for windows is in the <xref linkend="lamerpack">.
       <para>
         Server can be installed as inetd service or standalone. I prefer
         inetd installation, because modification of system startup
@@ -454,12 +463,15 @@
       <title>How to quickly install fsp server</title>
       <para>
         Add following line to your /etc/inetd.conf
-        <programlisting>
-        ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
-        </programlisting>
+<programlisting>
+ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
+</programlisting>
         This easy setup will run fsp server on standard port 21, home directory set to /home/ftp and effective user set to ftp. If you do not have configured
         temporary directory in fspd.conf, fsp server will run in read-only
-        mode.
+        mode. 
+      <para>  
+        Some inetd server uses slightly different syntax of inetd.conf
+        file. Consult your local man pages for inetd and inetd.conf.
     <sect2 id="fspd.conf">
       <title>How to setup a basic fspd.conf</title>
       <para>
@@ -527,15 +539,44 @@
         somewhat familiar with command line FTP and want to try FSP, this
         program is right for you.
       <para>
+        The old, real hackers prefers <xref linkend="fsptoolchain">, because
+        fspclient is just 'fsp for lamah'.
+      <para>
        FSP client homepage is <ulink url="http://fspclient.sourceforge.net">http://fspclient.sourceforge.net</ulink>.
       </para>
     </sect2> 
     <sect2 id="gui">
-      <title>Using FSP in browser</title>
+      <title>FSP PROXY: Using FSP in browser</title>
       <para>
         If you want a GUI, the easiest way is to use FSP directly
-        from your web browser.
+        from your web browser. This is recommended method for using FSP
+        by standard BFU users. They can handle web browser well -- no
+        extra education is necessary.
+      <para>
         You need to download and install <ulink url="http://fsp.sf.net/javalib.html">FSP Java LIB</ulink> and <ulink url="http://fsp.sf.net/fsproxy.html">Proxy server</ulink>. Read included docs for install instructions.
+    <sect2 id="dmachine">
+       <title>Download Machine</title>
+       <para>
+         Download Machine is non interactive, non graphical, batch download
+         manager. Tired of GUI Download managers and mouse clicking?
+         Then Download Machine is just for YOU!
+       <para>  
+         Download Machine is written in portable Java 1.1 code and supports
+         <ulink url="http://www.w3.org/Protocols/">HTTP</ulink>,
+         FTP and <ulink url="http://fsp.sourceforge.net/">FSP</ulink>
+         protocols.
+     <sect2 id="lamerpack">
+         <title>FSP Win32 Suite</title>
+         <para>
+           Special, easy to use, starting suite targeted at common Windows users.
+           Suite contains 3 valueable items:
+           Easy to use fsp server (works without configration file),
+           windows version of fspclient and
+           Lamah starting guide to FSP.
+         <para>
+            This package is downloadable from
+            <ulink url="http://sourceforge.net/project/showfiles.php?group_id=93841&amp;package_id=133839">Source Forge</ulink> and requires cygwin dll library
+            not included in the package.
   </sect1>
 <!-- end how to use the client -->
 
@@ -556,7 +597,8 @@
         reliable underlying transport. FSP can operate even without
         any Layer 2 and Layer 3 transports only with some extra features
         disabled. FSP can be implemented in all kinds of environments.
-        This makes FSP very suitable for embedded devices area.
+        This makes FSP very suitable for embedded devices area, because
+        it is easier to implement than other transfer protocols like X-Modem.
       <para>  
         When used in TCP/IP based networks,
         UDP is used for transporting of FSP datagrams, this lowers protocol
@@ -570,7 +612,7 @@
         FSP protocol is very simple to implement.
     </sect2>
     <sect2 id="keying">
-    <title>Network bandwidth protection</title>
+    <title>Keying: Network bandwidth protection</title>
     <para>
         One of interesting parts of underlying network technology used
         by FSP is how protocol design restrict user from sending
@@ -584,7 +626,8 @@
     <para>
         Server remembers for each IP not only nextkey, but also previous
         key. When packet's key matches previously stored key -- it is
-        resend from client.
+        resend from client. Server limits replies to resend packets also.
+        Max. allowed reply rate to resend packets is 1 reply per 3 seconds.
         This method also allows ignore duplicate requests by server for
         action which should not be done more than once (for example mkdir).
     <para>
@@ -599,18 +642,55 @@
         by computing packet loss ratio of network, and duplicate
         packet rate.
     <sect2>
+    <title>Client side locking</title>
+    <para>
+    FSP server has its secret keys database divided by client ip address,
+    not by client:port. All requests comming from the same machine must
+    shares the same secret key.  This is done for bandwidth protection.
+    <para>
+    Client must submit a valid key with request. Where there are 2 programs
+    runnings on the client PC and both wants to talk to the same FSPD at once,
+    they must exchange knowledge of this secret key between themselfs.
+    If they don't, only one program can talk to the FSPD, because others do not
+    knows the next session key. They can try to talk but fspd will ignore them.
+    This is kind of client-side multiplexing.
+    <para>
+    There are several methods how to do this key sharing. Best method is
+    to use semop+shmget, second is to use lockf on file in /tmp. All FSP
+    clients running on the same machine must use the same locking method.
+    <sect2>
     <title>Why not use bigger packet size?</title>
     <para>
        &fsp; defines maximum packet size 1024 bytes of data + header.
+       All FSP compatible protocol stacks must support this packet size.
+       Nearly all networks can transfer 1036 bytes long UDP packets.
+       Some networks allows only 512 bytes long UDP (maximal size required
+       by RFC). To use FSP on that networks, fsp clients must be configured
+       to use only 500 bytes of payload.
+    <para>
        Because MTU of most networks is about 1500 bytes. It is true, that
-       we can use slightly bigger packets for gaining some speed.
+       we can use slightly bigger packets for gaining some speed. FSP
+       server can optionally support larger packet size, but must send
+       them out only on explicit client request.
+    <para>
        We have performed some benchmarks and they shows only minor
        performance increase, about 10-15 percent. Similar testing
        was performed by HP in <ulink url="http://www.ietf.org/rfc/rfc2348.txt">RFC 2348</ulink>.
     <para>
-       For bigger performance enhancement we need to use at least 2KB,
-       but packets of that size must be fragmented on most network and fragmenting increases possibility of packet loss. We will not increase packet size
-       in FSP v2 codebase, but we are willing to do some experiments in FSP v3.  
+       For bigger performance enhancement we need to use at least 2.5 KB,
+       but packets of that size must be fragmented on most network and fragmenting increases possibility of packet loss.
+    <sect2 id="prog">
+    <title>Using FSP in your programs</title>
+    <para>
+      You can easily add support for FSP v2 protocol into your programs.
+      Currently exists two independend libraries for FSP protocol support
+      and one library is in the work.
+    <para>  
+      First library is called <ulink url="http://fsp.sourceforge.net/javalib.html">JFSPlib</ulink>. This is FSP library for Java language.
+    <para>
+      Second library is called <ulink url="http://fsp.sourceforge.net/fsplib.html">FSPlib</ulink>. This is FSP library for C language with POSIX-like API.
+    <para>
+      FSP support for Python <ulink url="http://fsp.sourceforge.net/pyfsp.html">PyFSP</ulink> is currently work in progress. Note: PyFSP uses GPL license, not MIT/X11 like other libraries.
 </sect1>
 </article>
 <!-- vim: set expandtab: -->

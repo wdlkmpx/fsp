@@ -79,7 +79,7 @@ int main (int argc, char ** argv)
     exit(1);
   }
 
-  signal(SIGHUP,upload_cleanup);
+  signal(SIGHUP,SIG_IGN);
   signal(SIGINT,upload_cleanup);
   signal(SIGQUIT,upload_cleanup);
   signal(SIGILL,upload_cleanup);

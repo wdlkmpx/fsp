@@ -46,7 +46,7 @@ int use_directory_mtime =
 1;
 #endif
 unsigned int maxthcallowed = 0;
-unsigned short packetsize = UBUF_SPACE;
+unsigned short packetsize = DEFAULT_SPACE;
 time_t retry_timeout = 3;
 time_t session_timeout = 60;
 time_t stat_cache_timeout = 25;
@@ -187,7 +187,7 @@ static void read_configuration (const char * name)
     else if(strcasecmp(p, "packetsize") == 0) {
       packetsize = atoi(q);
       if(packetsize == 0) 
-	  packetsize = UBUF_SPACE;
+	  packetsize = DEFAULT_SPACE;
       else
       if(packetsize < 64 )
 	  packetsize = 64;

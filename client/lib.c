@@ -33,6 +33,7 @@ unsigned long target_maxdelay = DEFAULT_MAXDELAY; /* max resend timer */
 unsigned long busy_delay   = DEFAULT_DELAY;	/* busy retransmit timer */
 unsigned long idle_delay   = DEFAULT_DELAY;	/* idle retransmit timer */
 unsigned long udp_sent_time;
+unsigned long stat_resends, stat_iresends, stat_dupes, stat_bad, stat_ok;
 
 UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 			     unsigned int l1, unsigned const char * p1,
@@ -48,6 +49,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
   socklen_t bytes;
   unsigned long w_delay;
   unsigned long total_delay;
+  struct timeval start[8],stop;
 
   FD_ZERO(&mask);
   sbuf.cmd = cmd;
@@ -73,7 +75,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
     total_delay += w_delay;  
     BB_WRITE2(sbuf.bb_key,key);
     sbuf.bb_seq[0] = seq0 = (myseq >> 8) & 0xff;
-    sbuf.bb_seq[1] = seq1 = (myseq & 0xfc) | (retry_send & 0x0003);
+    sbuf.bb_seq[1] = seq1 = (myseq & 0xf8) | (retry_send & 0x0007);
     sbuf.sum = 0;
 
     for(t = (unsigned char *) &sbuf, sum = n = mlen; n--; sum += *t++);
@@ -81,13 +83,21 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 
     switch(retry_send) {	/* adaptive retry delay adjustments */
       case  0:
-        busy_delay = (target_delay+(busy_delay<<3)-busy_delay)>>3;
+        if(target_delay>=busy_delay)
+	    w_delay=target_delay;
+        else
+            w_delay=busy_delay+DEFAULT_DELAY;
+	/* classic FSP retry code. Not suitable for CZFREE.NET
+        busy_delay = (target_delay+ (busy_delay<<3)-busy_delay)>>3;
 	w_delay = busy_delay;
+	*/
 	break;
       case  1:
 	busy_delay = busy_delay * 3 / 2;
 	w_delay = busy_delay;
+	idle_delay = busy_delay;
 	if(client_trace) write(2,"R",1);
+	stat_resends++;
 	break;
 	
       default:
@@ -97,10 +107,11 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	  exit(1);
 	}
 #endif
-	idle_delay = idle_delay * 3 / 2;
+	idle_delay = idle_delay * 4 / 3;
 	if (idle_delay > target_maxdelay) idle_delay = target_maxdelay;
 	w_delay = idle_delay;
 	if(client_trace) write(2,"I",1);
+	stat_iresends++;
 	break;
     }
 
@@ -120,7 +131,18 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
                exit(1);
       }
     }
+    /* Check if w_delay is within limits */
+    if(w_delay < MIN_DELAY)
+	w_delay=MIN_DELAY;
+    else
+	if (w_delay > target_maxdelay)
+	    w_delay = target_maxdelay;
+
+#ifdef DEBUG
+    printf("Waiting %lu ms for server response.\n",w_delay);
+#endif        
     udp_sent_time = time((time_t *) 0);
+    gettimeofday(&start[retry_send & 0x7],NULL);
     FD_SET(myfd,&mask);
 
     for(retry_recv = 0; ; retry_recv++) {
@@ -133,6 +155,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	{
 	  /* too enough bytes for header */
           if (client_trace) write(2,"H",1);
+	  stat_bad++;
 	  continue;
 	}
 
@@ -142,6 +165,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	{
 	    /* truncated. */
             if (client_trace) write(2,"T",1);
+	    stat_bad++;
 	    continue;
 	}
 	
@@ -154,21 +178,30 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	{   
 	    /* wrong check sum */
             if (client_trace) write(2,"C",1);
+	    stat_bad++;
 	    continue;
 	}
 	
 	if( (rbuf.bb_seq[0] ^ seq0) ||
-	   ((rbuf.bb_seq[1] ^ seq1)&0xfc)) 
+	   ((rbuf.bb_seq[1] ^ seq1)&0xf8)) 
 	{
 	    /* wrong seq # */
             if (client_trace) write(2,"S",1);
+	    stat_dupes++;
 	    continue;
 	}
-	myseq = (myseq + 0x0004) & 0xfffc;  /* seq for next request */
+	myseq = (myseq + 0x0008) & 0xfff8;  /* seq for next request */
 	key = BB_READ2(rbuf.bb_key); /* key for next request */
-	
+	/* calculate real busy delay */
+        gettimeofday(&stop,NULL);
+	busy_delay = 1000*(stop.tv_sec-start[rbuf.bb_seq[1] & 0x7].tv_sec);
+	busy_delay += (stop.tv_usec-start[rbuf.bb_seq[1] & 0x7].tv_usec)/1000;
+#ifdef DEBUG
+    printf("Server reply RTT was %lu ms.\n",busy_delay);
+#endif        
 	client_set_key(key);
-	
+	stat_ok++;
+
 	if(client_intr_state == 2) {
 	  if(!key_persists) client_done();
 	  exit(1);
@@ -200,10 +233,11 @@ static RETSIGTYPE client_intr (int signum)
 void init_client (const char * host, unsigned short port, unsigned short myport)
 {
   busy_delay = idle_delay = target_delay;
+  stat_resends = stat_iresends = stat_dupes = stat_bad = stat_ok;
 #ifdef HAVE_SRANDOMDEV
   srandomdev();
-#endif    
-  myseq = random();
+#endif
+  myseq = random() & 0xfff8;
 
   if((myfd = _x_udp(env_listen_on,&myport)) == -1) {
     perror("socket open");

@@ -213,7 +213,7 @@ int main (int argc, char ** argv)
   char **av, *av2[2], n[1024];
   int prompt, mode = 0;
 
-  signal(SIGHUP,fsp_cleanup);
+  signal(SIGHUP,SIG_IGN);
   signal(SIGINT,fsp_cleanup);
   signal(SIGQUIT,fsp_cleanup);
   signal(SIGILL,fsp_cleanup);

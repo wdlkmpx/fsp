@@ -109,6 +109,13 @@ char *util_abs_path (const char * s2)
   return(path);
 }
 
+static void util_pktstats(void)
+{
+    fprintf(stderr,"Packets received: %lu total (%lu bad, %lu duplicate)\nPackets sent: %lu total (%lu first resends, %lu idle resends).\n",stat_ok+stat_bad+stat_dupes,stat_bad,stat_dupes,
+    stat_ok+stat_resends+stat_iresends,stat_resends,stat_iresends);
+    fprintf(stderr,"Line has %lu %% packet loss rate.\n",100*(stat_resends+stat_iresends)/(stat_ok+stat_dupes+stat_resends+stat_iresends));
+}
+
 static int util_split_path (char * path, char ** p1, char ** p2,
 				  char ** p3)
 {
@@ -285,6 +292,7 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
   if(client_trace)
   {
     fprintf(stderr,"\r%luk : %s [%ldB/s] \n", 1+(pos>>10), path, downloaded/t);
+    util_pktstats();
     fflush(stderr);
   }
 
@@ -439,6 +447,7 @@ int util_upload (char * path, FILE * fp, time_t stamp)
   if(client_trace)
   {
     fprintf(stderr,"\r%luk : %s [%ldB/s] \n", 1+(pos>>10), path, pos/t);
+    util_pktstats();
     fflush(stderr);
   }
   free(fpath);

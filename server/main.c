@@ -78,7 +78,7 @@ static void check_required_vars (void)
       packetsize = UBUF_MAXSPACE;
   else
       if (packetsize == 0)
-	  packetsize = UBUF_SPACE;
+	  packetsize = DEFAULT_SPACE;
       else
 	  if(packetsize < 64)
 	      packetsize = 64;	  
@@ -125,6 +125,10 @@ static void check_required_vars (void)
 
 static void init_random (void)
 {
+#ifdef HAVE_SRANDOMDEV
+    
+  srandomdev();
+#else        
   unsigned int seed;
   FILE *f;
 
@@ -137,6 +141,7 @@ static void init_random (void)
       seed=getpid()*time(NULL);
 
   srandom(seed);
+#endif  
 }
 
 int main (int argc, char ** argv)

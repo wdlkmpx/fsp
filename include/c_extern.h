@@ -10,6 +10,7 @@ UBUF *client_interact (unsigned char, unsigned long, unsigned int,
 void init_client (const char *, unsigned short, unsigned short);
 int client_done (void);
 void client_finish(void);
+extern unsigned long stat_resends, stat_iresends, stat_dupes, stat_bad, stat_ok;
 
 /* lock.c */
 extern int key_persists;

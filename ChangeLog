@@ -23,6 +23,24 @@ Version NEXT
 	fsp_env.7: added info about larger packets
 	send_file function renamed to serve_file for avoiding name clash
 	  on AIX.
+	idle resend multiplier descreased from 1.5 to 1.33
+	correctly init first sequence number
+	sequence numbering changed to allow up to 8 packets flying in the
+	  network. Old code uses 4. Even CZFREE.net do not drops 8 packets
+	  in row unless line is down.
+	allow better debuging of retry alg.
+	Default max packesize supported by server set by 1200 bytes for
+	  now. Let's make some experiments.
+	Calculate real RTT using seq. numbers
+	ignore HUP signal in fgetcmd and fputcmd
+	ignore HUP signal in fcatcmd if stdout is not a terminal
+	fspd.1: minor fixes
+	!! retry alg. retuned for lines with higher PLR. It is much better
+	  than before.
+	use srandomdev() for seeding server random generator
+	FAQ: added section about key locking, dmachine, FSP stack libraries,
+	  lamah FSP Win32 suite.
+	print packet stats after up/downloads if client tracing is enabled.
 
 Version 2.8.1b22 - 20 Dec 2004
 	fixed sf bug 1060594: fspd: owner can't rename files
