@@ -1,3 +1,5 @@
+	Allow filenames with spaces inside
+	check for fork() and setsid() in configure.ac
 Version 2.8.1b16 -- 8 Nov 2003 
 	This version fixes 2 major bugs in beta 15 release.
 	fspd: update mtime for directory listing after .FSP_CONTENT write

@@ -246,9 +246,13 @@ int main PROTO2(int, argc, char **, argv)
     /* Added Alban E J Fellows 12 Jan 93             */
     /* Moved by JT Traub to only do this if not running under inetd. */
     if(daemonize) {
+#if HAVE_FORK	
       if (fork() > 0)
 	_exit(0);
+#endif
+#if HAVE_SETSID
       setsid();
+#endif
     }
   }
 

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b16,hsn@cybermail.net)
+AC_INIT(fsp,2.8.1b16+cvs,hsn@cybermail.net)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
@@ -108,7 +108,7 @@ AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not fo
 AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
 AC_TYPE_SIGNAL
 AC_FUNC_CLOSEDIR_VOID
-AC_CHECK_FUNCS(random strdup bcopy flock lockf getrlimit)
+AC_CHECK_FUNCS(random strdup bcopy flock lockf getrlimit fork setsid)
 AC_CACHE_CHECK(for working shmget ,fsp_cv_func_shmget,
 [LOCKPATH="conftestlock"
 AC_TRY_RUN([
@@ -188,6 +188,7 @@ main() {
  signal(SIGUSR1,sig_handler);
  test=0;
  kill(getpid(),SIGUSR1);
+ sleep(1);
  if(test==0) { printf("Signals ARE BROKEN!\n");kill(0,SIGQUIT);}
  test=0;
  kill(getpid(),SIGUSR1);

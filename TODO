@@ -36,7 +36,7 @@ remove stale lock files if not needed, port code from fspclient.
 FSP_TIMEOUT should be total number of seconds, not delay between retrys.
 :low:
 fver and others add support new syntax fsp://host:port/file
-add sem locking method
+add sem locking method, possible?
 flscmd does stat before directory listing, why?
 :better to write a new code instead fixing old crap
 =convert to multi threaded=

@@ -270,7 +270,7 @@ static const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, 
       *s = '\0';
       if(dbug) fprintf(stderr,"parse_path: found password field %s\n", s+1);
     }
-    else if(*s <= ' ' || *s >= '~') return("Path contains illegal chars");
+    else if(*s < ' ' || *s >= '~') return("Path contains illegal chars");
       
     switch(*s) {
       case '\\':
