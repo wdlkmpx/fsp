@@ -22,7 +22,7 @@ we should add real,portable error codes support to CC_ERR extended data area.
 
 PORTING
 Sven's Slowaris 8 compile problem
-still not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
+still do not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
 
 NEEDS IMPROVMENT:
 
@@ -37,8 +37,6 @@ LOCKING
 
 CLIENTS 
 :high: 
-bug in directory listing parsing code, fspclient has it also
-  pyfsp and fsplib seems to be ok.
 some client commands should exit with nonzero rc on failure
 
 :low:
@@ -94,6 +92,7 @@ libraries and support for FSP protocol
 DONE: FSP library for Java
 DONE: FSP over HTTP
 DONE: new small,light fsplib for C.
+DONE: fsp backend in gftp
 
 FSP plugin for Netscape/MSIE. 
   Not possible to write protocol plugins with Netscape 3 SDK,
@@ -101,6 +100,7 @@ FSP plugin for Netscape/MSIE.
   we have fsproxy now.
 FSP backend for APT
 FSP support in major ftp programs: lftp,wget,curl
+Gnome vfs2 plugin
 AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:

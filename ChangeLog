@@ -1,4 +1,4 @@
-Version NEXT
+Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
 	  fspscan now compiles on AIX and other OS without glibc (hoaxter)
 	!! fixed fatal bug from b23. Server sends large packets to clients if
@@ -10,7 +10,12 @@ Version NEXT
 	started work on alternate SCons based build system
 	fspd: use urandom, not random -> avoid hangs on Lin suck 2.6
 	build system converted to SCons
-	fixed directory listing bug in client library introduced in beta23
+	!! fixed directory listing bug in client library introduced in beta23
+	improvements to security of FSP clients
+	  seq. numbers are now randomized
+	  seed random number generator in fsp clients
+	  check cmd in received packets
+	  check pos in received packets
 
 Version 2.8.1b23 - 14 Jan 2005
 	use srandomdev for seeding of client seq. number generator

@@ -68,12 +68,18 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
   mlen = d - (unsigned char *) &sbuf;
 
   key = client_get_key();
+  u = random() & 0xfff8;
+  if ( u == myseq )
+  {
+      myseq ^= 0x1080;
+  }
+  else myseq = u;
 
   for(retry_send = 0; ; retry_send++) {
-    total_delay += w_delay;  
+    total_delay += w_delay;
     BB_WRITE2(sbuf.bb_key,key);
-    sbuf.bb_seq[0] = seq0 = (myseq >> 8) & 0xff;
-    sbuf.bb_seq[1] = seq1 = (myseq & 0xf8) | (retry_send & 0x0007);
+    sbuf.bb_seq[0] = seq0 = (myseq >> 8) & 0x00ff;
+    sbuf.bb_seq[1] = seq1 = (myseq & 0x00f8) | (retry_send & 0x0007);
     sbuf.sum = 0;
 
     for(t = (unsigned char *) &sbuf, sum = n = mlen; n--; sum += *t++);
@@ -97,7 +103,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	if(client_trace) write(2,"R",1);
 	stat_resends++;
 	break;
-	
+
       default:
 #ifdef CLIENT_TIMEOUT
 	if (total_delay/1000 >= env_timeout ) {
@@ -124,7 +130,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	  case EPIPE:
 	       /* try to resend packet */
 	       continue;
-	  default:     
+	  default:
                perror("sendto");
                exit(EX_IOERR);
       }
@@ -138,7 +144,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 
 #ifdef DEBUG
     printf("Waiting %lu ms for server response.\n",w_delay);
-#endif        
+#endif
     udp_sent_time = time((time_t *) 0);
     gettimeofday(&start[retry_send & 0x7],NULL);
     FD_SET(myfd,&mask);
@@ -166,7 +172,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	    stat_bad++;
 	    continue;
 	}
-	
+
 	s = (unsigned char *) &rbuf;
 	d = s + bytes;
 	u = rbuf.sum; rbuf.sum = 0;
@@ -179,7 +185,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	    stat_bad++;
 	    continue;
 	}
-	
+        /* check seq. number */
 	if( (rbuf.bb_seq[0] ^ seq0) ||
 	   ((rbuf.bb_seq[1] ^ seq1)&0xf8)) 
 	{
@@ -188,7 +194,23 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	    stat_dupes++;
 	    continue;
 	}
-	myseq = (myseq + 0x0008) & 0xfff8;  /* seq for next request */
+	/* check command */
+        if (cmd != rbuf.cmd && rbuf.cmd != CC_ERR)
+	{
+            if (client_trace) write(2,"C",1);
+	    stat_bad++;
+	    continue;
+	}
+	/* check pos */
+	if (BB_READ4(rbuf.bb_pos) != pos && (cmd == CC_GET_DIR ||
+	    cmd == CC_GET_FILE || cmd == CC_UP_LOAD || cmd == CC_INFO ||
+	    cmd == CC_GRAB_FILE))
+	{
+	    /* wrong seq # */
+            if (client_trace) write(2,"P",1);
+	    stat_bad++;
+	    continue;
+	}
 	key = BB_READ2(rbuf.bb_key); /* key for next request */
 	/* calculate real busy delay */
         gettimeofday(&stop,NULL);
@@ -196,7 +218,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
 	busy_delay += (stop.tv_usec-start[rbuf.bb_seq[1] & 0x7].tv_usec)/1000;
 #ifdef DEBUG
     printf("Server reply RTT was %lu ms.\n",busy_delay);
-#endif        
+#endif
 	client_set_key(key);
 	stat_ok++;
 
@@ -234,6 +256,8 @@ void init_client (const char * host, unsigned short port, unsigned short myport)
   stat_resends = stat_iresends = stat_dupes = stat_bad = stat_ok;
 #ifdef HAVE_SRANDOMDEV
   srandomdev();
+#else
+  srandom(getpid()*time(NULL));
 #endif
   myseq = random() & 0xfff8;
 
@@ -253,7 +277,7 @@ void init_client (const char * host, unsigned short port, unsigned short myport)
 
 void client_finish(void)
 {
-  env_timeout=10;  
+  env_timeout=10;
   (void) client_interact(CC_BYE, 0L, 0, (unsigned char *)NULLP, 0,
 			 (unsigned char *)NULLP);
   client_destroy_key();

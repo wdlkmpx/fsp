@@ -54,7 +54,7 @@
 #define UBUF_HSIZE 12                           /* 12 bytes for the header */
 #define UBUF_SPACE 1024			        /* maximum standard payload. */
 #define UBUF_MAXSPACE 4096                      /* maximum payload supported by server */
-#define DEFAULT_SPACE 1200			/* Default packet size */
+#define DEFAULT_SPACE 1370			/* Default packet size */
 
 #define NBSIZE (UBUF_MAXSPACE+UBUF_SPACE)
 
