@@ -18,7 +18,7 @@ symlink to FILE can escape from FSP root directory. OLD known problem.
 symlink support must be reworked before final release.
 
 PROTOCOL-RELATED BUGS:
-none
+add real,portable error codes support to CC_ERR extended data area.
 
 PORTING
 Sven's Slowaris 8 compile problem
@@ -31,7 +31,7 @@ Client LIBRARY
 :high:
 we should retune retry algoritm for better support lines with higher
   packed loss. On common internet lines current one works okay.
-add more detailed stats from retry alg.  
+add more detailed stats from retry alg.
 :low:
 fver and others add support new syntax fsp://host:port/file
 add sem locking method, possible?
@@ -42,10 +42,7 @@ better support for persistent keys - do not send cc_bye ? this should
   be probably configurable
 
 :long-term goals:
-:better to write a new code instead of fixing 10 yo crap.
-=convert to multi threaded=
-make setup from env a separate function
-do not use global variables
+drop this library and use libfsp instead
 
 CLIENTS 
 :high: 

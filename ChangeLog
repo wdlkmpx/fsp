@@ -1,3 +1,4 @@
+Version NEXT
 	fixed sf bug 1060594: fspd: owner can't rename files
 	fixed sf bug 1060558: fpro 'l' sets 'm' flag instead (dairiki)
 	fixed sf bug 1060558: fpro 'l' flag was not correctly saved
@@ -9,9 +10,12 @@
 	Lamerpack: disable most of command line options in fspd and print
 	  simpler help message.
 	server_install: zero length filename cancels upload in progress
-	  this change is needed for upcoming fsplib.
+	  this change is needed for upcoming gftp/fsplib support.
+	PROTOCOL: CC_INSTALL: document zero length filename, use request
+	  position for sizing of extra data.
+	PROTOCOL: CC_SET_PRO: Use request position for sizing of extra data.  
 
-version 2.8.1b21 - 1 Nov 2004
+Version 2.8.1b21 - 1 Nov 2004
 	check for errors while copying files in fspd.
 	removed all the PROTOX macros junk. Tools for analyzing C source
 	  code works with fsp codebase now as result.
@@ -43,7 +47,7 @@ version 2.8.1b21 - 1 Nov 2004
 	  at all. Previous versions sends one null byte
 	printpro.c - print readme only if nonzero sized
 
-version 2.8.1b20 - 26 Oct 2004
+Version 2.8.1b20 - 26 Oct 2004
 	Added pidfile.[c|h] from FreeBSD and modified it to fit in (hoaxter)
 	Added pidfile support, config option is 'pidlogname' (hoaxter)
 	Replaced .file information from INSTALL with a hint to man 1 fspd (hoaxter)
@@ -100,7 +104,7 @@ version 2.8.1b20 - 26 Oct 2004
 	lamerz guide added
 	text rotate tool added
 
-version 2.8.1b19 - 11 jan 2004
+Version 2.8.1b19 - 11 jan 2004
 	sven has added fspget URL command to setup.sh.
 	fixed case for mklargefile.py in tests/Makefile.am
 	added --enable-debug switch to configure for enabling extra

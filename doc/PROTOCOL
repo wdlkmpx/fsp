@@ -1,8 +1,8 @@
 			FILE SERVICE PROTOCOL VERSION 2
 				     FSP v2
 
-			     Document version 0.14
-			    Last updated  29 Nov 2004
+			     Document version 0.15
+			    Last updated  2 Dec 2004
 
 				 Also known as
 			    File Slurping Protocol,
@@ -109,10 +109,9 @@ MESSAGE_CHECKSUM
 Entire packet (HEADER + DATA + XTRA DATA) is checksummed.  When computing a
 checksum use zero in place of MESSAGE_CHECKSUM header field. 
 
-Due to some unknown reason, method of computing checksums is different
-in each direction. For packets traveling from server to client initial
-checksum value is zero, otherwise it is HEADER + DATA + XTRA DATA
-size.
+Method of computing checksums is different in each direction. For
+packets traveling from server to client initial checksum value is
+zero, otherwise it is size of (HEADER + DATA + XTRA DATA).
 
 Checksums in server->client direction are computed as follows:
 
@@ -316,7 +315,7 @@ RDIRENT.HEADER types:
  CC_INSTALL 0x44		- close and install file opened for writing
 
  		request
-		file position:	not used
+		file position:	length of extra data
 		data:           ASCIIZ filename
 		xtra data:	(not required)
 		                long - timestamp in Unix format
@@ -330,6 +329,11 @@ RDIRENT.HEADER types:
 		file send CC_INSTALL command with zero length (only 00
 		terminator) filename. This removes temporary data
 		created by upload.
+
+		Compatibility
+
+		Upload cancel feature and sizing of extra data was
+		first used in fsp 2.8.1b22.
 
  CC_DEL_FILE 0x45		- delete a file
 
@@ -388,7 +392,7 @@ RDIRENT.HEADER types:
  CC_SET_PRO 0x48		- set directory protection
 
  		request
-		file position:	not used
+		file position:	size of extra data
 		data:           ASCIIZ directory
 		xtra data:	2 bytes of protection change command
 		                1st byte:
@@ -408,6 +412,9 @@ RDIRENT.HEADER types:
 		Compatibility
 		FSP versions older than 2.8.1 beta15 used p flag instead
 		g flag. +p = -g
+
+		Sizing of extra data in request was added in
+		fsp2.8.1b22.
 
  CC_MAKE_DIR 0x49		- create a directory
 
