@@ -1,4 +1,4 @@
-.TH FSPD 1 "Dec 2004" FSP
+.TH FSPD 1 "Mar 2005" FSP
 .SH NAME
 fspd, in.fspd \- File Service Protocol (FSP) server
 .SH SYNOPSIS
@@ -81,9 +81,10 @@ bytes per second.
 .PD 0
 .TP 20
 .B -s packetsize
-Sets maximum allowed packet size or prefered packet size. Server must
+Sets maximum allowed or prefered packet's payload size. Server must
 support packets up to 1024, but may prefer to send smaller packets.
-It may accept packets over 1024 bytes. Default value is 1200 bytes.
+It may accept packets over 1024 bytes. Default value is 1460 bytes.
+All networks must be able to transfer 500 bytes (RFC requirement).
 
 .LP
 .SH FILES

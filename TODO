@@ -80,12 +80,11 @@ Current performance 1925648B/s
 MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
 Register udp/21 for FSP in http://www.iana.org/ FSP RFC needed!
-manual page for fsetup.1
 
 POSSIBLE NEW PROJECTS
 FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
   today.
-Experimental transfer HTTP over fsp transport
+Experimental transfer HTTP over fsp transport. Coder needed!
 
 libraries and support for FSP protocol
 ======================================

@@ -2,9 +2,14 @@ Version NEXT
 	removed test for size of penis in configure.ac
 	corrected misleading comment in client/lib.c
 	default packetsize changed to do best fit into maximum 1500 mtu
-	  Ethernet frame. This is needed for speedup the booting of
+	  Ethernet frame = 1460. This is needed for speedup the booting of
 	  Etherboot clients.
 	PROTOCOL: when computing checksum declare *t as unsigned char * type
+	changed typo setguid -> setgid in fspd.conf
+	fspd.conf: added note that only numeric uid values works
+	fspd.conf: added more information about packetsize
+	fspd.1: updated information about packetsize
+	fspd.conf: repaired some spelling errors by ispell
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c

@@ -3,6 +3,7 @@ dnl tested with autoconf 2.57
 AC_INIT(fsp,2.8.1b25,hsn@netmag.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
+AC_PREREQ(2.57)
 AM_MAINTAINER_MODE
 AC_CONFIG_HEADERS(include/config.h)
 AC_ARG_WITH(lockprefix,AS_HELP_STRING([--with-lockprefix=path],[Set lock prefix path to (default /tmp/.FSPL)]))
