@@ -80,9 +80,9 @@ PLAN *find_create PROTO1(char ***, argvp)
   register OPTION *p;
   PLAN *new;
   char **argv;
-  
+
   argv = *argvp;
-  
+
   if ((p = option(*argv)) == NULL) {
     (void)fprintf(stderr, "find: unknown option %s.\n", *argv);
     exit(1);
@@ -93,7 +93,7 @@ PLAN *find_create PROTO1(char ***, argvp)
 		  *--argv);
     exit(1);
   }
-  
+
   switch(p->flags) {
     case O_NONE:
       new = NULL;
@@ -120,7 +120,7 @@ static int typecompare PROTO2(const void *, a, const void *, b)
 OPTION *option PROTO1(char *, name)
 {
   OPTION tmp;
-  
+
   tmp.name = name;
   return((OPTION *)bsearch(&tmp, options, sizeof(options)/sizeof(OPTION),
 			   sizeof(OPTION), typecompare));

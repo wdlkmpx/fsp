@@ -23,15 +23,15 @@ static RETSIGTYPE dont_die PROTO1(int, signum)
 {
 #ifndef RELIABLE_SIGNALS	
   signal(SIGPIPE,dont_die);
-#endif  
+#endif
 }
-     
+
 int main PROTO2(int, argc, char **, argv)
 {
   char **av;
 
   env_client();
-  
+
   signal(SIGPIPE,dont_die);
   if(isatty(1)) client_trace = 0;
 
@@ -44,8 +44,8 @@ int main PROTO2(int, argc, char **, argv)
 	 *av++;
       }
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

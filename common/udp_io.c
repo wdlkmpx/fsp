@@ -33,14 +33,14 @@ int _x_udp PROTO1(unsigned short *, port)
   struct sockaddr_in me ;
   struct sockaddr_in myadr;
   int zz=1;
-  
+
   memset(&me,0,sizeof(me));
-  
+
   me.sin_port = htons(*port);
   me.sin_family = AF_INET;
 
   len=sizeof(me);
-  
+
   if((f=socket(AF_INET,SOCK_DGRAM,0)) == -1) return(-1);
 
   if(setsockopt(f,SOL_SOCKET,SO_REUSEADDR,(char *)&zz,sizeof(zz)) < 0 ||
@@ -51,7 +51,7 @@ int _x_udp PROTO1(unsigned short *, port)
   }
   if(!*port) *port = ntohs((unsigned short) myadr.sin_port);
   return(f);
-}      
+}
 
 int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
 {
@@ -59,7 +59,7 @@ int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
   struct hostent *H;
   int    i;
   char *s, *d;
-  
+
   memset(his,0,sizeof(his));
   if(!host) {
 	  gethostname(myhost,sizeof(myhost));
@@ -76,21 +76,21 @@ int _x_adr PROTO3(const char *, host, int, port, struct sockaddr_in *, his)
       his->sin_family = H->h_addrtype;
     } else return(-1);
   his->sin_port = htons((unsigned short) port);
-  
+
   return(0);
 }
 
 int _x_select PROTO2(fd_set *, rf, long, tt)  /* tt is in unit of ms */
 {
   struct timeval timeout;
-  
+
   if(tt != -1) {
     if(tt < MIN_DELAY) tt = MIN_DELAY;
     timeout.tv_sec  =  tt / 1000;
     timeout.tv_usec = (tt % 1000)*1000;
     return(select(DSIZE, rf, NULL, NULL, &timeout));
   }
-  
+
   return(select(DSIZE, rf, NULL, NULL , (struct timeval *) 0));
 }
 #endif  /* not EXOS_IPC */
@@ -102,7 +102,7 @@ extern long rhost();
 int _x_udp PROTO1(int *, port)
 {
   struct sockaddr_in sin; int f;
-  
+
   sin = INET_ZERO;
   sin.sin_family = AF_INET;
   sin.sin_port   = htons((unsigned short) *port);
@@ -122,15 +122,15 @@ int _x_adr PROTO3(char *, host, int, port, struct sockaddr_in *, his)
 {
   char myhost[128];
   int f;
-  
+
   *his = INET_ZERO;
   if(!host) (void) gethostname(host = myhost,sizeof(myhost));
-  
+
   his->sin_family = AF_INET;
   his->sin_port = htons((unsigned short) port);
-  
+
   if((his->sin_addr.s_addr = rhost(&host)) == -1) return(-1);
-  
+
   return(0);
 }
 
@@ -138,13 +138,13 @@ int _x_select PROTO2(unsigned int *, readfds, long, tt)
 {
   int  code;
   long mask = *readfds;
-  
+
   if(tt & 0xc0000000) tt = 0x3fffffff;/* It does not like 0x7fffffff. */
-  
+
   code = select(DSIZE, &mask, (long *) 0, tt);
-  
+
   *readfds = mask;
-  
+
   return(code);
 }
 

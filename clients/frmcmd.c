@@ -23,12 +23,12 @@ static int remove_it PROTO1(char *, p)
 {
   char *op;
   UBUF *ub;
-  
+
   op = util_abs_path(p);
-  
+
   ub = client_interact(CC_DEL_FILE,0L, strlen(op), (unsigned char *)op+1, 0,
 		       (unsigned char *)NULLP);
-  
+
   if(ub->cmd == CC_ERR) {
     fprintf(stderr,"Can't remove %s: %s\n",p,ub->buf);
     free(op); return(-1);
@@ -39,9 +39,9 @@ static int remove_it PROTO1(char *, p)
 int main PROTO2(int, argc, char **, argv)
 {
   char **av, *av2[2];
-  
+
   env_client();
-  
+
   while(*++argv) {
     if(!(av = glob(*argv))) {
       av = av2;
@@ -50,8 +50,8 @@ int main PROTO2(int, argc, char **, argv)
     }
     while(*av) remove_it(*av++);
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

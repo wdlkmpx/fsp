@@ -96,7 +96,7 @@ void add_host(struct fsp_host *h)
 static struct fsp_host *find_host(const char *name)
 {
     int i,j;
-    
+
     if(name==NULL || hostsize==0 ) return NULL;
     for(i=0;i<hostsize;i++)
     {
@@ -126,22 +126,22 @@ static void host_usage PROTO0((void)) /* print usage message */
 /* get data out of resource file */
 static void parse_prof_file_new PROTO1(const char *, filename)
 {
- 
+
   FILE *input=NULL;
   int rc;
- 
+
   if(filename)
   {
       input=fopen(filename,"r");
   }
-  
+
   if(input)
   {
       yyin=input;
       rc=0;
   } else
       rc=yywrap();
-  
+
   if(rc==0)
       yylex();
 
@@ -156,7 +156,7 @@ static void list_prof_file PROTO0((void)) /* list resource file */
   {
       printf("host: %s port: %d\n",(host[i].hostname?host[i].hostname  :  host[i].hostaddr),(host[i].port<=0? 21 : host[i].port));
   }
-      
+
   return;
 }
 
@@ -179,7 +179,7 @@ int main PROTO2(int, argc, char **, argv)
     home = pw->pw_dir;   /* for default search for file .fsp_prof*/
   } else
       home=getenv("HOME");
-  
+
   /*
    * Figure out what shell we're using.  A hack, we look for a shell
    * ending in "csh".
@@ -189,7 +189,7 @@ int main PROTO2(int, argc, char **, argv)
   {
     csh = !strcmp(log + strlen(log) - 3, "csh");
   }
-  
+
   setup=init_host();
   while ((optletter=getopt(argc, argv,"d:p:l:t:o:f:h:w:bc?")) != EOF)
     switch (optletter) {
@@ -347,7 +347,7 @@ int main PROTO2(int, argc, char **, argv)
 }
 
 /*
- *      search order: curdir, homedir, sysdir 
+ *      search order: curdir, homedir, sysdir
  *
  * Returns: 1 for terminating scanner or 0 for switching
  */
@@ -356,7 +356,7 @@ int yywrap(void)
 {
   char *f2=NULL;
   int rc;
- 
+
   if(yyin!=NULL)
   {
       fclose(yyin);
@@ -393,6 +393,6 @@ int yywrap(void)
       rc=yywrap();
       return rc;
   }
-      
-  return 0;  
+
+  return 0;
 }

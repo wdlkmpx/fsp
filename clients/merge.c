@@ -39,7 +39,7 @@ int main PROTO2(int, argc, char **, argv)
   char *p, *q;
 
   for(p = q = argv[0]; *p; p++) if(*p == '/') q = p+1;
-  
+
   if(!strcmp(q,"fcatcmd")) fcatcmd_main(argc,argv);
   else if(!strcmp(q,"fcdcmd")) fcdcmd_main(argc,argv);
   else if(!strcmp(q,"fgetcmd")) fgetcmd_main(argc,argv);

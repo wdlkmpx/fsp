@@ -1,8 +1,8 @@
-.TH FSPD 1 "29 Sep 2003" FSP
+.TH FSPD 1 "18 Oct 2004" FSP
 .SH NAME
 fspd, in.fspd \- File Service Protocol (FSP) server
 .SH SYNOPSIS
-.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile] [-P pidlogname]
+.B fspd [-f configfile] [-p port] [-i] [-v|-V] [-t timeout] [-X] [-d directory] [-F ] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bandwidth]
 .SH DESCRIPTION
 .B fspd
 is the server for an anonymous-ftp style archive called FSP. The main
@@ -69,8 +69,14 @@ Write log output to file.
 .PD 0
 .TP 20
 .B -P pidlogname
-Write pid to the given file name. This Option is required, if it's
-not given in your fspd.conf or on command line fspd will fail to start.
+Write pid to the given file name.
+
+.PD 0
+.TP 20
+.B -b bandwidth
+Enable bandwidth limiting. Limit output to
+.I bandwidth
+bytes per second.
 
 .LP
 .SH FILES
@@ -162,6 +168,12 @@ exports.
 Server dumps stats to file specified as dumpfile in configuration.
 This file must be writeable by server or server must have rights
 to create it.
+
+.TP
+.B SIGINT | SIGTERM
+Server performs cleaup and exits. All connected clients will be
+disconnected. Because FSP is stateless protocol, if you start
+server later, than can continue without breakage.
 
 .SH EXIT CODES
 .B 1

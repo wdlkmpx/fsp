@@ -1,5 +1,5 @@
-/* 
- * Simple FIFO generic cache. (c) Radim Kolar 2003. 
+/*
+ * Simple FIFO generic cache. (c) Radim Kolar 2003.
  * This file is copyrighted as LGPL.
  *
  * When this file is used as part of FSP, it uses 2-term BSD license
@@ -30,7 +30,7 @@ struct FifoCache * f_cache_new(unsigned int cachesize,unsigned int entrysize,
         cache->e_head=calloc(1,1);
     else
 	cache->e_head=calloc(cachesize,entrysize);
-    
+
     if(keysize==0)
         cache->k_head=calloc(1,1);
     else
@@ -42,18 +42,18 @@ struct FifoCache * f_cache_new(unsigned int cachesize,unsigned int entrysize,
 	return NULL;
     }
     cache->k_next=cache->k_head;
-    
+
     if(keysize==0)
 	cache->k_stop=NULL;
     else
 	cache->k_stop=cache->k_head+cache->keysize*cache->cachesize;
-    
+
     cache->e_next=cache->e_head;
     if(entrysize==0)
 	cache->e_stop=NULL;
     else
 	cache->e_stop=cache->e_head+cache->entrysize*cache->cachesize;
-    
+
     cache->k_destroy_func=kdf;
     cache->e_destroy_func=edf;
     cache->k_compare_func=kcf;
@@ -120,7 +120,7 @@ unsigned int f_cache_void_profiler(void *anything)
 void f_cache_destroy(struct FifoCache *cache)
 {
     if(cache==NULL) return;
-    if(cache->e_head) 
+    if(cache->e_head)
     {
 	memset(cache->e_head,0,cache->entrysize*cache->cachesize);
 	free(cache->e_head);
@@ -151,7 +151,7 @@ void * f_cache_put(struct FifoCache *cache,const void *key,const void *data)
    /* update next pos. */
    cache->e_next+=cache->entrysize;
    cache->k_next+=cache->keysize;
-  
+
    /* roll over? */
    if(cache->e_next==cache->e_stop || cache->k_next==cache->k_stop)
    {
@@ -166,10 +166,10 @@ void * f_cache_put(struct FifoCache *cache,const void *key,const void *data)
 void *f_cache_find(struct FifoCache *cache,const void *key)
 {
     unsigned int i;
-    
+
     if(!cache->k_compare_func) return NULL;
     if(cache->keysize==0) return NULL;
-   
+
     for(i=0;i<cache->cachesize;i++)
 	if(!cache->k_compare_func(key,cache->k_head+i*cache->keysize))
 	{
@@ -188,16 +188,16 @@ void f_cache_clear(struct FifoCache *cache)
     /* free entries */
     for(i=0;i<cache->cachesize;i++)
     {
-       if(cache->k_destroy_func) 
+       if(cache->k_destroy_func)
 	   cache->k_destroy_func(cache->k_head+i*cache->keysize);
-       if(cache->e_destroy_func) 
+       if(cache->e_destroy_func)
 	   cache->e_destroy_func(cache->e_head+i*cache->entrysize);
     }
 
     /* clear entries */
     memset(cache->k_head,0,cache->cachesize*cache->keysize);
     memset(cache->e_head,0,cache->cachesize*cache->entrysize);
-    
+
     cache->k_next=cache->k_head;
     cache->e_next=cache->e_head;
 
@@ -227,14 +227,14 @@ int f_cache_delete_entry(struct FifoCache *cache, void *entry)
     if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop) return 0;
     /* find cache index */
     i=((BYTE *)(entry)-cache->e_head)/cache->entrysize;
-    
+
     /* deallocate */
     if(cache->k_destroy_func) cache->k_destroy_func(cache->k_head+cache->keysize*i);
     if(cache->e_destroy_func) cache->e_destroy_func(entry);
     /* zero them */
     memset(entry,0,cache->entrysize);
     memset(cache->k_head+cache->keysize*i,0,cache->keysize);
-    
+
     return 1;
 }
 

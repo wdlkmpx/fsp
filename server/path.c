@@ -22,7 +22,7 @@
  *
  *  The PPATH structure is filled in by the function check_path when given a
  *  path string.  The elements are filled in as such:
- * 
+ *
  *	fullp      pointer to a string containing the full path name
  *	f_ptr      pointer to begining of the last component of the path
  *      f_len      length of the last component of the path
@@ -43,32 +43,32 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
 
   if(len < 1) return("Path must have non-zero length");
   if(fullp[len-1]) return("Path must be null terminated");
-  
+
   pp->passwd = NULL; 			/* default, no password */
   pp->d_len = 0;
 
 
   for(
       s = pp->fullp = pp->f_ptr = pp->d_ptr = fullp, state = 0;
-      *s; 
+      *s;
       s++
-     ) 
+     )
   {
-    if(*s == '\n') 
+    if(*s == '\n')
     {
       p=strrchr(pp->fullp,'\n');
-      pp->passwd = p+1; 
+      pp->passwd = p+1;
       *p = '\0';
       *s = '\0';
       if(dbug) fprintf(stderr,"parse_path: found password field %s\n", p+1);
       break;
     }
-    else 
+    else
 	if(*s < ' ') return("Path contains control chars");
 	else
 	    if(*s >= '~') return("Path contains high chars");
-      
-    switch(*s) 
+
+    switch(*s)
     {
       case '\\':
       case '.':
@@ -99,14 +99,14 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
   }
 
   /*  pp->d_len = pp->f_ptr - pp->fullp; */
-  
+
   /* turn empty directory into "." */
   if(pp->d_len == 0)
   {
     pp->d_ptr = ".";
     pp->d_len = 1;
   }
-  
+
   pp->f_len = s - pp->f_ptr;
 
   /* turn empty file into "." */
@@ -115,13 +115,13 @@ const char *parse_path PROTO3(char *, fullp, unsigned int, len, PPATH *, pp)
     pp->f_ptr = ".";
     pp->f_len = 1;
   }
-  
+
   /* turn empty fullp into "." */
   if(pp->fullp[0] == 0)	
-  { 
+  {
     /* null path --> root */
     pp->fullp = ".";
   }
-      
+
   return(NULLP);
 }

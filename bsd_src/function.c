@@ -71,8 +71,8 @@
 #  include <time.h>
 # endif
 #endif
- 
-#ifdef HAVE_SYS_WAIT_H 
+
+#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
 #ifndef WEXITSTATUS
@@ -111,7 +111,7 @@ static PLAN *palloc (t, f)
   PLAN *new;
 
   new = (PLAN *) malloc(sizeof(PLAN));
-  
+
   if ( new ) {
     new->type = t;
     new->eval = f;
@@ -135,7 +135,7 @@ static long find_parsenum PROTO4(PLAN *, plan, const char *, option, char *, str
 {
   long value;
   char *endchar;		/* pointer to character ending conversion */
-     
+
   /* determine comparison from leading + or - */
   switch(*str) {
     case '+':
@@ -150,7 +150,7 @@ static long find_parsenum PROTO4(PLAN *, plan, const char *, option, char *, str
       plan->flags = FIND_EQUAL;
       break;
   }
-     
+
   /*
    * convert the string with strtol().  Note, if strtol() returns zero
    * and endchar points to the beginning of the string we know we have
@@ -183,7 +183,7 @@ static int find_time PROTO3(PLAN *, plan, struct stat *, sbuf,  char *, path)
   COMPARE((now - sbuf->st_atime + SECSPERDAY - 1) / SECSPERDAY, plan->t_data);
 }
 
- 
+
 PLAN * c_time PROTO1(char *, arg)
 {
   PLAN *new;
@@ -234,9 +234,9 @@ static int queryuser PROTO1(char **, argv)
   fflush(stderr);
 
   first = ch = getchar();
-  for (nl = 0;;) 
+  for (nl = 0;;)
   {
-    if (ch == '\n') 
+    if (ch == '\n')
     {
       nl = 1;
       break;
@@ -304,7 +304,7 @@ static char *emalloc_ffind PROTO1(unsigned int, len)
   perror("malloc");
   exit(1);
 }
- 
+
 /*
  * c_exec --
  *	build three parallel arrays, one with pointers to the strings passed
@@ -319,7 +319,7 @@ PLAN *c_exec PROTO2(char ***, argvp, int, isok)
   register char **argv, **ap, *p;
 
   isoutput = 1;
-    
+
   new = palloc(N_EXEC, find_exec);
   new->flags = isok;
 
@@ -389,7 +389,7 @@ static void printlong_ffind PROTO2(char *, name, struct stat *, sb)
   printf("%s", name);
   putchar('\n');
 }
- 
+
 /*
  * -ls functions --
  *
@@ -400,7 +400,7 @@ static int find_ls PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   printlong_ffind(path, sbuf);
   return(1);
 }
- 
+
 PLAN *c_ls PROTO0((void))
 {
   isoutput = 1;
@@ -422,7 +422,7 @@ static int find_name PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   if (*name == '/') name++;
   return(fnmatch(plan->c_data, name));
 }
- 
+
 PLAN *c_name PROTO1(char *, pattern)
 {
   PLAN *new;
@@ -431,7 +431,7 @@ PLAN *c_name PROTO1(char *, pattern)
   new->c_data = pattern;
   return(new);
 }
- 
+
 /*
  * -newer file functions --
  *
@@ -443,12 +443,12 @@ static int find_newer PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
 {
   return(sbuf->st_mtime > plan->t_data);
 }
- 
+
 PLAN *c_newer PROTO1(char *, filename)
 {
   PLAN *new;
   struct stat sb;
-    
+
   if (stat(filename, &sb)) {
     perror("stat");
     exit(1);
@@ -457,7 +457,7 @@ PLAN *c_newer PROTO1(char *, filename)
   new->t_data = sb.st_mtime;
   return(new);
 }
- 
+
 /*
  * -print functions --
  *
@@ -469,14 +469,14 @@ static int find_print PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   (void)printf("%s\n", path);
   return(1);
 }
- 
+
 PLAN *c_print PROTO0((void))
 {
   isoutput = 1;
 
   return(palloc(N_PRINT, find_print));
 }
- 
+
 /*
  * -prune functions --
  *
@@ -487,12 +487,12 @@ static int find_prune PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   process = -1;
   return(1);
 }
- 
+
 PLAN *c_prune PROTO0((void))
 {
   return(palloc(N_PRUNE, find_prune));
 }
- 
+
 /*
  * -size n[c] functions --
  *
@@ -510,18 +510,18 @@ static int find_size PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   size = divsize ? ((sbuf->st_size + FIND_SIZE - 1)/FIND_SIZE) : sbuf->st_size;
   COMPARE(size, plan->o_data);
 }
- 
+
 PLAN *c_size PROTO1(char *, arg)
 {
   PLAN *new;
   char endch='c';
-    
+
   new = palloc(N_SIZE, find_size);
   new->o_data = find_parsenum(new, "-size", arg, &endch);
   if (endch == 'c') divsize = 0;
   return(new);
 }
- 
+
 /*
  * -type c functions --
  *
@@ -532,12 +532,12 @@ static int find_type PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
 {
   return((sbuf->st_mode & S_IFMT) == plan->m_data);
 }
- 
+
 PLAN *c_type PROTO1(char *, typestring)
 {
   PLAN *new;
   mode_t  mask;
-    
+
   switch (typestring[0]) {
     case 'd':
       mask = S_IFDIR;
@@ -549,12 +549,12 @@ PLAN *c_type PROTO1(char *, typestring)
       fprintf(stderr,"-type: unknown type");
       exit(1);
   }
-     
+
   new = palloc(N_TYPE, find_type);
   new->m_data = mask;
   return(new);
 }
- 
+
 /*
  * ( expression ) functions --
  *
@@ -568,7 +568,7 @@ int find_expr PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   for(p=plan->p_data[0]; p && (state=(p->eval)(p, sbuf, path)); p=p->next);
   return(state);
 }
- 
+
 /*
  * N_OPENPAREN and N_CLOSEPAREN nodes are temporary place markers.  They are
  * eliminated during phase 2 of find_formplan() --- the '(' node is converted
@@ -578,12 +578,12 @@ PLAN *c_openparen PROTO0((void))
 {
   return(palloc(N_OPENPAREN, (int (*)())-1));
 }
- 
+
 PLAN *c_closeparen PROTO0((void))
 {
   return(palloc(N_CLOSEPAREN, (int (*)())-1));
 }
- 
+
 
 /*
  * ! expression functions --
@@ -598,12 +598,12 @@ static int find_not PROTO3(PLAN *, plan, struct stat *, sbuf, char *, path)
   for(p=plan->p_data[0]; p && (state=(p->eval)(p, sbuf, path)); p=p->next);
   return(!state);
 }
- 
+
 PLAN *c_not PROTO0((void))
 {
   return(palloc(N_NOT, find_not));
 }
- 
+
 /*
  * expression -o expression functions --
  *

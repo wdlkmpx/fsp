@@ -24,7 +24,7 @@
                                    remote file is not found              */
 #define C_UNIQUE	3       /* Create unique name to avoid overwrite */
 #define C_TEMPNAME   	4       /* Download to temp name                 */
-#define C_APPEND	5	/* Downloads will attempt to append to 
+#define C_APPEND	5	/* Downloads will attempt to append to
 				   end of file if it already exists      */
 
 /****************************************************************************

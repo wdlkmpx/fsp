@@ -45,7 +45,7 @@ typedef struct {
 * path string.  See server_file.c for more info.
 *****************************************************************************/
 
-typedef struct { 
+typedef struct {
     const char    *fullp; /* ptr to string containing full pathname  */
     const char    *f_ptr; /* ptr to begining of last path component  */
     unsigned int   f_len; /* length of last component in path        */
@@ -101,7 +101,7 @@ typedef struct {
 #define L_MAKEDIR	0x0200
 #define L_GRABFILE	0x0400
 #define L_GETPRO	0x0800
-#define L_RDONLY	0x1000  
+#define L_RDONLY	0x1000
 #define L_STAT		0x2000
 #define L_RENAME	0x4000
 #define L_ALL		0xffff
@@ -118,5 +118,5 @@ typedef struct {
 #define FSP_OWNER ".FSP_OWNER"
 #define FSP_PASSWORD ".FSP_OK_PASSWORD"
 #define FSP_OWNERPASSWORD ".FSP_OWNER_PASSWORD"
-  
+
 #endif /* _FSP_SERVER_DEF_H_ */

@@ -62,7 +62,7 @@
 #endif
 
 /****************************************************************************
-*  UBUF is the structure of message exchanged between server and clients. 
+*  UBUF is the structure of message exchanged between server and clients.
 *
 *    The 'buf' part of the buffer is variable length up to max of 1024.
 *    The 'key' field is used by the server for sequence identification.
@@ -71,7 +71,7 @@
 *  Client's message to server contain a key value that is the same as the
 *  key value of the previous message received from the server.  Similarly,
 *  the server's message to client contains a seq value that is the same
-*  as the seq value of the previous message from the client. 
+*  as the seq value of the previous message from the client.
 *
 *  The buf field is logically partitioned into two parts by the len field.
 *  The len field indicate the size of the first part of the buffer starting
@@ -169,6 +169,8 @@ typedef struct RDIRENT { unsigned char bb_time[4];
 
 #define MIN_DELAY	1000L
 #define DEFAULT_DELAY	1340L
-#define MAX_DELAY       300000L			 
+#define DEFAULT_MAXDELAY 60000L
+#define MAX_DELAY       300000L
+#define DEFAULT_TIMEOUT 360
 
 #endif /* _FSP_COMMON_DEF_H_ */

@@ -77,7 +77,7 @@
 
 #ifdef WORD_TYPE_4
 /* there is an integer type of size 4 */
-#define BB_READ4(V) ntohl(*(WORD_TYPE_4 *)(V))
+#define BB_READ4(V) ntohl(*(const WORD_TYPE_4 *)(V))
 #define BB_WRITE4(V,A) *(WORD_TYPE_4 *)(V) = htonl(A)
 #else
 /* there is no integer type of size 4 */

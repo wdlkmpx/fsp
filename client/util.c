@@ -22,7 +22,7 @@ const char *env_myport;
 const char *env_host;
 const char *env_port;
 const char *env_local_dir;
-int env_timeout;
+unsigned int env_timeout;
 unsigned short client_buf_len;
 unsigned short client_net_len;
 
@@ -33,10 +33,10 @@ unsigned short client_net_len;
 char *util_abs_path PROTO1(const char *, s2)
 {
   char *path, *s, *d, *t;
-  
+
   if(!env_dir) env_dir = "";
   if(!s2) s2 = "";
-  
+
   if(*s2 == '/') {
     path = malloc(strlen(s2)+2+strlen(env_passwd)+1);
     sprintf(path,"/%s",s2);
@@ -44,7 +44,7 @@ char *util_abs_path PROTO1(const char *, s2)
     path = malloc(strlen(env_dir)+strlen(s2)+3+strlen(env_passwd)+1);
     sprintf(path,"/%s/%s",env_dir,s2);
   }
-  
+
   for(t = path; *t; ) {
     if(t[0] == '/') {
       while(t[1] == '/') for(d = t, (s = t+1); (*d++ = *s++); );
@@ -82,7 +82,7 @@ char *util_abs_path PROTO1(const char *, s2)
       }
       if(t[-1] == '/' && (t[1] == '/' || t[1] ==  0)) {
 	s = t + 1; /* point to either slash or nul */
-	for(d = t-1; (*d++ = *s++); ); 
+	for(d = t-1; (*d++ = *s++); );
 	t--;
 	continue;
       }
@@ -97,7 +97,7 @@ static int util_split_path PROTO4(char *, path, char **, p1, char **, p2,
 {
   char *s;
   static char junk;
-  
+
   *p1 = "/";
   if(*path == '/') {
     *p2 =  path;
@@ -106,7 +106,7 @@ static int util_split_path PROTO4(char *, path, char **, p1, char **, p2,
     *p2 = &junk;
     *p3 = path;
   }
-  
+
   for(s = *p3; *s; s++) {
     if(*s == '/') {
       *p1 = path;
@@ -114,7 +114,7 @@ static int util_split_path PROTO4(char *, path, char **, p1, char **, p2,
       *p3 = s+1;
     }
   }
-  
+
   if (**p3 == '\0') *p3 = ".";
   return(1);
 }
@@ -133,17 +133,17 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
   unsigned long pos;
   int cnt, k, len, rem, acc, at_eof, rlen;
   UBUF *ub;
-  
+
   fpath = util_abs_path(path);
-  
-  for(pos = 0, at_eof = acc = cnt = 0; ; ) 
+
+  for(pos = 0, at_eof = acc = cnt = 0; ; )
   {
-    while((acc < UBUF_SPACE) && !at_eof) 
+    while((acc < UBUF_SPACE) && !at_eof)
     {
       ub = client_interact(CC_GET_DIR,pos, strlen(fpath),
 			   (unsigned char *)fpath+1, 2,
 			   (unsigned char *)&client_net_len);
-	  
+	
       if(ub->cmd == CC_ERR) {
 	fprintf(stderr,"%s: %s\n",path, ub->buf);
 	free(fpath);
@@ -157,10 +157,10 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
       acc += rlen;
       pos += rlen;
     }
-    
+
     if(acc >= UBUF_SPACE) len = UBUF_SPACE;
     else len = acc;
-      
+
     for(p2 = buf, rem = len, k = 0; ; k++) {
       if(rem < RDHSIZE) break;
       if(((RDIRENT *) p2)->type == RDTYPE_SKIP) break;
@@ -172,17 +172,17 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
 	rem--;
       }
     }
-      
+
     p1 = malloc(p2-buf);
     if(cnt) dp = (RDIRENT **) realloc(dp,(cnt+k+1)*sizeof(RDIRENT *));
     else dp = (RDIRENT **)  malloc((cnt+k+1)*sizeof(RDIRENT *));
-      
+
     if(!p1 || !dp) {
       fputs("directory reading out of memory\n",stderr);
       free(fpath);
       return((RDIRENT **) 0);
     }
-      
+
     for(p2 = buf, rem = len; ; cnt++) {
       if(rem < RDHSIZE) break;
       if(((RDIRENT *) p2)->type == RDTYPE_SKIP) break;
@@ -192,7 +192,7 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
 	return(dp);
       }
       dp[cnt] = (RDIRENT *) p1;
-	  
+	
       for(k = RDHSIZE, rem -= (RDHSIZE+1); k--; *p1++ = *p2++);
       while( (*p1++ = *p2++) ) rem--;
       while((p2 - buf) & 3) {
@@ -201,7 +201,7 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
 	rem--;
       }
     }
-      
+
     if(acc < UBUF_SPACE) {
       dp[cnt] = 0;
       free(fpath);
@@ -215,28 +215,28 @@ static RDIRENT **get_dir_blk PROTO1(char *, path)
 
 static int util_download_main PROTO5(char *, path, char *, fpath, FILE *, fp,
 				     unsigned long, start_from, int, cmd)
-{   
+{
   unsigned long pos, started_from = start_from, downloaded;
   unsigned tmax, wrote, sent_time, rlen;
   UBUF *ub;
   time_t t = time(NULL);
-  
-  for(tmax = 1, pos = start_from, sent_time = 0; ;) {   
+
+  for(tmax = 1, pos = start_from, sent_time = 0; ;) {
     ub = client_interact(cmd,pos,strlen(fpath),(unsigned char *)fpath+1, 2,
 			 (unsigned char *)&client_net_len);
-      
+
     if(client_trace && (udp_sent_time != sent_time)) {
       sent_time = udp_sent_time;
       if(client_buf_len == UBUF_SPACE) fprintf(stderr,"\r%luk  ",1+(pos>>10));
       else fprintf(stderr,"\r%lu   ", pos);
       fflush(stderr);
     }
-      
-    if(ub->cmd == CC_ERR) {    
+
+    if(ub->cmd == CC_ERR) {
       fprintf(stderr,"downloading %s: %s\n",path,ub->buf);
-      return(-1); 
+      return(-1);
     }
-      
+
     rlen = BB_READ2(ub->bb_len);
     wrote = fwrite(ub->buf,1,rlen,fp);
     /* check for long integer pos overflow */
@@ -244,34 +244,34 @@ static int util_download_main PROTO5(char *, path, char *, fpath, FILE *, fp,
     if(pos+bytes>FOURGIGS)
 	break;
 #else
-    if(pos+wrote<pos) 
+    if(pos+wrote<pos)
 	break;
 #endif
     pos += wrote;
-      
-    if(rlen == 0) 
+
+    if(rlen == 0)
 	break;  /* end of file */
-    if(rlen != wrote) 
+    if(rlen != wrote)
 	return -1; /* write to local file failed */
   }
-  
+
   t = time(NULL) - t;
   if (t == 0) t = 1;
   downloaded = pos - started_from;
-  if(client_trace) 
+  if(client_trace)
   {
-    fprintf(stderr,"\r%luk : %s [%ldb/s] \n", 1+(pos>>10), path, downloaded/t);
+    fprintf(stderr,"\r%luk : %s [%ldB/s] \n", 1+(pos>>10), path, downloaded/t);
     fflush(stderr);
   }
-  
+
   return(0);
 }
 
 int util_download PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
-{   
+{
   int code, len;
   char *fpath;
-  
+
   fpath = util_abs_path(path);
   if(*env_passwd) {
     strcat(fpath, "\n");
@@ -284,11 +284,11 @@ int util_download PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
 }
 
 int util_grab_file PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
-{   
+{
   int code, len;
   char *fpath;
   UBUF *ub;
-  
+
   fpath = util_abs_path(path);
   if(*env_passwd) {
     strcat(fpath, "\n");
@@ -300,20 +300,20 @@ int util_grab_file PROTO3(char *, path, FILE *, fp, unsigned long, start_from)
     free(fpath);
     return(code);
   }
-  
+
   ub = client_interact(CC_GRAB_DONE, 0L, len, (unsigned char *)fpath+1, 0,
-		       (unsigned char *)NULLP);    
-  
+		       (unsigned char *)NULLP);
+
   if(ub->cmd == CC_ERR) {
     fprintf(stderr,"Warning, unexpected grab error: %s\n",ub->buf);
   }
-  
+
   free(fpath);
   return(code);
 }
 
 int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
-{   
+{
   unsigned long pos;
   unsigned bytes, first, tmax, sent_time;
   char *fpath, buf[UBUF_SPACE];
@@ -322,21 +322,21 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
   char *dpath,*p1,*p2;
   unsigned char flags;
   struct stat sb;
-  
+
   fpath = util_abs_path(path);
   util_split_path(fpath,&dpath,&p1,&p2);
   *p1='\0';
-  
+
   /* check if we have enough rights to create file */
   ub = client_interact(CC_GET_PRO,0, strlen(dpath), (unsigned char *)dpath+1, 0,
 			   (unsigned char *)NULLP);
   free(fpath);
   fpath = util_abs_path(path);
-  if(ub->cmd == CC_ERR) 
-  {    
+  if(ub->cmd == CC_ERR)
+  {
      fprintf(stderr,"uploading %s: %s\n",path,ub->buf);
      free(fpath);
-     return(1); 
+     return(1);
   }
   /* extract flags from server reply */
   bytes = BB_READ2(ub->bb_len);
@@ -346,13 +346,13 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
       /* flags are in the reply */
       flags = *(ub->buf+bytes);
       /* check for required flags */
-      if(! (flags & DIR_OWNER)) 
+      if(! (flags & DIR_OWNER))
       {
 	  if( ! (flags & DIR_ADD))
 	  {
              fprintf(stderr,"No permission for adding files.\n");
              free(fpath);
-             return(1); 
+             return(1);
 	  }
       } else
       {
@@ -366,18 +366,18 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
 	  {
              fprintf(stderr,"No permission for overwriting: %s\n",fpath);
              free(fpath);
-             return(1); 
+             return(1);
 	  }
       }
   }
-  
-  for(tmax = 1, sent_time = 0, pos = 0, first = 1; ; first = 0) 
-  {   
-    if((bytes = fread(buf,1,client_buf_len,fp)) || first) 
+
+  for(tmax = 1, sent_time = 0, pos = 0, first = 1; ; first = 0)
+  {
+    if((bytes = fread(buf,1,client_buf_len,fp)) || first)
     {
       ub = client_interact(CC_UP_LOAD,pos, bytes, (unsigned char *)buf, 0,
 			   (unsigned char *)NULLP);
-      if(client_trace && (udp_sent_time != sent_time)) 
+      if(client_trace && (udp_sent_time != sent_time))
       {
 	sent_time = udp_sent_time;
 	if(client_buf_len == UBUF_SPACE)
@@ -389,16 +389,16 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
     else
     {
       BB_WRITE4(buf,stamp);
-      ub = client_interact(CC_INSTALL,pos,strlen(fpath), 
+      ub = client_interact(CC_INSTALL,pos,strlen(fpath),
 			   (unsigned char *)fpath+1, stamp==0?0:4,
 			   (unsigned char *)buf);
     }
-    if(ub->cmd == CC_ERR) {    
+    if(ub->cmd == CC_ERR) {
       fprintf(stderr,"uploading %s: %s\n",path,ub->buf);
       free(fpath);
-      return(1); 
-    }   
-      
+      return(1);
+    }
+
     if(!bytes && !first) break;
 #if SIZEOF_LONG > 4
     if(pos+bytes>FOURGIGS)
@@ -409,12 +409,12 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
 #endif
     pos += bytes;
   }
-  
+
   t = time(NULL) - t;
   if(t == 0) t = 1;
-  if(client_trace) 
+  if(client_trace)
   {
-    fprintf(stderr,"\r%luk : %s [%ldb/s] \n", 1+(pos>>10), path, pos/t);
+    fprintf(stderr,"\r%luk : %s [%ldB/s] \n", 1+(pos>>10), path, pos/t);
     fflush(stderr);
   }
   free(fpath);
@@ -424,7 +424,7 @@ int util_upload PROTO3(char *, path, FILE *, fp, time_t , stamp)
 static void util_get_env PROTO0((void))
 {
   char *p;
-  
+
   if(!(env_host = getenv("FSP_HOST"))) {
     fputs("No FSP_HOST specified.\n",stderr);
     exit(1);
@@ -442,17 +442,21 @@ static void util_get_env PROTO0((void))
   client_trace  = !!getenv("FSP_TRACE");
   if( (p = getenv("FSP_BUF_SIZE")) ) client_buf_len = atoi(p);
   else client_buf_len = UBUF_SPACE;
-  
-  if(client_buf_len > UBUF_SPACE) client_buf_len = UBUF_SPACE; 
+
+  if(client_buf_len > UBUF_SPACE) client_buf_len = UBUF_SPACE;
   client_net_len = htons(client_buf_len);
-  
+
   if( (p = getenv("FSP_DELAY")) ) target_delay = atol(p);
   if(target_delay < MIN_DELAY) target_delay = MIN_DELAY;
   if(target_delay > MAX_DELAY) target_delay = MAX_DELAY;
   
+  if( (p = getenv("FSP_MAXDELAY")) ) target_maxdelay = atol(p);
+  if(target_maxdelay < target_delay) target_maxdelay = target_delay;
+  if(target_maxdelay > MAX_DELAY) target_maxdelay = MAX_DELAY;
+
   if(!(env_local_dir = getenv("FSP_LOCAL_DIR"))) env_local_dir=".";
-  
-  if(!(p = getenv("FSP_TIMEOUT"))) env_timeout = 180;
+
+  if(!(p = getenv("FSP_TIMEOUT"))) env_timeout = DEFAULT_TIMEOUT;
   else env_timeout = atol(p);
 }
 
@@ -471,12 +475,12 @@ RDIR *util_opendir PROTO1(char *, path)
   RDIRENT **dep;
   DDLIST *ddp;
   RDIR *rdirp;
-  
+
   fpath = util_abs_path(path);
-  
+
   for(ddp = ddroot; ddp; ddp = ddp->next)
     if(!strcmp(ddp->path,fpath)) break;
-  
+
   if(!ddp) {
     if(!(dep = get_dir_blk(fpath)))
     {
@@ -490,9 +494,9 @@ RDIR *util_opendir PROTO1(char *, path)
     ddp->next = ddroot;
     ddroot = ddp;
   } else free(fpath);
-  
+
   ddp->ref_cnt++;
-  
+
   rdirp = (RDIR *) malloc(sizeof(RDIR));
   rdirp->ddp = ddp;
   rdirp->dep = ddp->dep_root;
@@ -509,17 +513,17 @@ rdirent *util_readdir PROTO1(RDIR *, rdirp)
 {
   static rdirent rde;
   RDIRENT **dep;
-  
+
   dep = rdirp->dep;
-  
+
   if(!*dep) return((rdirent *) 0);
-  
+
   rde.d_fileno = 10;
   rde.d_rcdlen = 10;
   rde.d_namlen = strlen((*dep)->name);
   rde.d_name   = (*dep)->name;
   rdirp->dep   = dep+1;
-  
+
   return(&rde);
 }
 
@@ -533,10 +537,10 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
   UBUF *ub;
   char *fpath,*fpath2, *ppath, *p1, *pfile;
   int cached=0;
-  
+
   fpath = util_abs_path(path);
   fpath2 = strdup(fpath);
-  
+
   if(!strcmp(fpath,env_dir)) {
     ppath = fpath;
     pfile = ".";
@@ -564,19 +568,19 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     /* send a new FSP_STAT command to server */
     ub = client_interact(CC_STAT,0L, strlen(fpath2),
 			 (unsigned char *) fpath2+1, 0, 0);
-    if(ub->cmd == CC_STAT) 
+    if(ub->cmd == CC_STAT)
     {
 	sbuf->st_uid = 0;
 	sbuf->st_gid = 0;
-	sbuf->st_atime = sbuf->st_mtime = 
+	sbuf->st_atime = sbuf->st_mtime =
 			 sbuf->st_ctime = BB_READ4((ub->buf));
 	sbuf->st_size  = BB_READ4((ub->buf+4));
-	if((ub->buf[8]) == RDTYPE_DIR) 
+	if((ub->buf[8]) == RDTYPE_DIR)
 	{
 	    sbuf->st_mode = 0777 | S_IFDIR;
 	    sbuf->st_nlink  = 2;
 	}
-	else 
+	else
 	{
 	    sbuf->st_mode = 0666 | S_IFREG;
 	    sbuf->st_nlink  = 1;
@@ -584,11 +588,11 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
 
 	free(fpath);
 	free(fpath2);
-	      
-	if(ub->buf[8]==0) 
+	
+	if(ub->buf[8]==0)
 	{
                 errno = ENOENT;
-		return -1; 
+		return -1;
 	}
 	return 0;
     }
@@ -597,27 +601,27 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
       statworks=0;
     }
   } /* CC_STAT */
-  
-  if( (drp = util_opendir(ppath)) ) 
+
+  if( (drp = util_opendir(ppath)) )
   {
-    for(dep = drp->dep; *dep; dep++) 
+    for(dep = drp->dep; *dep; dep++)
     {
-      if(!strcmp((*dep)->name,pfile)) 
+      if(!strcmp((*dep)->name,pfile))
       {
-	if((*dep)->type == RDTYPE_DIR) 
+	if((*dep)->type == RDTYPE_DIR)
 	    sbuf->st_mode = 0777 | S_IFDIR;
-	else 
+	else
 	    sbuf->st_mode = 0666 | S_IFREG;
-	      
-	if((*dep)->type == RDTYPE_DIR) 
+	
+	if((*dep)->type == RDTYPE_DIR)
 	    sbuf->st_nlink  = 2;
-	else 
+	else
 	    sbuf->st_nlink  = 1;
 	
 	sbuf->st_uid = 0;
 	sbuf->st_gid = 0;
 	sbuf->st_size  = BB_READ4((*dep)->bb_size);
-	sbuf->st_atime = sbuf->st_mtime = 
+	sbuf->st_atime = sbuf->st_mtime =
 			 sbuf->st_ctime = BB_READ4((*dep)->bb_time);
 	util_closedir(drp);
 	free(fpath);
@@ -627,7 +631,7 @@ int util_stat PROTO2(char *, path, struct stat *, sbuf)
     }
     util_closedir(drp);
   }
-  
+
   free(fpath);
   free(fpath2);
   errno = ENOENT;
@@ -639,11 +643,11 @@ int util_cd PROTO1(char *, p)
   char *fpath;
   UBUF *ub;
   DDLIST   *ddp;
-  
+
   fpath = util_abs_path(p);
   for(ddp = ddroot; ddp; ddp = ddp->next)
     if(!strcmp(ddp->path,fpath)) break;
-  
+
   if(!ddp && strcmp(p,".") && strcmp(p,"..")) {
     ub = client_interact(CC_GET_DIR,0L, strlen(fpath),
 			 (unsigned char *) fpath+1, 2,
@@ -655,7 +659,7 @@ int util_cd PROTO1(char *, p)
       return(-1);
     }
   }
-  
+
   if(env_dir_malloced) free(env_dir);
   env_dir_malloced = 1;
   env_dir = fpath;
@@ -668,9 +672,9 @@ int util_cd PROTO1(char *, p)
 int util_cd2 PROTO1(char *, p)
 {
   char *fpath;
-  
+
   fpath = util_abs_path(p);
-  
+
   if(env_dir_malloced) free(env_dir);
   env_dir_malloced = 1;
   env_dir = fpath;
@@ -678,9 +682,9 @@ int util_cd2 PROTO1(char *, p)
 }
 
 #ifdef PROTOTYPES
-void util_process_file(char *path, int mode, 
+void util_process_file(char *path, int mode,
 		void (*process_file)(char *,struct stat *, int, int),
-		int (*process_start_dir)(char *,struct stat *,u_long *), 
+		int (*process_start_dir)(char *,struct stat *,u_long *),
 		void (*process_end_dir)(char *,int,u_long,int),
 		       int level)
 #else
@@ -703,7 +707,7 @@ void util_process_file(path, mode, process_file, process_start_dir,
     perror(path);
     return;
   }
-  
+
   if (S_ISREG(sbuf.st_mode)) {
     if(process_file) (*process_file)(path, &sbuf, mode, level);
   } else if (S_ISDIR(sbuf.st_mode)) {

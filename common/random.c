@@ -43,7 +43,7 @@ static char sccsid[] = "@(#)random.c	5.7 (Berkeley) 6/1/90";
  * zeroeth element of the array is the type of R.N.G. being used (small
  * integer); the remainder of the array is the state information for the
  * R.N.G.  Thus, 32 bytes of state information will give 7 longs worth of
- * state information, which will allow a degree seven polynomial.  (Note: the 
+ * state information, which will allow a degree seven polynomial.  (Note: the
  * zeroeth word of state information also has some other information stored
  * in it -- see setstate() for details).
  * The random number generation technique is a linear feedback shift register
@@ -74,7 +74,7 @@ static char sccsid[] = "@(#)random.c	5.7 (Berkeley) 6/1/90";
 #define	BREAK_0 8
 #define	DEG_0 0
 #define	SEP_0 0
-     
+
 #define	TYPE_1 1 /* x**7 + x**3 + 1 */
 #define	BREAK_1 32
 #define	DEG_1 7
@@ -104,7 +104,7 @@ static char sccsid[] = "@(#)random.c	5.7 (Berkeley) 6/1/90";
 
 static int degrees[MAX_TYPES] = {DEG_0, DEG_1, DEG_2, DEG_3, DEG_4};
 static int seps[MAX_TYPES] = {SEP_0, SEP_1, SEP_2, SEP_3, SEP_4};
-     
+
 /*
  * Initially, everything is set up as if from :
  *		initstate( 1, &randtbl, 128 );
@@ -115,20 +115,20 @@ static int seps[MAX_TYPES] = {SEP_0, SEP_1, SEP_2, SEP_3, SEP_4};
  * position of the rear pointer is just
  *	MAX_TYPES*(rptr - state) + TYPE_3 == TYPE_3.
  */
-     
+
 static long randtbl[DEG_3+1] = {TYPE_3,
-				  0x9a319039, 0x32d9c024, 0x9b663182, 
+				  0x9a319039, 0x32d9c024, 0x9b663182,
 				  0x5da1f342, 0xde3b81e0, 0xdf0a6fb5,
 				  0xf103bc02, 0x48f340fb, 0x7449e56b,
 				  0xbeb1dbb0, 0xab5c5918, 0x946554fd,
 				  0x8c2e680f, 0xeb3d799f, 0xb11ee0b7,
 				  0x2d436b86, 0xda672e2a, 0x1588ca88,
 				  0xe369735d, 0x904f35f7, 0xd7158fd6,
-				  0x6fa6f051, 0x616e6b96, 0xac94efdc, 
+				  0x6fa6f051, 0x616e6b96, 0xac94efdc,
 				  0x36413f93, 0xc622c298, 0xf5a42ab8,
 				  0x8a88d77b, 0xf5ad9d0e, 0x8999220b,
 				  0x27fb47b9 };
-     
+
 /*
  * fptr and rptr are two pointers into the state info, a front and a rear
  * pointer.  These two pointers are always rand_sep places aparts, as they
@@ -140,7 +140,7 @@ static long randtbl[DEG_3+1] = {TYPE_3,
  * randtbl) because the state table pointer is set to point to randtbl[1]
  * (as explained below).
  */
-     
+
 static long *fptr = &randtbl[SEP_3+1];
 static long *rptr = &randtbl[1];
 
@@ -179,7 +179,7 @@ void srandom PROTO1(unsigned int, x)
 {
   register  int		i, j;
   long random();
-  
+
   if(rand_type == TYPE_0) state[0] = x;
   else {
     j = 1;
@@ -212,7 +212,7 @@ void srandom PROTO1(unsigned int, x)
 char * initstate PROTO3(unsigned int, seed, char *, arg_state, int, n )
 {
   register char *ostate = (char *)(&state[-1]);
-  
+
   if(rand_type  ==  TYPE_0)  state[-1] = rand_type;
   else state[-1] = MAX_TYPES*(rptr - state) + rand_type;
   if(n < BREAK_1)  {
@@ -272,7 +272,7 @@ char *setstate PROTO1(char *, arg_state)
   register int type = new_state[0]%MAX_TYPES;
   register int rear = new_state[0]/MAX_TYPES;
   char *ostate = (char *)(&state[-1]);
-  
+
   if(rand_type == TYPE_0)  state[-1] = rand_type;
   else  state[-1] = MAX_TYPES*(rptr - state) + rand_type;
   switch(type) {
@@ -315,7 +315,7 @@ char *setstate PROTO1(char *, arg_state)
 long random PROTO0((void))
 {
   long i;
-  
+
   if(rand_type == TYPE_0) {
     i = state[0] = (state[0]*1103515245 + 12345)&0x7fffffff;
   } else  {

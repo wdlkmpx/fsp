@@ -11,7 +11,7 @@
 
 int dbug=1;
 
-const char *testcases[]={ 
+const char *testcases[]={
     "", ".","/",
     "filename","/filename","//filename",
     "dirname/filename","//dirname/filename","//dirname//filename",
@@ -26,7 +26,7 @@ PPATH testresults[]={
     {"dir1name/dir2name/",".",1,"dir1name/dir2name",17}, {"dir1name//dir2name//",".",1,"dir1name//dir2name",18},
     {"filename","filename",8,".",1,"passwd"}, {"filename","filename",8,".",1,"passwd"},
     {NULL},{NULL},{NULL},
-    
+
 
 };
 
@@ -45,7 +45,7 @@ static void print_path(PPATH *pp)
 }
 
 /* returns: 0 okay, 1 different */
-                     
+
 static int compareresults(PPATH *p1,PPATH *p2)
 {
     if(p1->fullp==NULL && p2->fullp==NULL)  return  0;
@@ -76,7 +76,7 @@ static int runtestcase(void)
 	pp.fullp=NULL;
        	err=parse_path(test,strlen(test)+1,&pp);
 	printf("parsing: '%s'",test);
-	if(err) 
+	if(err)
 	{
 	    printf(" parse err: '%s'. ",err);
 	    pp.fullp=NULL;

@@ -1,4 +1,5 @@
     /*********************************************************************\
+    *  Copyright (c) 2004 by Radim Kolar                                  *
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
@@ -26,7 +27,9 @@ static unsigned short key;
 
 int client_trace = 0;
 int client_intr_state = 0;
-unsigned long target_delay = DEFAULT_DELAY;	/* expected max delay	 */
+unsigned long target_delay = DEFAULT_DELAY;	/* expected max delay from server on good connection */
+
+unsigned long target_maxdelay = DEFAULT_MAXDELAY; /* max resend timer */
 unsigned long busy_delay   = DEFAULT_DELAY;	/* busy retransmit timer */
 unsigned long idle_delay   = DEFAULT_DELAY;	/* idle retransmit timer */
 unsigned long udp_sent_time;
@@ -41,8 +44,10 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
   unsigned char *s, *t, *d, seq0, seq1;
   unsigned u, n, sum, mlen, rlen;
   fd_set mask;
-  int retval, bytes, retry_send, retry_recv;
+  int retval, retry_send, retry_recv;
+  socklen_t bytes;
   unsigned long w_delay;
+  unsigned long total_delay;
 
   FD_ZERO(&mask);
   sbuf.cmd = cmd;
@@ -53,24 +58,27 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
 
   BB_WRITE2(sbuf.bb_len,l1);
   BB_WRITE4(sbuf.bb_pos,pos);
-  
+
   client_intr_state = 1;
-  
+  total_delay = 0;
+  w_delay = 0;
+
   for(u = l1, d = (unsigned char *) sbuf.buf; u--; *d++ = *p1++);
   for(u = l2; u--; *d++ = *p2++);
   mlen = d - (unsigned char *) &sbuf;
-  
+
   key = client_get_key();
-  
+
   for(retry_send = 0; ; retry_send++) {
+    total_delay += w_delay;  
     BB_WRITE2(sbuf.bb_key,key);
     sbuf.bb_seq[0] = seq0 = (myseq >> 8) & 0xff;
     sbuf.bb_seq[1] = seq1 = (myseq & 0xfc) | (retry_send & 0x0003);
     sbuf.sum = 0;
-    
+
     for(t = (unsigned char *) &sbuf, sum = n = mlen; n--; sum += *t++);
     sbuf.sum = sum + (sum >> 8);
-      
+
     switch(retry_send) {	/* adaptive retry delay adjustments */
       case  0:
         busy_delay = (target_delay+(busy_delay<<3)-busy_delay)>>3;
@@ -79,58 +87,89 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
       case  1:
 	busy_delay = busy_delay * 3 / 2;
 	w_delay = busy_delay;
-	if(client_trace) write(2,"R",1); 
+	if(client_trace) write(2,"R",1);
 	break;
-	  
+	
       default:
 #ifdef CLIENT_TIMEOUT
-	if (!pos && retry_send >= env_timeout ) {
+	if (total_delay/1000 >= env_timeout ) {
 	  fprintf(stderr, "\rRemote server not responding.\n");
 	  exit(1);
 	}
 #endif
-	if(idle_delay < 3*60*1000) idle_delay = idle_delay * 3 / 2;
+	idle_delay = idle_delay * 3 / 2;
+	if (idle_delay > target_maxdelay) idle_delay = target_maxdelay;
 	w_delay = idle_delay;
 	if(client_trace) write(2,"I",1);
 	break;
     }
-      
+
     if(sendto(myfd,(const char*)&sbuf,mlen,0,(struct sockaddr *)&server_addr,
 	      sizeof(server_addr)) == -1) {
-      perror("sendto");
-      exit(1);
+      switch(errno) {
+	  case ENOBUFS:
+	  case EHOSTUNREACH:
+	  case ECONNREFUSED:
+	  case EHOSTDOWN:
+	  case ENETDOWN:
+	  case EPIPE:
+	       /* try to resend packet */
+	       continue;
+	  default:     
+               perror("sendto");
+               exit(1);
+      }
     }
     udp_sent_time = time((time_t *) 0);
     FD_SET(myfd,&mask);
-      
+
     for(retry_recv = 0; ; retry_recv++) {
-      if(retry_recv && client_trace) write(2,"E",1);
       retval = _x_select(&mask, w_delay);
       if((retval == -1) && (errno == EINTR)) continue;
       if(retval == 1) { /* an incoming message is waiting */
 	bytes = sizeof(from);
 	if((bytes = recvfrom(myfd,(char*)&rbuf,sizeof(rbuf),0,
 			     (struct sockaddr *)&from, &bytes)) < UBUF_HSIZE)
+	{
+	  /* too enough bytes for header */
+          if (client_trace) write(2,"H",1);
 	  continue;
-	      
+	}
+
+	rlen = BB_READ2(rbuf.bb_len);
+
+	if( (rlen+UBUF_HSIZE)  > bytes)
+	{
+	    /* truncated. */
+            if (client_trace) write(2,"T",1);
+	    continue;
+	}
+	
 	s = (unsigned char *) &rbuf;
 	d = s + bytes;
 	u = rbuf.sum; rbuf.sum = 0;
 	for(t = s, sum = 0; t < d; sum += *t++);
 	sum = (sum + (sum >> 8)) & 0xff;
-	if(sum != u) continue;  /* wrong check sum */
-	      
-	rlen = BB_READ2(rbuf.bb_len);
-	      
+	if(sum != u)
+	{   
+	    /* wrong check sum */
+            if (client_trace) write(2,"C",1);
+	    continue;
+	}
+	
 	if( (rbuf.bb_seq[0] ^ seq0) ||
-	   ((rbuf.bb_seq[1] ^ seq1)&0xfc)) continue;  /* wrong seq # */
-	if((int) (rlen+UBUF_HSIZE)  > bytes) continue;  /* truncated.  */
-	      
+	   ((rbuf.bb_seq[1] ^ seq1)&0xfc)) 
+	{
+	    /* wrong seq # */
+            if (client_trace) write(2,"S",1);
+	    continue;
+	}
 	myseq = (myseq + 0x0004) & 0xfffc;  /* seq for next request */
 	key = BB_READ2(rbuf.bb_key); /* key for next request */
-	      
-	client_set_key(key);
-	      
+	
+	if(rbuf.cmd != CC_BYE) 
+	    client_set_key(key);
+	
 	if(client_intr_state == 2) {
 	  if(!key_persists) client_done();
 	  exit(1);
@@ -139,9 +178,9 @@ UBUF *client_interact PROTO6(unsigned char, cmd, unsigned long, pos,
 #ifdef DEBUG
   printf("rbuf.cmd = %u\n",rbuf.cmd);
 #endif
-      
+
 	return(&rbuf);
-	
+
       } else break;   /* go back to re-transmit buffer again */
     }
   }
@@ -154,25 +193,26 @@ static RETSIGTYPE client_intr PROTO1(int, signum)
     case 1: client_intr_state = 2; break;
     case 2: exit(3);
   }
-#ifndef RELIABLE_SIGNALS  
+#ifndef RELIABLE_SIGNALS
   signal(SIGINT,client_intr);
-#endif  
+#endif
 }
 
 void init_client PROTO3(const char *, host, unsigned short, port, unsigned short, myport)
 {
   busy_delay = idle_delay = target_delay;
-  
+  myseq = random();
+
   if((myfd = _x_udp(&myport)) == -1) {
     perror("socket open");
     exit(1);
   }
-  
+
   if(_x_adr(host,port,&server_addr) == -1) {
     perror("server addr");
     exit(1);
-  } 
-  
+  }
+
   client_init_key(server_addr.sin_addr.s_addr,port,getpid());
   signal(SIGINT,client_intr);
 }
@@ -181,6 +221,6 @@ int client_done PROTO0((void))
 {
   (void) client_interact(CC_BYE, 0L, 0, (unsigned char *)NULLP, 0,
 			 (unsigned char *)NULLP);
+  client_destroy_key();
   return(0);
 }
-

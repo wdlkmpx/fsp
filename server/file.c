@@ -37,15 +37,15 @@ static struct FifoCache *fpcache;
 #define TWOGIGS  0x7fffffffUL
 
 static FPCACHE *search_fpcache PROTO3(unsigned long, inet_num,
-	                              unsigned short, port_num, 
+	                              unsigned short, port_num,
 				      const char *, fname)
 {
   unsigned int i;
   FPCACHE *entry;
   const char **key;
-  
-  for (i=0;i<fp_cache_limit;i++) 
-  { 
+
+  for (i=0;i<fp_cache_limit;i++)
+  {
       /* search for file in cache */
     entry=(FPCACHE *)(fpcache->e_head+i*sizeof(FPCACHE));
     if (port_num==entry->port_num && inet_num==entry->inet_num)
@@ -85,7 +85,7 @@ static unsigned int fpcache_entry_profiler PROTO1(void *,entry)
 static void dirlistcache_free_entry PROTO1(void *, entry)
 {
     DIRLISTING *d=entry;
-    
+
     if(d->listing)
 	free(d->listing);
 }
@@ -100,7 +100,7 @@ static unsigned int dirlistcache_entry_profiler PROTO1(void *,entry)
 static void dirstatcache_free_entry PROTO1(void *, entry)
 {
     DIRINFO *d=entry;
-    
+
     if(d->realname)
 	free(d->realname);
     if(d->owner_password)
@@ -155,7 +155,7 @@ static void string_free PROTO1(void *, entry)
 static unsigned int string_profiler PROTO1(void *,entry)
 {
     char **s=entry;
-   
+
     if(*s!=NULL)
 	return(strlen(*s));
     else
@@ -231,14 +231,14 @@ void shutdown_caches PROTO0((void))
 
 /*****************************************************************************
  * Validate path - check that path does not fall outside the bounds of the
- * FSP root directory, weed out references to / and ../.. type links.    
+ * FSP root directory, weed out references to / and ../.. type links.
  * Input:     fullp - pointer to full filename
  *         lenfullp - length of full filename (including \0)
  *         *di      - where to return DIRINFO information about directory
- *         want_directory - want to operate on directory, not a file 
+ *         want_directory - want to operate on directory, not a file
  *****************************************************************************/
 const char *validate_path PROTO5(char *, fullp, unsigned, lenfullp, PPATH *, pp,DIRINFO **,di, int, want_directory)
-{ 
+{
     char work [NBSIZE];
     const char *err;
     char *s;
@@ -350,7 +350,7 @@ static const char *copy_file PROTO2(const char *, n1, const char *, n2)
   if(!(ft = fopen(n1,"rb"))) {
     return("Can't open temporary file");
   }
-    
+
   if(!(fp = fopen(n2,"wb"))) {
     fclose(ft);
     return("Can't open file for output");
@@ -359,7 +359,7 @@ static const char *copy_file PROTO2(const char *, n1, const char *, n2)
   /* copy temporary file to actual fput file */
   while( (bytes = fread(buf,1,sizeof(buf),ft)))
       fwrite(buf,1,bytes,fp);
-    
+
   fclose(ft);
   fclose(fp);
   return NULL;
@@ -369,7 +369,7 @@ static const char *copy_file PROTO2(const char *, n1, const char *, n2)
 static int append_dir_listing PROTO3(DIRLISTING *, dl,const char *, buf,unsigned int, size)
 {
       BYTE *newbuf;
-      
+
       /* append this buffer */
       newbuf=realloc(dl->listing,dl->listing_size+size);
       if(newbuf==NULL)
@@ -381,12 +381,12 @@ static int append_dir_listing PROTO3(DIRLISTING *, dl,const char *, buf,unsigned
       memcpy(newbuf+dl->listing_size,buf,size);
       dl->listing_size+=size;
       dl->listing=newbuf;
-      
+
       return 0;
 }
 
 /* builds directory listing into DIRLISTING structure, in case of any
- * error. nulls dl->listing 
+ * error. nulls dl->listing
  */
 static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
 {
@@ -401,7 +401,7 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
   char name[NBSIZE];   /* buffer for stat name */
   int namelen;         /* directory name length */
   unsigned int bufpos; /* current write pos. in buffer */
-  
+
   /* init pointers */
   dl->listing=NULL;
   dl->listing_size=0;
@@ -411,16 +411,16 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
     fprintf(stderr,"Can't open dir during listing initialization\n");
     return;
   }
-  
+
   memset(buffer,0,packetsize); /* clear memory on the stack */
-  strcpy(name,directory); 
+  strcpy(name,directory);
   namelen=strlen(directory);
   name[namelen++]='/'; /* add directory separator to name */
-  
+
   for(rem = packetsize; (dp = readdir(dir_f)); ) {
     if (dp->d_ino == 0) continue;
     s = dp->d_name;
-	  
+	
     /* hide dot files, but allow . or .. */
     if((s[0]=='.') && ((s[1]!=0) && (s[1] != '.' || s[2] != 0))) continue;
 
@@ -428,7 +428,7 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
     if(FSP_STAT(name,&sb)) continue;
     if(!S_ISDIR(sb.st_mode) && !S_ISREG(sb.st_mode)) continue;
     if(sb.st_size>FOURGIGS) sb.st_size=FOURGIGS;
-	  
+	
     nlen = strlen(s)+1;
 
     /* do we have space in buffer for entire entry?  */
@@ -444,7 +444,7 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
       rem = packetsize;
       bufpos = 0;
     }
-	  
+	
     BB_WRITE4(buffer+bufpos,sb.st_mtime);
     bufpos+=4;
     BB_WRITE4(buffer+bufpos,sb.st_size );
@@ -462,7 +462,7 @@ static void build_dir_listing PROTO2(DIRLISTING *, dl,const char *,directory)
     }
   }
   closedir(dir_f);
-  
+
   /* do we have space for final END entry? */
   if(rem <RDHSIZE )
   {
@@ -487,7 +487,7 @@ const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
 {
   struct stat sf;
   char   list_p[NBSIZE];
- 
+
   /* get directory from memory cache */
   if(dbug) fprintf(stderr,"finding %s in dirlistcache\n",di->realname);
   *dl=f_cache_find(dirlistcache,&(di->realname));
@@ -504,7 +504,7 @@ const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
       DIRLISTING dlnew;
       char *key;
       unsigned int ok;
-      
+
       if(dbug) fprintf(stderr," miss.\n");
       ok=0;
       if(use_prebuild_dirlists)
@@ -515,14 +515,14 @@ const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
 	    if(sf.st_mtime>=di->mtime) {
 	      /* try to load it */
 	      FILE *f;
-	      
+	
 	      dlnew.listing_size=sf.st_size;
 	      dlnew.listing=malloc(dlnew.listing_size);
 	      if(dlnew.listing)
 	      {
-		  if( (f=fopen(list_p,"rb")) ) 
+		  if( (f=fopen(list_p,"rb")) )
 		  {
-	              if(dlnew.listing_size==fread(dlnew.listing,1,dlnew.listing_size,f)) 
+	              if(dlnew.listing_size==fread(dlnew.listing,1,dlnew.listing_size,f))
 		         ok=1;
 		      fclose(f);
 		  }
@@ -578,19 +578,19 @@ const char *server_get_dir PROTO2(DIRLISTING **, dl, const DIRINFO *, di)
 const char *server_del_file PROTO2(PPATH *, pp, DIRINFO *, di)
 {
   struct stat sb;
-    
+
   if(FSP_STAT(pp->fullp,&sb)) return("unlink: file not accessible");
   if(!(S_ISREG(sb.st_mode))) return("unlink: not an ordinary file");
-    
+
   if(unlink(pp->fullp) == -1) return("unlink: cannot unlink");
   di->mtime=cur_time;
   di->lastcheck=cur_time;
-    
+
   return(NULLP);
 }
-  
+
 /**********************************************************************/
-  
+
 const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di)
 {
   struct stat sb;
@@ -598,11 +598,11 @@ const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di)
 
   if(FSP_STAT(pp->fullp,&sb)) return("rmdir: directory not accessible");
   if(!(S_ISDIR(sb.st_mode))) return("rmdir: not an ordinary directory");
-    
+
   memset(&null,0,sizeof(DIRINFO));
-  
+
   chdir(pp->fullp);
-  save_access_rights(&null); 
+  save_access_rights(&null);
   chdir(home_dir);
   if(rmdir(pp->fullp) != 0) {
     chdir(pp->fullp);
@@ -614,12 +614,12 @@ const char *server_del_dir PROTO2(PPATH *, pp, DIRINFO *,di)
   {
       di->lastcheck=0;
   }
-    
+
   return(NULLP);
 }
-  
+
 /**********************************************************************/
-  
+
 const char *server_make_dir PROTO3(PPATH *, pp, unsigned long, inet_num,DIRINFO, **di)
 {
   DIRINFO newdir;
@@ -652,10 +652,10 @@ const char *server_make_dir PROTO3(PPATH *, pp, unsigned long, inet_num,DIRINFO,
   *di=f_cache_put(dirstatcache,&name,&newdir);
   return(NULLP);
 }
-  
+
 /**********************************************************************/
-  
-const char *server_get_file PROTO5(PPATH *, pp, 
+
+const char *server_get_file PROTO5(PPATH *, pp,
 	                     FILE **, fp,
 			     unsigned long,  inet_num,
 			     unsigned short, port_num,
@@ -665,17 +665,17 @@ const char *server_get_file PROTO5(PPATH *, pp,
   struct stat sb;
   char   realfn[NBSIZE];
   FPCACHE *cache_f;
-  
+
   sprintf(realfn,"%s/%s",di->realname,pp->f_ptr);
   cache_f=search_fpcache(inet_num,port_num,realfn);
-      
+
   if(!cache_f) {
     FPCACHE newfile;
     char *key;
     /* file not found in cache? */
 	
     if (FSP_STAT(realfn,&sb)) return("No such file");
-    if(!(S_ISREG(sb.st_mode))) 
+    if(!(S_ISREG(sb.st_mode)))
     {
 	if(S_ISDIR(sb.st_mode))
 	    return ("Is a directory");
@@ -693,17 +693,17 @@ const char *server_get_file PROTO5(PPATH *, pp,
     f_cache_put(fpcache,&key,&newfile);
   }
   /* get filepoint from cache */
-  else *fp = cache_f->fp; 
-    
+  else *fp = cache_f->fp;
+
   return(NULLP);
 }
-  
+
 /**********************************************************************/
 /* result and pp->fullp may overlap */
 const char *server_get_pro PROTO3(DIRINFO *, di, char *, result, const char *, acc)
 {
   result[0]='\0';         /* truncate output buffer */
-    
+
   if(di->readme) strcat(result,di->readme);
   result[strlen(result)+1] = di->protection^DIR_GET;
   if(acc[0]=='O')
@@ -711,7 +711,7 @@ const char *server_get_pro PROTO3(DIRINFO *, di, char *, result, const char *, a
 
   return(NULLP);
 }
-  
+
 /**********************************************************************/
 
 const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key)
@@ -739,7 +739,7 @@ const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key)
     default:
       return("Invalid syntax. <+|-> <c|d|g|m|l|r>");
   }
-    
+
   switch(key[0]) {
     case '+':
       di->protection|=act;
@@ -750,21 +750,21 @@ const char *server_set_pro PROTO2(DIRINFO *,di, const char *, key)
     default:
       return("Invalid syntax. <+|-> <c|d|g|m|l|r>");
     }
-  
+
   di->mtime=cur_time;
   di->lastcheck=cur_time;
 
   chdir(di->realname);
   save_access_rights (di);
   chdir(home_dir);
-    
+
   return(NULLP);
 }
-  
+
 /**********************************************************************
  *  These two are used for file uploading.
  **********************************************************************/
-  
+
 const char *server_up_load PROTO5(char *, data, unsigned int, len, unsigned long, pos,
 			    unsigned long, inet_num, unsigned short, port_num)
 {
@@ -775,26 +775,45 @@ const char *server_up_load PROTO5(char *, data, unsigned int, len, unsigned long
   struct stat sf;
 
   sprintf(tname, "%s/.T%08lX%04X", tmp_dir,inet_num, port_num);
-  
+
   tmp=tname;
   cache_f=f_cache_find(fpcache,&tmp);
   if(! cache_f ) {
+    /* file not found in cache */
     FPCACHE newfile;
-    /* file not found in cache? */
     if (pos) {
       fp = fopen(tname, "r+b");
     } else {
       unlink(tname);
       fp = fopen(tname,"wb");
     }
-	
+
     if(!fp) return("Cannot open temporary file");
-    
-    if(lstat(tname,&sf) || !S_ISREG(sf.st_mode)) 
+
+    /* check for symlinks or other junk */
+    if(lstat(tname,&sf) || !S_ISREG(sf.st_mode))
+    {
+	fclose(fp);
+	remove(tname);
+	return("Temporary file is NOT a regular file");
+    }
+    /* test if we do not create hole in file which is caused that
+       client continues upload across server crash, which causes
+       some data loss due to libc stdio write caching */
+    /* server do not cleans temporary directory on startup - so
+       uploads across restart should work */   
+    if(pos > sf.st_size || pos < sf.st_size - UBUF_SPACE)
     {
 	fclose(fp);
 	unlink(tname);
-	return("Temporary file is NOT a regular file");
+	return("Non continuous upload detected. Restart upload please.");
+    }
+    /* seek to starting position */
+    if(fseeko(fp, pos, SEEK_SET))
+    {
+	fclose(fp);
+	unlink(tname);
+        return("Seeking in file failed");
     }
     /* protect temporary file */
     chmod(tname,S_IRUSR|S_IWUSR);
@@ -804,16 +823,36 @@ const char *server_up_load PROTO5(char *, data, unsigned int, len, unsigned long
     newfile.fp=fp;
     tmp=strdup(tname);
     f_cache_put(fpcache,&tmp,&newfile);
-  } else
+  } else {
+      /* get file pointer from cache */
       fp=cache_f->fp;
-	
+  }
+
+  /* check for uploading on non-tail of file */
+  sf.st_size= ftello(fp);
+  if(pos > sf.st_size || pos < sf.st_size - UBUF_SPACE)
+  {
+        f_cache_delete_entry(fpcache,cache_f);
+	unlink(tname);
+        if( pos == 0)
+	{
+	    /* we can retry */
+            return server_up_load (data,len,pos,inet_num,port_num);
+	}
+	return("Non continuous upload detected. Restart upload please.");
+  }
+  /*
   if(fseeko(fp, pos, SEEK_SET))
       return("Seeking in file failed");
+  */
   if(len!=fwrite(data, 1, len, fp))
+  {
+      f_cache_delete_entry(fpcache,cache_f);
       return("Writing to file failed");
+  }
   return(NULLP);
 }
-  
+
 const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
 			    unsigned short, port_num, const char *, acc, DIRINFO *,di, unsigned int, l2, const char *,s2)
 {
@@ -823,26 +862,26 @@ const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
 #ifdef HAVE_UTIME_H
   struct utimbuf ut;
 #endif
-    
+
   sprintf(tname, "%s/.T%08lX%04X", tmp_dir,inet_num, port_num);
   /* if file still in cache, then close it & remove it from cache */
   tmp=tname;
   cache_f=f_cache_find(fpcache,&tmp);
   f_cache_delete_entry(fpcache,cache_f);
-    
+
   if (dbug)
     fprintf(stderr,"server_install: tname: %s, pp->fullp: %s\n",tname, pp->fullp);
 	
-  if(fexist(pp->fullp) && 
+  if(fexist(pp->fullp) &&
 	( (di->protection & DIR_DEL) || acc[0]=='O' )
-    ) 
+    )
   {
       unlink(tname);
-      if(dbug) 
+      if(dbug)
 	  fprintf(stderr,"File %s already exists, but there is no user is not directory owner and public can't delete files.\n",pp->fullp);
       return("no permission for replacing that file. Not an owner.");
   }
-  
+
   di->lastcheck=cur_time;
   di->mtime=cur_time;
 
@@ -855,7 +894,7 @@ const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
   unlink(tname);
   umask(system_umask);
 #ifdef HAVE_UTIME_H
-  if(l2>=4) 
+  if(l2>=4)
   {
       ut.modtime=BB_READ4(s2);
       ut.actime=cur_time;
@@ -865,7 +904,7 @@ const char *server_install PROTO7(PPATH *, pp, unsigned long, inet_num,
 
   return(tmp);
 }
-  
+
 /**********************************************************************/
 /* assume path is validated */
 /* start GRAB OPERATION! */
@@ -875,12 +914,12 @@ const char *server_secure_file PROTO4(PPATH *, pp, unsigned long, inet_num,
   struct stat sb;
   char temp_p[NBSIZE];
   const char *tmp;
-    
+
   if(FSP_STAT(pp->fullp,&sb)) return("grab: file not accessible");
   if(!(S_ISREG(sb.st_mode))) return("grab: not an ordinary file");
-    
+
   sprintf(temp_p,"%s/.G%08lX%04X", tmp_dir, inet_num,port_num);
-    
+
   unlink(temp_p);
   /* link emulated as a filecopy */
   tmp=copy_file(pp->fullp,temp_p);
@@ -890,13 +929,13 @@ const char *server_secure_file PROTO4(PPATH *, pp, unsigned long, inet_num,
     unlink(temp_p);
     return("grab: cannot unlink original file");
   }
-  
+
   di->lastcheck=cur_time;
   di->mtime=cur_time;
-    
+
   return(NULLP);
 }
-  
+
 const char *server_grab_file PROTO3(FILE **, fp,
 			      unsigned long, inet_num,
 			      unsigned short, port_num)
@@ -905,7 +944,7 @@ const char *server_grab_file PROTO3(FILE **, fp,
   char temp_p[NBSIZE];
   FPCACHE *cache_f;
   char *key;
-  
+
   sprintf(temp_p,"%s/.G%08lX%04X",tmp_dir,inet_num,port_num);
   key=temp_p;
   cache_f=f_cache_find(fpcache,&key);
@@ -926,7 +965,7 @@ const char *server_grab_file PROTO3(FILE **, fp,
 
   return(NULLP);
 }
-  
+
 const char *server_grab_done PROTO2(unsigned long, inet_num,
 			      unsigned short, port_num)
 {
@@ -934,7 +973,7 @@ const char *server_grab_done PROTO2(unsigned long, inet_num,
   char temp_p[NBSIZE];
   FPCACHE *cache_f;
   char *key;
-    
+
   sprintf(temp_p,"%s/.G%08lX%04X",tmp_dir,inet_num,port_num);
   if(FSP_STAT(temp_p,&sb)) return("grabdone: can't find temporary file");
   key=temp_p;
@@ -981,11 +1020,11 @@ const char *server_stat PROTO1(UBUF *, ubuf )
 	      }
       }
   }
-	  
+	
   BB_WRITE4(ubuf->buf,sb.st_mtime);
   BB_WRITE4(ubuf->buf+4,sb.st_size );
-  
-  if(rc) 
+
+  if(rc)
       rc=0;
   else
       if S_ISDIR(sb.st_mode) rc=RDTYPE_DIR;
@@ -993,7 +1032,7 @@ const char *server_stat PROTO1(UBUF *, ubuf )
 	  if S_ISREG(sb.st_mode) rc=RDTYPE_FILE;
           else
 	      rc=0; /* not a file or directory */
-  
+
   (ubuf->buf)[8]=rc;
   return(NULLP);
 }
@@ -1007,10 +1046,10 @@ const char *server_rename PROTO3(char *, ub, unsigned int, l1, unsigned int, l2)
   int srcdir; /* is source object a directory ? */
   PPATH dest;
   const char *pe;
-  
+
   if(FSP_STAT(pp->fullp,&sb)) return("can't find source file or directory");
   if(S_ISDIR(sb.st_mode))
-      srcdir=1; 
+      srcdir=1;
   else
       if(S_ISREG(sb.st_mode))
 	  srcdir=0;
@@ -1024,11 +1063,11 @@ const char *server_rename PROTO3(char *, ub, unsigned int, l1, unsigned int, l2)
 /*********************************************************************
  test and resolve home directory
  *********************************************************************/
-  
+
 void init_home_dir PROTO0((void))
 {
   void *newhd;
-  
+
   /* test and goto home dir */
   if(chdir(home_dir) == -1) {
     perror(home_dir);

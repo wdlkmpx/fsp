@@ -21,9 +21,9 @@
  */
 
 #include "tweak.h"
-     
+
 #include <stdio.h>
-     
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
@@ -43,11 +43,11 @@
 #  include <time.h>
 # endif
 #endif
-#include "my-string.h"     
+#include "my-string.h"
 #include "ls.h"
-     
+
 #define BLK(A) (((A)+1023)/1024)
-     
+
 static int printtype PROTO1(mode_t, mode)
 {
   switch(mode & S_IFMT) {
@@ -65,23 +65,23 @@ static int printtype PROTO1(mode_t, mode)
 static int printaname PROTO1(LS *, lp)
 {
   int chcnt;
-  
+
   chcnt = 0;
-  
+
   if (f_inode) {
     printf("%5lu ", (unsigned long)lp->lstat.st_ino);
     chcnt += 6;
   }
-  
+
   if (f_size) {
     printf("%4ld ", (long)BLK(lp->lstat.st_size));
     chcnt += 5;
   }
-  
+
   printf("%s", lp->name); chcnt += strlen(lp->name);
-  
+
   if (f_type) chcnt += printtype(lp->lstat.st_mode);
-  
+
   return(chcnt);
 }
 
@@ -97,10 +97,10 @@ static void printtime PROTO1(time_t, ftime)
 {
   int i;
   char *longstring;
-  
+
   longstring = (char *)ctime((long *)&ftime);
   for (i = 4; i < 11; ++i) (void)putchar(longstring[i]);
-  
+
 #define	SIXMONTHS	((365 / 2) * 24 * 60 * 60)
 
   if (ftime + SIXMONTHS > time((time_t *)NULL))
@@ -115,13 +115,13 @@ static void printtime PROTO1(time_t, ftime)
 void printlong PROTO2(LS *, stats, int, num)
 {
   const char *modep;
-  
+
   if (f_total) (void)printf("total %lu\n",(unsigned long) stats[0].lstat.st_btotal);
   for (; num--; ++stats) {
     if (f_inode) printf("%6lu ", (unsigned long)stats->lstat.st_ino);
     if (f_size ) printf("%4lu ", (unsigned long)BLK(stats->lstat.st_size));
     modep = ((S_IFDIR & stats->lstat.st_mode)) ? "drwxrwxrwx" : "-rw-rw-rw-" ;
-    
+
     (void)printf("%s %3u %-*s ", modep, stats->lstat.st_nlink, 8, "nobody");
     if (f_group) printf("%-*s ", 8, "nobody");
     else printf("%8lu ", (unsigned long)stats->lstat.st_size);
@@ -137,27 +137,27 @@ void printlong PROTO2(LS *, stats, int, num)
 #define	TAB	8
 
 extern int termwidth;
- 
+
 void printcol PROTO2(LS *, stats, int, num)
 {
   register int base, chcnt, cnt, col, colwidth;
   int endcol, numcols, numrows, row;
-  
+
   colwidth = stats[0].lstat.st_maxlen;
   if (f_inode) colwidth += 6;
   if (f_size) colwidth += 5;
   if (f_type) colwidth += 1;
-  
+
   colwidth = (colwidth + TAB) & ~(TAB - 1);
   if (termwidth < 2 * colwidth) {
     printscol(stats, num);
     return;
   }
-  
+
   numcols = termwidth / colwidth;
   numrows = num / numcols;
   if (num % numcols) ++numrows;
-  
+
   if (f_size && f_total) printf("total %lu\n", (unsigned long)stats[0].lstat.st_btotal);
   for (row = 0; row < numrows; ++row) {
     endcol = colwidth;

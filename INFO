@@ -9,40 +9,74 @@
         and FSP software was not maintained...
 
     FSP today
+
         Written by Radim Kolar
 
-        FSP uses UDP datagrams and it is reliable even when there is high
-        number of packet loss. It is usable on WiFi network with 60% packet
-        loss. 
+        Protocol related
+
+	FSP uses UDP datagrams and it is reliable even when there is
+	high number of packet loss. It is usable on WiFi network with
+	60% packet loss.
         
-        Unlike TCP, FSP has a fast restart when line comes up.
+	FSP can very quickly addapt to changing line condition. This
+	is excelent for wireless packet networks. FSP needs about 6
+	RTT to retune itself after receiving condition goes worse.
+	And unlike TCP based protocols, FSP has a fast restart when
+	line improves - It do not needs any RTT; FSP goes immediatly
+	to maximum possible speed. 
+	
+	Maximum FSP speed is by design lower than maximum speed of TCP
+	based protocols because it has only 1 packet in the network.
+	TCP protocol has about 3 packets. Design of FSP protocol
+	makes impossible to send more than 1 packet into network.
+	This is nice method for bandwidth protection.
 
-        FSP server do not sends any data out unless is asked for. This
-        solves problem with transfering duplicate data when using
-        TCP protocol on overloaded lines. About 30% are dupes, thrown
-        out by client.
+	FSP server do not sends any data out unless is asked for. This
+	solves problem with transfering duplicate data when using TCP
+	protocol on overloaded lines. About 30% are dupes, thrown out
+	by client. Note: TCP stacks from BSD family has this dupe
+	ratio much lower.
 
-        UDP ports are not often port scanned today. Nobody notice that
-        you are running a server.
+        Embedded devices
 
-        FSP uses UDP which is unnoticed by many firewalls. FSP server
-        runs on 21 port by default, if you move it to port 53 (dns)
-        even strictly configured firewall can be worked around.
+	FSP protocol is very easy to implement; client core has about
+	one page of C code. It is ideal for embedded devices for
+	file-transfer tasks, like firmware downloading. Because of its
+	simplicity, there is a little chance to writing buggy
+	implementation.
 
-        You want to run anonymous archive and want to keep lamers out.
+	FSP is also good for remote booting. It is simplier than TFTP
+	and supports directory listings.
 
-        You want to share something without ruining your valueable bandwidth.
+	FSP protocol can be used as wire-protocol even without using
+	any layer 2 stuff. It operates in degraded mode with extra
+	features disabled.
 
-        You have overloaded archive site.
-         
-        You do want to share large data files (movies, ISO images) on
-        slow (or you do not want to waste valuable bandwidth) lines.
-        Ideal for sharing files on modem lines.
+	Internet operation
+
+	UDP ports are not often port scanned today, only one exception
+	is scanning for Windows/Samba file sharing service. Nobody
+	will notice that you are running a fsp server.
+
+	FSP uses UDP which is unnoticed by many firewalls. FSP server
+	runs on 21 port by default, if you move it to port 53 (dns)
+	even strictly configured firewall can be worked around.
+
+	You want to run anonymous archive and want to keep lamers out.
+
+	You want to share something without ruining your valueable
+	bandwidth.
+
+	You have overloaded archive site.
+
+	You do want to share large data files (movies, ISO images) on
+	slow (or you do not want to waste valuable bandwidth) lines.
+	Ideal for sharing files on modem lines.
 
         FSP daemon is a very light server.
-                                                 
+
     What is the purpose of FSP (V2.8.1):
-        
+
         Written by A.J.Doherty@reading.ac.uk
     
         FSP is a set of programs that implements a public-access archive

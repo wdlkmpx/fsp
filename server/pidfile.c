@@ -5,6 +5,8 @@
  * This code is derived from software contributed to The NetBSD Foundation
  * by Jason R. Thorpe.
  *
+ * Modified by Sven Hoaxter and Radim Kolar for FSP project.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -45,19 +47,18 @@
 
 static pid_t pidfile_pid;
 
-int pidfile(char *pidfile_path)
+int pidfile(const char *pidfile_path)
 {
 	FILE *f;
 	int save_errno;
 	pid_t pid;
 
 	if (pidfile_path == NULL)
-		return (-1);
+		return (0);
 
 	if ((f = fopen(pidfile_path, "w")) == NULL) {
 		save_errno = errno;
-		free(pidfile_path);
-		pidfile_path = NULL;
+		(void) unlink(pidfile_path);
 		errno = save_errno;
 		return (-1);
 	}
@@ -66,8 +67,6 @@ int pidfile(char *pidfile_path)
 	if (fprintf(f, "%ld\n", (long)pid) <= 0 || fclose(f) != 0) {
 		save_errno = errno;
 		(void) unlink(pidfile_path);
-		free(pidfile_path);
-		pidfile_path = NULL;
 		errno = save_errno;
 		return (-1);
 	}
@@ -77,7 +76,9 @@ int pidfile(char *pidfile_path)
 }
 
 
-void pidfile_cleanup(char *pidfile_path)
+void pidfile_cleanup(const char *pidfile_path)
 {
+	if (pidfile_path) {
 		(void) unlink(pidfile_path);
+	}	
 }

@@ -39,7 +39,7 @@ suite. Don't blame me for the code, i have not touched it.
 char *host = NULL;
 char *outputfile = NULL;
 /* Default values */
-int  localport = 9191; 
+int  localport = 9191;
 int  remoteport = 21;
 int  endport = 65535;
 int  retries = 3;
@@ -123,7 +123,7 @@ int main(int argc,char **argv)
 	    fprintf(stderr,"This error should not happen\n");
 	}
     }
-        
+
     if (host == NULL) {
         fprintf(stderr, "host/ip not specified, unable to continue\n");
 	printhelp(argc, argv);
@@ -148,7 +148,7 @@ int main(int argc,char **argv)
             fprintf(logfile,"Found FSP ver: %s on port %0d\n",
 			    ub->buf,remoteport);
         else
-	    fprintf(logfile,"%0d...nada\n",remoteport); 
+	    fprintf(logfile,"%0d...nada\n",remoteport);
         fflush(logfile);
         fdclose();
     }
@@ -187,7 +187,7 @@ UBUF *client_interact(cmd,pos,l1,p1,l2,p2)
 
 	for(t = (unsigned char *) &sbuf, sum = n = mlen; n--; sum += *t++);
 	sbuf.sum = sum + (sum >> 8);
-	if(client_trace && retry) 
+	if(client_trace && retry)
 	    write(2,"R",1);
 
 	if(sendto(myfd,&sbuf,mlen,0,(struct sockaddr*)&server_addr,sizeof(server_addr)) == -1)
@@ -237,7 +237,7 @@ void init_client(char *myhost,int port,int myport)
 		{ perror("socket open"); exit(1); }
 
     if(_x_adr(myhost,port,&server_addr) == -1)
-		{ perror("server addr"); exit(1); } 
+		{ perror("server addr"); exit(1); }
 }
 
 
@@ -261,15 +261,15 @@ int _x_udp(int *port)
 
     me.sin_port = htons((unsigned short) *port);
     me.sin_family = AF_INET;
- 
+
     if((f=socket(AF_INET,SOCK_DGRAM,0)) == -1) return(-1);
- 
+
     if( setsockopt(f,SOL_SOCKET,SO_REUSEADDR,&zz,sizeof(zz)) < 0 ||
         bind(f,(struct sockaddr *) &me,(len = sizeof(me))) < 0 ||
         getsockname(f,(struct sockaddr*)&sin,&len) < 0)
                                 { SAVE(((void) close(f))); return(-1); }
     if(!*port) *port = ntohs((unsigned short) sin.sin_port); return(f);
-}      
+}
 
 int _x_adr(char *host,int port,struct sockaddr_in *his)
 {
@@ -277,34 +277,34 @@ int _x_adr(char *host,int port,struct sockaddr_in *his)
     struct hostent *H;
     int    i;
     char *s, *d;
- 
+
     *his = INET_ZERO;
     if(!host) (void) gethostname(host = myhost,sizeof(myhost));
- 
-    if((his->sin_addr.s_addr = inet_addr(host)) != INADDR_NONE) {   
+
+    if((his->sin_addr.s_addr = inet_addr(host)) != INADDR_NONE) {
 	his->sin_family = AF_INET;
     } else
-    if(H = gethostbyname(host)) {   
-	for(s = (char *)H->h_addr, 
-	    d = (char *)&his->sin_addr, 
+    if(H = gethostbyname(host)) {
+	for(s = (char *)H->h_addr,
+	    d = (char *)&his->sin_addr,
 	    i = H->h_length; i--; *d++ = *s++);
         his->sin_family = H->h_addrtype;
     } else return(-1);
     his->sin_port = htons((unsigned short) port);
- 
+
     return(0);
 }
 
 int _x_select(fd_set *rf, long tt)       /* tt is in unit of ms */
 {
     struct timeval timeout;
- 
+
     if(tt != -1)
     {
         timeout.tv_sec  =  tt / 1000;
         timeout.tv_usec = (tt % 1000)*1000;
         return(select(DSIZE, rf, NULL, NULL, &timeout));
     }
-       
+
     return(select(DSIZE, rf, NULL, NULL, (struct timeval *) 0));
 }

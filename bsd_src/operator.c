@@ -47,10 +47,10 @@
  * yanknode --
  *	destructively removes the top from the plan
  */
-static PLAN *yanknode PROTO1(PLAN **, planp)    
+static PLAN *yanknode PROTO1(PLAN **, planp)
 {
   PLAN *node;		/* top node removed from the plan */
-  
+
   if ((node = (*planp)) == NULL) return(NULL);
   (*planp) = (*planp)->next;
   node->next = NULL;
@@ -63,16 +63,16 @@ static PLAN *yanknode PROTO1(PLAN **, planp)
  *	paren_squish.  In comments below, an expression is either a
  *	simple node or a N_EXPR node containing a list of simple nodes.
  */
-static PLAN *yankexpr PROTO1(PLAN **, planp)    
+static PLAN *yankexpr PROTO1(PLAN **, planp)
 {
   register PLAN *next;	/* temp node holding subexpression results */
   PLAN *node;           /* pointer to returned node or expression */
   PLAN *tail;		/* pointer to tail of subplan */
   PLAN *subplan;	/* pointer to head of ( ) expression */
-  
+
   /* first pull the top node from the plan */
   if ((node = yanknode(planp)) == NULL) return(NULL);
-  
+
   /*
    * If the node is an '(' then we recursively slurp up expressions
    * until we find its associated ')'.  If it's a closing paren we
@@ -120,9 +120,9 @@ PLAN *paren_squish PROTO1(PLAN *, plan)
   register PLAN *expr;	/* pointer to next expression */
   register PLAN *tail;	/* pointer to tail of result plan */
   PLAN *result;		/* pointer to head of result plan */
-  
+
   result = tail = NULL;
-  
+
   /*
    * the basic idea is to have yankexpr do all our work and just
    * collect it's results together.
@@ -136,7 +136,7 @@ PLAN *paren_squish PROTO1(PLAN *, plan)
       fprintf(stderr,"): no beginning '('");
       exit(1);
     }
-    
+
     /* add the expression to our result plan */
     if (result == NULL) tail = result = expr;
     else {
@@ -158,16 +158,16 @@ PLAN *not_squish PROTO1(PLAN *, plan)
   register PLAN *node;	/* temporary node used in N_NOT processing */
   register PLAN *tail;	/* pointer to tail of result plan */
   PLAN *result;		/* pointer to head of result plan */
-  
+
   tail = result = next = NULL;
-  
+
   while ((next = yanknode(&plan)) != NULL) {
     /*
      * if we encounter a ( expression ) then look for nots in
      * the expr subplan.
      */
     if (next->type == N_EXPR) next->p_data[0] = not_squish(next->p_data[0]);
-    
+
     /*
      * if we encounter a not, then snag the next node and place
      * it in the not's subplan.  As an optimization we compress
@@ -175,7 +175,7 @@ PLAN *not_squish PROTO1(PLAN *, plan)
      */
     if (next->type == N_NOT) {
       int notlevel = 1;
-      
+
       node = yanknode(&plan);
       while (node->type == N_NOT) {
 	++notlevel;
@@ -192,7 +192,7 @@ PLAN *not_squish PROTO1(PLAN *, plan)
       if (notlevel % 2 != 1) next = node;
       else next->p_data[0] = node;
     }
-    
+
     /* add the node to our result plan */
     if (result == NULL) tail = result = next;
     else {
@@ -213,19 +213,19 @@ PLAN *or_squish PROTO1(PLAN *, plan)
   register PLAN *next;	/* next node being processed */
   register PLAN *tail;	/* pointer to tail of result plan */
   PLAN *result;		/* pointer to head of result plan */
-  
+
   tail = result = next = NULL;
-  
+
   while ((next = yanknode(&plan)) != NULL) {
     /*
      * if we encounter a ( expression ) then look for or's in
      * the expr subplan.
      */
     if (next->type == N_EXPR) next->p_data[0] = or_squish(next->p_data[0]);
-    
+
     /* if we encounter a not then look for not's in the subplan */
     if (next->type == N_NOT) next->p_data[0] = or_squish(next->p_data[0]);
-    
+
     /*
      * if we encounter an or, then place our collected plan in the
      * or's first subplan and then recursively collect the
@@ -244,7 +244,7 @@ PLAN *or_squish PROTO1(PLAN *, plan)
       }
       return(next);
     }
-    
+
     /* add the node to our result plan */
     if (result == NULL) tail = result = next;
     else {

@@ -28,10 +28,10 @@ int ls_bad PROTO1(int, n)
 int main PROTO2(int, argc, char **, argv)
 {
   env_client();
-  
+
   fls_main(argc,argv);
-  
+
   client_done();
-  
+
   exit(0);
 }

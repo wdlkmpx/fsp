@@ -37,7 +37,7 @@ static void add_file_size PROTO4(char *, name, struct stat *, sbufp,
 				 int, mode, int,  level)
 {
   register u_long file_size;
-  
+
   file_size = (sbufp->st_size + 1023) / 1024;
   total_file_size += file_size;
   if(((mode & EACH) && (mode & RECURSIVE)) ||
@@ -70,9 +70,9 @@ int main PROTO2(int, argc, char **, argv)
   static const char *wild[2] = { ".", 0 };
   char **files, *singlefile[2];
   int optletter;
-  
+
   env_client();
-  
+
   while ((optletter=getopt(argc, argv,"ras")) != EOF)
     switch (optletter) {
       case 'r':
@@ -88,31 +88,31 @@ int main PROTO2(int, argc, char **, argv)
 	fprintf(stderr,"Usage: du [-r|a|s] directory name.\n");
 	exit(0);
     }
-  
+
   /* special case `du' without file arguments -- becomes `du .' */
   if (argc == optind) {
     argv=wild;
     optind=0;
   }
-  
+
   for ( ; argv[optind]; optind++) {
     if (!(files = glob(argv[optind]))) {
       files = singlefile;
       singlefile[0] = argv[optind];
       singlefile[1] = 0;
     }
-      
+
     for ( ; *files; files++) {
       util_process_file(*files, mode, add_file_size, start_dir, end_dir, 0);
       filcnt++;
     }
   }
-  
+
   if (filcnt > 1) {
     fprintf(stdout, "--------:------\n");
     fprintf(stdout, "%-7ld   TOTAL\n", total_file_size);
   }
-  
+
   client_done();
 
   return 0;

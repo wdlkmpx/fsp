@@ -60,7 +60,7 @@ void save_access_rights PROTO1(DIRINFO *,di)
    unlink(FSP_OWNER);
    unlink(FSP_OWNERPASSWORD);
    unlink(FSP_DIRLISTING);
-   
+
    if(!use_access_files) return;
 
    /* step2 save flagfiles */
@@ -110,8 +110,8 @@ void load_access_rights PROTO1(DIRINFO *,di)
 	{
 	    unsigned int s;
 	    /* max readme file size is
-	     * packetsize - pro_bytes (now 1) - 1 (for /0) 
-	     */ 
+	     * packetsize - pro_bytes (now 1) - 1 (for /0)
+	     */
 	    s=min(packetsize-PRO_BYTES-1,sf.st_size);
 	    di->readme=malloc(s+1);
 	    if(di->readme)
@@ -124,7 +124,7 @@ void load_access_rights PROTO1(DIRINFO *,di)
     }
 
     if(!use_access_files) return;
-    
+
     /* LOAD ACCESS RIGHTS FROM FILES IN CURRENT DIRECTORY */
     if(fexist(FSP_NOGET)) di->protection^=DIR_GET;
     if(fexist(FSP_DEL))     di->protection|=DIR_DEL;
@@ -135,13 +135,13 @@ void load_access_rights PROTO1(DIRINFO *,di)
     if(!FSP_STAT(FSP_PASSWORD,&sf))
 	    if(sf.st_size>0)
 		di->public_password=load_password(FSP_PASSWORD);
-    
+
     /* load owner info */
     f=fopen(FSP_OWNER,"r");
     if(!f)
 	return;
 
-    while(fscanf(f, "%255[^\n\r]", owner_line) == 1) 
+    while(fscanf(f, "%255[^\n\r]", owner_line) == 1)
     {
 	add_ipline(owner_line,&di->owner);
     }
@@ -162,17 +162,17 @@ void load_access_rights PROTO1(DIRINFO *,di)
 const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,rights,unsigned long, ip_addr, const char *, passwd)
 {
     const char *acc=NULL;
-   
+
     /* check if we has record in an owner tabl. */
     if(di->owner)
     {
 	/* check ip access */
 	acc=check_ip_table(ip_addr,di->owner);
     }
-    
+
     if(acc!=NULL)
     {
-	if(acc[0]=='I' || acc[0]=='D') 
+	if(acc[0]=='I' || acc[0]=='D')
 	    /* bazmeg IP! */
 	    return acc;
 	if(acc[0]=='O') /* possible owner */
@@ -209,8 +209,8 @@ const char * require_access_rights PROTO4(const DIRINFO *,di,unsigned char,right
     }
 
     /* now check public access rights */
-    if( (rights & di->protection) || 
-	(rights==0) 
+    if( (rights & di->protection) ||
+	(rights==0)
 	)
 	return "NWelcome on board captain!";
     else

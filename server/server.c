@@ -142,11 +142,11 @@ static const char * print_command(unsigned char cmd)
 static void send_error PROTO3(struct sockaddr_in *, from, UBUF *, ub, const char *, msg)
 {
   size_t sz;
-  
+
   sz=strlen(msg)+1;
   memcpy(ub->buf,msg,sz);
   ub->cmd = CC_ERR;
-  
+
   server_reply(from,ub,sz,0);
 }
 
@@ -168,7 +168,7 @@ int server_loop PROTO2(int, fd, time_t, timeout)
   socklen_t bytes;
   unsigned char *s, *d, *t;
   fd_set mask;
-  
+
   FD_ZERO(&mask);
   myfd=fd;
 
@@ -190,7 +190,7 @@ int server_loop PROTO2(int, fd, time_t, timeout)
       dump_htab(fp);
       dump_iptab(iptab,fp);
       stat_caches(fp);
-      if(fp) 
+      if(fp)
       {
 	  fclose(fp);
       }
@@ -199,13 +199,13 @@ int server_loop PROTO2(int, fd, time_t, timeout)
 	if(shutdowning) return 1;
 
     retval = _x_select(&mask, timeout);
-      
+
     if(retval == -1) {
       if(errno == EINTR) continue;
       perror("select");
       exit(7);
     }
-      
+
     if(retval == 1) {   /* an incoming message is waiting */
       bytes = sizeof(from);
       if((bytes = recvfrom(myfd,(char*)&rbuf,sizeof(rbuf),0,
@@ -214,19 +214,19 @@ int server_loop PROTO2(int, fd, time_t, timeout)
 	      if(dbug) fprintf(stderr,"Header truncated.\n");
 	      continue;
       }
-	  
+	
       rlen = BB_READ2(rbuf.bb_len);
-      if((rlen+UBUF_HSIZE) > bytes) 
+      if((rlen+UBUF_HSIZE) > bytes)
       {
 	      if(dbug) fprintf(stderr,"Message truncated.\n");
 	      continue;	/* truncated.  */
       }
-	  
+	
       if(!(ir = check_ip_table(from.sin_addr.s_addr,iptab)))
       { /* host not found in table */
 	ir = priv_mode ? "DFSP service not available": "N";
       }
-	  
+	
       switch (*ir) {
         case 'D':	/* disabled host - return error message */
 	  if (rbuf.cmd == CC_BYE)
@@ -241,17 +241,17 @@ int server_loop PROTO2(int, fd, time_t, timeout)
 	  fputs("check_ip() returned illegal host type\n",stderr);
 	  exit(99);
       }
-	  
+	
       hp = find_host(from.sin_addr.s_addr);
 
       if(hp->hostname == 0 && no_unnamed) {
 	send_error(&from,&rbuf, REVERSE_ERR_MSG);
 	continue;
       }
-	  
+	
       old = 0;
       cur_time = time((time_t *) 0);
-	  
+	
       rkey = BB_READ2(rbuf.bb_key);
       if(hp->next_key != rkey) {
 	if(!hp->active)
@@ -259,16 +259,16 @@ int server_loop PROTO2(int, fd, time_t, timeout)
 	else {
 	  if(hp->last_key == rkey) {
 	    if(cur_time < hp->last_acc + retry_timeout) {
-		    if(dbug) fprintf(stderr,"Ignoring too early retry request (rtime=%ld,timeout=%d).\n",cur_time-hp->last_acc,(int)retry_timeout);
+		    if(dbug) fprintf(stderr,"Ignoring too early retry request (rtime=%ld,timeout=%d).\n",(long)cur_time-hp->last_acc,(int)retry_timeout);
 		    continue;
 	    }
 	    old = 1;
 	  } else {
 	    if(cur_time < hp->last_acc + session_timeout ) {
-		    if(dbug) fprintf(stderr,"Request with bad key (rtime=%ld,timeout=%d).\n",cur_time-hp->last_acc, (int)session_timeout);
+		    if(dbug) fprintf(stderr,"Request with bad key (rtime=%ld,timeout=%d).\n",(long)cur_time-hp->last_acc, (int)session_timeout);
 		    continue;
 	    }
-	    hp->active = 0; 
+	    hp->active = 0;
 	    hp->next_key = rkey;
 	  }
 	}
@@ -284,12 +284,12 @@ int server_loop PROTO2(int, fd, time_t, timeout)
       u = rbuf.sum; rbuf.sum = 0;
       for(t = s, sum = bytes; t < d; sum += *t++);
       sum = (sum + (sum >> 8)) & 0xff;
-      if(sum != u) 
+      if(sum != u)
       {
 	      if(dbug) fprintf(stderr,"Wrong checksum got %x, expected %x\n",u,sum);
 	      continue;			/* wrong check sum */
       }
-	  
+	
       server_process_packet(bytes,&rbuf,old,hp,&from);
     } else return(0);				/* got a timeout */
   }
@@ -309,23 +309,23 @@ int server_reply PROTO4(struct sockaddr_in *, from, UBUF *, ub,
   unsigned sum;
   int i;
   unsigned int thcsum;
-  
-  if(dbug) 
+
+  if(dbug)
       fprintf(stderr,"snd (%s,key=0x%0X,seq=0x%0X,len=%d,len2=%d,pos=%u) ---> %d.%d.%d.%d\n",
 		   print_command(ub->cmd), BB_READ2(ub->bb_key), BB_READ2(ub->bb_seq),len1, len2, BB_READ4(ub->bb_pos),
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[0],
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[1],
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[2],
 		   ((unsigned char *)(&(from->sin_addr.s_addr)))[3]);
-  
+
   BB_WRITE2(ub->bb_len,len1);
-  
+
   ub->sum = 0;
   s = (unsigned char *) ub;
   d = s + (len1 + len2 + UBUF_HSIZE);
   for(t = s, sum = 0; t < d; sum += *t++);
   ub->sum = sum + (sum >> 8);
-  
+
   /*
    * Check that we do not exceed maximum throughput allowed before sending
    */
@@ -358,7 +358,7 @@ fprintf(stderr,"\n") ;
       if(dbug) fprintf(stderr, "Throughput too high, waiting.\n");
       sleep(1);
     }
-  
+
   if(sendto(myfd,(char *)ub,(len1 + len2 + UBUF_HSIZE),0,
 	    (struct sockaddr *)from,sizeof(struct sockaddr_in)) == -1) {
     perror("sendto");
@@ -380,7 +380,7 @@ void send_file PROTO5(struct sockaddr_in *, from, UBUF *, ub, FILE *, fp,
   size_t bytes;
   unsigned len;
   unsigned long pos;
-  
+
   if(has_len == 2) {	/* recover length field if it exists */
     len=lp[0] << 8;
     len  = len + lp[1];
@@ -388,23 +388,23 @@ void send_file PROTO5(struct sockaddr_in *, from, UBUF *, ub, FILE *, fp,
   } else len  = packetsize; /* use default if it doesn't exist */
 
   pos = BB_READ4(ub->bb_pos);
-  
+
 #ifndef NATIVE_LARGEFILES
 #if SIZEOF_OFF_T == 4
   if(pos>TWOGIGS)
       len=0;
 #endif
-#endif  
-  
+#endif
+
   if(fseeko(fp,pos,SEEK_SET))
   {
       /* seek failed, do not send any more data */
       /* TODO: or can we return error instead?  */
       len=0;
   }
-  
+
   bytes = fread(ub->buf, 1, len, fp);
-  
+
   server_reply(from,ub,bytes,0);
 }
 
@@ -416,6 +416,7 @@ void send_file PROTO5(struct sockaddr_in *, from, UBUF *, ub, FILE *, fp,
 static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
 {
   char buf[UBUF_SPACE], verflags = 0;
+  unsigned int xtra = VER_BYTES;
 
   strcpy(buf, "fspd " PACKAGE_VERSION);
   strcat(buf, "\n");
@@ -427,24 +428,22 @@ static void server_show_version PROTO2(struct sockaddr_in *, from, UBUF *, ub)
   if (maxthcallowed) verflags |= VER_THRUPUT;
 
   strcpy(ub->buf, buf);
-  BB_WRITE4(ub->bb_pos,VER_BYTES);
   ub->buf[strlen(ub->buf)] = '\0';
   ub->buf[strlen(ub->buf)+1] = verflags;
+  /* add optional thruput data */
   if(maxthcallowed) {
-    BB_WRITE4(ub->bb_pos,VER_BYTES+4);
-    ub->buf[strlen(ub->buf)+2] = (char)((maxthcallowed & 0xff000000)>>24);
-    ub->buf[strlen(ub->buf)+3] = (char)((maxthcallowed & 0x00ff0000)>>16);
-    ub->buf[strlen(ub->buf)+4] = (char)((maxthcallowed & 0x0000ff00)>>8);
-    ub->buf[strlen(ub->buf)+5] = (char)(maxthcallowed & 0x000000ff);
-	
-    server_reply(from, ub, strlen(ub->buf)+1, VER_BYTES+4);
-  } else {
-    server_reply(from, ub, strlen(ub->buf)+1, VER_BYTES);
+    BB_WRITE4(ub->buf+strlen(ub->buf)+2,maxthcallowed);
+    xtra+=4;
   }
+  /* Add packetsize - 2.8.1 b20 extension */
+  BB_WRITE2(ub->buf+strlen(ub->buf)+xtra+1,packetsize);
+  xtra+=2;
+  BB_WRITE4(ub->bb_pos,xtra);
+  server_reply(from, ub, strlen(ub->buf)+1, xtra);
 }
 
 /****************************************************************************
-*  This is the dispatch loop for message that has been accepted. 
+*  This is the dispatch loop for message that has been accepted.
 *  Serves command in message and sends out a reply.
 *    bytes: size of the message received.
 *       ub: pointer to the message buffer.
@@ -807,7 +806,7 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	ACTIONLOG1(L_GRABFILE,"GRABFILE");
       }
       pe = validate_path(s1,l1,&pp,&di,0);
-      if(pe) 
+      if(pe)
       {
 	  ACTIONLOG1(L_ERR|L_GRABFILE,"GRABFILE");
 	  ACTIONFAILED(L_ERR|L_GRABFILE,pe);
@@ -827,7 +826,7 @@ static void server_process_packet PROTO5(unsigned, bytes, UBUF *, ub, int, old,
 	  }
       }
       pe = server_grab_file(&fp, inet_num, port_num);
-      if(pe) 
+      if(pe)
       {
 	  ACTIONLOG1(L_ERR|L_GRABFILE,"GRABFILE");
 	  ACTIONFAILED(L_ERR|L_GRABFILE,pe);

@@ -24,16 +24,16 @@
  * Following setting is a minimum recommended size.                         *
  ****************************************************************************/
 
-#define DEFAULT_DIRLISTCACHE_SIZE 32
+#define DEFAULT_DIRLISTCACHE_SIZE 50
 
 /****************************************************************************
  * DEFAULT_DIRSTATCACHE_SIZE should be set to contain the number of dirs    *
  * you want to held in dirstat memory cache. This cache avoids calling stat *
- * on directory and loading access perms. This operation is far less 
+ * on directory and loading access perms. This operation is far less
  * expensive than listing a directory, so if can be a lower number.
  */
 
-#define DEFAULT_DIRSTATCACHE_SIZE 20 
+#define DEFAULT_DIRSTATCACHE_SIZE 30
 
 /* THCCOUNT is the number of seconds used to compute average throughput.
  * 10 seconds seems to be a good value

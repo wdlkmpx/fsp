@@ -24,9 +24,9 @@ static int get_pro PROTO1(const char *, p)
 {
   char *op;
   UBUF *ub;
-  
+
   op = util_abs_path(p);
-  
+
   ub = client_interact(CC_GET_PRO,0L, strlen(op), (unsigned char *)op+1, 0,
 		       (unsigned char *)NULLP);
   if(ub->cmd == CC_ERR) {
@@ -35,7 +35,7 @@ static int get_pro PROTO1(const char *, p)
   }
   printf("%s\n",p);
   print_pro(ub,stdout);
-  
+
   return(0);
 }
 
@@ -43,9 +43,9 @@ static int set_pro PROTO2(char *, p, char *, key)
 {
   char *op;
   UBUF *ub;
-  
+
   op = util_abs_path(p);
-  
+
   ub = client_interact(CC_SET_PRO,0L, strlen(op), (unsigned char *)op+1,
 		       strlen(key)+1, (unsigned char *)key);
   if(ub->cmd == CC_ERR) {
@@ -54,16 +54,16 @@ static int set_pro PROTO2(char *, p, char *, key)
   }
   printf("%s\n",p);
   print_pro(ub,stdout);
-  
+
   return(0);
 }
 
 int main PROTO2(int, argc, char **, argv)
 {
   char **av, *av2[2], *key;
-  
+
   env_client();
-  
+
   if(argv[1] && (argv[1][0] == '+' || argv[1][0] == '-') && !argv[1][2]) {
     key = *++argv;
     while(*++argv) {
@@ -84,8 +84,8 @@ int main PROTO2(int, argc, char **, argv)
       while(*av) get_pro(*av++);
     } else get_pro(env_dir);
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

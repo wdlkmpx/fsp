@@ -68,7 +68,7 @@ int main(int argv,char **argc)
 
     cache=f_cache_new(4,0,0,sizeof(char *),string_free,string_compare);
     assert(cache!=NULL);
-    
+
     s="lamer1";
     f_cache_put(cache,&s,NULL);
     s="lamer2";

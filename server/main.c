@@ -24,7 +24,7 @@ static void display_version PROTO0((void))
 {
       printf(
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
-	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2003 by Radim Kolar.\n"
+	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2004 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
 	  "Portions copyright by BSD, Wen-King Su, Philip G. Richards, Michael Meskes.\n"
 #ifdef __GNUC__
@@ -37,15 +37,15 @@ static void display_version PROTO0((void))
 
 static void arg_err PROTO0((void))
 {
-  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname]\n", stderr);
+  fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec]\n", stderr);
 }
 
 static void check_required_vars PROTO0((void))
 {
   double rnd;
-  
+
   if(!inetd_mode && udp_port==0) {
-    fprintf(stderr, "No port set. Exiting. (Use 65535 for random port)\n");
+    fprintf(stderr, "Error: No port set. (Use 65535 for random port)\n");
     exit(1);
   }
   if(udp_port == 65535)
@@ -55,17 +55,21 @@ static void check_required_vars PROTO0((void))
       udp_port=rnd*(65535-1024)+1024;
   }
   if(!home_dir) {
-    fprintf(stderr, "No home directory set.\n");
+    fprintf(stderr, "Error: No home directory set.\n");
     exit(1);
   }
-  if(*home_dir != '/') { 
-    fprintf(stderr,"home directory [%s] does not start with a /.\n", home_dir);
-    exit(1); 
+#if 0  
+  if(*home_dir != '/') {
+    fprintf(stderr,"Error: home directory [%s] does not start with a /.\n", home_dir);
+    exit(1);
   }
+#endif  
+#if 0
   if(!pidlogname) {
     fprintf(stderr, "No pidlogname set in your fspd.conf.\n");
     exit(1);
   }
+#endif
   if(!readme_file) {
     readme_file = strdup(".README");
   }
@@ -78,7 +82,7 @@ static void check_required_vars PROTO0((void))
       dbug = 0;
   if(!tmp_dir && !read_only)
   {
-      if(!inetd_mode) 
+      if(!inetd_mode)
 	  fprintf(stderr,"Warning: no tmpdir set, switching to readonly mode.\n");
       read_only = 1;
   }
@@ -104,11 +108,11 @@ int main PROTO2(int, argc, char **, argv)
 {
   int opt;
   long inetd_timeout=0;
-  
+
   if(strlen(argv[0])>=7)
 	  inetd_mode = !strcasecmp(&argv[0][strlen(argv[0])-7],"in.fspd");
 
-  while( (opt=getopt(argc,argv,"h?Xd:f:vVip:t:FT:l:P:"))!=EOF)
+  while( (opt=getopt(argc,argv,"h?Xd:f:vVip:t:FT:l:P:b:"))!=EOF)
   {
 	  switch(opt)
 	  {
@@ -143,6 +147,9 @@ int main PROTO2(int, argc, char **, argv)
 		  case 'p':
 			  udp_port = atoi (optarg);
 			  break;
+		  case 'b':
+			  maxthcallowed = atoi (optarg);
+			  break;
 		  case 't':
 			  inetd_timeout = 1000L * atoi (optarg);
 			  break;
@@ -171,7 +178,7 @@ int main PROTO2(int, argc, char **, argv)
   {
     opt=_x_udp(&udp_port);
     if(opt == -1) {
-    perror("socket open");
+    perror("Error: socket open");
     exit(2);
     }
     if(dbug) {
@@ -190,14 +197,14 @@ int main PROTO2(int, argc, char **, argv)
       fprintf(stderr,"Can not change my uid to %d.\n",run_uid);
       exit(3);
   }
-  
+
   if(run_gid) if(setgid(run_gid) != 0) {
       fprintf(stderr,"Can not change my gid to %d.\n",run_uid);
       exit(4);
   }
 
   init_home_dir();
-  
+
   if(init_caches())
   {
       perror("init_caches");
@@ -205,13 +212,13 @@ int main PROTO2(int, argc, char **, argv)
   }
 
   umask(system_umask);
-  
+
   if (logging) {
-     if (dbug) 
+     if (dbug)
 	 fprintf(stderr,"logging to %s\n",logname);
     /* test to see if logfile can be written */
     /* open it append mode so that it doesn't wipe the file when
-     * you are running under inetd. 
+     * you are running under inetd.
      */
     if((logfd=open(logname, O_WRONLY | O_APPEND | O_CREAT, 0640)) < 0) {
 	if(! inetd_mode )
@@ -223,17 +230,28 @@ int main PROTO2(int, argc, char **, argv)
 
   if(tlogname)
   {
-     if (dbug) 
+     if (dbug)
 	 fprintf(stderr,"logging transfers to %s\n",tlogname);
 
     /* test to see if logfile can be written */
-    if((tlogfd=open(tlogname, O_WRONLY | O_APPEND | O_CREAT, 0640)) < 0) 
+    if((tlogfd=open(tlogname, O_WRONLY | O_APPEND | O_CREAT, 0640)) < 0)
     {
 	if(! inetd_mode )
 	    fprintf(stderr, "Error opening transferfile: %s, transfer logging disabled.\n",tlogname);
         free(tlogname);
         tlogname=NULL; /* no logging */
     }
+  }
+
+  /* With pidfile we have currently 2 problems:
+     1) creating pidfile after we have droped root rights. We can not
+        write to root only directories like /var/run
+     2) If we create pidfile early before setuid() we can't write
+        new pid to it after we setuid()+fork()
+  */
+  if (pidfile(pidlogname)) {
+	  fprintf(stderr,"Error: can not write pidfile - exiting.\n");
+	  exit(1);/* cannot write pid file - exit */
   }
 
   init_htab();
@@ -264,7 +282,7 @@ int main PROTO2(int, argc, char **, argv)
     freopen(NULL_DEV,"w",stderr);
   }
 
-  
+
   if(!inetd_mode) {
     /* Fork and die to drop daemon into background   */
     /* Added Alban E J Fellows 12 Jan 93             */
@@ -274,8 +292,10 @@ int main PROTO2(int, argc, char **, argv)
       pid_t forkpid;
       forkpid = fork();
       if (forkpid == 0) { /* child prozess */
-	if (pidfile(pidlogname))
+	if (pidfile(pidlogname)) {
+          pidfile_cleanup(pidlogname); /* try cleanup */
 	  exit(1);/* cannot write pid file - exit */
+	}
       } else if (forkpid > 0) { /* father prozess */
 	_exit(0);
       }
@@ -288,7 +308,7 @@ int main PROTO2(int, argc, char **, argv)
 
   while(1)
   {
-    server_loop(opt,inetd_timeout); 
+    server_loop(opt,inetd_timeout);
     if(inetd_mode||dbug||shutdowning) break;
   }
 

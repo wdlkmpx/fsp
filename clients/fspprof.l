@@ -59,13 +59,13 @@ HOSTNAME [[:alpha:]][\-._[:alnum:]]+
 			}
 <shostname>.|\n fprintf(stderr,"invalid hostname `%s`\n",yytext);BEGIN(INITIAL);
 <shost>(fsp{WHITESPACE})?port   BEGIN(sport);
-<sport>{WHITESPACE}  
+<sport>{WHITESPACE}
 <sport>{NUMBER} host->port=atoi(yytext);BEGIN(shost);
 <sport>.|\n fprintf(stderr,"invalid port `%s`\n",yytext);BEGIN(shost);
 <shost>alias{WHITESPACE}   BEGIN(salias);
 <salias>{HOSTNAME}         add_host_alias(host,yytext);BEGIN(shost);
 <shost>local{WHITESPACE}port  BEGIN(slport);
-<slport>{WHITESPACE} 
+<slport>{WHITESPACE}
 <slport>{NUMBER}  host->local_port=atoi(yytext);BEGIN(shost);
 <shost>(fsp{WHITESPACE})?directory{WHITESPACE} BEGIN(sdir);
 <sdir>\/[[:graph:]]*  host->dir=strdup(yytext);BEGIN(shost);
@@ -74,11 +74,11 @@ HOSTNAME [[:alpha:]][\-._[:alnum:]]+
 <sldir>[[:graph:]]*  host->local_dir=strdup(yytext);BEGIN(shost);
 <sldir>.|\n fprintf(stderr,"invalid local directory `%s`\n",yytext);BEGIN(shost);
 <shost>delay BEGIN(sdelay);
-<sdelay>{WHITESPACE}  
+<sdelay>{WHITESPACE}
 <sdelay>{NUMBER} host->delay=atoi(yytext);BEGIN(shost);
 <sdelay>.|\n fprintf(stderr,"invalid delay `%s`\n",yytext);BEGIN(shost);
 <shost>timeout BEGIN(stimeout);
-<stimeout>{WHITESPACE} 
+<stimeout>{WHITESPACE}
 <stimeout>{NUMBER} host->timeout=atoi(yytext);BEGIN(shost);
 <stimeout>.|\n fprintf(stderr,"invalid timeout `%s`\n",yytext);BEGIN(shost);
 <shost>trace{WHITESPACE}on host->trace=1;

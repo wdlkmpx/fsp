@@ -1,5 +1,5 @@
 /* this file is public domain */
-/* return values: 
+/* return values:
  * 3 - invocation error
  * 2 - no LFS support
  * 1 - file creation failed
@@ -20,7 +20,7 @@ int main(int argc,char *argv[])
     FILE *fd;
     off_t pos;
     float size;
-    
+
     if(argc<3)
     {
 	printf("Makes a large file with hole using fseeko\n");
@@ -35,7 +35,7 @@ int main(int argc,char *argv[])
 	return 1;
     }
     size=atof(argv[2]);
-#if SIZEOF_OFF_T <= 4     
+#if SIZEOF_OFF_T <= 4
     if(size>2)
     {
 	printf("You do not have LFS your system.\nMaximum supported filesize is 2 GB.\n");

@@ -82,7 +82,7 @@ static int tabdir PROTO2(LS *, lp, LS **, s_stats)
   struct rdirent *dp;
   unsigned long blocks;
   LS *stats;
-  
+
   if (!(dirp = util_opendir("."))) {
     perror(lp->name);
     return(0);
@@ -118,25 +118,25 @@ static int tabdir PROTO2(LS *, lp, LS **, s_stats)
       continue;
     }
     stats[cnt].name = dp->d_name;
-    
+
     /*
      * get the inode from the directory, so the -f flag
      * works right.
      */
     stats[cnt].lstat.st_ino = dp->d_fileno;
-    
+
     /* save name length for -C format */
     stats[cnt].len = dp->d_namlen;
-    
+
     /* calculate number of blocks if -l/-s formats */
     if (f_longform || f_size) blocks += (stats[cnt].lstat.st_size+1023)/1024;
-    
+
     /* save max length if -C format */
     if (f_column && maxlen < (int)dp->d_namlen) maxlen = dp->d_namlen;
     ++cnt;
   }
   (void)util_closedir(dirp);
-  
+
   if (cnt) {
     stats[0].lstat.st_btotal = blocks;
     stats[0].lstat.st_maxlen = maxlen;
@@ -187,12 +187,12 @@ static void displaydir PROTO2(LS *, stats, register int, num)
 
   printfcn(stats, num);
 
-  if (f_recursive) 
+  if (f_recursive)
   {
     savedpath = endofpath;
-    for (lp = stats; num--; ++lp) 
+    for (lp = stats; num--; ++lp)
     {
-      if (!(S_ISDIR(lp->lstat.st_mode))) 
+      if (!(S_ISDIR(lp->lstat.st_mode)))
 	  continue;
       p = lp->name;
       if (p[0] == '.' && (!p[1] || (p[1] == '.' && !p[2]))) continue;
@@ -227,7 +227,7 @@ static void doargs PROTO2(int, argc, char **, argv)
       av2[0] = *argv;
       av2[1] = 0;
     }
-    
+
     for( ; *av; av++) {
       if (util_stat(*av, &sb)) {
 	perror(*av);
@@ -421,7 +421,7 @@ void fls_main PROTO2(int, argc, char **, argv)
     if (!f_timesort) sortfcn = revnamecmp;
     else if (f_accesstime) sortfcn = revacccmp;
     else if (f_statustime) sortfcn = revstatcmp;
-    else sortfcn = revmodcmp; /* use modification time */ 
+    else sortfcn = revmodcmp; /* use modification time */
   } else {
     if (!f_timesort) sortfcn = namecmp;
     else if (f_accesstime) sortfcn = acccmp;

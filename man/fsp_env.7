@@ -42,11 +42,15 @@ so that network speed has an indicator.  This variable has no effect when the
 standard output is a terminal.
 .TP
 .B FSP_TIMEOUT
-If this variable is set, it contains the timeout value. The default value is 180.
+If this variable is set, it contains the timeout value in seconds.
+The default value is 360.
 No function if program was compiled without timeout code.
 .TP
 .B FSP_DELAY
 Minimum wait time before resending packet in milliseconds.
+.TP
+.B FSP_MAXDELAY
+Maximum wait time before resending packet in milliseconds.
 .TP
 .B FSP_LOCAL_DIR
 Where to look for local files. Default is current directory.

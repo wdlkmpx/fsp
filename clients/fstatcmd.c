@@ -26,7 +26,7 @@ static void stat_file PROTO1(const char *,fname)
    struct stat sb;
    struct tm *ftime;
    char buf[35];
-   
+
    if(util_stat(fname,&sb))
    {
        printf("%s: stat error\n",fname);
@@ -37,7 +37,7 @@ static void stat_file PROTO1(const char *,fname)
        else
 	  if(S_ISDIR(sb.st_mode))
 	    printf("Directory");
-   
+
        ftime=localtime(&sb.st_mtime);
        strftime(buf,35,"%Y-%m-%d %H:%M:%S",ftime);
 #ifdef NATIVE_LARGEFILES
@@ -47,8 +47,8 @@ static void stat_file PROTO1(const char *,fname)
 #endif
        printf(": %s  Size: "SFORM" Time: %s\n",fname,sb.st_size,buf);
    }
-	   
-   
+	
+
 }
 
 int main PROTO2(int, argc, char **, argv)
@@ -56,20 +56,20 @@ int main PROTO2(int, argc, char **, argv)
   char n[1024];
   int prompt;
   char **av, *av2[2];
-  
+
   env_client();
- 
+
   if(argc>1)
   {
-    for( optind=1; argc>optind ; optind++) 
+    for( optind=1; argc>optind ; optind++)
     {
-      if(!(av = glob(argv[optind]))) 
+      if(!(av = glob(argv[optind])))
       {
         av = av2;
         av2[0] = argv[optind];
         av2[1] = 0;
       }
-      while(*av) 
+      while(*av)
 	  stat_file(*av++);
     }
   } else {
@@ -86,12 +86,12 @@ int main PROTO2(int, argc, char **, argv)
         av2[0] = n;
         av2[1] = 0;
       }
-      while(*av) 
+      while(*av)
 	  stat_file(*av++);
     }
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

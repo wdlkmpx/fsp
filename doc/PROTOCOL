@@ -1,18 +1,17 @@
-			File Service Protocol version 2 
-				 specification
+			FILE SERVICE PROTOCOL VERSION 2
 
-			      Document version 0.9
-			   Last updated 18 Nov 2003 
+			     Document version 0.10
+			    Last updated 18 Oct 2004
 
-				 Also known as 
-			    File Slurping Protocol, 
-			    Flaky Stream Protocol, 
+				 Also known as
+			    File Slurping Protocol,
+			    Flaky Stream Protocol,
 			     FTP's Sexier Partner,
 			     File Sharing Protocol or
 			     Fucking Slow Protocol.
 
 		    `FSP is what anonymous FTP *should* be'
-		    
+
 This document was created by Radim Kolar, because there is no RFC for
 FSP. It was planed, but never comes out. Based on sources of FSP 2.8.1 Beta 13.
 This document is not copyrighted and is placed into public domain.
@@ -20,7 +19,7 @@ This document is not copyrighted and is placed into public domain.
 Data formats used in this document
   byte - unsigned 1 byte integer 0-255
   word - unsigned 2 byte integer 0-65535
-  long - unsigned 4 byte integer 0-4294967295 
+  long - unsigned 4 byte integer 0-4294967295
   bits - counted from right to left. bit 0 is the lowest.
   NULL - byte 00
   ASCIIZ - ASCII string terminated with one NULL (the same as used in C
@@ -34,9 +33,30 @@ Data formats used in this document
   Numbers starting with 0x are in hexadecimal (base 16) notation.
 
 Transport
+
   FSP uses UDP datagrams as transport medium. Minimum UDP packet size (not
   including size of UDP, IP and link layer headers) is 12 bytes, maximum UDP
   packet size is 1024+12 bytes.
+
+Security
+
+  Design
+
+  FSP protocol was not designed to transfer secret data. It was designed as
+  alternative protocol for providing lightweight access to collection of public
+  files. FSP has the same user level of security as the anonymous FTP file
+  server. FSP has better network level security, because it was designed
+  to ressist various denial-of-service attacks. FSP protocol v3 will be
+  designed to be fully secure. FSP3 will not be backward compatible with
+  FSP2.
+
+  Passwords
+
+  Recently, password support was added to protocol, because just
+  too many people wants it and there were hacked version of FSP with
+  password support floating around. Passwords are transmited in clear
+  text over network which makes them a weak protection for determined
+  intruder.
 
 FSP Packet format:
   HEADER 		- size = Fixed size 12 bytes. Always present.
@@ -57,9 +77,15 @@ HEADER FORMAT (12 bytes)
 
 MESSAGE_CHECKSUM
 Entire packet (HEADER + DATA + XTRA DATA) is checksumed.  When computing a
-checksum use zero in place of MESSAGE_CHECKSUM header field. Checksums are
-computed as follows:
- 
+checksum use zero in place of MESSAGE_CHECKSUM header field. 
+
+Due to some unknown reason, method of computing checksums is different in each
+direction. For packets travelling from server to client initial checksum
+value is zero, otherwise it is HEADER + DATA + XTRA DATA size.
+
+Checksums in server->client direction are computed as follows:
+
+ /* assume that we have already zeroed checksum in packet */
  unsigned int sum,checksum;
  for(t = packet_start, sum = 0; t < packet_end; sum += *t++);
  checksum= sum + (sum >> 8);
@@ -72,7 +98,7 @@ by server.
 TIMEOUTS
 Resends:
 Server will accept resent message from client with old KEY after 3 seconds.
-Client MUST wait at least 1 second before resending a message. 
+Client MUST wait at least 1 second before resending a message.
 It is recommended to use initial delay of 1.34 second and after each
 unsuccessfull resend multiply delay time by 1.5. Maximum recommended delay
 time is 300 seconds.
@@ -110,12 +136,12 @@ FSP File servers MUST supports following commands:
 
 
  CC_VERSION     0x10		- Get server version string and setup
- 
+
                 request
                 file position: ignored
                 data:          not used
 		xtra data:     not used
-		
+
 		reply
 		file position:  size of optional extra version data
 		data:           ASCIIZ Server version string
@@ -126,15 +152,21 @@ FSP File servers MUST supports following commands:
 					bit 2 set - reverse lookup required
 					bit 3 set - server is in private mode
 					bit 4 set - thruput control
+			        if bit 4 is set thruput info follows
 				long - max_thruput allowed (in bytes/sec)
+				word - max. packet size supported by server
 
-				
+	        Compatibility
+
+		Max. packet size supported is reported only by fspd 2.8.1 b20
+		or newer.
+
  CC_ERR      0x40                -  error response from server
 
  		If you want to get a error from server, send
 		any unknown client command (for example CC_ERR).
 		CC_ERRs are normally sent only by server on
-		errors.
+		errors conditions.
 
 		request (not used)
                 file position: not used
@@ -163,7 +195,7 @@ RDIRENT is the structure of a directory entry contained in a directory listing.
 Each entry contains a HEADER, which has 4 bytes quantity 'time' in Unix
 standard format, a 4 bytes quantity 'size', and 1 byte of 'type'.  Header is
 followed by ASCIIZ encoded 'name'. RDIRENT is followed by enough number of
-padding to fill to an 4-byte boundary.  
+padding to fill to an 4-byte boundary.
 
 At this point, if the next RDIRENT entry to follow will spread across 1k
 boundary, then two possible things will happen:
@@ -171,14 +203,14 @@ boundary, then two possible things will happen:
   1) if the HEADER fits between this entry and the 1k boundary,
   a complete header will be filled in with a 'type' set to RDTYPE_SKIP.
   Repeat this step as neceseary until no HEADER fits.
-  2) if the HEADER does not fit, then simply pad to the 1k boundary.  
-  
+  2) if the HEADER does not fit, then simply pad to the 1k boundary.
+
   This will make sure that messages carrying directory information carry only
   complete directory entries and no fragmented entries.
-  
+
 The last entry is type RDTYPE_END.
 
-        struct RDIRENT { 
+        struct RDIRENT {
 	       struct HEADER {
 	                      long  time;
                               long  size;
@@ -205,7 +237,7 @@ RDIRENT.HEADER types:
 		file position:  same as in request
 		data:           binary file data
 		xtra data:	not used
-		
+
  CC_UP_LOAD 0x43		- open a file for writing
 
  		request
@@ -217,7 +249,7 @@ RDIRENT.HEADER types:
 		file position:  same as in request
 		data:           not used
 		xtra data:	not used
-		
+
  CC_INSTALL 0x44		- close and install file opened for writing
 
  		request
@@ -230,9 +262,9 @@ RDIRENT.HEADER types:
 		file position:  not used
 		data:           not used
 		xtra data:	not used
-		
+
  CC_DEL_FILE 0x45		- delete a file
- 
+
  		request
 		file position:	not used
 		data:           ASCIIZ filename
@@ -242,7 +274,7 @@ RDIRENT.HEADER types:
 		file position:  not used
 		data:           not used
 		xtra data:	not used
-		
+
  CC_DEL_DIR 0x46		- delete a directory
 
  		request
@@ -262,21 +294,27 @@ RDIRENT.HEADER types:
 		data:           ASCIIZ directory
 		xtra data:	(not required)
 		                word - size of reply's optional data block
-				
+
 		reply
 		file position:  number of extra protection bytes (now 1)
 		data:           ASCIIZ directory readme
 		xtra data:	extra protection data (format follows)
 
-Protection bits:
-   0 - caller owns the directory
-   1 - files can be deleted from this dir
-   2 - files can be added to this dir
-   3 - new subdirectories can be created
-   4 - files are NOT readable by non-owners
-   5 - directory contain an readme file
-   6 - directory can be listed
-   7 - files can be renamed in this directory
+		Protection bits:
+		   0 - caller owns the directory
+		   1 - files can be deleted from this dir
+		   2 - files can be added to this dir
+		   3 - new subdirectories can be created
+		   4 - files are NOT readable by non-owners
+		   5 - directory contain an readme file
+		   6 - directory can be listed
+		   7 - files can be renamed in this directory
+
+	        Compatibility
+		
+		Versions older than 2.8.1b6 do not uses bits 6 and 7. This
+		causes that directory can be listable even it do not have
+		6th bit set.
 
  CC_SET_PRO 0x48		- set directory protection
 
@@ -297,9 +335,13 @@ Protection bits:
 
 		reply
 		  same as CC_GET_PRO
+		  
+		Compatibility
+		FSP versions older than 2.8.1 beta15 used p flag instead
+		g flag. +p = -g
 
  CC_MAKE_DIR 0x49		- create a directory
- 
+
  		request
 		file position:	not used
 		data:           ASCIIZ directory name
@@ -319,16 +361,20 @@ Protection bits:
 		optional data:  not used
 		xtra data:	not used
 
+		You should send this packet when you are done with
+		talking to server. This causes that server will
+		accept next packet from your IP with any key.
+
 Commands starting from FSP version 2.4 ( released March 27, 1992 )
- 
+
  CC_GRAB_FILE 0x4B		- atomic get+delete a file
- 
+
                 same format as CC_GET_FILE, but file is deleted after
 		sucessfull transfer is done. If there are multiple
 		grabs for the same file, only one will succeed.
- 
+
  CC_GRAB_DONE 0x4C		- atomic get+delete a file done
-				
+
 				same format as CC_INSTALL. File is not
 				installed, but deleted.
 
@@ -349,21 +395,27 @@ Commands starting from FSP 2.8.1 Beta 11
 	data format is the same as in directory listing with exception
 	that there is no file name appended. If file do not exists or
 	there is other problem (no access rights) return type of file is
-	0. CC_ERR message is NOT returned in this case.
-	
-	       struct STAT  {
-	                      long  time;
-                              long  size;
-                              byte  type;
-			     }
-			     
+	0.
+
+        struct STAT  {
+		      long  time;
+		      long  size;
+		      byte  type;
+	}
+
+	Compatibility
+	CC_ERR message is NEVER returned as reply to CC_STAT command
+	by server supporting CC_STAT command. If you have got CC_ERR reply,
+	you are talking to old server, which do not supports this
+	command.
+
  CC_RENAME    0x4E 		- rename file or directory
  		request
 		file position:  not used
 		data:           ASCIIZ source file or directory
 				ASCIIZ destination file or directory
 		xtra data:	not used
-		
+
 		Note: It is possible to do cross-directory rename. In this
 		case you must have rights to DELETE in source directory and
 		to CREATE in target directory.
@@ -380,6 +432,7 @@ Reserved commands:
 
  CC_LIMIT 0x80			- commands > 0x7F will have extended
  				    header. No such extensions or commands
-				    which uses that are known today.
-				    
+				    which uses that are known today. This
+				    header will be used in protocol version 3.
+
  CC_TEST  0x81			- reserved for testing of new header

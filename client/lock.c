@@ -17,21 +17,21 @@
 
 #ifndef NOLOCKING
 static char key_string[sizeof(KEY_PREFIX)+32];
-     
+
 static char code_str[] =
-       "0123456789:_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-     
+    "0123456789:_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 static void make_key_string PROTO2(unsigned long, server_addr,
 				   unsigned long, server_port)
 {
   unsigned long v1, v2;
   char *p;
-  
+
   strcpy(key_string,KEY_PREFIX);
   for(p = key_string; *p; p++);
   v1 = server_addr;
   v2 = server_port;
-  
+
   *p++ = code_str[v1 & 0x3f]; v1 >>= 6;
   *p++ = code_str[v1 & 0x3f]; v1 >>= 6;
   *p++ = code_str[v1 & 0x3f]; v1 >>= 6;
@@ -94,14 +94,19 @@ void client_init_key PROTO3(unsigned long, server_addr,
 {
   unsigned long omask;
   okey = key;
-  
+
   make_key_string(server_addr,server_port);
-  
+
   omask = umask(0);
   lock_fd = open(key_string,O_RDWR|O_CREAT,0666);
   umask(omask);
 }
 
+void client_destroy_key(void)
+{
+    (void)close(lock_fd);
+    unlink(key_string);
+}
 #endif
 /********************************************************************/
 /******* For those systems that has lockf function call *************/
@@ -155,14 +160,19 @@ void client_init_key PROTO3(unsigned long, server_addr,
 {
   unsigned long omask;
   okey = key;
-  
+
   make_key_string(server_addr,server_port);
-  
+
   omask = umask(0);
   lock_fd = open(key_string,O_RDWR|O_CREAT,0666);
   umask(omask);
 }
 
+void client_destroy_key(void)
+{
+    (void)close(lock_fd);
+    unlink(key_string);
+}
 #endif
 /********************************************************************/
 /******* For those systems that has SysV shared memory + lockf ******/
@@ -178,6 +188,7 @@ void client_init_key PROTO3(unsigned long, server_addr,
 int key_persists = 0;
 static unsigned short *share_key;
 static unsigned int lock_fd;
+static int   lock_shm;
 
 unsigned short client_get_key PROTO0((void))
 {
@@ -203,14 +214,13 @@ void client_init_key PROTO3(unsigned long, server_addr,
 {
   unsigned long omask;
   key_t lock_key;
-  int   lock_shm;
-  
+
   make_key_string(server_addr,server_port);
-  
+
   omask = umask(0);
   lock_fd = open(key_string,O_RDWR|O_CREAT,0666);
   umask(omask);
-  
+
   if((lock_key = ftok(key_string,238)) == -1) {
     perror("ftok");
     exit(1);
@@ -226,6 +236,21 @@ void client_init_key PROTO3(unsigned long, server_addr,
   *share_key = key;
 }
 
+void client_destroy_key(void)
+{
+    (void)close(lock_fd);
+    if (shmdt((char *)share_key) < 0)
+    {
+	perror("shmdt");
+	exit(1);
+    }
+    if (shmctl(lock_shm,IPC_RMID,NULL) < 0)
+    {
+	perror("shmctl");
+	exit(1);
+    }
+    unlink(key_string);
+}
 #endif
 /********************************************************************/
 /******* For those who does not want to use locking *****************/
@@ -252,4 +277,11 @@ void client_init_key PROTO3(unsigned long, server_addr,
   okey = key;
 }
 
+void client_destroy_key(void)
+{
+    return;
+}
 #endif
+/********************************************************************/
+/********************************************************************/
+/********************************************************************/

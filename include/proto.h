@@ -3,7 +3,7 @@
 
 
 /* #ifdef UNDERSTANDS_PROTOTYPES */
-#ifdef PROTOTYPES 
+#ifdef PROTOTYPES
 #define PROTO0(a) a
 #define PROTO1(a, b) (a b)
 #define PROTO2(a, b, c, d) (a b, c d)

@@ -28,12 +28,12 @@ int print_pro PROTO2(UBUF *, ub, FILE *, where)
   char flags;
   unsigned len, len1;
   char *pro1, *pro2;
-  
+
   len = BB_READ2(ub->bb_len);
   len1 = BB_READ4(ub->bb_pos);
   pro1 = ub->buf;
   pro2 = ub->buf+len;
-  
+
   if(len1) {
     flags = *pro2;
     fprintf(where,"owner: %s, del: %s, create: %s, mkdir: %s, get: %s, list: %s, rename: %s.\n",
@@ -43,6 +43,6 @@ int print_pro PROTO2(UBUF *, ub, FILE *, where)
   }
   fprintf(where,"%s", pro1);
   fprintf(where,"\n");
-  
+
   return(0);
 }

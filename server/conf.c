@@ -22,7 +22,7 @@
 static int conf_read = 0;
 
 int daemonize = 1;
-int use_prebuild_dirlists = 
+int use_prebuild_dirlists =
 #ifdef OS_CYGWIN
 0;
 #else
@@ -40,7 +40,7 @@ int no_unnamed = 0;
 int logging = 0;
 int use_access_files = 1;
 int use_directory_mtime =
-#ifdef OS_CYGWIN 
+#ifdef OS_CYGWIN
 0;
 #else
 1;
@@ -94,7 +94,7 @@ static int get_boolean PROTO1(const char, *q)
       else
       if(strcmp(q, "1") == 0) return 1;
       else
-	      
+	
       fprintf(stderr,"Bogus boolean value '%s'. Exiting.\n",q);
       exit(1);
       return -1;
@@ -157,7 +157,7 @@ static void read_configuration PROTO1(const char *, name)
       int neg;
       do {
 	/* skip to next token */
-	r = q; while(*r && !isspace(*r)) r++; 
+	r = q; while(*r && !isspace(*r)) r++;
         if (*r) { *r++ = 0 ; while(*r && isspace(*r)) r++; }
         if(strcasecmp(q, "none") == 0) {
 	  logging = L_NONE;
@@ -210,11 +210,11 @@ static void read_configuration PROTO1(const char *, name)
       retry_timeout = atoi(q);
       if(retry_timeout < 1 ) retry_timeout = 3;
     }
-    else if(strcasecmp(p, "timeout") == 0) { 
+    else if(strcasecmp(p, "timeout") == 0) {
       session_timeout = atoi(q);
       if(session_timeout <= 5 ) session_timeout = 60;
     }
-    else if(strcasecmp(p, "statcache_timeout") == 0) { 
+    else if(strcasecmp(p, "statcache_timeout") == 0) {
       session_timeout = atoi(q);
       if(stat_cache_timeout <= 0 ) stat_cache_timeout = 20;
     }
@@ -289,5 +289,6 @@ void destroy_configuration PROTO0((void))
     if(iptab) free_ip_table(iptab);
 
     readme_file = home_dir = logname = tmp_dir = dumpname = NULL;
-    iptab = pidlogname = NULL;
+    iptab = NULL;
+    pidlogname = NULL;
 }

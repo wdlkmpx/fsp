@@ -1,2 +1,2 @@
-int pidfile(char *);
-void pidfile_cleanup(char *);
+int pidfile(const char *);
+void pidfile_cleanup(const char *);

@@ -34,7 +34,7 @@
 void prcopy PROTO3(char *, src, char *, dest, int, len)
 {
   register int ch;
-  
+
   while(len--) {
     ch = *src++;
     *dest++ = isprint(ch) ? ch : '?';
@@ -50,7 +50,7 @@ void nomem PROTO0((void))
 char *emalloc PROTO1(int, size)
 {
   char *retval;
-  
+
   if (!(retval = malloc(size))) nomem();
   return(retval);
 }

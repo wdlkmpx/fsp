@@ -69,14 +69,14 @@ static void eval_file PROTO4(char *, name, struct stat *, sbufp,
 			     int,  mode, int,  level)
 {
   register PLAN *p;
-  
+
   for (p = plan; p && (p->eval)(p, sbufp, name); p = p->next);
 }
 
 static int eval_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, sum)
 {
   register PLAN *p;
-  
+
   process = 0;
   for (p = plan; p && (p->eval)(p, sbufp, name); p = p->next);
   return (process);
@@ -86,18 +86,18 @@ int main PROTO2(int, argc, char **,  argv)
 {
   register char **p;
   char *singlefile[2], **files;
-  
+
   env_client();
   (void)time(&now);	/* initialize the time-of-day */
-  
+
   p = ++argv;
-  
+
   /* First option delimits the file list. */
   while (*p && !option(*p)) p++;
   if (p == argv) usage_ffind();
-  
+
   find_formplan(p);
-  
+
   /* Execute plan for all file lists */
   while (*argv) {
     if (argv >= p) break;
@@ -108,10 +108,10 @@ int main PROTO2(int, argc, char **,  argv)
     }
     for ( ; *files; files++)
       util_process_file(*files, 0, eval_file, eval_dir, 0L, 0);
-      
+
     argv++;
   }
-  
+
   client_done();
   return(0);
 }

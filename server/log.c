@@ -72,7 +72,7 @@ void xferlog(char direction, const char *filename,unsigned long filesize,const c
 {
     size_t pos=0,timelen;
     char *timestr;
-    
+
     if(!tlogname) return; /* xfer logging is not enabled */
 
     /* current-time */

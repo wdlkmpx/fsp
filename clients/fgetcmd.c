@@ -27,11 +27,11 @@
 
 #if !defined(COMMAND_GRAB) && !defined(COMMAND_GET)
 #error "#define COMMAND_XXX to GET or GRAB when compiling this file"
-#endif 
+#endif
 
 #if defined(COMMAND_GRAB) && defined(COMMAND_GET)
 #error "You must define COMMAND_GRAB -OR- COMMAND_GET"
-#endif 
+#endif
 
 static int clobbertype=C_UNIQUE;
 static int preserve=0;
@@ -50,9 +50,9 @@ static RETSIGTYPE fsp_cleanup PROTO1(int, signum)
   exit(1);
 }
 
-static void  
+static void
 #ifdef COMMAND_GET
-get_file 
+get_file
 #else
 grab_file
 #endif
@@ -64,15 +64,15 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
 #ifdef HAVE_UTIME_H
   struct utimbuf tb;
 #endif
-  
-  start_from = 0; 
- /* printf("Get function called!\n"); 
+
+  start_from = 0;
+ /* printf("Get function called!\n");
   if(sbufp)
   {
       printf("We have stat *!\n");
   }
   */
-      
+
   if (clobbertype==C_NOCLOBBER) {
     if ( (fp=fopen(name,"r"))) {
       fclose(fp);
@@ -80,7 +80,7 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
       return;
     }
   }
-  
+
   if (clobbertype==C_UNIQUE) {
     fname=name;
     name=(char *)malloc(strlen(fname)+5);
@@ -90,13 +90,13 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
       sprintf(name,"%s-%d",fname,suffix);
     }
   }
-  
+
   if (clobbertype==C_TEMPNAME) {
     fname=name;
     name=(char*)malloc(20);
     sprintf(name,".fsp.%d",getpid());
   }
-  
+
   if(clobbertype == C_APPEND)  {
     if(stat(name, &statbuf) == 0) {
       start_from = statbuf.st_size;
@@ -105,14 +105,14 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
                                              start_from = 0;}
     } else start_from = 0;
   } else start_from = 0;
-  
+
   if(start_from == 0) {
     fp = fopen(name, "w");
     if (fp == NULL )
             fprintf(stderr,"Cannot create %s\n",name);
   }
-  
-  if(fp) 
+
+  if(fp)
   {
     if(
 #ifdef COMMAND_GET
@@ -120,7 +120,7 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
 #else
 	    util_grab_file
 #endif
-	    (path,fp, start_from) == -1) 
+	    (path,fp, start_from) == -1)
     {
       fclose(fp);
       if(clobbertype==C_TEMPNAME)
@@ -128,7 +128,7 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
     } else
       fclose(fp);
   } else fprintf(stderr,"Cannot write %s\n",name);
-  
+
 #ifdef HAVE_UTIME_H
   /* update last modified time stamp */
   if(preserve && sbufp)
@@ -142,7 +142,7 @@ PROTO4(char *, path, struct stat *, sbufp, int, mode, int, level)
     rename(name,fname);
     free(name);
   }
-  
+
   if (clobbertype==C_UNIQUE) {
     free(name);
   }
@@ -179,7 +179,7 @@ static int make_dir PROTO3(char *, name, struct stat *, sbufp, u_long *, mode)
 
 static void usage PROTO0((void))
 {
-    
+
 #ifdef COMMAND_GET
     printf("fgetcmd");
 #else
@@ -187,7 +187,7 @@ static void usage PROTO0((void))
 #endif
     printf(" -[<f|o>|u|t|n|<a|c>] -r -p -h -?\n");
 }
-	    
+	
   /* Parse options
    *   -f forces overwrite                   (clobber)
    *   -u forces unique names                (unique)
@@ -196,14 +196,14 @@ static void usage PROTO0((void))
    *   -a append to files if they exist      (append)
    *   -c same as -a
    *   -o same as -f
-   *   -r recursively get directories 
+   *   -r recursively get directories
    *   -p preserve date/times of original file on downloaded copy
    */
 int main PROTO2(int, argc, char **, argv)
 {
   char **av, *av2[2], n[1024];
   int prompt, mode = 0;
-  
+
   signal(SIGHUP,fsp_cleanup);
   signal(SIGINT,fsp_cleanup);
   signal(SIGQUIT,fsp_cleanup);
@@ -224,7 +224,7 @@ int main PROTO2(int, argc, char **, argv)
     perror("chdir");
     exit(1);
   }
-  
+
   while ((optletter=getopt(argc, argv,"ofutnacrph?")) != EOF)
     switch (optletter) {
       case 'o':
@@ -255,7 +255,7 @@ int main PROTO2(int, argc, char **, argv)
 	usage();
 	exit(0);
     }
-  
+
   if(argc > optind) {
     for( ; argc>optind ; optind++) {
       if(!(av = glob(argv[optind])))  {
@@ -267,9 +267,9 @@ int main PROTO2(int, argc, char **, argv)
       {
          for(len = strlen(*av); len >= 0 && (*av)[len] != '/'; len--);
          len++;
-         util_process_file(*av, mode, 
+         util_process_file(*av, mode,
 #ifdef COMMAND_GET
-		 get_file, 
+		 get_file,
 #else
 		 grab_file,
 #endif
@@ -303,7 +303,7 @@ int main PROTO2(int, argc, char **, argv)
          len++;
          util_process_file(*av, mode,
 #ifdef COMMAND_GET
-		 get_file, 
+		 get_file,
 #else
 		 grab_file,
 #endif
@@ -312,8 +312,8 @@ int main PROTO2(int, argc, char **, argv)
       }
     }
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

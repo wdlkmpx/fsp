@@ -22,20 +22,20 @@ static int make_dir PROTO1(char *, p)
 {
   char *op;
   UBUF *ub;
-  
+
   op = util_abs_path(p);
-  
+
   ub = client_interact(CC_MAKE_DIR,0L, strlen(op), (unsigned char *)op+1, 0,
 		       (unsigned char *)NULLP);
-  
+
   if(ub->cmd == CC_ERR) {
     fprintf(stderr,"Can't create %s: %s\n",p,ub->buf);
     free(op);
     return(-1);
   }
-  
+
   printf("%s\t: %s\n",p,ub->buf);
-  
+
   free(op);
   return(0);
 }
@@ -45,6 +45,6 @@ int main PROTO2(int, argc, char **, argv)
   env_client();
   while(*++argv) make_dir(*argv);
   client_done();
-  
+
   exit(0);
 }

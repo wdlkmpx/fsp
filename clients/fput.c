@@ -33,7 +33,7 @@ static int put_file PROTO1(char *, path)
   struct stat sb;
   char *name, *t2;
   FILE *fp;
-  
+
   if(stat(path,&sb) != 0) {
     perror(path);
     return(0);
@@ -42,10 +42,10 @@ static int put_file PROTO1(char *, path)
     fprintf(stderr,"%s: not a file\n",path);
     return(0);
   }
-  
+
   for(name = t2 = path; *t2; t2++)
     if(*t2 == '/') name = t2 + 1;
-  
+
   if( (fp = fopen(path,"rb"))) {
     util_upload(name,fp,timestamps==1?sb.st_mtime:0);
     fclose(fp);
@@ -58,13 +58,13 @@ int main PROTO2(int, argc, char **, argv)
 {
   char n[1024];
   int prompt;
-  
+
   env_client();
   if (strcmp(env_local_dir,".") && chdir(env_local_dir)) {
     perror("chdir");
     exit(1);
   }
-  
+
   while ((optletter=getopt(argc, argv,"ph?")) != EOF)
     switch (optletter) {
       case 'h':
@@ -88,8 +88,8 @@ int main PROTO2(int, argc, char **, argv)
       put_file(n);
     }
   }
-  
+
   client_done();
-  
+
   exit(0);
 }

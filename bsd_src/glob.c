@@ -425,7 +425,7 @@ static void rscan(t, f)
 #ifdef PROTOTYPES
     if (f == (charfunc) tglob)
 #else
-    if (f == tglob) 
+    if (f == tglob)
 #endif
     {
       if (*p == '~') gflag |= 2;

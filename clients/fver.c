@@ -24,7 +24,7 @@ int main PROTO2(int, argc, char **, argv)
   UBUF *ub;
   unsigned int len, tput = 0, len2;
   char *v1, *v2;
-  
+
   if(argc == 1)	{ /* no arg supplied, get version string of server */
     env_client();
     ub = client_interact(CC_VERSION,0L, 0, (unsigned char *)NULLP, 0,
@@ -64,6 +64,13 @@ int main PROTO2(int, argc, char **, argv)
 	printf(" (max %d bytes/sec)\n", tput);
       } else
 	printf("\tRemote server throughput control is DISABLED.\n");
+      /* check for optional max. packet size block */
+      if(++v2 < ub->buf+len+len2)
+      {
+	  tput=0;
+          tput = BB_READ2(v2);
+	  printf("\tMax. packet size supported by server is %d bytes.\n",tput);
+      }
     }
     else
 	printf("\tRemote server do not send extended info.\n");

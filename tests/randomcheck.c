@@ -7,7 +7,7 @@
 static int bitcount[16];
 static int rounds;
 static int result;
-#define MAX_WORST_ALLOWED 0.2f
+#define MAX_WORST_ALLOWED 0.1f
 
 /* FSP classic algo */
 static unsigned short classic PROTO0((void))
@@ -44,7 +44,7 @@ static void run_randomtest( unsigned short (*keygen)(void) )
 {
     int i,j;
     unsigned short rnd;
-    
+
     /* zero bitcount first */
     memset(bitcount,0,16*sizeof(int));
 
@@ -66,7 +66,7 @@ static void print_bitcount(void)
     int i;
     float worst;
     float ratio;
-    
+
     printf("Set ratio: ");
     worst=0;
 
@@ -84,20 +84,20 @@ static void print_bitcount(void)
 
 int main(int argc,const char *argv[])
 {
-    rounds=200;
+    rounds=2000;
     if(argc>1)
     {
 	rounds=atoi(argv[1]);
     }
 
     printf("Running %d rounds.\n\n",rounds);
-	    
+	
     result=0;
 
     printf("Generator: classic\n");
     run_randomtest(classic);
     print_bitcount();
-    
+
     printf("Generator: simple\n");
     run_randomtest(simple);
     print_bitcount();

@@ -23,10 +23,10 @@
 static int f_cd PROTO1(const char *, p)
 {
   UBUF *ub;
-  
+
   ub = client_interact(CC_GET_PRO,0L, strlen(p), (unsigned const char *)p+1, 0,
 		       (unsigned char *)NULLP);
-  
+
   if(ub->cmd == CC_ERR) {
     fprintf(stderr, "ERR: %s\n",ub->buf);
     return(0);
@@ -41,7 +41,7 @@ int main PROTO2(int, argc, char **, argv)
 {
   char *np;
   char **av, *av2[2];
-  
+
   env_client();
   if(argc == 1) {
     f_cd("/");

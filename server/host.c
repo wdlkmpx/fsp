@@ -36,13 +36,13 @@ static char *find_hostname PROTO1(unsigned long, inet_num)
 {
   struct hostent *he;
   char *hostname;
-  
+
   if ((he = gethostbyaddr((char*)&inet_num, sizeof(inet_num), AF_INET))) {
     hostname = malloc(strlen(he->h_name)+1);
     strcpy(hostname, he->h_name);
   } else
     hostname = 0;
-  
+
   return hostname;
 }
 
@@ -58,7 +58,7 @@ HTAB *find_host PROTO1(unsigned long, inet_num)
   unsigned l, h, m, i;
   unsigned long inum;
   HTAB *hs, *hd;
-  
+
   for(l = 0, h = hcnt-1; (m = (l + h) >> 1) != l; ) {	/* binary search */
     inum = htab[m].inet_num;
     if(inum > inet_num) h = m;
@@ -72,20 +72,20 @@ HTAB *find_host PROTO1(unsigned long, inet_num)
       return(htab+m);
     }
   }
-  
+
   if(htab[m].inet_num < inet_num) m++;  /* locate first entry that is > */
-  
+
   if((hcnt+1) > htot) { /* need more space */
     htot += HALLOC_SIZE;		/* add HALLOC_SIZE entries at a time */
-    
+
     if(!(htab = (HTAB *) realloc(htab,sizeof(HTAB)*htot))) {
       perror("grow_htab realloc");
       exit(5);
     }
   }
-  
+
   for(i = hcnt-m, hs = htab+hcnt, hd=htab+hcnt+1; i--; *--hd = *--hs);
-  
+
   htab[m]=hzero;
   htab[m].inet_num = inet_num;
   htab[m].hostname = find_hostname(inet_num);
@@ -119,17 +119,17 @@ int dump_htab PROTO1(FILE *,fp)
 {
   int i;
   HTAB *hp;
-  
+
   if( fp == NULL)
   {
-      if(dbug) 
+      if(dbug)
 	  fp=stdout;
       else
 	  return(0);
   }
 
   fprintf(fp,"#FSP Server "PACKAGE_VERSION", dumping at %s\nHost table content:\n",ctime(&cur_time));
-  
+
   fprintf(fp,"#IP address\tcount  last access date\n");
   for(i = hcnt-2, hp = htab+1; i--; hp++) {
     fprintf(fp,"%d.%d.%d.%d\t%5d  %s", ((unsigned char *)(&hp->inet_num))[0],

@@ -68,7 +68,7 @@ void find_formplan PROTO1(char **, argv)
       tail = new;
     }
   }
-    
+
   if (!isoutput) {
     new = c_print();
     if (plan == NULL) tail = plan = new;
