@@ -2,8 +2,8 @@
 		     OFFICIAL PROTOCOL DEFINITION
 				FSP v2
 
-			Document version 0.17
-		      Last updated  25 Dec 2004
+			Document version 0.18
+		      Last updated  16 Jan 2005
 
 			    Also known as
 		       File Slurping Protocol,
@@ -314,6 +314,11 @@ RDIRENT.HEADER types:
   RDTYPE_DIR      0x02
   RDTYPE_SKIP     0x2A
 
+ If directory listing contains symlink server can encode symlink
+ as source\ndestination\0. File type is set to the destination of
+ symlink RDTYPE_FILE or RDTYPE_DIR. Servers are not required to
+ support this feature.
+ 
  CC_GET_FILE 0x42		- get a file
 
  		request
