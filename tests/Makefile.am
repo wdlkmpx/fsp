@@ -1,0 +1,2 @@
+noinst_PROGRAMS=mklargefile
+extra_DIST=mklargefile.py
