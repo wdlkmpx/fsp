@@ -1,3 +1,7 @@
+Version NEXT
+	sven has added fspget URL command to setup.sh.
+	fixed case for mklargefile.py in tests/Makefile.am
+
 Version 2.8.1b18 - 25 Nov 24 2003
         This is MINIMUM REQUIRED VERSION for applications which are using
 	 javafsp library, only download machine atm. Javafsp library will

@@ -130,10 +130,10 @@ Server Administration:
 			directories under the current directory owned by
 			the client creating the directory.
 
-	.FSP_PRIVATE	If this file exists, only the owner of the directory
+	.FSP_NO_GET	If this file exists, only the owner of the directory
 			is allowed to read the contents of the files in the
-			directory.  Subdirectories of this directory will
-			inherit the privacy protection.
+			directory.  Newly created subdirectories of this
+			directory will inherit the privacy protection.
 
         Clients do not get to read the directory information directly.
         Instead, fspd maintains a directory listing for each directory
