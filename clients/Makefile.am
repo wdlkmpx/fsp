@@ -4,7 +4,8 @@ bin_PROGRAMS=fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
              flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
 	     fstatcmd
 
-LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp
+LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
+
 fspmerge_SOURCES=merge.c printpro.c fspprof.l
 fcdcmd_SOURCES=fcdcmd.c printpro.c
 fprocmd_SOURCES=printpro.c fprocmd.c

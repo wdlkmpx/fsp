@@ -1,4 +1,4 @@
-Version - not yet released
+version 2.8.1b20 - 26 Oct 2004
 	Added pidfile.[c|h] from FreeBSD and modified it to fit in (hoaxter)
 	Added pidfile support, config option is 'pidlogname' (hoaxter)
 	Replaced .file information from INSTALL with a hint to man 1 fspd (hoaxter)
@@ -55,7 +55,7 @@ Version - not yet released
 	lamerz guide added
 	text rotate tool added
 
-Version 2.8.1b19 - 11 Jan 2004
+version 2.8.1b19 - 11 jan 2004
 	sven has added fspget URL command to setup.sh.
 	fixed case for mklargefile.py in tests/Makefile.am
 	added --enable-debug switch to configure for enabling extra

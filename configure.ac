@@ -16,14 +16,17 @@ AC_MSG_RESULT(yes)
 else
 AC_MSG_RESULT(no)
 fi
-AC_MSG_CHECKING([if building for SunOS 5])
-if test "x$build_os" = "xsolaris2" ; then
-EX_LIBS="-lsocket -lnsl"
-AC_SUBST(EX_LIBS)
-AC_MSG_RESULT(yes)
-else
-AC_MSG_RESULT(no)
-fi
+AC_MSG_CHECKING([if building for Solaris 2.x])
+case $build_os in
+     solaris2*)
+	EX_LIBS="-lsocket -lnsl"
+	AC_SUBST(EX_LIBS)
+	AC_MSG_RESULT(yes)
+	;;
+	*)
+	AC_MSG_RESULT(no)
+	;;
+esac
 AC_MSG_CHECKING([if building for Cygwin])
 case $host_os in
            *cygwin* ) AC_DEFINE(OS_CYGWIN,1,[Define if you are building for cygwin]) AC_MSG_RESULT(yes);;
