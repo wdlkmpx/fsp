@@ -124,7 +124,7 @@
           make it impossible (See <xref linkend="keying">).
         <para>
           All TCP protocols have on normal networks
-          (max 15% packet loss) higher transfer rate than FSP. 
+          (max 10% packet loss) higher transfer rate than FSP.
           FSP is clean winner when it comes to overloaded sites or lines.
           These benchmarks were performed on 10Mbit LAN with zero traffic.
           Transfer rate is quite slow even for 10Mb because one of testing
@@ -174,7 +174,7 @@
           TFTP: more widely used, standardized in RFC, most network cards
           can boot image via TFTP.
           <para>
-          FSP: about 1.5-times faster because of 1k packet size,
+          FSP: about 1.5-times faster because of 1k-1.4k packet size,
           supports directory listings,
           can query file date and size, 
           can provide random access to file and supports opening

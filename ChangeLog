@@ -1,7 +1,9 @@
 Version NEXT
 	removed test for size of penis in configure.ac
 	corrected misleading comment in client/lib.c
-	default packetsize changed to maximum 1500 mtu Ethernet	
+	default packetsize changed to do best fit into maximum 1500 mtu
+	  Ethernet frame. This is needed for speedup the booting of
+	  Etherboot clients.
 	PROTOCOL: when computing checksum declare *t as unsigned char * type
 
 Version 2.8.1b24 - 19 Feb 2005
