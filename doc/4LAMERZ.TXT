@@ -25,7 +25,7 @@ Why you need it
 
 - stealth operation
 - few people knows what FSP is
-- old proven software with 10 years history
+- old proved software with 10 years history
 - Elite SitEZ has non interrupted operation by
   lamerz for more than 10 years!
 - for EliTe only
@@ -33,7 +33,7 @@ Why you need it
 - net adminz do not like it
 - lamerz can not handle it
 - bandwidth friendly
-- very ressistant to packet loss
+- very resistant to packet loss
 
 STuFF firSt!
 
@@ -58,7 +58,7 @@ fspd.exe -d c:\your\stuff\to\share -p 53
 this number is important. Recommended numbers for stealth
 operation are: 53, 2090, 137-139, 13, 80, 443
 
-You can be catched more easily with bad number, so chooze wisely. Remember,
+You can be catch more easily with bad number, so chose wisely. Remember,
 some numbers like 2221, 21, 2000, 2001 are used only by Elite!
 do not try it at home; bad thingz can hepen. you know. police will certainly
 take a visit. Lamers can detect you more easily on this ports, so be
@@ -70,7 +70,7 @@ You want uploads from users. Of course. You need to setup an upload
 area. This is easy.
 
 In your FSP homedir create subdirectory upload and and create file named
-".FSP_OK_ADD" there.  Content of this file dosnot matter. Copy your favourite
+".FSP_OK_ADD" there.  Content of this file doesn't matter. Copy your favorite
 music into it if you want. Do something nice.
 
 Last point is to add upload directory to server invocation arguments:
@@ -124,8 +124,8 @@ much better guide -  hq version. Try to offer something.
 192.168.45.21 108
 10.20.30.40 5060
 
-never try to flood fsp server, this does not work, elite will laugh
-at you and cut your accez down. remember, you ar elite, not a kiddie!
+never try to flood FSP server, this does not work, elite will laugh
+at you and cut your accez down. remember, you are elite, not a kiddie!
 
 -----**************------*******************----------************---
 
@@ -138,7 +138,7 @@ Features included:
       list of 5 hq quality sitez
       how to search for new sitez
       how to make FSP faster
-      special fsp sites seek tool
+      special FSP sites seek tool
       and 3 secret bonuzez
 
 !We Do NOT sEnDZ hQ guiDe to LAmeRZ! Prove yourself first.

@@ -69,7 +69,7 @@ Transport
   Minimum FSP packet size (not including size of UDP, IP and link
   layer headers) is 12 bytes (FSP v2 header only), maximum standard
   FSP packet size is 12 bytes of FSP v2 header and 1024 bytes of
-  payload.  Server can optionaly accept longer packets, but must not
+  payload.  Server can optionally accept longer packets, but must not
   send longer packets to client unless specially requested. All
   servers and clients must support receiving 1024+12 bytes long
   packets.
@@ -92,7 +92,7 @@ Security
   many people wants it and there were hacked version of FSP with
   password support floating around. Passwords are transmitted in clear
   text over network which makes them a weak protection for determined
-  intruder when transfered over unsecured network.
+  intruder when transferred over unsecured network.
 
 FSP Packet format:
   HEADER 		- size = Fixed size 12 bytes. Always present.
@@ -136,7 +136,7 @@ checksums when very easy to compute, are sufficient for guarding
 against random line noise.
 
 Note:
-IP/UDP packet has its own crc16 checksum, but FSP protocol checksum is
+IP/UDP packet has its own CRC16 checksum, but FSP protocol checksum is
 used as protection against received non FSPv2 UDP packets.
 
 KEY
@@ -144,8 +144,8 @@ Client's message to server contain a KEY value that is the same as the KEY
 value of the previous message received from the server. KEY is chosen random
 by server.
 
-Server uses one KEY per client network address. If multiple fsp clients
-on the same host wants access same fsp server at the same time, they
+Server uses one KEY per client network address. If multiple FSP clients
+on the same host wants access same FSP server at the same time, they
 must implement some local method of key exchange. If they don't server
 will serve only one client from host, because other clients do not
 have valid key.
@@ -157,7 +157,7 @@ Server will accept resent message from client with old KEY after 3
 seconds.  Client MUST wait at least 1 second before resending a
 message.  It is recommended to use initial delay of 1.34 second and
 after each unsuccessful resend multiply delay time by 1.5. Maximum
-delay time is 300 seconds. Recommended maximum delay between resends
+delay time is 300 seconds. Recommended maximum delay between resend
 is 60 seconds.
 
 2. Session
@@ -233,7 +233,7 @@ CC_VERSION is recommended.
 
 		Note
 
-		Some fsp servers do not responds to this command,
+		Some FSP servers do not responds to this command,
 		because this command is used by FSP scanners and
 		servers do not wishes to be detected.
 
@@ -267,11 +267,11 @@ CC_VERSION is recommended.
 		data:           directory listing (format follows)
 		xtra data:	not used
 
-Directory listing is transfered in similar way as file transfer.
+Directory listing is transferred in similar way as file transfer.
 Directory listing is divided into blocks of equal size, only exception
 is last block which can be shorter. Default size of directory listing
-block is 1024 bytes. Server can use prefered block size sent by client
-and split directory listing into blocks with size prefered by client.
+block is 1024 bytes. Server can use preferred block size sent by client
+and split directory listing into blocks with size preferred by client.
 
 Directory blocks can't be split across message boundary and client
 can't do seeking to any arbitrary offset, which can broke dirblock
