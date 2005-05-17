@@ -96,8 +96,9 @@ DONE: fsp backend in gftp
 
 FSP plugin for Netscape/MSIE. 
   Not possible to write protocol plugins with Netscape 3 SDK,
-  not sure about MSIE or Mozilla 
+  not sure about MSIE 
   we have fsproxy now.
+  Mozilla/Firefox have support for protocol plugins
 FSP backend for APT
 FSP support in major ftp programs: lftp,wget,curl
 Gnome vfs2 plugin
