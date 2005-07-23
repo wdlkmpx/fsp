@@ -49,7 +49,6 @@ report number of clients connected, size of hostable in new command
 possible? special defence against rapid/double fire clients (burst command in fspclient)
 Native Supports for symbolic links (needed for mirroring Debian)
 new LSTAT COMMAND, new MAKELINK command
-command line arguments should have preference over config file
 
 SERVER DIR LISTINGS
 Server should save .FSP_CONTENT using 1k size directory blocks
