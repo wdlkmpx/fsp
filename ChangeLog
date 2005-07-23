@@ -10,6 +10,10 @@ Version NEXT
 	fspd.conf: added more information about packetsize
 	fspd.1: updated information about packetsize
 	fspd.conf: repaired some spelling errors by ispell
+	MTU changed from 1500 to 1492 for better operation on pppOE networks
+	Max payload changed from 4096 to 4380 bytes (3 packets)
+	fspd: command line argument now overrides config file
+	updated year in copyright
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c

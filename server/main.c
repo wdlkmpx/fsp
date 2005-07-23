@@ -25,7 +25,7 @@ static void display_version (void)
       printf(
 #ifndef LAMERPACK      
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
-	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2004 by Radim Kolar.\n"
+	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2005 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
 	  "Portions copyright by BSD, Wen-King Su, Philip G. Richards, Michael Meskes.\n"
 #ifdef __GNUC__
@@ -156,6 +156,20 @@ int main (int argc, char ** argv)
 
   if(strlen(argv[0])>=7)
 	  inetd_mode = !strcasecmp(&argv[0][strlen(argv[0])-7],"in.fspd");
+
+  /* we need to check if we have config file at command line */
+  for(opt=1;opt<argc-1;opt++)
+  {
+      printf("arg %d = %s\n",opt,argv[opt]);
+      if(!strcmp(argv[opt],"-f"))
+      {
+	  load_configuration(argv[opt+1]);
+	  config_file=NULL;
+      }
+  }
+
+  load_configuration(config_file);
+
   while( (opt=getopt(argc,argv,
 #ifndef LAMERPACK
       "h?Xd:f:vVip:t:FT:l:P:b:s:"
@@ -170,8 +184,7 @@ int main (int argc, char ** argv)
 			  dbug = 1;
 			  break;
 		  case 'f':
-			  load_configuration(optarg);
-			  config_file = NULL;
+		  	  /* already loaded */
 			  break;
 		  case 'd':
 			  if(home_dir) free(home_dir);
@@ -223,7 +236,6 @@ int main (int argc, char ** argv)
 	  }
   }
 
-  load_configuration(config_file);
   init_random();
   check_required_vars();
 
