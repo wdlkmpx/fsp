@@ -1,5 +1,6 @@
     /*********************************************************************\
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
+    *  Copyright (c) 2005 by Radim Kolar (hsn@cybermail.net)              *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
@@ -24,24 +25,33 @@
 int print_pro (UBUF * ub, FILE * where)
 {
   char flags;
-  unsigned len, len1;
+  unsigned len, len2;
   char *pro1, *pro2;
+  char *c;
 
   /* length of readme */
   len = BB_READ2(ub->bb_len);
-  /* len1= size of extended protection data */
-  len1 = BB_READ4(ub->bb_pos);
+  /* len2= size of extended protection data */
+  len2 = BB_READ4(ub->bb_pos);
   pro1 = ub->buf;
   pro2 = ub->buf+len;
-  if(len1) {
+  if(len2) {
     flags = *pro2;
     fprintf(where,"owner: %s, del: %s, create: %s, mkdir: %s, get: %s, list: %s, rename: %s.\n",
 	   Machine(DIR_OWNER), Y_or_N(DIR_DEL), Y_or_N(DIR_ADD),
 	   Y_or_N(DIR_MKDIR), N_or_Y(DIR_GET), Y_or_N(DIR_LIST),
 	   Y_or_N(DIR_RENAME));
   }
-  if(len) fprintf(where,"%s", pro1);
-  fprintf(where,"\n");
+  if(len>1) 
+  {
+     /* remove trailing \n\r from README */
+     c=pro1+strlen(pro1)-1;
+     while(*c=='\n' || *c=='\r')
+        c--;
+     *c='\0';
+
+     fprintf(where,"%s\n", pro1);
+  }
 
   return(0);
 }

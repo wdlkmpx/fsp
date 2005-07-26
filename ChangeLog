@@ -16,7 +16,8 @@ Version NEXT
 	updated year in copyright (todo!!)
 	fsetup command added to setup.sh
 	fsetup command added to setup.csh
-
+	fcd: remove trailing \r\n from readme file
+	fcd: do not print empty line after directory protection
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
