@@ -1,5 +1,5 @@
     /*********************************************************************\
-    *  Copyright (c) 2003 by Radim Kolar (hsn@cybermail.net)              *
+    *  Copyright (c) 2003-5 by Radim Kolar (hsn@cybermail.net)            *
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
