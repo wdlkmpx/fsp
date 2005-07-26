@@ -22,5 +22,6 @@ alias fpro	\(set noglob\; exec fprocmd   \!\*\)
 alias fpwd	echo \$FSP_DIR on \$FSP_HOST port \$FSP_PORT
 alias frm	\(set noglob\; exec frmcmd    \!\*\)
 alias frmdir	\(set noglob\; exec frmdircmd \!\*\)
+alias fsetup	'eval `fsetupcmd \!*`'
 alias fmv	\(set noglob\; exec fmvcmd    \!\*\)
 alias ftouch	"touch \!:1;fput \!:1;rm \!:1"

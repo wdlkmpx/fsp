@@ -24,8 +24,6 @@ fi
 
 _fcat()   { fcatcmd "$@" ;set +f;}
 alias fcat='set -f;_fcat'
-_fstat()   { fstatcmd "$@" ;set +f;}
-alias fstat='set -f;_fstat'
 _fdu()    { fducmd "$@" ; set +f;}
 alias fdu='set -f;_fdu'
 _ffind()  { ffindcmd  "$@" ; set +f;}
@@ -49,6 +47,10 @@ _frm()    { frmcmd    "$@"; set +f ;}
 alias frm='set -f;_frm'
 _frmdir() { frmdircmd "$@"; set +f ;}
 alias frmdir='set -f;_frmdir'
+_fsetup()  { eval $(fsetupcmd "$@") ; set +f;}
+alias fsetup='set -f;_fsetup'
+_fstat()   { fstatcmd "$@" ;set +f;}
+alias fstat='set -f;_fstat'
 ftouch() { touch "$1"; fput "$1"; rm "$1" ;}
 _fcd()    { export FSP_DIR=$(fcdcmd "$@"); set +f;}
 alias fcd='set -f;_fcd'
