@@ -18,6 +18,7 @@
 #include <unistd.h>
 #endif
 #include <stdlib.h>
+#include <assert.h>
 #ifdef HOST_LOOKUP
 #include <netdb.h>
 #endif
@@ -141,13 +142,8 @@ int print_host_setup(struct fsp_host *setup,int csh,int lhost)
 #endif
       if (!setup->hostname) lhost=NUMBER;
     }
-    if ( 
-	  (lhost==NUMBER && !setup->hostaddr)
-#if HOST_LOOKUP
-	|| lhost==0
-#endif
-	                                     ) {
-      /* look for number */
+    if ((lhost==NUMBER || lhost==0)  && !setup->hostaddr) {
+      /* look for IP number */
 #if HOST_LOOKUP
       if ( (hp=gethostbyname(setup->hostname)))
 	setup->hostaddr=(char *)inet_ntoa(*(struct in_addr *) * hp->h_addr_list);
@@ -162,6 +158,7 @@ int print_host_setup(struct fsp_host *setup,int csh,int lhost)
         else 
 	if(setup->hostname)
 	    lhost=NAME;
+	assert(lhost != 0 );    
     } else
     {
 	if (lhost==NUMBER && !setup->hostaddr)
