@@ -1,7 +1,7 @@
     /*********************************************************************\
     *  Copyright (c) 1993 by Michael Meskes                               *
     *  (meskes@ulysses.informatik.rwth-aachen.de)                         *
-    *  Copyright (c) 2003 by Radim Kolar (hsn@cybermail.net)              *
+    *  Copyright (c) 2003,2006 by Radim Kolar (hsn@cybermail.net)         *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
