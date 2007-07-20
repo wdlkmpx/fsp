@@ -160,7 +160,7 @@ int main (int argc, char ** argv)
   /* we need to check if we have config file at command line */
   for(opt=1;opt<argc-1;opt++)
   {
-      printf("arg %d = %s\n",opt,argv[opt]);
+      /* printf("arg %d = %s\n",opt,argv[opt]); */
       if(!strcmp(argv[opt],"-f"))
       {
 	  load_configuration(argv[opt+1]);
