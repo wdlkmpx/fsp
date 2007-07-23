@@ -197,7 +197,7 @@ UBUF *client_interact(cmd,pos,l1,p1,l2,p2)
 	while(1) {
 	    retval = _x_select(&mask, 3000L);
 
-	    if((retval == -1) && (errno = EINTR)) continue;
+	    if((retval == -1) && (errno == EINTR)) continue;
 
 	    if(retval == 1) {  /* an incoming message is waiting */
 		bytes = sizeof(from);
