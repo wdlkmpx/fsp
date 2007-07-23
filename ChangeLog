@@ -19,6 +19,7 @@ Version NEXT
 	fcd: remove trailing \r\n from readme file
 	fcd: do not print empty line after directory protection
 	fsetupcmd: don't crash if called with numeric address
+	fspscan: commited fix by Yang Hong
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
