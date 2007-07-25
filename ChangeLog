@@ -13,13 +13,15 @@ Version NEXT
 	MTU changed from 1500 to 1492 for better operation on pppOE networks
 	Max payload changed from 4096 to 4380 bytes (3 packets)
 	fspd: command line argument now overrides config file
-	updated year in copyright (todo!!)
+	updated year in copyright
 	fsetup command added to setup.sh
 	fsetup command added to setup.csh
 	fcd: remove trailing \r\n from readme file
 	fcd: do not print empty line after directory protection
 	fsetupcmd: don't crash if called with numeric address
 	fspscan: commited fix by Yang Hong
+	SCONS: turning on maintainer-mode links against efence (if possible)
+	  same thing like ./configure do
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c

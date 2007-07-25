@@ -6,8 +6,9 @@ EnsureSConsVersion(0,96)
 PREFIX='/usr/local'
 PACKAGE='fsp'
 VERSION='2.8.1b25'
+EFENCE=0
 
-env = Environment(CPPPATH='#/include')
+env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 # Turn CPPFLAGS to list
 env.Append( CPPFLAGS = [])
 
@@ -56,15 +57,18 @@ void dummy(void) {}
 
 # check for maintainer mode
 def checkForMaintainerMode(conf):
+    global EFENCE
     conf.Message("checking whether to enable maintainer mode... ")
     if ARGUMENTS.get('maintainer-mode', 0) or \
        ARGUMENTS.get('enable-maintainer-mode', 0):
 			  conf.Result(1)
 			  conf.env.Append(CCFLAGS = '-O0')
 			  conf.env.Append(CPPFLAGS = '-DMAINTAINER_MODE')
+			  EFENCE=1
     else:
-			  conf.env.Append(CCFLAGS = '-O')
 			  conf.Result(0)
+			  conf.env.Append(CCFLAGS = '-O')
+			  EFENCE=0
 
 # check for user-supplied lock prefix
 def checkForLockPrefix(conf):
@@ -196,6 +200,8 @@ conf.checkForLockPrefix()
 conf.checkPrefix()
 conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
 conf.MAINTAINER_MODE()
+if EFENCE == 1:
+    EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.Finish()
 
 #configure globals
