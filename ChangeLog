@@ -616,9 +616,9 @@ Version 2.8.1b5 -- 25 June 2003
 	  when debug is on for normal more also)
 
 Version 2.8.1b4 -- 30 March, 2001
--------------------------------------------------------------------------
-New maintainer: Radim Kolar hsn/at/netmag.cz     now maintains FSP codebase.
--------------------------------------------------------------------------
+---------------------------------------------------------------------------
+New maintainer: Radim Kolar hsn/at/sendmail.cz  now maintains FSP codebase.
+---------------------------------------------------------------------------
 	1) Eliminated a lot of warnings when compiling with -Wall.
 	2) Moved to autoconf 2.12. Replaced old m4 macros with Autoconf's.
 	   All autoconf's values are cached.

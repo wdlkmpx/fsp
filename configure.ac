@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a working configure script.
 dnl tested with autoconf 2.57
-AC_INIT(fsp,2.8.1b25,hsn@netmag.cz)
+AC_INIT(fsp,2.8.1b25,hsn@sendmail.cz)
 AC_CONFIG_SRCDIR(server/main.c)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AC_PREREQ(2.57)

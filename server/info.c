@@ -1,5 +1,5 @@
     /*********************************************************************\
-    *  Copyright (c) 2004 by Radim Kolar (hsn netmag.cz    )              *
+    *  Copyright (c) 2004 by Radim Kolar (hsn@sendmail.cz  )              *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
