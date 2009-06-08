@@ -1,4 +1,4 @@
-Version NEXT
+Version 2.8.1b25 - testing in progress
 	removed test for size of penis in configure.ac
 	corrected misleading comment in client/lib.c
 	default packetsize changed to do best fit into maximum 1500 mtu
