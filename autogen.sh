@@ -3,8 +3,7 @@
 # Supports both FreeBSD and Linux installations. No copyrights
 # script is public domain.
 #
-# I am not big fan of autotools stuff, but other solutions
-# like scons are worse (harder to maintain).
+# I am not big fan of autotools stuff.
 #
 #                           Radim Kolar
 #
