@@ -14,7 +14,15 @@ rm -f Makefile "Makefile.in"
 echo "Generating configure and friends..."
 if [ `uname -s` = 'FreeBSD' ]; then
     echo "* FreeBSD detected"
-    echo "* Using autoconf 2.59"
+    if [ -x /usr/local/bin/autoconf259 ]; then
+        echo "* Using autoconf 2.59"
+    	AUTOCONF=autoconf259; export AUTOCONF
+        AUTOHEADER=autoheader259; export AUTOHEADER
+    else
+	echo "* Using system default autoconf"
+	AUTOCONF=autoconf
+	AUTOHEADER=autoheader
+    fi
     if [ -x /usr/local/bin/automake19 ]; then
 	echo "* Using automake 1.9"
         ACLOCAL=aclocal19; export ACLOCAL
@@ -25,14 +33,19 @@ if [ `uname -s` = 'FreeBSD' ]; then
         AUTOMAKE=automake18; export AUTOMAKE
     else
 	echo "* Using system default automake"
+	ACLOCAL=aclocal
+	AUTOMAKE=automake
     fi
     #Use autoconf 2.59 + automake 1.X pair
-    AUTOHEADER=autoheader259; export AUTOHEADER
-    AUTOCONF=autoconf259; export AUTOCONF
     export LDFLAGS=-L/usr/local/lib
+    echo "Running $ACLOCAL"
     $ACLOCAL -I /usr/local/share/aclocal
-    $AUTOMAKE -a
+    echo "Running $AUTOCONF"
     $AUTOCONF
+    echo "Running $AUTOHEADER"
+    $AUTOHEADER
+    echo "Running $AUTOMAKE"
+    $AUTOMAKE -a
     #autoreconf259 -iv -I /usr/local/share/aclocal
 else
     echo "Using your default auto* tools"
