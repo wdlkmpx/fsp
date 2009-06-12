@@ -18,5 +18,5 @@ mkinstalldirs
 ylwrap
 *.gz
 *.bz2
-.sconsign
+.sconsign*
 .sconf_temp
