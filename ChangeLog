@@ -24,6 +24,7 @@ Version 2.8.1b25 - testing in progress
 	  same thing like ./configure do
 	autogen.sh script fixed for FreeBSD builds. Execution order of gnu
 	  autotools was wrong and fallback to default autotools was wrong.
+	unbreak compilation on systems without large files
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c

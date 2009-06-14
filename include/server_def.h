@@ -118,4 +118,7 @@ typedef struct {
 #define FSP_PASSWORD ".FSP_OK_PASSWORD"
 #define FSP_OWNERPASSWORD ".FSP_OWNER_PASSWORD"
 
+#define FOURGIGS 0xffffffffUL
+#define TWOGIGS  0x7fffffffUL
+
 #endif /* _FSP_SERVER_DEF_H_ */

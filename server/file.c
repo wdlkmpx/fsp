@@ -31,9 +31,6 @@ static struct FifoCache *dirstatcache;
 /* open file handles cache */
 static struct FifoCache *fpcache;
 
-#define FOURGIGS 0xffffffffUL
-#define TWOGIGS  0x7fffffffUL
-
 static FPCACHE *search_fpcache (unsigned long inet_num,
 	                        unsigned short port_num,
 				const char * fname)
