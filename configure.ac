@@ -108,13 +108,9 @@ AC_FUNC_FSEEKO
 AC_CHECK_SIZEOF(off_t)
 if test $ac_cv_sizeof_off_t -ge 8 -a "x$ac_cv_func_fseeko" = xyes; then
 AC_DEFINE(NATIVE_LARGEFILES,1,[Define if we have 64bit off_t and fseeko])
-AC_MSG_NOTICE([Native large file support enabled])
+AC_MSG_NOTICE([Native 64bit large file support enabled])
 else
-AC_MSG_NOTICE([No native 64 bit files support, fallback to fopen64])
-AC_CHECK_FUNC(fopen64)
-if test "x$ac_cv_func_fopen64" = xyes -a "x$enable_largefile" = xyes; then
-  AC_MSG_ERROR([You have fopen64 but no native LFS support. This configuration is not currently supported. Report compiler version, os version and library version to Radim Kolar. Thank you for your cooperation.])
-fi
+AC_MSG_NOTICE([No native large 64bit files support detected])
 fi
 AC_TYPE_MODE_T
 AC_TYPE_UID_T
