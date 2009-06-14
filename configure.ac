@@ -104,7 +104,7 @@ AC_CHECK_SIZEOF(long)
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(void)
 AC_SYS_LARGEFILE
-AC_FUNC_FSEEKO
+AC_CHECK_FUNCS(fseeko)
 AC_CHECK_SIZEOF(off_t)
 if test $ac_cv_sizeof_off_t -ge 8 -a "x$ac_cv_func_fseeko" = xyes; then
 AC_DEFINE(NATIVE_LARGEFILES,1,[Define if we have 64bit off_t and fseeko])
