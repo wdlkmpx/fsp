@@ -38,17 +38,6 @@ env.Replace(CCFLAGS = str(env['CCFLAGS']).split(' '))
 
 #################### Tests ###################
 
-# check for user-supplied lock prefix
-def checkForLockPrefix(conf):
-    conf.Message("checking for user supplied lockprefix... ")
-    lp = ARGUMENTS.get('lockprefix', 0) or ARGUMENTS.get("with-lockprefix",0)
-
-    if lp:
-			  conf.Result(1)
-			  conf.env.Append(CPPFLAGS = '-DFSP_KEY_PREFIX=\\"'+lp+'\\"')
-    else:
-			  conf.Result(0)
-
 def getVarSize(conf,var):
     conf.Message("checking for size of "+var+" ")
     rc = conf.TryCompile("""
@@ -85,6 +74,7 @@ main ()
 from maintainer import checkForMaintainerMode
 from compilertest import checkForCCOption
 from prefix import checkForUserPrefix
+from lockprefix import checkForLockPrefix
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
