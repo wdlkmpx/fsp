@@ -38,20 +38,6 @@ env.Replace(CCFLAGS = str(env['CCFLAGS']).split(' '))
 
 #################### Tests ###################
 
-# check for other GCC options
-def checkForGCCOption(conf,option):
-   conf.Message("checking whether GCC supports "+option+" ")
-   lastCFLAGS=conf.env['CCFLAGS']
-   conf.env.Append(CCFLAGS = option)
-   rc = conf.TryCompile("""
-void dummy(void);
-void dummy(void) {}
-""",'.c')
-   if not rc:
-       conf.env.Replace(CCFLAGS = lastCFLAGS)
-   conf.Result(rc)
-   return rc
-
 # check for user-supplied lock prefix
 def checkForLockPrefix(conf):
     conf.Message("checking for user supplied lockprefix... ")
@@ -105,16 +91,18 @@ main ()
     conf.Result(rc)
     return rc
 
-############  Start configuration ##############
+############  Start configuration   ##############
 
 from maintainer import checkForMaintainerMode
-conf = Configure(env,{'checkForGCCOption':checkForGCCOption,
+from compilertest import checkForCCOption
+
+conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
 		      'checkPrefix':checkForUserPrefix,
 		      'sizeOf':getVarSize
 		      })
-#check for GCC options
+# check for CC options
 for option in Split("""
       -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wshadow
       -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings
@@ -128,7 +116,8 @@ for option in Split("""
       -Wpointer-arith -Wno-unused-parameter
       -Wunreachable-code
 """):
-       conf.checkForGCCOption(option)
+       conf.checkForCCOption(option)
+
 #portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
