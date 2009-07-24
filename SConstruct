@@ -14,7 +14,7 @@ EFENCE=False
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
 #import environment
-from importer import ImportEnvironment,ImportVariable
+from importer import importEnvironment,importVariable
 importEnvironment(env,'HOME')
 importVariable(env,'CC')
 importVariable(env,'CFLAGS','CCFLAGS')
