@@ -49,17 +49,6 @@ def checkForLockPrefix(conf):
     else:
 			  conf.Result(0)
 
-# check for user-supplied prefix
-def checkForUserPrefix(conf):
-    global PREFIX
-    conf.Message("checking for user supplied prefix... ")
-    lp = ARGUMENTS.get('prefix', 0)
-    if lp:
-			  conf.Result(1)
-			  PREFIX=lp
-    else:
-			  conf.Result(0)
-
 def getVarSize(conf,var):
     conf.Message("checking for size of "+var+" ")
     rc = conf.TryCompile("""
@@ -95,6 +84,7 @@ main ()
 
 from maintainer import checkForMaintainerMode
 from compilertest import checkForCCOption
+from prefix import checkForUserPrefix
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -170,7 +160,7 @@ elif fun_flock:
 else:
     conf.env.Append(CPPFLAGS = '-DFSP_NOLOCKING')
 conf.checkForLockPrefix()
-conf.checkPrefix()
+PREFIX=conf.checkPrefix(PREFIX)
 conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
 EFENCE = conf.MAINTAINER_MODE()
 if EFENCE == True:
