@@ -12,35 +12,29 @@ VERSION='2.8.1b25'
 EFENCE=False
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
-# Turn CPPFLAGS to list
-env.Append( CPPFLAGS = [])
-
-################### Functions ######################
-def importEnv(list=None, prefix=None):
-   if list:
-       for i in list:
-	   if os.environ.get(i):
-	       kw={}
-	       kw[i]=os.environ.get(i)
-	       kw={ 'ENV': kw }
-	       env.Append(**kw)
-   if prefix:
-       for i in os.environ.keys():
-	   if i.startswith(prefix):
-	       kw={}
-	       kw[i]=os.environ.get(i)
-	       kw={ 'ENV': kw }
-	       env.Append(**kw)
 
 #import environment
-importEnv(['HOME','CC'])
-importEnv(prefix='DISTCC_')
-importEnv(prefix='CCACHE_')
-if env['ENV'].get('CC'):
-    env.Replace( CC = env['ENV'].get('CC'))
+from importer import ImportEnvironment,ImportVariable
+importEnvironment(env,'HOME')
+importVariable(env,'CC')
+importVariable(env,'CFLAGS','CCFLAGS')
+importEnvironment(env,prefix='DISTCC_')
+importEnvironment(env,prefix='CCACHE_')
+
+# Turn CPPFLAGS to list, so we can add values to it
+env.Append( CPPFLAGS = [])
+
 # Get CC from commandline
 if ARGUMENTS.get('CC', 0):
     env.Replace(CC =  ARGUMENTS.get('CC'))
+
+if ARGUMENTS.get('CFLAGS',0):
+   env.Replace(CCFLAGS = ARGUMENTS.get('CFLAGS'))
+if ARGUMENTS.get('CCFLAGS',0):
+   env.Replace(CCFLAGS = ARGUMENTS.get('CCFLAGS'))
+
+# Convert CCFLAGS into list
+env.Replace(CCFLAGS = str(env['CCFLAGS']).split(' '))
 
 #################### Tests ###################
 
@@ -114,7 +108,6 @@ main ()
 ############  Start configuration ##############
 
 from maintainer import checkForMaintainerMode
-
 conf = Configure(env,{'checkForGCCOption':checkForGCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
