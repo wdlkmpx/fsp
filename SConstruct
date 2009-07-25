@@ -36,51 +36,19 @@ if ARGUMENTS.get('CCFLAGS',0):
 # Convert CCFLAGS into list
 env.Replace(CCFLAGS = str(env['CCFLAGS']).split(' '))
 
-#################### Tests ###################
-
-def getVarSize(conf,var):
-    conf.Message("checking for size of "+var+" ")
-    rc = conf.TryCompile("""
-#include <stdio.h>
-#include <sys/types.h>    
-      
-main ()
-{
- if ((%s *) 0)
-   return 0;
- if (sizeof (%s))
-   return 0;
- ;
- return 0;
-}
-""" % (var,var),'.c')
-    if rc:
-	rc,result = conf.TryRun('''
-#include <stdio.h>
-#include <sys/types.h>	
-
-main ()
-{
-    printf("%%d",sizeof(%s));
-    return 0;
-}''' % var,'.c')
-	if rc:
-	    rc=result
-    conf.Result(rc)
-    return rc
-
 ############  Start configuration   ##############
 
 from maintainer import checkForMaintainerMode
 from compilertest import checkForCCOption
 from prefix import checkForUserPrefix
 from lockprefix import checkForLockPrefix
+from clangtest import getVariableSize
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
 		      'checkPrefix':checkForUserPrefix,
-		      'sizeOf':getVarSize
+		      'sizeOf':getVariableSize
 		      })
 # check for CC options
 for option in Split("""
