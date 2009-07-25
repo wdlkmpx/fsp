@@ -43,12 +43,14 @@ from compilertest import checkForCCOption
 from prefix import checkForUserPrefix
 from lockprefix import checkForLockPrefix
 from clangtest import getVariableSize
+from locktype import checkForLockingType
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
 		      'checkPrefix':checkForUserPrefix,
-		      'sizeOf':getVariableSize
+		      'sizeOf':getVariableSize,
+		      'checkForLockingType':checkForLockingType
 		      })
 # check for CC options
 for option in Split("""
@@ -86,37 +88,10 @@ env.Append(CPPFLAGS = '-DSIZEOF_UNSIGNED='+conf.sizeOf("unsigned"))
 env.Append(CPPFLAGS = '-DSIZEOF_VOID='+conf.sizeOf("void"))
 env.Append(CPPFLAGS = '-DSIZEOF_OFF_T='+conf.sizeOf("off_t"))
 
-#check for available locking methods
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
-fun_lockf=conf.CheckFunc("lockf")
-fun_semop=conf.CheckFunc("semop")
-fun_shmget=conf.CheckFunc("shmget")
-fun_flock=conf.CheckFunc("flock")
 
-#select locking type
-lt=ARGUMENTS.get('locking', 0) or ARGUMENTS.get("with-locking",0) or ARGUMENTS.get("lock",0) or ARGUMENTS.get("with-lock",0)
-if lt == "none":
-    conf.env.Append(CPPFLAGS = '-DFSP_NOLOCKING')
-elif lt == "lockf" and fun_lockf:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_LOCKF')
-elif lt == "semop" and fun_semop and fun_shmget:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_SHAREMEM_AND_SEMOP')
-elif lt == "shmget" and fun_shmget and fun_lockf:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_SHAREMEM_AND_LOCKF')
-elif lt == "flock" and fun_flock:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_FLOCK')
-#AUTODETECT best available locking type    
-elif fun_semop and fun_shmget:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_SHAREMEM_AND_SEMOP')
-elif fun_shmget and fun_lockf:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_SHAREMEM_AND_LOCKF')
-elif fun_lockf:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_LOCKF')
-elif fun_flock:
-    conf.env.Append(CPPFLAGS = '-DFSP_USE_FLOCK')
-else:
-    conf.env.Append(CPPFLAGS = '-DFSP_NOLOCKING')
+conf.checkForLockingType(conf)
 conf.checkForLockPrefix()
 PREFIX=conf.checkPrefix(PREFIX)
 conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
