@@ -1,4 +1,4 @@
-Import(Split("env PREFIX VERSION PACKAGE TARBALL"))
+Import(Split("env PREFIX"))
 
 env.Program(target = 'cachecheck', source = ['cachecheck.c','../server/fifocache.c'])
 env.Program(target = 'mklargefile', source = 'mklargefile.c')

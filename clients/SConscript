@@ -1,4 +1,4 @@
-Import(Split("env PREFIX VERSION PACKAGE TARBALL common bsdfsp client"))
+Import(Split("env PREFIX common bsdfsp client"))
 
 env.Program(target = 'fcatcmd',source=['fcatcmd.c']+client+common)
 env.Program(target = 'fcdcmd', source=['fcdcmd.c','printpro.c']+client+common)

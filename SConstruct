@@ -7,7 +7,6 @@ EnsurePythonVersion(2,2)
 
 # set defaults
 PREFIX='/usr/local'
-PACKAGE='fsp'
 VERSION='2.8.1b25'
 EFENCE=False
 
@@ -100,9 +99,7 @@ if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.Finish()
 
-#configure globals
-TARBALL=PACKAGE+'-'+VERSION+'.tar.gz'
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX PACKAGE VERSION TARBALL"))
+Export( Split("env PREFIX"))
 env.SConscript(dirs=Split('. bsd_src common server client clients contrib tests'))
