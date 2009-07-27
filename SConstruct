@@ -102,4 +102,4 @@ conf.Finish()
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
 Export( Split("env PREFIX"))
-env.SConscript(dirs=Split('. bsd_src common server client clients contrib tests'))
+env.SConscript(dirs=Split(". bsd_src common server client clients contrib tests doc"))
