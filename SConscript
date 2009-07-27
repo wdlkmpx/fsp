@@ -3,7 +3,7 @@ Import(Split("env PREFIX"))
 # *************** Targets ****************
 
 #Add install target
-env.Alias("install",[ PREFIX+'/bin', PREFIX+'/man'] )
+env.Alias("install", PREFIX+'/bin')
 
 #Add build target
 env.Alias("build", Split('server/fspd clients/ contrib/ tests/') )
