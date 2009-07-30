@@ -3,13 +3,13 @@ Import(Split("env PREFIX"))
 MANDIR=PREFIX+'/share/man'
 
 MAN1=Split("""
-fcd.1       fgetcmd.1   fmkdir.1    frmcmd.1    fspd.1
-fcdcmd.1    fgrab.1     fmv.1       frmdir.1    fspscan.1
-fdu.1       fgrabcmd.1  fmvcmd.1    frmdircmd.1
-fducmd.1    fhost.1     fpro.1      fsetup.1    fstat.1
-fbye.1      ffind.1     fhostcmd.1  fprocmd.1   fsetupcmd.1 fstatcmd.1
-fcat.1      ffindcmd.1  fls.1       fput.1      fver.1
-fcatcmd.1   fget.1      flscmd.1    frm.1
+fgetcmd.1   fmkdir.1    frmcmd.1    fspd.1
+fcdcmd.1    fspscan.1
+fgrabcmd.1  fmvcmd.1    frmdircmd.1
+fducmd.1
+fbye.1      fhostcmd.1  fprocmd.1   fsetupcmd.1 fstatcmd.1
+ffindcmd.1  fput.1      fver.1
+fcatcmd.1   flscmd.1
 """)
 MAN5=Split("fspsites.5 fsp_prof.5")
 MAN7=Split("fsp_env.7")
