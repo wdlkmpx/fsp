@@ -12,6 +12,10 @@ EFENCE=False
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
+# Import GZip builder
+import gzipBuilder
+env['BUILDERS']['GZip']=Builder(action=gzipBuilder.GZip)
+
 #import environment
 from importer import importEnvironment,importVariable
 importEnvironment(env,'HOME')
