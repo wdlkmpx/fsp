@@ -2,7 +2,7 @@ Import(Split("env PREFIX"))
 
 DOCDIR=PREFIX+'/share/doc/fsp'
 
-env.Install(dir=DOCDIR,source=Split("PROTOCOL HISTORY"))
+env.Install(dir=DOCDIR,source=Split("PROTOCOL HISTORY faq.html"))
 env.Alias("install",DOCDIR)
 
 Export(Split("DOCDIR"))
