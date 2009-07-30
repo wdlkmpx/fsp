@@ -1,3 +1,4 @@
+from os import symlink, unlink
 Import(Split("env PREFIX"))
 
 MANDIR=PREFIX+'/man'
@@ -18,7 +19,7 @@ SYMLINKS=[ ('fcdcmd','fcd'), ('fducmd','fdu'), ('fcatcmd','fcat'),
 	   ('fmvcmd','fmv'), ('fhostcmd','fhost'), ('flscmd','fls'),
 	   ('frmcmd','frm'), ('frmdircmd','frmdir'), ('fprocmd','fpro'),
 	   ('fstatcmd','fstat'), ('fsetupcmd','fsetup')
-	 ]  
+	 ]
 
 # compress manpages
 for page in MAN1+MAN5+MAN7:
@@ -31,6 +32,18 @@ for page in MAN5:
     env.Install(dir=MANDIR+"/man5",source=page+'.gz')
 for page in MAN7:
     env.Install(dir=MANDIR+"/man7",source=page+'.gz')
+
+# install symlinks for man pages
+if 'install' in COMMAND_LINE_TARGETS:
+    for pair in SYMLINKS:
+	try:
+	    unlink(MANDIR+'/man1/'+pair[1]+'.1.gz')
+	except OSError:
+	    pass
+	try:
+	    symlink(MANDIR+'/man1/'+pair[0]+'.1.gz', MANDIR+'/man1/'+pair[1]+'.1.gz')
+	except OSError:
+	    pass
 
 env.Alias("install",MANDIR)
 
