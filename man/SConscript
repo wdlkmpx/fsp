@@ -1,6 +1,6 @@
 Import(Split("env PREFIX"))
 
-MANDIR=PREFIX+'/share/man'
+MANDIR=PREFIX+'/man'
 
 MAN1=Split("""
 fgetcmd.1   fmkdir.1    frmcmd.1    fspd.1
@@ -23,6 +23,14 @@ SYMLINKS=[ ('fcdcmd','fcd'), ('fducmd','fdu'), ('fcatcmd','fcat'),
 # compress manpages
 for page in MAN1+MAN5+MAN7:
     env.GZip(page+'.gz',page)
+
+# install man pages
+for page in MAN1:
+    env.Install(dir=MANDIR+"/man1",source=page+'.gz')
+for page in MAN5:
+    env.Install(dir=MANDIR+"/man5",source=page+'.gz')
+for page in MAN7:
+    env.Install(dir=MANDIR+"/man7",source=page+'.gz')
 
 env.Alias("install",MANDIR)
 
