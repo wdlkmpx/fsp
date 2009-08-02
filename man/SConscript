@@ -36,14 +36,7 @@ for page in MAN7:
 # install symlinks for man pages
 if 'install' in COMMAND_LINE_TARGETS:
     for pair in SYMLINKS:
-	try:
-	    unlink(MANDIR+'/man1/'+pair[1]+'.1.gz')
-	except OSError:
-	    pass
-	try:
-	    symlink(MANDIR+'/man1/'+pair[0]+'.1.gz', MANDIR+'/man1/'+pair[1]+'.1.gz')
-	except OSError:
-	    pass
+	env.Symlink(MANDIR+'/man1/'+pair[1]+'.1.gz',MANDIR+'/man1/'+pair[0]+'.1.gz')
 
 env.Alias("install",MANDIR)
 

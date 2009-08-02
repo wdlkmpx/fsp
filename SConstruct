@@ -14,9 +14,11 @@ env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
 # Import GZip builder
 import gzipBuilder
-env.Append(BUILDERS = {'GZip' : Builder(action=gzipBuilder.GZip)})
-
-#import environment
+# Import Symlink builder
+import symlinkBuilder
+env.Append(BUILDERS = {'GZip'  : Builder(action=gzipBuilder.GZip),
+                       'Symlink': Builder(action=symlinkBuilder.Symlink)})
+# Import environment
 from importer import importEnvironment,importVariable
 importEnvironment(env,'HOME')
 importVariable(env,'CC')
