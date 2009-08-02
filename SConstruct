@@ -49,13 +49,15 @@ from prefix import checkForUserPrefix
 from lockprefix import checkForLockPrefix
 from clangtest import getVariableSize
 from locktype import checkForLockingType
+from lamerpack import checkForLamerpack
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
 		      'checkPrefix':checkForUserPrefix,
 		      'sizeOf':getVariableSize,
-		      'checkForLockingType':checkForLockingType
+		      'checkForLockingType':checkForLockingType,
+		      'checkForLamerPack':checkForLamerpack
 		      })
 # check for CC options
 for option in Split("""
@@ -103,6 +105,7 @@ conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
 EFENCE = conf.MAINTAINER_MODE()
 if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
+conf.checkForLamerPack()    
 conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
