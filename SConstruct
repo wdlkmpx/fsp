@@ -71,7 +71,7 @@ for option in Split("""
 """):
        conf.checkForCCOption(option)
 
-#portability build time config
+# Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
 if conf.CheckFunc('fseeko'):
