@@ -7,6 +7,9 @@ Radim Kolar's personal wishlist from 1997
 *-high priority-*
  - show loosers online (finfo command) and server statz
 
+SCons build framework:
+Supports for detecting cygwin environment and define OS_CYGWIN 1
+
 TESTSUITE NEEDED:
 Write a simple FSP protocol testing tool
 Write a test suite using testing tool
