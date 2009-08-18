@@ -51,6 +51,7 @@ from clangtest import getVariableSize
 from locktype import checkForLockingType
 from lamerpack import checkForLamerpack
 from debugmode import checkForDebugBuild
+from timeout import checkForClientTimeout
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -59,7 +60,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'sizeOf':getVariableSize,
 		      'checkForLockingType':checkForLockingType,
 		      'checkForLamerPack':checkForLamerpack,
-		      'checkForDebugBuild':checkForDebugBuild
+		      'checkForDebugBuild':checkForDebugBuild,
+		      'checkForClientTimeout':checkForClientTimeout
 		      })
 # check for CC options
 for option in Split("""
@@ -109,6 +111,7 @@ if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.checkForLamerPack()
 conf.checkForDebugBuild()
+conf.checkForClientTimeout()
 conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
