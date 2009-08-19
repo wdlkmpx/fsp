@@ -93,9 +93,11 @@ if conf.CheckFunc('setsid'):
 if conf.CheckCHeader('unistd.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_UNISTD_H')
 if conf.CheckCHeader('limits.h'):
-    conf.env.Append(CPPFLAGS = '-DHAVE_LIMITS_H')    
+    conf.env.Append(CPPFLAGS = '-DHAVE_LIMITS_H')
 if conf.CheckCHeader('strings.h'):
-    conf.env.Append(CPPFLAGS = '-DHAVE_STRINGS_H')    
+    conf.env.Append(CPPFLAGS = '-DHAVE_STRINGS_H')
+if conf.CheckCHeader('sys/resource.h'):
+    conf.env.Append(CPPFLAGS = '-DHAVE_SYS_RESOURCE_H')
 env.Append(CPPFLAGS = '-DSIZEOF_CHAR='+conf.sizeOf("char"))
 env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
 env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
