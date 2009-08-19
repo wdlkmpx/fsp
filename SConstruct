@@ -82,7 +82,8 @@ for option in Split("""
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
-if conf.CheckFunc('fseeko'):
+fseeko=conf.CheckFunc('fseeko')    
+if fseeko:
     conf.env.Append(CPPFLAGS = '-DHAVE_FSEEKO')
 if conf.CheckFunc('random'):
     conf.env.Append(CPPFLAGS = '-DHAVE_RANDOM')
@@ -109,8 +110,10 @@ env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
 env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
 env.Append(CPPFLAGS = '-DSIZEOF_UNSIGNED='+conf.sizeOf("unsigned"))
 env.Append(CPPFLAGS = '-DSIZEOF_VOID='+conf.sizeOf("void"))
-env.Append(CPPFLAGS = '-DSIZEOF_OFF_T='+conf.sizeOf("off_t"))
-
+offt=conf.sizeOf("off_t")
+env.Append(CPPFLAGS = '-DSIZEOF_OFF_T='+offt)
+if fseeko and int(offt)>=8:
+    conf.env.Append(CPPFLAGS = '-DNATIVE_LARGEFILES')
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
 
