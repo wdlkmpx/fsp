@@ -98,6 +98,8 @@ if conf.CheckCHeader('strings.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_STRINGS_H')
 if conf.CheckCHeader('sys/resource.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SYS_RESOURCE_H')
+if conf.CheckCHeader('sys/syslimits.h'):
+    conf.env.Append(CPPFLAGS = '-DHAVE_SYS_SYSLIMITS_H')
 env.Append(CPPFLAGS = '-DSIZEOF_CHAR='+conf.sizeOf("char"))
 env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
 env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
