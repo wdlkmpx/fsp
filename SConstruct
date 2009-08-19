@@ -102,6 +102,8 @@ if conf.CheckCHeader('sys/syslimits.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SYS_SYSLIMITS_H')
 if conf.CheckCHeader('sys/wait.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SYS_WAIT_H')
+if conf.CheckCHeader('utime.h'):
+    conf.env.Append(CPPFLAGS = '-DHAVE_UTIME_H')
 env.Append(CPPFLAGS = '-DSIZEOF_CHAR='+conf.sizeOf("char"))
 env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
 env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
