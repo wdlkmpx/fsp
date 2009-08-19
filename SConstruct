@@ -91,7 +91,7 @@ if conf.CheckFunc('fork'):
 if conf.CheckFunc('setsid'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SETSID')
 if conf.CheckCHeader('unistd.h'):
-    env.Append(CPPFLAGS = '-DHAVE_UNISTD_H')
+    conf.env.Append(CPPFLAGS = '-DHAVE_UNISTD_H')
 if conf.CheckCHeader('limits.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_LIMITS_H')    
 env.Append(CPPFLAGS = '-DSIZEOF_CHAR='+conf.sizeOf("char"))
