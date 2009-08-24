@@ -11,7 +11,7 @@ def checkForCCOption(conf,option):
    Adds option to CCFLAGS option is supported by compiler.
 
    """
-   conf.Message("checking whether %s supports %s " % (conf.env['CC'],option))
+   conf.Message("Checking whether %s supports %s... " % (conf.env['CC'],option))
    lastCFLAGS=conf.env['CCFLAGS']
    conf.env.Append(CCFLAGS = option)
    rc = conf.TryCompile("""
