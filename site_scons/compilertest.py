@@ -1,7 +1,7 @@
 #
 # Scons compiler tester
 #
-# Version 1.10
+# Version 1.1
 # 24-Aug-2009
 #
 
