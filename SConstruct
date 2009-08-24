@@ -52,6 +52,7 @@ from locktype import checkForLockingType
 from lamerpack import checkForLamerpack
 from debugmode import checkForDebugBuild
 from timeout import checkForClientTimeout
+from relsignals import checkReliableSignals
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -61,7 +62,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForLockingType':checkForLockingType,
 		      'checkForLamerPack':checkForLamerpack,
 		      'checkForDebugBuild':checkForDebugBuild,
-		      'checkForClientTimeout':checkForClientTimeout
+		      'checkForClientTimeout':checkForClientTimeout,
+		      'checkReliableSignals':checkReliableSignals
 		      })
 # check for CC options
 for option in Split("""
@@ -118,6 +120,8 @@ if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
 
 conf.checkForLockingType(conf)
+if conf.checkReliableSignals():
+    conf.env.Append(CPPFLAGS = '-DRELIABLE_SIGNALS')
 conf.checkForLockPrefix()
 PREFIX=conf.checkPrefix(PREFIX)
 conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
