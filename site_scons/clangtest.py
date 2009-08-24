@@ -1,13 +1,13 @@
 #
 # SCons C language related tests
 #
-# Version 1.1
-# 25-Jul-2009
+# Version 1.2
+# 24-Aug-2009
 #
 
 def checkForVariable(conf,variable,include):
     """Checks if variable is defined in given include statements."""
-    conf.Message("checking if variable %s is defined... " % variable)
+    conf.Message("Checking if variable %s is defined... " % variable)
     rc = conf.TryCompile("""
 %s
 void dummy(void);
@@ -18,7 +18,7 @@ void dummy(void) { %s = 0; }
    
 def getVariableSize(conf,var):
     """Returns variable size in bytes"""
-    conf.Message("checking for size of "+var+" ")
+    conf.Message("Checking for size of "+var+"... ")
     rc = conf.TryCompile("""
 #include <stdio.h>
 #include <sys/types.h>    
