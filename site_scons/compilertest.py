@@ -1,8 +1,8 @@
 #
 # Scons compiler tester
 #
-# Version 1.0
-# 16-Jun-2009
+# Version 1.10
+# 24-Aug-2009
 #
 
 def checkForCCOption(conf,option):
