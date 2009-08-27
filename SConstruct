@@ -55,6 +55,7 @@ from timeout import checkForClientTimeout
 from relsignals import checkReliableSignals
 from mandir import checkForUserMandir
 from mandir import autodetectMandir
+from sysconfdir import checkForUserSysconfdir
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -67,7 +68,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForClientTimeout':checkForClientTimeout,
 		      'checkReliableSignals':checkReliableSignals,
 		      'checkForUserMandir':checkForUserMandir,
-		      'autodetectMandir':autodetectMandir
+		      'autodetectMandir':autodetectMandir,
+		      'checkForUserSysconfdir':checkForUserSysconfdir
 		      })
 # check for CC options
 for option in Split("""
@@ -128,7 +130,7 @@ if conf.checkReliableSignals():
     conf.env.Append(CPPFLAGS = '-DRELIABLE_SIGNALS')
 conf.checkForLockPrefix()
 PREFIX=conf.checkPrefix(PREFIX)
-conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
+conf.checkForUserSysconfdir(PREFIX)
 MANDIR=conf.autodetectMandir(PREFIX)
 conf.checkForUserMandir(MANDIR)
 EFENCE = conf.MAINTAINER_MODE()
