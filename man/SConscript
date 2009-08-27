@@ -1,7 +1,5 @@
 from os import symlink, unlink
-Import(Split("env PREFIX"))
-
-MANDIR=PREFIX+'/man'
+Import(Split("env PREFIX MANDIR"))
 
 MAN1=Split("""
 fgetcmd.1   fmkdir.1    frmcmd.1    fspd.1
@@ -39,5 +37,3 @@ if 'install' in COMMAND_LINE_TARGETS:
 	env.Symlink(MANDIR+'/man1/'+pair[1]+'.1.gz',MANDIR+'/man1/'+pair[0]+'.1.gz')
 
 env.Alias("install",MANDIR)
-
-Export(Split("MANDIR"))

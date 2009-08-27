@@ -53,6 +53,8 @@ from lamerpack import checkForLamerpack
 from debugmode import checkForDebugBuild
 from timeout import checkForClientTimeout
 from relsignals import checkReliableSignals
+from mandir import checkForUserMandir
+from mandir import autodetectMandir
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -63,7 +65,9 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForLamerPack':checkForLamerpack,
 		      'checkForDebugBuild':checkForDebugBuild,
 		      'checkForClientTimeout':checkForClientTimeout,
-		      'checkReliableSignals':checkReliableSignals
+		      'checkReliableSignals':checkReliableSignals,
+		      'checkForUserMandir':checkForUserMandir,
+		      'autodetectMandir':autodetectMandir
 		      })
 # check for CC options
 for option in Split("""
@@ -125,6 +129,8 @@ if conf.checkReliableSignals():
 conf.checkForLockPrefix()
 PREFIX=conf.checkPrefix(PREFIX)
 conf.env.Append(CPPFLAGS = '-DSYSCONFDIR=\\"'+PREFIX+'/etc\\"')
+MANDIR=conf.autodetectMandir(PREFIX)
+conf.checkForUserMandir(MANDIR)
 EFENCE = conf.MAINTAINER_MODE()
 if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
@@ -135,5 +141,5 @@ conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX"))
+Export( Split("env PREFIX MANDIR"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
