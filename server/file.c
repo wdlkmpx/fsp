@@ -612,6 +612,7 @@ const char *server_del_dir (PPATH * pp, DIRINFO *di)
   if(!(S_ISDIR(sb.st_mode))) return("rmdir: not an ordinary directory");
 
   memset(&null,0,sizeof(DIRINFO));
+  null.protection = DIR_LIST | DIR_GET;
 
   chdir(pp->fullp);
   save_access_rights(&null);
