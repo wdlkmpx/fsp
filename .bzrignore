@@ -21,6 +21,7 @@ ylwrap
 .sconsign*
 .sconf_temp
 .deps
+tags
 clients/fbye
 clients/fcatcmd
 clients/fcdcmd
