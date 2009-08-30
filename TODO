@@ -23,10 +23,6 @@ symlink support must be reworked before `final` release.
 PROTOCOL-RELATED BUGS:
 we should add real,portable error codes support to CC_ERR extended data area.
 
-PORTING
-Sven's Slowaris 8 compile problem
-still do not builds on freebsd 4 and FreeBSD 5 - non intel platforms?
-
 NEEDS IMPROVMENT:
 
 Client LIBRARY
