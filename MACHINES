@@ -16,6 +16,6 @@ FSP Version	CPU         OS        	Compiler         C library
 2.8.1 Beta 14   i386        Conectiva Linux 9
 2.8.1 Beta 19   i386        FreeBSD 5.2 gcc-3.3
 2.8.1 Beta 23   i386        FreeBSD 5.3 gcc-3.4
+2.8.1 Beta 24	x86	    Gentoo Linux 2.6 GCC 4.1.2	 GLibC 2.5
 2.8.1 Beta 25   i386        FreeBSD 5.4 gcc-3.4
-2.8.1 Beta 25	i386	    FreeBSD 6.1 gcc-3.4
-2.8.1 B24	x86	    Gentoo Linux 2.6 GCC 4.1.2	 GLibC 2.5
+2.8.1 Beta 25	i386	    FreeBSD 6.4 gcc-3.4
