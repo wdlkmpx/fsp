@@ -19,3 +19,4 @@ FSP Version	CPU         OS        	Compiler         C library
 2.8.1 Beta 24	x86	    Gentoo Linux 2.6 GCC 4.1.2	 GLibC 2.5
 2.8.1 Beta 25   i386        FreeBSD 5.4 gcc-3.4
 2.8.1 Beta 25	i386	    FreeBSD 6.4 gcc-3.4
+2.8.1 Beta 25	i386	    Ubuntu Linux 8.04.3LTS gcc-4.2.4 GLIBC 2.7
