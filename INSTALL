@@ -1,25 +1,32 @@
+How to run FSP:
 	The first step in running this fine software (:) is to get it to
 	compile.  Every effort on my part will be made to make this code
 	compile and run on any reasonable system.  The information in this
-	file CURRENTLY pertains only to Unix and Cygwin users.
+	file CURRENTLY pertains only to Unix and probably to Cygwin users.
 
-Configuration:
-	The first step is to run the configure script provided in this
-	directory.  This will generate a good makefile and a file called
-	config.h in the include directory.  These files are vital for the
-	compilation of the system.
+Building:
+        FSP uses SCons software construction tool. Building was tested
+	with SCons 1.2.0 and Python 2.5, but older versions will probably
+	work fine. Prior to building FSP you need to download and install
+	SCons from http://www.scons.org.
 
-	configure can take several optional switches. Most important
-	switch is --disable-timeout. This option switches fsp clients
-	into classic infinite retry mode which is preferred by people
-	with very flaky networks.
+	SCons is replacement for configure and make utility; there is no
+	separate configuration step. Building with SCons is very similar
+	to using make. Run 'scons' to compile and 'scons install' to
+	install.  You can skip compile part. 'scons install' will do both
+	steps then.
 
->>	By default, the configure script will set up the Makefile
->>	to install the code in /usr/local/bin and the man pages under
->>	/usr/local/man.  If you wish to change this, you MUST run
->>	configure with the --prefix option.  For instance, on my
+	SCons can take several optional switches. You must supply these
+	switches to BOTH phases (compile and install) of build process.
+	Most important switch is disable-timeout=yes. This option switches
+	fsp clients into classic infinite retry mode which is preferred
+	by people with very flaky networks.
+
+>>	By default, the SCons will install the code in /usr/local/bin
+>>	and the man pages under /usr/local/man.  If you wish to change this,
+>>	you MUST run scons with the prefix option.  For instance, on my
 >>	machine, I install the files under /usr/jt/bin and /usr/jt/man.
->>	To do this, I type configure --prefix=/usr/jt
+>>	To do this, I type scons prefix=/usr/jt install
 
 Compilation:
 	At this point, you should just be able to type 'make' 
