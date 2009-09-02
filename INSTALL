@@ -26,23 +26,11 @@ Building:
 >>	and the man pages under /usr/local/man.  If you wish to change this,
 >>	you MUST run scons with the prefix option.  For instance, on my
 >>	machine, I install the files under /usr/jt/bin and /usr/jt/man.
->>	To do this, I type scons prefix=/usr/jt install
+>>	To do this, I type: scons prefix=/usr/jt install
 
-Compilation:
-	At this point, you should just be able to type 'make' 
-	and then 'make install'.  This will compile and (if
-	you do an install) install the clients in the directory specified
-	by you in the Makefile.  You may also wish to type
-	'make install-man' if you wish to install the manual pages.
-
-	If you get ANY errors or warnings while compiling this code
-	(excepting warnings about the function signal), please send
-	me email with a complete copy of the output of make as well as
-	a copy of the config.h file.
-
-	IMPORTANT NOTE: You do not need to run the fspd process if you only
-	wish to access existing fsp archives.  FSPD is only needed if you 
-	wish to set up and maintain a new archive for use.
+	If you get ANY errors while compiling this code (excepting warnings),
+	please send me email with a complete copy of the output of scons as
+	well as a copy of the config.log file.
 
 Client utilities:
         All inter-command states are kept in these three shell environment
@@ -64,9 +52,11 @@ Client utilities:
         files are being transferred.
 
 	FSP_DELAY variable can be used to set the retransmit interval for
-	client utilities (in thousandth of a second).  The retransmit rate
-	is adjusted in an exponential manner, until the retry rate reaches
-	5 minutes per retry.  This delay cannot be set below 250 usecs.
+	client utilities (in thousandth of a second). This value should be
+	set to slightly higher than average round trip time.  The retransmit
+	rate is adjusted in an exponential manner, until the retry rate
+	reaches FSP_MAXDELAY msec per retry.  This delay cannot be set
+	below 250 msecs.
 
         FSP_BUF_SIZE can be set to a positive number less than or equal
         to 1024.  When set, it determines the size of data to be send for
@@ -74,12 +64,17 @@ Client utilities:
         default is 1024.  Some sites are connected via links that cannot
         transmit buffers containing 1024 bytes of data in addition to the
         header information.  Setting FSP_BUF_SIZE to a lower value will
-        allow these sites to access fsp archives.
+        allow these sites to access fsp archives. Large values can provide
+	faster transfers.
 
         FSP_LOCAL_DIR can be set to a local working directory from/to which
         all data will be transferred.
 
 Server Administration:
+	IMPORTANT NOTE: You do not need to run the fspd process if you only
+	wish to access existing fsp archives.  FSPD is only needed if you 
+	wish to set up and maintain a new archive for use.
+
         fspd can run independently or it can be run under inetd.  When
         running independently, fspd waits for messages through a UDP
         socket whoes port number is defined in the fspd.conf file. 
