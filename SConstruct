@@ -54,6 +54,7 @@ from debugmode import checkForDebugBuild
 from timeout import checkForClientTimeout
 from relsignals import checkReliableSignals
 from mandir import checkForUserMandir
+from docdir import checkForUserDocdir
 from mandir import autodetectMandir
 from sysconfdir import checkForUserSysconfdir
 
@@ -68,6 +69,7 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForClientTimeout':checkForClientTimeout,
 		      'checkReliableSignals':checkReliableSignals,
 		      'checkForUserMandir':checkForUserMandir,
+		      'checkForUserDocdir':checkForUserDocdir,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir
 		      })
@@ -133,6 +135,8 @@ PREFIX=conf.checkPrefix(PREFIX)
 conf.checkForUserSysconfdir(PREFIX)
 MANDIR=conf.autodetectMandir(PREFIX)
 conf.checkForUserMandir(MANDIR)
+DOCDIR=PREFIX+'/share/doc/fsp'
+DOCDIR=conf.checkForUserDocdir(DOCDIR)
 EFENCE = conf.MAINTAINER_MODE()
 if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
@@ -143,5 +147,5 @@ conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR"))
+Export( Split("env PREFIX MANDIR DOCDIR"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
