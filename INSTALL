@@ -39,12 +39,13 @@ SCons command line options:
 	enable-lamerpack=yes	build lamer pack version of fspd
 	lockprefix=directory	set directory for creating client lock files
 	locking=type		set locking type, default autodetected
-				type is one of: none, lockf, semop, flock, shmget
+				type is one of none, lockf, semop, flock, shmget
 	enable-maintainer-mode=yes compile with libefence debug library and
 				   some extra debug information
 	mandir=directory	where to install man pages. default autodetect
 	sysconfdir=directory	where to look for fspd and client configuration
-				files. Default prefix/etc			   
+				files. Default prefix/etc
+
 Client utilities:
         All inter-command states are kept in these three shell environment
         variables.
