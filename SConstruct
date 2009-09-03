@@ -134,7 +134,7 @@ conf.checkForLockPrefix()
 PREFIX=conf.checkPrefix(PREFIX)
 conf.checkForUserSysconfdir(PREFIX)
 MANDIR=conf.autodetectMandir(PREFIX)
-conf.checkForUserMandir(MANDIR)
+MANDIR=conf.checkForUserMandir(MANDIR)
 DOCDIR=PREFIX+'/share/doc/fsp'
 DOCDIR=conf.checkForUserDocdir(DOCDIR)
 EFENCE = conf.MAINTAINER_MODE()
