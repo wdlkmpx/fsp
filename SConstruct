@@ -9,6 +9,7 @@ EnsurePythonVersion(2,2)
 PREFIX='/usr/local'
 VERSION='2.8.1b25'
 EFENCE=False
+CLIENTS=True
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
@@ -56,6 +57,7 @@ from relsignals import checkReliableSignals
 from mandir import checkForUserMandir
 from docdir import checkForUserDocdir
 from mandir import autodetectMandir
+from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
@@ -71,7 +73,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForUserMandir':checkForUserMandir,
 		      'checkForUserDocdir':checkForUserDocdir,
 		      'autodetectMandir':autodetectMandir,
-		      'checkForUserSysconfdir':checkForUserSysconfdir
+		      'checkForUserSysconfdir':checkForUserSysconfdir,
+		      'checkForBuildingClients':checkForBuildingClients
 		      })
 # check for CC options
 for option in Split("""
@@ -142,10 +145,11 @@ if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.checkForLamerPack()
 conf.checkForDebugBuild()
+CLIENTS=conf.checkForBuildingClients()
 conf.checkForClientTimeout()
 conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR DOCDIR"))
+Export( Split("env PREFIX MANDIR DOCDIR CLIENTS"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
