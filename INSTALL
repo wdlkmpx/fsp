@@ -45,6 +45,7 @@ SCons command line options:
 	mandir=directory	where to install man pages. default autodetect
 	sysconfdir=directory	where to look for fspd and client configuration
 				files. Default prefix/etc
+	without-clients=yes     dont build and install client commands
 
 Client utilities:
         All inter-command states are kept in these three shell environment

@@ -184,3 +184,4 @@ Complete content of the FSP package:
     sysconfdir.py  User configured directory with server config
     relsignals.py  Check if signal handlers auto installs themself
     docdir.py      User supplied documentation directory
+    clients.py	   Check if we are installing client commands
