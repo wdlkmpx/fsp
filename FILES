@@ -10,8 +10,11 @@ Complete content of the FSP package:
    setup.csh       CSH script for initializing FSP (Unix).
    setup.sh        SH script for initializing FSP (Unix).
    fspd.conf   	   An example fspd.conf file suitable for copying and editing.
+   SConstruct      SCons main configuration file
+   SConscript      SCons script for building files in directory
 
    doc/            Aditional FSP documentation
+   SConscript      SCons script for building files in directory
    faq.html        OLD FSP FAQ
    HISTORY         OLD FSP Changelog
    PROTOCOL        FSP v2 protocol definition
@@ -20,6 +23,7 @@ Complete content of the FSP package:
    bsd_src/        Directory containing additional sources derived from
                    those in public archive on uunet.uu.net. Most sources
                    are modified to deal with FSP or some architectures.
+    SConscript     SCons script for building files in directory
     cmp.c          BSD compare routines.
     find.c	   Source for BSD find.
     fnmatch.c	   filename matching functions for BSD find.
@@ -33,11 +37,13 @@ Complete content of the FSP package:
     util.c         additional util routines for ls.
     
    client/	   Code common to all clients
+    SConscript     SCons script for building files in directory
     lib.c          Core routines of the client library.
     lock.c         Simple file locking code to do client multi-plexing.
     util.c         Supplementry routines of the client library.
     
    clients/	   Code for the standalone and merged client versions
+    SConscript     SCons script for building files in directory
     fcatcmd.c      These compiles into individual client utilities.
     fcdcmd.c       Those with a "cmd" in their name will require
     fducmd.c       shell alias wrappers either because they do their own
@@ -66,6 +72,7 @@ Complete content of the FSP package:
 		   be achieved on some machines. 
 		   
    common/	   Directory containing code used in both server and clients
+    SConscript     SCons script for building files in directory
     strdup.c	   Unix strdup function.
     random.c       Unix random function.
     getsl.c        gets with length limit
@@ -94,6 +101,7 @@ Complete content of the FSP package:
     version.h	   header file containing FSP version information.
 
    man/		   Manual pages for the FSP clients/server.
+     SConscript    SCons script for building files in directory
 		   Man pages
      fcat.1
      fcatcmd.1
@@ -125,6 +133,7 @@ Complete content of the FSP package:
      fsp_env.7
 
    server/	   Files needed to compile the FSPD server
+    SConscript     SCons script for building files in directory
     acl.c          ACL loading, saving, testing
     conf.c         fspd configuration file reading routines. 
     fifocache.c    Simple FIFO - style cache
@@ -141,6 +150,7 @@ Complete content of the FSP package:
     server.c       FSP Packet serving
 
    contrib/        User contributed files
+    SConscript     SCons script for building files in directory
     rotate.py      90deg. rotation of input text
     fspscan.c      FSP site scanner
     auto_del.csh   Remove outdated files from FSP home
