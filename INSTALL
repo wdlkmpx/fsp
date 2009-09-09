@@ -10,6 +10,11 @@ Building:
 	work fine. Prior to building FSP you need to download and install
 	SCons from http://www.scons.org.
 
+	Other tools needed for building FSP are GNU flex and GNU C compiler.
+	They should be part of your Unix distribution but you can also 
+	download and compile them yourself from http://flex.sourceforge.net/
+	and http://gcc.gnu.org.
+
 	SCons is replacement for configure and make utility; there is no
 	separate configuration step. Building with SCons is very similar
 	to using make. Run 'scons' to compile and 'scons install' to
