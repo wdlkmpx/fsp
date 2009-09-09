@@ -39,6 +39,8 @@ int main (int argc, char ** argv)
   else if(!strcmp(q,"fstatcmd")) fstatcmd_main(argc,argv);
   else if(!strcmp(q,"fmvcmd")) fmvcmd_main(argc,argv);
   else if(!strcmp(q,"fbye")) fbye_main(argc,argv);
+  else if(!strcmp(q,"fsetupcmd")) fsetupcmd_main(argc,argv);
+
   else {
     fprintf(stderr,"Unknown FSP client command: %s\n",q);
     exit(EX_USAGE);

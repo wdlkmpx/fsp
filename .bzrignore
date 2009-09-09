@@ -40,6 +40,7 @@ clients/frmcmd_m.c
 clients/frmdircmd_m.c
 clients/fstatcmd_m.c
 clients/fver_m.c
+clients/fsetupcmd_m.c
 contrib/fspscan
 doc/fsp-faq.html
 include/config.h

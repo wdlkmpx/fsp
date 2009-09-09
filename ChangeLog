@@ -30,6 +30,7 @@ Version 2.8.1b25 - testing in progress
 	  DIR_NOLIST and DIR_NOGET.
 	MACHINES updated. Builds confirmed on Ubuntu 8.04.3,
 	  FreeBSD 6.4 and FreeBSD 7.2
+	fsetupcmd added to fspmerge client  
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c

@@ -31,9 +31,9 @@ static int tryfile=0;
 
 
 /* generated lex parser */
-extern FILE *yyin;
-int yylex(void);
-int yywrap(void);
+extern FILE *sitein;
+int sitelex(void);
+int sitewrap(void);
 
 static void setup_usage (void) /* print usage message */
 {
@@ -55,13 +55,13 @@ static void parse_prof_file_new (const char * filename)
 
   if(input)
   {
-      yyin=input;
+      sitein=input;
       rc=0;
   } else
-      rc=yywrap();
+      rc=sitewrap();
 
   if(rc==0)
-      yylex();
+      sitelex();
 
   if(input)
       fclose(input);
@@ -144,22 +144,22 @@ int main (int argc, char ** argv)
  * Returns: 1 for terminating scanner or 0 for switching
  */
 
-int yywrap(void)
+int sitewrap(void)
 {
   char *f2=NULL;
   int rc;
 
-  if(yyin!=NULL)
+  if(sitein!=NULL)
   {
-      fclose(yyin);
-      yyin=NULL;
+      fclose(sitein);
+      sitein=NULL;
   }
 
   switch(tryfile)
   {
       case 0:
 	     /* file in cur. dir */
-             yyin=fopen(FSPSITES,"r");
+             sitein=fopen(FSPSITES,"r");
 	     break;
       case 1:
 	     /* file in home dir */
@@ -169,20 +169,20 @@ int yywrap(void)
 		return(1);
 	     }
              sprintf (f2,"%s/%s",home,FSPSITES);
-	     yyin=fopen(f2,"r");
+	     sitein=fopen(f2,"r");
 	     free(f2);
 	     break;
       case 2:
-	     yyin=fopen(FSPSITESRC,"r");
+	     sitein=fopen(FSPSITESRC,"r");
 	     break;
       default:
 	     return 1;
   }
   tryfile++;
-  if(yyin==NULL)
+  if(sitein==NULL)
   {
       /* try next available */
-      rc=yywrap();
+      rc=sitewrap();
       return rc;
   }
 

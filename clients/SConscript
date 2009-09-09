@@ -25,11 +25,12 @@ if CLIENTS:
     fstatcmd=env.Program(target = 'fstatcmd',source=['fstatcmd.c']+client+common)
     fmvcmd=env.Program(target = 'fmvcmd',source=['fmvcmd.c']+client+common)
     fbyecmd=env.Program(target = 'fbye',source=['fbye.c']+client+common)
-    fsetupcmd=env.Program(target = 'fsetupcmd',source=['fsetupcmd.c','fspsites.l','fhost.c']+client+common)
+    fspsites=env.StaticObject('fspsites.l', LEXFLAGS='-Psite')
+    fsetupcmd=env.Program(target = 'fsetupcmd',source=['fsetupcmd.c',fspsites,'fhost.c']+client+common)
 
     MERGED_SRC=[ 'fcatcmd','fcdcmd','fducmd','ffindcmd','fgetcmd','fgrabcmd',
                'fhostcmd','flscmd','fmkdir','fprocmd','fput','frmcmd',
-	       'frmdircmd','fver','fstatcmd','fmvcmd','fbye']
+	       'frmdircmd','fver','fstatcmd','fmvcmd','fbye', 'fsetupcmd']
 
     for program in MERGED_SRC:
 	createMergeSource(program)
@@ -51,10 +52,11 @@ if CLIENTS:
     fstatcmd_m=env.StaticObject('fstatcmd_m.c', CPPDEFINES='-Dmain=fstatcmd_main')
     fmvcmd_m=env.StaticObject('fmvcmd_m.c', CPPDEFINES='-Dmain=fmvcmd_main')
     fbye_m=env.StaticObject('fbye_m.c', CPPDEFINES='-Dmain=fbye_main')
-    fspmerge=env.Program(target = 'fspmerge',source=['merge.c','printpro.c','fspprof.l','fhost.c']+
+    fsetupcmd_m=env.StaticObject('fsetupcmd_m.c', CPPDEFINES='-Dmain=fsetupcmd_main')
+    fspmerge=env.Program(target = 'fspmerge',source=['merge.c','printpro.c','fspprof.l','fhost.c',fspsites]+
     [fcatcmd_m, fcdcmd_m, fducmd_m, ffindcmd_m, fgetcmd_m, fgrabcmd_m,
      fhostcmd_m, flscmd_m, fmkdir_m, fprocmd_m, fput_m, frmcmd_m,
-     frmdircmd_m, fver_m, fmvcmd_m, fstatcmd_m, fbye_m] + [
+     frmdircmd_m, fver_m, fmvcmd_m, fstatcmd_m, fbye_m, fsetupcmd_m] + [
      client, common, bsdfsp])
 
     PROGRAMS=[ fcatcmd, fcdcmd, fducmd, ffindcmd, fgetcmd, fgrabcmd, fhostcmd,
