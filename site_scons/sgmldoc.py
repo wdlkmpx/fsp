@@ -8,12 +8,14 @@
 from SCons.Script import ARGUMENTS,Touch,Delete
 import os
 import SCons.Action
+import SCons.SConf
 
 def checkForSGMLFMT(check):
     """Returns True if we have working sgmlfmt executable for building documentation."""
     check.Message("Checking for working sgmlfmt... ")
     oldp=SCons.Action.print_actions
     SCons.Action.print_actions = 0
+    SCons.SConf.SetCacheMode('force')
     check.env.Execute(Touch('empty'))
     check.env.Execute(Delete('empty.html'))
     rc,out=check.TryAction("sgmlfmt -d docbook -f html empty")
