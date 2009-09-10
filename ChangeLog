@@ -1,5 +1,5 @@
 Version 2.8.1b25 - 10 Sep 2009
-	removed test for size of penis in configure.ac
+	GNU autotools build system was entirely replaced by SCons
 	corrected misleading comment in client/lib.c
 	default packetsize changed to do best fit into maximum 1500 mtu
 	  Ethernet frame = 1460. This is needed for speedup the booting of
@@ -22,10 +22,8 @@ Version 2.8.1b25 - 10 Sep 2009
 	fspscan: commited fix by Yang Hong
 	SCONS: turning on maintainer-mode links against efence (if possible)
 	  same thing like ./configure do
-	autogen.sh script fixed for FreeBSD builds. Execution order of gnu
-	  autotools was wrong and fallback to default autotools was wrong.
 	unbreak compilation on systems without large files
-	cygwin support disabled
+	cygwin support disabled. we cant detect it from SCons yet
 	frmdir works now. It didnt worked due to adding new access rights
 	  DIR_NOLIST and DIR_NOGET
 	MACHINES updated. Builds confirmed on Ubuntu 8.04.3,
@@ -33,7 +31,6 @@ Version 2.8.1b25 - 10 Sep 2009
 	fsetupcmd added to fspmerge client
 	SCons can now build SGML FSP FAQ if sgmlfmt is found during build
 	  process
-	GNU autotools build system was entirely replaced by SCons
         fspmerge now prints short help text if it is invoked as fspmerge
 
 Version 2.8.1b24 - 19 Feb 2005
