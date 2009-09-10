@@ -43,7 +43,6 @@ clients/fver_m.c
 clients/fsetupcmd_m.c
 contrib/fspscan
 doc/fsp-faq.html
-include/config.h
 server/fspd
 tests/cachecheck
 tests/mklargefile
