@@ -10,6 +10,7 @@ PREFIX='/usr/local'
 VERSION='2.8.1b25'
 EFENCE=False
 CLIENTS=True
+SGML=False
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
@@ -59,6 +60,7 @@ from docdir import checkForUserDocdir
 from mandir import autodetectMandir
 from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
+from sgmldoc import checkForSGMLFMT
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -74,7 +76,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForUserDocdir':checkForUserDocdir,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
-		      'checkForBuildingClients':checkForBuildingClients
+		      'checkForBuildingClients':checkForBuildingClients,
+		      'checkForSGMLFMT':checkForSGMLFMT
 		      })
 # check for CC options
 for option in Split("""
@@ -91,7 +94,7 @@ for option in Split("""
       -Wunreachable-code
 """):
        conf.checkForCCOption(option)
-
+SGML=conf.checkForSGMLFMT()
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
@@ -151,5 +154,5 @@ conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR DOCDIR CLIENTS"))
+Export( Split("env PREFIX MANDIR DOCDIR CLIENTS SGML"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
