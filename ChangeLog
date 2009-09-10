@@ -32,6 +32,7 @@ Version 2.8.1b25 - 10 Sep 2009
 	SCons can now build SGML FSP FAQ if sgmlfmt is found during build
 	  process
         fspmerge now prints short help text if it is invoked as fspmerge
+	FILES is up to date now
 
 Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
