@@ -40,16 +40,17 @@ int main (int argc, char ** argv)
   else if(!strcmp(q,"fmvcmd")) fmvcmd_main(argc,argv);
   else if(!strcmp(q,"fbye")) fbye_main(argc,argv);
   else if(!strcmp(q,"fsetupcmd")) fsetupcmd_main(argc,argv);
-
-  else {
-    fprintf(stderr,"Unknown FSP client command: %s\n",q);
-    fprintf(stderr,"\nThis program is single merged executable for invoking FSP client commands.\n"
+  else if(!strcmp(q,"fspmerge")) {
+    fprintf(stderr,"This program is single merged executable for invoking FSP client commands.\n"
                    "It executes different FSP commands based on invoked name. Example:\n"
 		   "If fspmerge is invoked using fver executable name it will execute fver command\n"
 		   "and exit. Executable name can be set using symlink ln -s fspmerge fver or\n"
 		   "setting argv[0] passed to execve function.\n"
 		   "Using merged fsp client over single client executables saves diskspace,\n"
 		   "memory and have shorter startup time.\n");
+  }
+  else {
+    fprintf(stderr,"fspmerge: Unknown FSP client command: %s\n",q);
     exit(EX_USAGE);
   }
   exit(EX_OK);
