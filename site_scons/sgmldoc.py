@@ -5,7 +5,7 @@
 # 10-Sep-2009
 #
 
-from SCons.Script import ARGUMENTS,Touch,Delete
+from SCons.Script import ARGUMENTS,Touch,Delete,Command
 import os
 import SCons.Action
 import SCons.SConf
@@ -15,10 +15,9 @@ def checkForSGMLFMT(check):
     check.Message("Checking for working sgmlfmt... ")
     oldp=SCons.Action.print_actions
     SCons.Action.print_actions = 0
-    SCons.SConf.SetCacheMode('force')
     check.env.Execute(Touch('empty'))
     check.env.Execute(Delete('empty.html'))
-    rc,out=check.TryAction("sgmlfmt -d docbook -f html empty")
+    check.env.Execute(SCons.Action.CommandAction("sgmlfmt -d docbook -f html empty"))
     if os.path.isfile('empty.html'):
         rc = 0
     else:
