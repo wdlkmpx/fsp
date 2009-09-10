@@ -106,18 +106,18 @@ Server Administration:
 
         Sample setup for inetd operation:
 
-            In /etc/services file:
+          In /etc/services file:
 
-                fsp             21/udp          fspd
+            fsp             21/udp          fspd
 
-            In /etc/inetd.conf file:
+          In /etc/inetd.conf file:
 
-                fsp dgram   udp wait ftp /usr/local/bin/fspd in.fspd
+            fsp dgram   udp wait ftp /usr/local/bin/fspd in.fspd
 
-            In this sample, the same port number for ftp is used for the
-            fsp socket.  There will not be a conflict because ftp uses
-            stream protocol, and fsp uses UDP protocol.  The fspd program
-            in this example is ran under user 'ftp'.
+          In this sample, the same port number for ftp is used for the
+          fsp socket.  There will not be a conflict because ftp uses
+          stream protocol, and fsp uses UDP protocol.  The fspd program
+          in this example is ran under user 'ftp'.
 
 	Many other options controlling the behavior of fspd can be set in
 	the fspd.conf file.  Please read the comments in the fspd.conf
