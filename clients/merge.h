@@ -27,3 +27,4 @@ int ffindcmd_main (int argc, char ** argv);
 int fstatcmd_main (int argc, char ** argv);
 int fmvcmd_main (int argc, char ** argv);
 int fbye_main (int argc, char ** argv);
+int fsetupcmd_main (int argc, char ** argv);
