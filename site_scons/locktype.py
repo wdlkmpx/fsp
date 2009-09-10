@@ -1,8 +1,8 @@
 #
 # SCons FSP locking type tester
 #
-# Version 1.1
-# 24-Aug-2009
+# Version 1.2
+# 10-Sep-2009
 #
 
 from SCons.Script import ARGUMENTS
@@ -14,7 +14,7 @@ def checkForLockingType(check,conf):
     fun_shmget=conf.CheckFunc("shmget")
     fun_flock=conf.CheckFunc("flock")
     # select locking type
-    check.Message("Checking for FSP locking type")
+    check.Message("Checking for FSP locking type... ")
     lt=ARGUMENTS.get('locking', 0) or ARGUMENTS.get("with-locking",0) or ARGUMENTS.get("lock",0) or ARGUMENTS.get("with-lock",0)
     if lt == "none":
         conf.env.Append(CPPFLAGS = '-DFSP_NOLOCKING')
