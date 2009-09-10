@@ -98,10 +98,8 @@ Complete content of the FSP package:
     s_extern.h     External definitions for all the functions from server dir. 
     server_conf.h  Server options that need to be manually configured.
     server_def.h   Definitions for the server code.
-    tweak.h        System dependent configurations options.  This file will
-		   be automatically generated from tweak.h.in when the
-		   configure script is run.
-    tweak.h.in	   input file to configure script used to generate tweak.h
+    tweak.h        Defines macros for correct compilation based on SCons
+                   configured defines.
     version.h	   header file containing FSP version information.
 
    man/		   Manual pages for the FSP clients/server.
@@ -133,6 +131,7 @@ Complete content of the FSP package:
      frmdircmd.1
      fspd.1
      fver.1
+     fsetup.1
      fsp_prof.5
      fsp_env.7
 
@@ -185,3 +184,4 @@ Complete content of the FSP package:
     relsignals.py  Check if signal handlers auto installs themself
     docdir.py      User supplied documentation directory
     clients.py	   Check if we are installing client commands
+    sgmldoc.py     Check if sgmlfmt is available and working
