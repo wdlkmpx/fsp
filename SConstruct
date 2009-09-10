@@ -27,6 +27,7 @@ importVariable(env,'CC')
 importVariable(env,'CFLAGS','CCFLAGS')
 importEnvironment(env,prefix='DISTCC_')
 importEnvironment(env,prefix='CCACHE_')
+importEnvironment(env,'PATH')
 
 # Turn CPPFLAGS to list, so we can add values to it
 env.Append( CPPFLAGS = [])
