@@ -43,6 +43,13 @@ int main (int argc, char ** argv)
 
   else {
     fprintf(stderr,"Unknown FSP client command: %s\n",q);
+    fprintf(stderr,"\nThis program is single merged executable for invoking FSP client commands.\n"
+                   "It executes different FSP commands based on invoked name. Example:\n"
+		   "If fspmerge is invoked using fver executable name it will execute fver command\n"
+		   "and exit. Executable name can be set using symlink ln -s fspmerge fver or\n"
+		   "setting argv[0] passed to execve function.\n"
+		   "Using merged fsp client over single client executables saves diskspace,\n"
+		   "memory and have shorter startup time.\n");
     exit(EX_USAGE);
   }
   exit(EX_OK);
