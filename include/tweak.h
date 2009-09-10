@@ -1,8 +1,5 @@
 #ifndef _FSP_TWEAK_H_
 #define _FSP_TWEAK_H_ 1
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 #include <sysexits.h>
 
