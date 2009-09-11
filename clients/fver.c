@@ -63,6 +63,9 @@ int main (int argc, char ** argv)
 	printf(" (max %d bytes/sec)\n", tput);
       } else
 	printf("\tRemote server throughput control is DISABLED.\n");
+      if (*v2 & VER_XTRADATA)
+        printf("\tServer can process extra data in input packets.\n");
+
       /* check for optional max. packet size block */
       if(++v2 < ub->buf+len+len2)
       {

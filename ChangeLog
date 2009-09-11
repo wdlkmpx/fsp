@@ -1,4 +1,8 @@
 Version NEXT
+	fver now reports if server can process extra data in input packets.
+	  fspclient did that for a long time. This field is used by fspd
+	  2.8.1 beta 21 or newer.
+
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
 	corrected misleading comment in client/lib.c
