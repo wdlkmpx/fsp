@@ -1,3 +1,4 @@
+Version NEXT
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
 	corrected misleading comment in client/lib.c
