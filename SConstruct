@@ -2,7 +2,7 @@
 
 import os
 # init Scons
-EnsureSConsVersion(0,96)
+EnsureSConsVersion(1,0)
 EnsurePythonVersion(2,2)
 
 # set defaults
@@ -144,11 +144,11 @@ MANDIR=conf.autodetectMandir(PREFIX)
 MANDIR=conf.checkForUserMandir(MANDIR)
 DOCDIR=PREFIX+'/share/doc/fsp'
 DOCDIR=conf.checkForUserDocdir(DOCDIR)
-EFENCE = conf.MAINTAINER_MODE()
+dmode=conf.checkForDebugBuild()
+EFENCE = conf.MAINTAINER_MODE(dmode)
 if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.checkForLamerPack()
-conf.checkForDebugBuild()
 CLIENTS=conf.checkForBuildingClients()
 conf.checkForClientTimeout()
 conf.Finish()
