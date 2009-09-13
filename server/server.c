@@ -429,7 +429,6 @@ static void server_show_version (struct sockaddr_in * from, UBUF * ub)
   char buf[UBUF_SPACE], verflags = 0;
   unsigned int xtra = VER_BYTES;
   strcpy(buf, "fspd " PACKAGE_VERSION);
-  strcat(buf, "\n");
 
   if (logging)       verflags |= VER_LOG;
   if (read_only)     verflags |= VER_READONLY;

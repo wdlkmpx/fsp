@@ -2,6 +2,11 @@ Version NEXT
 	fver now reports if server can process extra data in input packets.
 	  fspclient did that for a long time. This field is used by fspd
 	  2.8.1 beta 21 or newer.
+	Server version string sent as response to CC_VERSION command have
+	  no longer \n appended to it. Old FSP used it but fver client
+	  command can handle server strings without \n for quite a long
+	  time, so i decided to remove it. It is bad idea to terminate
+	  version strings by \n while it is not required by FSP protocol.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
