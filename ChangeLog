@@ -7,6 +7,9 @@ Version NEXT
 	  command can handle server strings without \n for quite a long
 	  time, so i decided to remove it. It is bad idea to terminate
 	  version strings by \n while it is not required by FSP protocol.
+	glob() function used in FSP clients renamed to bsdglob because it
+	  clashed with glob() functin in newer Linux glibc resulting in
+          segfaults.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons

@@ -49,7 +49,7 @@ int main (int argc, char ** argv)
     f_cd(np);
     puts(np);
   } else {
-    if(!(av = glob(argv[1]))) {
+    if(!(av = bsdglob(argv[1]))) {
       av = av2;
       av2[0] = *argv;
       av2[1] = 0;

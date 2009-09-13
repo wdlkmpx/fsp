@@ -62,7 +62,7 @@ int main (int argc, char ** argv)
   {
     for( optind=1; argc>optind ; optind++)
     {
-      if(!(av = glob(argv[optind])))
+      if(!(av = bsdglob(argv[optind])))
       {
         av = av2;
         av2[0] = argv[optind];
@@ -80,7 +80,7 @@ int main (int argc, char ** argv)
       }
       if(!getsl(n,1024)) break;
       if(!*n) break;
-      if(!(av = glob(n))) {
+      if(!(av = bsdglob(n))) {
         av = av2;
         av2[0] = n;
         av2[1] = 0;

@@ -95,7 +95,7 @@ int main (int argc, char ** argv)
   }
 
   for ( ; argv[optind]; optind++) {
-    if (!(files = glob(argv[optind]))) {
+    if (!(files = bsdglob(argv[optind]))) {
       files = singlefile;
       singlefile[0] = argv[optind];
       singlefile[1] = 0;

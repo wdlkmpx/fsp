@@ -100,7 +100,7 @@ int main (int argc, char **  argv)
   /* Execute plan for all file lists */
   while (*argv) {
     if (argv >= p) break;
-    if (!(files = glob(*argv))) {
+    if (!(files = bsdglob(*argv))) {
       files = singlefile;
       singlefile[0] = *argv;
       singlefile[1] = 0;

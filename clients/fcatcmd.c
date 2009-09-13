@@ -38,7 +38,7 @@ int main (int argc, char ** argv)
       signal(SIGHUP,dont_die);    
 
   while(*++argv) {
-    av = glob(*argv);
+    av = bsdglob(*argv);
     if(av)
       while(*av)
       {

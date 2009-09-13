@@ -223,7 +223,7 @@ static void doargs (int argc, char ** argv)
   statworks = 0;
 
   for (dircnt = regcnt = 0; *argv; ++argv)  {
-    if(!(av = glob(*argv))) {
+    if(!(av = bsdglob(*argv))) {
       av = av2;
       av2[0] = *argv;
       av2[1] = 0;

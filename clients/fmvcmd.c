@@ -80,7 +80,7 @@ int main (int argc, char ** argv)
   {
     for( optind=1; argc-1>optind ; optind++)
     {
-      if(!(av = glob(argv[optind])))
+      if(!(av = bsdglob(argv[optind])))
       {
         av = av2;
         av2[0] = argv[optind];

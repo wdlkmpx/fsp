@@ -42,7 +42,7 @@ int main (int argc, char ** argv)
   env_client();
 
   while(*++argv) {
-    if(!(av = glob(*argv))) {
+    if(!(av = bsdglob(*argv))) {
       av = av2;
       av2[0] = *argv;
       av2[1] = 0;

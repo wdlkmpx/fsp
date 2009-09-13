@@ -423,7 +423,7 @@ static void rscan (register char **t, charfunc f)
   }
 }
 
-char **glob (register char * v)
+char **bsdglob (register char * v)
 {
   char agpath[BUFSIZ];
   char *agargv[GAVSIZ];
