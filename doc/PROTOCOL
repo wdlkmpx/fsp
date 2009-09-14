@@ -398,7 +398,8 @@ RDIRENT.HEADER types:
 		file position:	not used
 		data:           ASCIIZ directory
 		xtra data:	(not required)
-		                word - size of reply's optional data block
+		                word - preferred size of reply's optional data
+                                       (used for readme) + xtra data
 
 		reply
 		file position:  number of extra protection bytes (now 1)
