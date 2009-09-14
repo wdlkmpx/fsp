@@ -326,7 +326,7 @@ RDIRENT.HEADER types:
 		file position:	offset in file
 		data:           ASCIIZ filename
 		xtra data:	(not required)
-		                word - size of reply's optional data block
+		                word - preferred size of reply's data block
 
 		reply
 		file position:  same as in request
