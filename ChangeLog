@@ -22,6 +22,7 @@ Version NEXT
 	Check for overwriting uploaded files in fspd was reversed by mistake.
 	  Now if you want to overwrite file you must have permission for
 	  deleting and adding files or be directory owner.
+	Turning on debug in SCons turns on maintainer mode also.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
