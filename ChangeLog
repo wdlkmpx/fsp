@@ -10,6 +10,15 @@ Version NEXT
 	glob() function used in FSP clients renamed to bsdglob because it
 	  clashed with glob() functin in newer Linux glibc resulting in
           segfaults.
+	non continuous upload detection fixed. Now detection works as follows:
+	  if you are trying to upload past end of file, fspd will report that
+	  you are trying to create hole in file.
+	  if you are seeking backwards more than 1 packet size fspd will
+	  report noncontinuous upload. Most likely port from old unfinished
+	  download was reused.
+	We can now reupload last block which can happen if fspd server is
+	  restarted and reply to upload command is lost on way from server
+	  to client.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons

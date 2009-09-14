@@ -823,7 +823,13 @@ const char *server_up_load (char * data, unsigned int len, unsigned long pos,
        some data loss due to libc stdio write caching */
     /* server do not cleans temporary directory on startup - so
        uploads across restart should work */   
-    if(pos > sf.st_size || pos < sf.st_size - UBUF_SPACE)
+    if(pos > sf.st_size)
+    {
+	fclose(fp);
+	unlink(tname);
+	return("You are creating hole in file. Restart upload.");
+    }
+    if(pos + len < sf.st_size)
     {
 	fclose(fp);
 	unlink(tname);
@@ -851,21 +857,25 @@ const char *server_up_load (char * data, unsigned int len, unsigned long pos,
 
   /* check for uploading on non-tail of file */
   sf.st_size= ftello(fp);
-  if(pos > sf.st_size || pos < sf.st_size - UBUF_SPACE)
+  if(pos > sf.st_size)
   {
         f_cache_delete_entry(fpcache,cache_f);
 	unlink(tname);
-        if( pos == 0)
-	{
-	    /* we can retry */
-            return server_up_load (data,len,pos,inet_num,port_num);
-	}
+	return("You are creating hole in file. Restart upload.");
+  }
+  if(pos + len < sf.st_size)
+  {
+        f_cache_delete_entry(fpcache,cache_f);
+	unlink(tname);
 	return("Non continuous upload detected. Restart upload please.");
   }
-  /*
-  if(fseeko(fp, pos, SEEK_SET))
-      return("Seeking in file failed");
-  */
+  if ( pos != sf.st_size )
+  {
+     if(fseeko(fp, pos, SEEK_SET)) {
+         f_cache_delete_entry(fpcache,cache_f);
+         return("Seeking in file failed");
+     }
+  }
   if(len!=fwrite(data, 1, len, fp))
   {
       f_cache_delete_entry(fpcache,cache_f);
