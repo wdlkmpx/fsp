@@ -912,7 +912,7 @@ const char *server_install (PPATH * pp, unsigned long inet_num,
    }
 
   if(fexist(pp->fullp) &&
-	( (di->protection & DIR_DEL) || acc[0]=='O' )
+	( (di->protection & DIR_DEL)==0 && acc[0] != 'O')
     )
   {
       unlink(tname);
