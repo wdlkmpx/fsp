@@ -119,6 +119,8 @@ checksum use zero in place of MESSAGE_CHECKSUM header field.
 Method of computing checksums is different in each direction. For
 packets traveling from server to client initial checksum value is
 zero, otherwise initial value is packet size (HEADER + DATA + XTRA DATA).
+To get more information why checksums are different in each
+direction see comment about optional extra data in Transport section.
 
 Checksums in server->client direction are computed as follows:
 
