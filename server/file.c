@@ -833,6 +833,8 @@ const char *server_up_load (char * data, unsigned int len, unsigned long pos,
     {
 	fclose(fp);
 	unlink(tname);
+        if ( pos == 0 )
+           return server_up_load(data, len, pos, inet_num, port_num);
 	return("Non continuous upload detected. Restart upload please.");
     }
     /* seek to starting position */
@@ -867,6 +869,8 @@ const char *server_up_load (char * data, unsigned int len, unsigned long pos,
   {
         f_cache_delete_entry(fpcache,cache_f);
 	unlink(tname);
+        if ( pos == 0 )
+           return server_up_load(data, len, pos, inet_num, port_num);
 	return("Non continuous upload detected. Restart upload please.");
   }
   if ( pos != sf.st_size )
