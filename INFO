@@ -45,8 +45,8 @@
 	simplicity, there is a little chance to writing buggy
 	implementation.
 
-	FSP is also good for remote booting. It is simplier than TFTP
-	and supports directory listings.
+	FSP is also good for remote booting. It is simplier, faster
+	and more reliable than TFTP and supports directory listings.
 
 	FSP protocol can be used as wire-protocol even without using
 	any layer 2 stuff. It operates in degraded mode with extra
