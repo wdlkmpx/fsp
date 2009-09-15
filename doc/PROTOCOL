@@ -409,14 +409,14 @@ RDIRENT.HEADER types:
 		xtra data:	protection data (format follows)
 
 		Protection bits:
-		   0 - caller owns the directory
-		   1 - files can be deleted from this dir
-		   2 - files can be added to this dir
-		   3 - new subdirectories can be created
-		   4 - files are NOT readable by non-owners
-		   5 - directory contain an readme file
-		   6 - directory can be listed
-		   7 - files can be renamed in this directory
+		   0 - caller owns the directory                  0x01
+		   1 - files can be deleted from this dir         0x02
+		   2 - files can be added to this dir             0x04
+		   3 - new subdirectories can be created          0x08
+		   4 - files are NOT readable by non-owners       0x10
+		   5 - directory contain an readme file           0x20
+		   6 - directory can be listed                    0x40
+		   7 - files can be renamed in this directory     0x80
 
 	        Compatibility
 		
