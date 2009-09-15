@@ -16,7 +16,7 @@
 
 	FSP uses UDP datagrams and it is reliable even when there is
 	high number of packet loss. It is usable on WiFi network with
-	60% packet loss.
+	60%-80% packet loss.
         
 	FSP can very quickly addapt to changing line condition. This
 	is excelent for wireless packet networks. FSP needs about 6
