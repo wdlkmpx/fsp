@@ -17,13 +17,13 @@
 	FSP uses UDP datagrams and it is reliable even when there is
 	high number of packet loss. It is usable on WiFi network with
 	60%-80% packet loss.
-        
+
 	FSP can very quickly addapt to changing line condition. This
-	is excelent for wireless packet networks. FSP needs about 6
-	RTT to retune itself after receiving condition goes worse.
-	And unlike TCP based protocols, FSP has a fast restart when
-	line improves - It do not needs any RTT; FSP goes immediatly
-	to maximum possible speed. 
+	is excelent for wireless packet networks where network condition
+	changes wildly based on receiver location and disturbance.
+	Unlike TCP based protocols, FSP has a fast restart when
+	line condition improves - It do not needs any RTT for retuning
+	self. FSP goes immediatly back to maximum possible speed.
 	
 	Maximum FSP speed is by design lower than maximum speed of TCP
 	based protocols because it has only 1 packet in the network.
