@@ -81,7 +81,7 @@ int main (int argc, char ** argv)
   if (!pw) pw = getpwuid(getuid());
   if (pw) {
     csh = !strcmp(pw->pw_shell + strlen(pw->pw_shell) - 3, "csh");
-    home = pw->pw_dir;   /* for default search for file .fsp_prof*/
+    home = pw->pw_dir;   /* for default search for file .fspsites */
   } else
       home=getenv("HOME");
 
