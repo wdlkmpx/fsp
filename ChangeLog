@@ -34,6 +34,8 @@ Version NEXT
 	  from .fspsites files.
 	fpwd command from setup.sh now prints site name instead of ip
 	  address if possible.
+	SCons now check if CC compiler works. We need SCons 1.1 or greater
+	  for building FSP now.  
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons

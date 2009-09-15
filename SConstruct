@@ -2,7 +2,7 @@
 
 import os
 # init Scons
-EnsureSConsVersion(1,0)
+EnsureSConsVersion(1,1)
 EnsurePythonVersion(2,2)
 
 # set defaults
@@ -79,7 +79,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
 		      'checkForSGMLFMT':checkForSGMLFMT
-		      })
+	 	      })
+if not conf.CheckCC(): Exit(1)
 # check for CC options
 for option in Split("""
       -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wshadow
