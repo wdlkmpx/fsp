@@ -54,7 +54,7 @@
 	any layer 2 stuff. It operates in degraded mode with extra
 	features disabled.
 
-	Internet operation
+	Stealth operation
 
 	UDP ports are not often port scanned today, only one exception
 	is scanning for Windows/Samba file sharing service. Nobody
@@ -66,10 +66,22 @@
 
 	You want to run anonymous archive and want to keep lamers out.
 
-	You want to share something without ruining your valueable
-	bandwidth.
+        Busy sites
 
-	You have overloaded archive site.
+	You want to share something without ruining your valueable
+	bandwidth or latency. FSP protocol is slower than TCP based
+	protocol it means that more bandwith will be left for your own use.
+	Important point is that starting data sharing via FSP do not
+	considerably raises your network latency because FSP can
+	have just 1 packet floating in network. In ideal condition you will
+	not notice increased latency at all.
+
+	You have overloaded archive site. It is historicaly proven fact
+	that FSP handles overloaded lines or sites better than anything else.
+	FSP is very suitable for distributing updates to very large number
+	of subscribers because it can easily handle traffic spikes without
+	breaking connections and it can be very easily distributed between
+	multiple servers because it is more or less connectionless.
 
 	You do want to share large data files (movies, ISO images) on
 	slow (or you do not want to waste valuable bandwidth) lines.
