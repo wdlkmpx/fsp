@@ -29,7 +29,9 @@
 	based protocols because it has only 1 packet in the network.
 	TCP protocol has about 3 packets. Design of FSP protocol
 	makes impossible to send more than 1 packet into network.
-	This is nice method for bandwidth protection.
+	This is nice method for bandwidth protection, better handling
+	traffic spikes and for sever protection against denial of
+	service attacks on server.
 
 	FSP server do not sends any data out unless is asked for. This
 	solves problem with transfering duplicate data when using TCP
