@@ -32,6 +32,8 @@ Version NEXT
 	  fsetup: No host given! instead of fhost:
 	fsetupcmd got -l option. It lists all known fsp servers collected
 	  from .fspsites files.
+	fpwd command from setup.sh now prints site name instead of ip
+	  address if possible.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons

@@ -42,7 +42,13 @@ _fmore()  { fcatcmd   "$@" | more ; set +f;}
 alias fmore='set -f;_fmore'
 _fpro()   { fprocmd   "$@"; set +f;}
 alias fpro='set -f;_fpro'
-fpwd()   { echo $FSP_DIR on $FSP_HOST port $FSP_PORT ;}
+fpwd()    { 
+            if [ ! -z $FSP_NAME ]; then
+		host=$FSP_NAME;
+	    else
+		host=$FSP_HOST;
+	    fi		
+            echo $FSP_DIR on $host port $FSP_PORT ;}
 _frm()    { frmcmd    "$@"; set +f ;}
 alias frm='set -f;_frm'
 _frmdir() { frmdircmd "$@"; set +f ;}
