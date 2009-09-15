@@ -37,7 +37,7 @@ int sitewrap(void);
 
 static void setup_usage (void) /* print usage message */
 {
-  fprintf(stderr,"Usage: fsetup [ -b | -c ] host port [directory] | abbreviation \n");
+  fprintf(stderr,"Usage: fsetup -l | [ -b | -c ] host port [directory] | abbreviation \n");
   exit(EX_OK);
 }
 
@@ -84,7 +84,7 @@ int main (int argc, char ** argv)
   }
 
   setup=init_host();
-  while ((optletter=getopt(argc, argv,"hbc?")) != EOF)
+  while ((optletter=getopt(argc, argv,"hbcl?")) != EOF)
     switch (optletter) {
       case '?':
       case 'h':
@@ -95,6 +95,10 @@ int main (int argc, char ** argv)
       case 'c':
 	csh=1;
 	break;
+      case 'l':
+        parse_prof_file_new();
+	list_sites_file();
+	exit(0);
       default:
 	setup_usage();
 	break;

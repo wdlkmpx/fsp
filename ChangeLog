@@ -30,6 +30,8 @@ Version NEXT
 	fsetupcmd - reject port number > 65535
 	fsetupcmd - code cleaned a bit. Error message is now
 	  fsetup: No host given! instead of fhost:
+	fsetupcmd got -l option. It lists all known fsp servers collected
+	  from .fspsites files.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons

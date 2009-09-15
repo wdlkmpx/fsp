@@ -20,3 +20,4 @@ void add_host_alias(struct fsp_host *h, const char *name);
 struct fsp_host *find_host(const char *name);
 void list_prof_file (void); /* list resource file */
 int print_host_setup(struct fsp_host *setup,int csh,int lhost);
+void list_sites_file(void); /* list resource file in fspsites format */

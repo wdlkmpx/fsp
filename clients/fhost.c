@@ -114,6 +114,24 @@ void list_prof_file (void) /* list resource file */
   return;
 }
 
+void list_sites_file (void) /* list resource file in fspsites format */
+{
+  int i,j;
+  for(i=0;i<hostsize;i++)
+  {
+      printf("%-20s%6d %-20s",(host[i].hostname?host[i].hostname  :  host[i].hostaddr),(host[i].port<=0? 21 : host[i].port), host[i].dir != NULL? host[i].dir : "/");
+      j=0;
+      while(host[i].alias[j])
+      {
+	  printf("  %s",host[i].alias[j]);
+	  j++;
+      }
+      printf("\n");
+  }
+
+  return;
+}
+
 /* lhost: type of FSP_HOST address NUMBER or NAME */ 
 int print_host_setup(struct fsp_host *setup,int csh,int lhost)
 {
