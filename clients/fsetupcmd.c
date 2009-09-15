@@ -75,11 +75,16 @@ int main (int argc, char ** argv)
   char *log;
   struct passwd *pw=0L;
   struct fsp_host *setup=NULL;
-
+  
+  /* Determine user home directory, try to use password file first
+     fallback to $HOME.
+  */   
   log = (char *)getlogin();
   if (log) pw = getpwnam(log);
   if (!pw) pw = getpwuid(getuid());
   if (pw) {
+    /* Load default shell type from password file. We will check
+    for $SHELL later */  
     csh = !strcmp(pw->pw_shell + strlen(pw->pw_shell) - 3, "csh");
     home = pw->pw_dir;   /* for default search for file .fspsites */
   } else
