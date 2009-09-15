@@ -1,7 +1,7 @@
     /*********************************************************************\
     *  Copyright (c) 1993 by Michael Meskes                               *
     *  (meskes@ulysses.informatik.rwth-aachen.de)                         *
-    *  Copyright (c) 2003-5by Radim Kolar (hsn@cybermail.net)             *
+    *  Copyright (c) 2003-9by Radim Kolar (hsn@sendmail.cz)               *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
@@ -42,36 +42,19 @@ static void setup_usage (void) /* print usage message */
 }
 
 /* get data out of resource file */
-static void parse_prof_file_new (const char * filename)
+static void parse_prof_file_new (void)
 {
-
-  FILE *input=NULL;
   int rc;
 
-  if(filename)
-  {
-      input=fopen(filename,"r");
-  }
-
-  if(input)
-  {
-      sitein=input;
-      rc=0;
-  } else
-      rc=sitewrap();
-
+  rc=sitewrap();
   if(rc==0)
       sitelex();
-
-  if(input)
-      fclose(input);
 }
 
 int main (int argc, char ** argv)
 {
   int optletter,csh,lhost=0;
   register char *p;
-  const char *filename=NULL;
   char *log;
   struct passwd *pw=0L;
   struct fsp_host *setup=NULL;
@@ -117,26 +100,29 @@ int main (int argc, char ** argv)
 	break;
     }
 
-  if(argc > optind+1 && !filename) { /* host and port and no filename given */
+  if(argc > optind + 1) { 
+    /* host and port given */
     for (p=argv[optind];!setup->hostname && *p && *p!='\n';p++)
       if (!isdigit(*p) && *p!='.') setup->hostname=argv[optind];
     if (!setup->hostname) setup->hostaddr=argv[optind];
     setup->port=atol(argv[optind+1]);
-    if(setup->port==0)
+    if(setup->port==0 || setup->port>65535) {
+        /* port is not number, clear hostname/address */
 	setup=init_host();
+    }
     if (argc > optind + 1) setup->dir=argv[optind+2]; /* directory given, too */
   } else if (argc > optind) { /* abbreviation given */
-    parse_prof_file_new(filename);
+    parse_prof_file_new();
     setup=find_host(argv[optind]);
     if(!setup) setup=init_host();
   } else { /* list or set command-line options */
-    if (filename || argc==1) {  /* no arguments */
+    if (argc==1) {  /* no arguments */
       setup_usage();
     }
   }
   if(setup->hostname==NULL && setup->hostaddr==NULL)
   {
-	fprintf(stderr,"fhost: No host given!\n");
+	fprintf(stderr,"fsetup: No host given!\n");
 	exit(EX_USAGE);
   }
   print_host_setup(setup,csh,lhost);
