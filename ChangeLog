@@ -26,6 +26,7 @@ Version NEXT
 	Upload starting at zero position are now always allowed no matter if
 	  source port was reused or not. Old code did that but not over
 	  server restarts.
+	INFO file updated with fresh information  
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
