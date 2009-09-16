@@ -27,7 +27,7 @@ Version NEXT
 	  source port was reused or not. Old code did that but not over
 	  server restarts.
 	INFO file updated with fresh information
-	fsetupcmd - reject port number > 65535
+	fsetupcmd and fhostcmd now reject port number > 65535
 	fsetupcmd - code cleaned a bit. Error message is now
 	  fsetup: No host given! instead of fhost:
 	fsetupcmd got -l option. It lists all known fsp servers collected
