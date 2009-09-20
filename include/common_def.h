@@ -1,6 +1,6 @@
     /*********************************************************************\
     *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
-    *  Copyright (c) 2003-2005 by Radim Kolar                             *
+    *  Copyright (c) 2003-2009 by Radim Kolar                             *
     *                                                                     *
     *  You may copy or modify this file in any manner you wish, provided  *
     *  that this notice is always included, and that you hold the author  *
@@ -51,10 +51,16 @@
 *
 ****************************************************************************/
 
-#define UBUF_HSIZE 12                           /* 12 bytes for the header */
-#define UBUF_SPACE 1024			        /* maximum standard payload. */
-#define UBUF_MAXSPACE 4380                      /* maximum payload supported by server */
-#define DEFAULT_SPACE 1492-20-8-12		/* Max packet size for standard 1500 mtu ethernet */
+#define UBUF_HSIZE 12                      /* 12 bytes for the FSP header.    */
+#define UBUF_SPACE 1024			   /* maximum standard payload.       */
+#define DEFAULT_SPACE 1492-20-8-12	   /* Max packet size for standard    */
+                                           /* 1492 pppOE mtu ethernet.        */
+					   /*  20 bytes is IP header          */
+                                           /*   8 bytes is UDP header         */
+                                           /*  12 bytes is FSP header         */
+#define UBUF_MAXSPACE 4380                 /* maximum payload supported by    */
+                                           /*  server. 3 max packets for 1500 */
+                                           /*  mtu ethernet.                  */
 
 #define NBSIZE (UBUF_MAXSPACE+UBUF_SPACE)
 
