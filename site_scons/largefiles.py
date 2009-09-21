@@ -17,6 +17,10 @@ def enableLargeFiles(conf):
         offt=conf.CheckTypeSize('off_t','#include <stdio.h>')
         if offt < 8:
               env.Replace(CPPFLAGS=flags)
+    else:
+      if offt == 0:
+         #set default value to 4
+         offt=4
     conf.env.Append(CPPFLAGS = '-DSIZEOF_OFF_T='+str(offt))
     if fseeko and int(offt)>=8:
        conf.env.Append(CPPFLAGS = '-DNATIVE_LARGEFILES')
