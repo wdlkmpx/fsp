@@ -252,9 +252,25 @@ CC_VERSION is recommended.
 		xtra data:     not used
 
 		reply
-		file position:  not used
+		file position:  size of extra data 
 		data:           ASCIIZ Error string
-		xtra data:	not used
+		xtra data:	not required
+                                word - error status code
+                
+                Error status codes are not currently standardised. If you
+                wish to participate in standardization process join FSP-devel
+                mailing list. For use in your own software use vendor-specific
+                error codes which have reserved range 0xF000 - 0xFFFF.
+
+                Compatibility
+
+                Support for sizing of extra data in reply was added
+                in fsp 2.8.1b26. Previous versions left this field
+                unchanged. In old versions it will most likely contain
+                file position used by requests but not always. In some
+                code paths in fspd it will be just uninitialized memory.
+                Its recommended to check if file position in reply is 2
+                otherwise it should be processed as containing zero.
 
  CC_GET_DIR  0x41		- get a directory listing
 

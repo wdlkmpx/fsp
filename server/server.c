@@ -146,6 +146,7 @@ static void send_error (struct sockaddr_in * from, UBUF * ub, const char * msg)
   sz=strlen(msg)+1;
   memcpy(ub->buf,msg,sz);
   ub->cmd = CC_ERR;
+  BB_WRITE4(ub->bb_pos,0);
 
   server_reply(from,ub,sz,0);
 }

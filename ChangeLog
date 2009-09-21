@@ -37,6 +37,17 @@ Version NEXT
 	SCons now check if CC compiler works. We need SCons 1.1 or greater
 	  for building FSP now.
 	Large file support on Linux is now correctly detected.
+	Error codes added to CC_ERR command in PROTOCOL. It was long wished
+	  feature from ISV. Now there is standard way how to pass error codes
+	  from server to client. No such codes are defined yet, but you can
+	  use custom error codes in range 0xF000 - 0xFFFF. because no such
+	  codes are defined fspd do not sends them in error message, but it
+	  now correctly zeroes bb_pos field in CC_ERR reply to indicate
+	  that extended error code status is not attached to message. Old
+	  fspd versions left this field untouched - it will contain request
+	  bb_pos in most, but not all cases. Because we indicate size of
+	  extra data to be received, this extended error handling is
+	  compatible with "plain FSP over serial" standard.
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
