@@ -62,6 +62,7 @@ from mandir import autodetectMandir
 from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
 from sgmldoc import checkForSGMLFMT
+from largefiles import enableLargeFiles
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -100,9 +101,6 @@ SGML=conf.checkForSGMLFMT()
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
-fseeko=conf.CheckFunc('fseeko')    
-if fseeko:
-    conf.env.Append(CPPFLAGS = '-DHAVE_FSEEKO')
 if conf.CheckFunc('random'):
     conf.env.Append(CPPFLAGS = '-DHAVE_RANDOM')
 if conf.CheckFunc('fork'):
@@ -128,13 +126,9 @@ env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
 env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
 env.Append(CPPFLAGS = '-DSIZEOF_UNSIGNED='+conf.sizeOf("unsigned"))
 env.Append(CPPFLAGS = '-DSIZEOF_VOID='+conf.sizeOf("void"))
-offt=conf.sizeOf("off_t")
-env.Append(CPPFLAGS = '-DSIZEOF_OFF_T='+offt)
-if fseeko and int(offt)>=8:
-    conf.env.Append(CPPFLAGS = '-DNATIVE_LARGEFILES')
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
-
+enableLargeFiles(conf)
 conf.checkForLockingType(conf)
 if conf.checkReliableSignals():
     conf.env.Append(CPPFLAGS = '-DRELIABLE_SIGNALS')
