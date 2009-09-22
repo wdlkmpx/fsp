@@ -66,9 +66,9 @@ static void fpcache_free_entry (void *entry)
 	fclose(f->fp);
 }
 
-static unsigned int fpcache_entry_profiler (void *entry)
+static unsigned int fpcache_entry_profiler (const void *entry)
 {
-    FPCACHE *f=entry;
+    const FPCACHE *f=entry;
 
     if(f->fp)
 	return sizeof(FILE);
@@ -85,9 +85,9 @@ static void dirlistcache_free_entry (void * entry)
 	free(d->listing);
 }
 
-static unsigned int dirlistcache_entry_profiler (void *entry)
+static unsigned int dirlistcache_entry_profiler (const void *entry)
 {
-    DIRLISTING *d=entry;
+    const DIRLISTING *d=entry;
 
     return d->listing_size;
 }
@@ -108,10 +108,10 @@ static void dirstatcache_free_entry (void * entry)
 	free(d->readme);
 }
 
-static unsigned int dirstatcache_entry_profiler  (void *entry)
+static unsigned int dirstatcache_entry_profiler  (const void *entry)
 {
    /* TODO profiling for owner ip_table */
-   DIRINFO *d=entry;
+   const DIRINFO *d=entry;
    unsigned int res=0;
    if(d->realname)
    {
@@ -144,9 +144,9 @@ static void string_free (void * entry)
 	free(*s);
 }
 
-static unsigned int string_profiler (void *entry)
+static unsigned int string_profiler (const void *entry)
 {
-    char **s=entry;
+    char * const *s=entry;
 
     if(*s!=NULL)
 	return(strlen(*s));
