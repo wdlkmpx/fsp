@@ -291,7 +291,7 @@ void * f_cache_get_key(struct FifoCache *cache,const void *entry)
     if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop)
          return NULL;
     /* find cache index */
-    i=((int8_t *)entry-cache->e_head)/cache->entrysize;
+    i=((const int8_t *)entry-cache->e_head)/cache->entrysize;
     return cache->k_head+cache->keysize*i;
 }
 
