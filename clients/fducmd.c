@@ -90,7 +90,7 @@ int main (int argc, char ** argv)
 
   /* special case `du' without file arguments -- becomes `du .' */
   if (argc == optind) {
-    argv=wild;
+    argv=(char **)wild;
     optind=0;
   }
 
