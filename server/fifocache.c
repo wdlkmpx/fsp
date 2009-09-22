@@ -6,7 +6,6 @@
  * (aka MIT/X11 License).
  */
 
-#include "tweak.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
