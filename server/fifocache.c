@@ -111,7 +111,7 @@ void f_cache_stats(struct FifoCache *cache,FILE *f)
 	{
 	    for(j=0;j<cache->keysize;j++)
 	    {
-		if( *(cache->k_head+i*cache->keysize+j) != 0)
+		if( *(const char*)(cache->k_head+i*cache->keysize+j) != 0)
 		{
 		    used++;
 		    break;
@@ -174,7 +174,7 @@ void f_cache_destroy(struct FifoCache *cache)
 	memset(cache->k_head,0,cache->keysize*cache->cachesize);
 	free(cache->k_head);
     }
-    memset(cache,0,sizeof(struct FifoCache);
+    memset(cache,0,sizeof(struct FifoCache));
     free(cache);
 }
 
@@ -288,9 +288,10 @@ void * f_cache_get_key(struct FifoCache *cache,const void *entry)
     if(cache->entrysize==0 || cache->keysize==0) return NULL;
 
     /* check if pointer is good */
-    if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop) return NULL;
+    if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop)
+         return NULL;
     /* find cache index */
-    i=((const BYTE *)(entry)-cache->e_head)/cache->entrysize;
+    i=(entry-cache->e_head)/cache->entrysize;
     return cache->k_head+cache->keysize*i;
 }
 
@@ -310,7 +311,7 @@ int f_cache_delete_entry(struct FifoCache *cache, void *entry)
     /* check if pointer is good */
     if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop) return 0;
     /* find cache index */
-    i=((BYTE *)(entry)-cache->e_head)/cache->entrysize;
+    i=(entry-cache->e_head)/cache->entrysize;
 
     /* deallocate */
     if(cache->k_destroy_func) cache->k_destroy_func(cache->k_head+cache->keysize*i);
