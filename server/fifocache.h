@@ -1,3 +1,5 @@
+#include <sys/types.h>
+
 /* 
  * Simple FIFO generic cache. (c) Radim Kolar 2003, 2009
  * This file is copyrighted as LGPL v2.1
@@ -9,11 +11,11 @@
 struct FifoCache
 {
     unsigned int cachesize; /* max. number of entries */
-    void *e_head; /* block of cache entries, every entry has entrysize bytes */
+    int8_t *e_head;/* block of cache entries, every entry has entrysize bytes */
     void *e_next; /* new intem will be placed there */
     const void *e_stop; /* stop mark for entries, never write here! */
     unsigned int entrysize; /* size of 1 entry in bytes */
-    void *k_head; /* block of keys starts there */
+    int8_t *k_head; /* block of keys starts there */
     void *k_next; /* new item */
     const void *k_stop; /* stop mark for key entries */
     unsigned int keysize; /* size of 1 key in bytes */
