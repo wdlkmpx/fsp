@@ -291,7 +291,7 @@ void * f_cache_get_key(struct FifoCache *cache,const void *entry)
     if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop)
          return NULL;
     /* find cache index */
-    i=(entry-cache->e_head)/cache->entrysize;
+    i=((int8_t *)entry-cache->e_head)/cache->entrysize;
     return cache->k_head+cache->keysize*i;
 }
 
@@ -311,7 +311,7 @@ int f_cache_delete_entry(struct FifoCache *cache, void *entry)
     /* check if pointer is good */
     if(entry<(const void *)cache->e_head || entry>=(const void *)cache->e_stop) return 0;
     /* find cache index */
-    i=(entry-cache->e_head)/cache->entrysize;
+    i=((int8_t *)entry-cache->e_head)/cache->entrysize;
 
     /* deallocate */
     if(cache->k_destroy_func) cache->k_destroy_func(cache->k_head+cache->keysize*i);
