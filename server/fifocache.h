@@ -12,11 +12,11 @@ struct FifoCache
 {
     unsigned int cachesize; /* max. number of entries */
     int8_t *e_head;/* block of cache entries, every entry has entrysize bytes */
-    void *e_next; /* new intem will be placed there */
+    int8_t *e_next; /* new intem will be placed there */
     const void *e_stop; /* stop mark for entries, never write here! */
     unsigned int entrysize; /* size of 1 entry in bytes */
     int8_t *k_head; /* block of keys starts there */
-    void *k_next; /* new item */
+    int8_t *k_next; /* new item */
     const void *k_stop; /* stop mark for key entries */
     unsigned int keysize; /* size of 1 key in bytes */
     void (*k_destroy_func) (void *key); /* key destoy function */
