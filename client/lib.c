@@ -16,6 +16,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <sys/time.h>
 
 
 static int myfd;
