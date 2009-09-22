@@ -24,13 +24,12 @@ struct FifoCache
     int (*k_compare_func) (const void *key1,const void *key2); /* element destoy function */
     unsigned int hit; /* cache search hits */
     unsigned int miss; /* cache search misses */
-    unsigned int (*get_keysize) (void *key); /* return dynamic memory used by key */
-    unsigned int (*get_entrysize) (void *entry);  /* return dynamic memory used by entry */
+    unsigned int (*get_keysize) (const void *key); /* return dynamic memory used by key */
+    unsigned int (*get_entrysize) (const void *entry);  /* return dynamic memory used by entry */
 };
 
 /* prototypes */
 struct FifoCache * f_cache_new(unsigned int cachesize,unsigned int entrysize,void (*edf) (void *key),unsigned int keysize, void (*kdf) (void *key), int (*kcf)(const void *,const void *));
-void f_cache_set_memory_profilers(struct FifoCache *cache,unsigned int (*keysize) (void *key),unsigned int (*entrysize) (void *entry));
 void f_cache_destroy(struct FifoCache *cache);
 void * f_cache_put(struct FifoCache *cache,const void *key,const void *data);
 void f_cache_clear(struct FifoCache *cache);
@@ -40,4 +39,5 @@ void * f_cache_get_key(struct FifoCache *cache,const void *entry);
 int f_cache_delete_by_key(struct FifoCache *cache, void *key);
 /* utility functions */
 unsigned int f_cache_void_profiler(void *anything);
+void f_cache_set_memory_profilers(struct FifoCache *cache,unsigned int (*keysize) (const void *key),unsigned int (*entrysize) (const void *entry));
 void f_cache_stats(struct FifoCache *cache,FILE *f);

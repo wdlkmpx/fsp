@@ -83,7 +83,7 @@ struct FifoCache * f_cache_new(unsigned int cachesize,unsigned int entrysize,
  * @param keysize returns size of key in bytes
  * @param entrysize returns size of entry in bytes
  */
-void f_cache_set_memory_profilers(struct FifoCache *cache,unsigned int (*keysize) (void *key),unsigned int (*entrysize) (void *entry))
+void f_cache_set_memory_profilers(struct FifoCache *cache,unsigned int (*keysize) (const void *key),unsigned int (*entrysize) (const void *entry))
 {
     cache->get_keysize=keysize;
     cache->get_entrysize=entrysize;
