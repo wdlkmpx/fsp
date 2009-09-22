@@ -1,5 +1,5 @@
  /*********************************************************************\
- *  Copyright (c) 2004-2005 by Radim Kolar                             *
+ *  Copyright (c) 2004-2009 by Radim Kolar                             *
  *  Copyright (c) 1991 by Wen-King Su (wen-king@vlsi.cs.caltech.edu)   *
  *                                                                     *
  *  You may copy or modify this file in any manner you wish, provided  *
@@ -12,6 +12,7 @@
 #include "client_def.h"
 #include "c_extern.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "my-string.h"
 
 static int env_dir_malloced = 0;
@@ -243,10 +244,10 @@ static RDIRENT **get_dir_blk (char * path)
 }
 
 static int util_download_main (char * path, char * fpath, FILE * fp,
-				     unsigned long start_from, int cmd)
+				     off_t start_from, int cmd)
 {
-  unsigned long pos, started_from = start_from, downloaded;
-  unsigned tmax, wrote, sent_time, rlen;
+  off_t pos, started_from = start_from, downloaded;
+  unsigned int tmax, wrote, sent_time, rlen;
   UBUF *ub;
   time_t t = time(NULL);
 
@@ -256,8 +257,8 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
 
     if(client_trace && (udp_sent_time != sent_time)) {
       sent_time = udp_sent_time;
-      if(client_buf_len >= UBUF_SPACE) fprintf(stderr,"\r%luk  ",1+(pos>>10));
-      else fprintf(stderr,"\r%lu   ", pos);
+      if(client_buf_len >= UBUF_SPACE) fprintf(stderr,"\r%luk  ",(long unsigned int)(1+(pos>>10)));
+      else fprintf(stderr,"\r%lu   ", (long unsigned int) pos);
       fflush(stderr);
     }
 
@@ -269,7 +270,7 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
     rlen = BB_READ2(ub->bb_len);
     wrote = fwrite(ub->buf,1,rlen,fp);
     /* check for long integer pos overflow */
-#if SIZEOF_LONG > 4
+#if SIZEOF_OFF_T > 4
     if(pos+wrote>FOURGIGS)
 	break;
 #else
@@ -289,7 +290,7 @@ static int util_download_main (char * path, char * fpath, FILE * fp,
   downloaded = pos - started_from;
   if(client_trace)
   {
-    fprintf(stderr,"\r%luk : %s [%ldB/s] \n", 1+(pos>>10), path, downloaded/t);
+    fprintf(stderr,"\r%luk : %s [%ldB/s] \n", (long unsigned int)(1+(pos>>10)), path, (long int)(downloaded/t));
     util_pktstats();
     fflush(stderr);
   }
@@ -430,7 +431,7 @@ int util_upload (char * path, FILE * fp, time_t stamp)
     }
 
     if(!bytes && !first) break;
-#if SIZEOF_LONG > 4
+#if SIZEOF_OFF_T > 4
     if(pos+bytes>FOURGIGS)
 	break;
 #else
