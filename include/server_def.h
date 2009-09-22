@@ -63,7 +63,7 @@ typedef struct { FILE *fp;
 
 /* DIRLISTING holds open directory listings */
 typedef struct {
-    BYTE *listing;       /* pointer to directory listing */
+    int8_t *listing;     /* pointer to directory listing */
     size_t listing_size; /* how many bytes has listing? */
     time_t mtime;        /* when cache was build */
 } DIRLISTING;

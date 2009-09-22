@@ -375,7 +375,7 @@ static const char *copy_file (const char * n1, const char * n2)
 /* appends new packet to directory listing, return 0 on success */
 static int append_dir_listing (DIRLISTING * dl,const char * buf,unsigned int size)
 {
-      BYTE *newbuf;
+      int8_t *newbuf;
 
       /* append this buffer */
       newbuf=realloc(dl->listing,dl->listing_size+size);
