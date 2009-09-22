@@ -50,7 +50,6 @@ from maintainer import checkForMaintainerMode
 from compilertest import checkForCCOption
 from prefix import checkForUserPrefix
 from lockprefix import checkForLockPrefix
-from clangtest import getVariableSize
 from locktype import checkForLockingType
 from lamerpack import checkForLamerpack
 from debugmode import checkForDebugBuild
@@ -68,7 +67,6 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
 		      'checkForLockPrefix':checkForLockPrefix,
 		      'checkPrefix':checkForUserPrefix,
-		      'sizeOf':getVariableSize,
 		      'checkForLockingType':checkForLockingType,
 		      'checkForLamerPack':checkForLamerpack,
 		      'checkForDebugBuild':checkForDebugBuild,
@@ -121,11 +119,6 @@ if conf.CheckCHeader('sys/wait.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SYS_WAIT_H')
 if conf.CheckCHeader('utime.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_UTIME_H')
-env.Append(CPPFLAGS = '-DSIZEOF_CHAR='+conf.sizeOf("char"))
-env.Append(CPPFLAGS = '-DSIZEOF_LONG='+conf.sizeOf("long"))
-env.Append(CPPFLAGS = '-DSIZEOF_SHORT='+conf.sizeOf("short"))
-env.Append(CPPFLAGS = '-DSIZEOF_UNSIGNED='+conf.sizeOf("unsigned"))
-env.Append(CPPFLAGS = '-DSIZEOF_VOID='+conf.sizeOf("void"))
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
 enableLargeFiles(conf)

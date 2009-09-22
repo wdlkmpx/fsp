@@ -48,6 +48,11 @@ Version NEXT
 	  bb_pos in most, but not all cases. Because we indicate size of
 	  extra data to be received, this extended error handling is
 	  compatible with "plain FSP over serial" standard.
+	Code portability improved. Now we dont need to check sizes of
+	  predefined types because we are now using ISO C types. Only thing
+	  what we need to know is if largefiles are supported or not.
+	  If SCons cant run test program for sizing off_t for any reason,
+	  it defaults to 4 (no largefiles, 32-bit system).
 
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
