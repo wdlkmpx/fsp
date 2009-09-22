@@ -1,6 +1,6 @@
 /* 
- * Simple FIFO generic cache. (c) Radim Kolar 2003. 
- * This file is copyrighted as LGPL.
+ * Simple FIFO generic cache. (c) Radim Kolar 2003, 2009
+ * This file is copyrighted as LGPL v2.1
  *
  * When this file is used as part of FSP, it uses 2-term BSD license
  * (aka MIT/X11 License).
