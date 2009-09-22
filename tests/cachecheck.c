@@ -9,8 +9,11 @@
 #include <stdlib.h>
 #include "../server/fifocache.h"
 
-static int intcompare(const int *i1,const int *i2)
+static int intcompare(const void *vi1,const void *vi2)
 {
+    const int *i1,*i2;
+    i1 = vi1;
+    i2 = vi2;
     if(i1==NULL || i2==NULL) return 1;
     if(*i1==*i2) return 0;
     return 1;
@@ -41,27 +44,31 @@ int main(int argv,char **argc)
 {
     struct FifoCache * cache;
     char file[20];
-    char *s;
+    const char *s;
     int i;
 
     cache=f_cache_new(4,sizeof(file),NULL,sizeof(int),NULL,intcompare);
     assert(cache!=NULL);
     strcpy(file,"/jeden/soubor");
     i=1;
+    printf("Puting key %d: %s\n",i,file);
     f_cache_put(cache,&i,file);
     strcpy(file,"/druhy");
     i=2;
+    printf("Puting key %d: %s\n",i,file);
     f_cache_put(cache,&i,file);
     strcpy(file,"/treti");
     i=3;
+    printf("Puting key %d: %s\n",i,file);
     f_cache_put(cache,&i,file);
     strcpy(file,"/ctvrty/soubor");
     i=4;
+    printf("Puting key %d: %s\n",i,file);
     f_cache_put(cache,&i,file);
 
     for(i=0;i<=5;i++)
     {
-       printf("Finding key %d: %s\n",i,f_cache_find(cache,&i));
+       printf("Finding key %d: %s\n",i,(char *)f_cache_find(cache,&i));
     }
     f_cache_clear(cache);
     f_cache_destroy(cache);
@@ -74,9 +81,9 @@ int main(int argv,char **argc)
     s="lamer2";
     f_cache_put(cache,&s,NULL);
     s="lamer co tu neni";
-    printf("find2: %s\n",f_cache_find(cache,&s));
+    printf("find2: %s\n",(char *)f_cache_find(cache,&s));
     s="lamer1";
-    printf("find2: %s\n",f_cache_find(cache,&s));
+    printf("find2: %s\n",(char *)f_cache_find(cache,&s));
 
     return 0;
 }
