@@ -39,6 +39,17 @@ Data formats used in this document:
     protection. To get password protected file, append '\n' followed
     by password to filename.
 
+Uniform Resource Locator
+
+  Uniform resource locator format for FSP v2 protocol is:
+
+  fsp://password@hostname:port/directory/filename.ext
+
+  If port is omitted FSP standard port 21 is used, if password
+  part is omitted no password is sent. If no password is used URL must
+  not contain @ character before hostname. FSP URL do not have query
+  and anchor parts.
+
 Transport
 
   FSP uses UDP datagrams as standard transport medium for operation in
