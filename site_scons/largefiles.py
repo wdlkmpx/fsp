@@ -1,8 +1,8 @@
 #
 # SCons Largefile enablement
 #
-# Version 1.0
-# 21-Sep-2009
+# Version 1.1
+# 01-Oct-2009
 #
 
 def enableLargeFiles(conf):
@@ -10,11 +10,11 @@ def enableLargeFiles(conf):
     fseeko=conf.CheckFunc('fseeko')
     if fseeko:
         conf.env.Append(CPPFLAGS = '-DHAVE_FSEEKO')
-    offt=conf.CheckTypeSize('off_t','#include <stdio.h>')
+    offt=conf.CheckTypeSize('off_t','#include <stdio.h>\n#include <sys/types.h>')
     if offt<8 and offt>0:
         flags=conf.env.Dictionary()['CPPFLAGS']
 	conf.env.Append(CPPFLAGS='-D_FILE_OFFSET_BITS=64')
-        offt=conf.CheckTypeSize('off_t','#include <stdio.h>')
+        offt=conf.CheckTypeSize('off_t','#include <stdio.h>\n#include <sys/types.h>')
         if offt < 8:
               env.Replace(CPPFLAGS=flags)
     else:
