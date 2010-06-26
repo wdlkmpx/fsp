@@ -85,7 +85,7 @@ typedef struct RDIRENT { unsigned long  time;
 #define RDTYPE_DIR      0x02
 #define RDTYPE_SKIP     0x2A
 
-#define NULLP ((char *) 0)
+#define NULLP ((void *) 0)
 
 
 /****************************************************************************
