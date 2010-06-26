@@ -89,7 +89,7 @@ for option in Split("""
       -ggdb -fno-common -Wchar-subscripts -Wcomment
       -Wimplicit -Wsequence-point -Wreturn-type
       -Wfloat-equal -Wno-system-headers -Wredundant-decls
-      -Wmissing-noreturn -pedantic
+      -pedantic
       -Wlong-long -Wundef -Winline
       -Wpointer-arith -Wno-unused-parameter
       -Wunreachable-code
