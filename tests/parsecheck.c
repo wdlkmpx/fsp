@@ -68,7 +68,7 @@ static int runtestcase(void)
     int i=0;
     PPATH pp;
     const char *err;
-    const char *test;
+    char *test;
 
     for(;testcases[i];i++)
     {
