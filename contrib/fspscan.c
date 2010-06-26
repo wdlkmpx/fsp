@@ -286,7 +286,7 @@ int _x_adr(char *host,int port,struct sockaddr_in *his)
     if((his->sin_addr.s_addr = inet_addr(host)) != INADDR_NONE) {
 	his->sin_family = AF_INET;
     } else
-    if(H = gethostbyname(host)) {
+    if((H = gethostbyname(host))) {
 	for(s = (char *)H->h_addr,
 	    d = (char *)&his->sin_addr,
 	    i = H->h_length; i--; *d++ = *s++);
