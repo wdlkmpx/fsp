@@ -167,7 +167,8 @@ UBUF *client_interact(cmd,pos,l1,p1,l2,p2)
     unsigned char *s, *t, *d;
     unsigned u, n, sum, mlen;
     fd_set mask;
-    int retval, bytes, retry;
+    int retval, retry;
+    socklen_t bytes;
 
     sbuf.cmd = cmd;
     sbuf.len = htons(l1);
@@ -253,9 +254,10 @@ void client_intr(int sig)
 
 int _x_udp(int *port)
 {
-    int f, len, zz;
+    int f, zz;
     struct sockaddr_in me ;
     struct sockaddr_in sin;
+    socklen_t len;
 
     me = sin = INET_ZERO;
 
