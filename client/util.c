@@ -490,7 +490,8 @@ static void util_get_env (void)
   if(!(env_local_dir = getenv("FSP_LOCAL_DIR"))) env_local_dir=".";
 
   if(!(p = getenv("FSP_TIMEOUT"))) env_timeout = DEFAULT_TIMEOUT;
-  else env_timeout = atol(p);
+  else env_timeout = atoi(p);
+  if ( env_timeout <= 0 ) env_timeout = 0x7fffffff;
 }
 
 
