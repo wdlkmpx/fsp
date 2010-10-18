@@ -254,7 +254,7 @@ static RETSIGTYPE client_intr (int signum)
 void init_client (const char * host, unsigned short port, unsigned short myport)
 {
   busy_delay = idle_delay = target_delay;
-  stat_resends = stat_iresends = stat_dupes = stat_bad = stat_ok;
+  stat_resends = stat_iresends = stat_dupes = stat_bad = stat_ok = 0;
 #ifdef HAVE_SRANDOMDEV
   srandomdev();
 #else
