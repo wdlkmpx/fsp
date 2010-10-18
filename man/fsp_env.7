@@ -32,11 +32,12 @@ password protected. FSP server can change your access level if you have
 provided a correct password. There are 2 access levels: public and owner.
 .TP
 .B FSP_BUF_SIZE
-Prefered size of server reply. Default is 1024 which is also maximum
-allowed value by all servers. Some servers can accept larger packets and
-you will get some extra speed with them.
-You can lower that value if you want to get smaller
-packets from server.
+Prefered size of server reply. Default for client is 1024 which is also
+maximum value required for all FSP servers by protocol specification.
+Some servers can accept and send larger packets, default value for fspd is 1452.
+Using larger packets will you give extra speed. For best reliability network transport must be able to send entire packet without need for fragmentation.
+You can lower size if you want to get smaller packets from server or slow down
+client.
 .TP
 .B FSP_DIR
 The current working directory of the client in the FSP server.
