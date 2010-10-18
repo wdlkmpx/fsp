@@ -203,7 +203,7 @@ int print_host_setup(struct fsp_host *setup,int csh,int lhost)
       if (setup->trace) printf("setenv FSP_TRACE;\n");
       else printf("unsetenv FSP_TRACE;\n");
     } else {
-      if (setup->trace) printf("FSP_TRACE;\nexport FSP_TRACE;\n");
+      if (setup->trace) printf("FSP_TRACE=on;\nexport FSP_TRACE;\n");
       else printf("unset FSP_TRACE;\n");
     }
   }
