@@ -1,6 +1,7 @@
 Version NEXT
 	fhostcmd: Fixed output of FSP_TRACE variable for Bourne style shells
 	correctly intialize to zero client packet sent statistic counter
+	note default timeout values in fsp_env man page
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.
