@@ -62,6 +62,7 @@ from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
 from sgmlformat import checkForSGMLFMT
 from largefiles import enableLargeFiles
+from jade import checkDSSSLProcessor
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -77,7 +78,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
-		      'checkForSGMLFMT':checkForSGMLFMT
+		      'checkForSGMLFMT':checkForSGMLFMT,
+		      'checkDSSSLProcessor':checkDSSSLProcessor
 	 	      })
 if not conf.CheckCC(): Exit(1)
 # check for CC options
@@ -96,7 +98,12 @@ for option in Split("""
       -fmacro-backtrace-limit=2 -Wno-cast-align -Wno-pointer-sign
 """):
        conf.checkForCCOption(option)
-SGML=conf.checkForSGMLFMT()
+if conf.checkDSSSLProcessor("jade"):
+    JADE = "jade"
+elif conf.checkDSSSLProcessor("openjade"):
+    JADE = "openjade"    
+else:
+    JADE = False
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
