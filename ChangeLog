@@ -1,10 +1,13 @@
 Version NEXT
 	fhostcmd: Fixed output of FSP_TRACE variable for Bourne style shells
-	correctly intialize to zero client packet sent statistic counter
+	correctly initialize to zero client packet sent statistic counter
 	note default timeout values in fsp_env man page
 	setting environment value FSP_TIMEOUT to <=0 uses 4byte maxint value
 	note default fspd max packet size in fsp_env man page
 	fix build on systems with utmpx.h API (FreeBSD 9)
+	fspscan: do not shadow host variable
+	fspscan: fix clang warning about empty for cycle body by placing
+	  semicolon on separate line
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.
@@ -16,7 +19,7 @@ Version 2.8.1b26 - 1 Oct 2009
 	  time, so i decided to remove it. It is bad idea to terminate
 	  version strings by \n while it is not required by FSP protocol.
 	glob() function used in FSP clients renamed to bsdglob because it
-	  clashed with glob() functin in newer Linux glibc resulting in
+	  clashed with glob() function in newer Linux glibc resulting in
           segfaults.
 	non continuous upload detection fixed. Now detection works as follows:
 	  if you are trying to upload past end of file, fspd will report that
@@ -56,7 +59,7 @@ Version 2.8.1b26 - 1 Oct 2009
 	  bb_pos in most, but not all cases. Because we indicate size of
 	  extra data to be received, this extended error handling is
 	  compatible with "plain FSP over serial" standard.
-	Code portability improved. Now we dont need to check sizes of
+	Code portability improved. Now we don't need to check sizes of
 	  predefined types because we are now using ISO C types. Only thing
 	  what we need to know is if largefiles are supported or not.
 	  If SCons cant run test program for sizing off_t for any reason,
@@ -65,7 +68,7 @@ Version 2.8.1b26 - 1 Oct 2009
 Version 2.8.1b25 - 10 Sep 2009
 	GNU autotools build system was entirely replaced by SCons
 	corrected misleading comment in client/lib.c
-	default packetsize changed to do best fit into maximum 1500 mtu
+	default packetsize changed to do best fit into maximum 1500 MTU
 	  Ethernet frame = 1460. This is needed for speedup the booting of
 	  Etherboot clients
 	PROTOCOL: when computing checksum declare *t as unsigned char * type
@@ -83,12 +86,12 @@ Version 2.8.1b25 - 10 Sep 2009
 	fcd: remove trailing \r\n from readme file
 	fcd: do not print empty line after directory protection
 	fsetupcmd: don't crash if called with numeric address
-	fspscan: commited fix by Yang Hong
+	fspscan: committed fix by Yang Hong
 	SCONS: turning on maintainer-mode links against efence (if possible)
 	  same thing like ./configure do
-	unbreak compilation on systems without large files
+	fix compilation on systems without large files
 	cygwin support disabled. we cant detect it from SCons yet
-	frmdir works now. It didnt worked due to adding new access rights
+	frmdir works now. It didn't worked due to adding new access rights
 	  DIR_NOLIST and DIR_NOGET
 	MACHINES updated. Builds confirmed on Ubuntu 8.04.3,
 	  FreeBSD 6.4 and FreeBSD 7.2
@@ -102,7 +105,7 @@ Version 2.8.1b24 - 19 Feb 2005
 	use getopt from stdio.h instead of getopt.h in fspscan.c
 	  fspscan now compiles on AIX and other OS without glibc (hoaxter)
 	!! fixed fatal bug from b23. Server sends large packets to clients if
-	  client request has not prefered reply size inside. This confuses
+	  client request has not preferred reply size inside. This confuses
 	  all old fsp clients.
 	common/strdup.c removed
 	bsd_src/function.c bcopy -> memmove
@@ -124,7 +127,7 @@ Version 2.8.1b23 - 14 Jan 2005
 	Locking type can be specified by ./configure --with-locking=
 	Lock prefix can be specified by ./configure --with-lockprefix=
 	All 5 locking subsystems synced against fsplib and fspclient code base
-	Do not use CC_STAT when doing directory listing -- performace gain.
+	Do not use CC_STAT when doing directory listing -- performance gain.
 	  This saves 1 RTT per directory listing.
 	clients: do not send CC_BYE to the server on exit if we can keep server
 	  key for next invocation. Saves 1 RTT.
@@ -137,18 +140,18 @@ Version 2.8.1b23 - 14 Jan 2005
 	PROTOCOL: Add note about client key multiplexing
 	we have incorrectly recovered requested size of reply packet sent
 	  by client
-	!! LARGE PACKET SUPPORT !! FSP can be quite Faaaast now.
+	!! LARGE PACKET SUPPORT !! FSP can be quite Fast now.
 	fver -l displays maximum packet size supported by client
 	fsp_env.7: added info about larger packets
 	send_file function renamed to serve_file for avoiding name clash
 	  on AIX.
-	idle resend multiplier descreased from 1.5 to 1.33
+	idle resend multiplier decreased from 1.5 to 1.33
 	correctly init first sequence number
 	sequence numbering changed to allow up to 8 packets flying in the
 	  network. Old code uses 4. Even CZFREE.net do not drops 8 packets
 	  in row unless line is down.
-	allow better debuging of retry alg.
-	Default max packesize supported by server set by 1200 bytes for
+	allow better debugging of retry alg.
+	Default max packetsize supported by server set by 1200 bytes for
 	  now. Let's make some experiments.
 	Calculate real RTT using seq. numbers
 	ignore HUP signal in fgetcmd and fputcmd
@@ -250,7 +253,7 @@ Version 2.8.1b21 - 1 Nov 2004
 	add fmvcmd client for renaming files
 	reorder some checks in configure.ac
 	added one testcase to the path test suite
-	client library did not sended any passwords to server
+	client library did not sent any passwords to server
 	util_abs_path now appends \npassword to full path
 	server do not send correctly \0 terminated directory readmes
 	PROTOCOL: Added information about optionally large sized packets,
