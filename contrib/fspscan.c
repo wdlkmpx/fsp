@@ -273,7 +273,7 @@ int _x_udp(int *port)
     if(!*port) *port = ntohs((unsigned short) sin.sin_port); return(f);
 }
 
-int _x_adr(char *host,int port,struct sockaddr_in *his)
+int _x_adr(char *xhost,int port,struct sockaddr_in *his)
 {
     char myhost[128];
     struct hostent *H;
@@ -281,12 +281,12 @@ int _x_adr(char *host,int port,struct sockaddr_in *his)
     char *s, *d;
 
     *his = INET_ZERO;
-    if(!host) (void) gethostname(host = myhost,sizeof(myhost));
+    if(!xhost) (void) gethostname(xhost = myhost,sizeof(myhost));
 
-    if((his->sin_addr.s_addr = inet_addr(host)) != INADDR_NONE) {
+    if((his->sin_addr.s_addr = inet_addr(xhost)) != INADDR_NONE) {
 	his->sin_family = AF_INET;
     } else
-    if((H = gethostbyname(host))) {
+    if((H = gethostbyname(xhost))) {
 	for(s = (char *)H->h_addr,
 	    d = (char *)&his->sin_addr,
 	    i = H->h_length; i--; *d++ = *s++);
