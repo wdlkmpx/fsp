@@ -63,6 +63,7 @@ from sysconfdir import checkForUserSysconfdir
 from sgmlformat import checkForSGMLFMT
 from largefiles import enableLargeFiles
 from jade import checkDSSSLProcessor
+from dsssl import findDocbookStylesheets
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
                       'MAINTAINER_MODE':checkForMaintainerMode,
@@ -79,7 +80,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
 		      'checkForSGMLFMT':checkForSGMLFMT,
-		      'checkDSSSLProcessor':checkDSSSLProcessor
+		      'checkDSSSLProcessor':checkDSSSLProcessor,
+		      'findDocbookStylesheets':findDocbookStylesheets
 	 	      })
 if not conf.CheckCC(): Exit(1)
 # check for CC options
@@ -101,9 +103,14 @@ for option in Split("""
 if conf.checkDSSSLProcessor("jade"):
     JADE = "jade"
 elif conf.checkDSSSLProcessor("openjade"):
-    JADE = "openjade"    
+    JADE = "openjade"
 else:
     JADE = False
+if JADE:
+    DSSSL = conf.findDocbookStylesheets()
+else:
+    DSSSL = None
+
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SRANDOMDEV')
@@ -153,5 +160,5 @@ conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR DOCDIR CLIENTS SGML"))
+Export( Split("env PREFIX MANDIR DOCDIR CLIENTS JADE DSSSL"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
