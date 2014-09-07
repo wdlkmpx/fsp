@@ -13,11 +13,11 @@ Building:
 	Other tools needed for building FSP are GNU flex and GNU C compiler.
 	They should be part of your Unix distribution but you can also 
 	download and compile them yourself from http://flex.sourceforge.net/
-	and http://gcc.gnu.org.
+	and http://gcc.gnu.org. Its possible to use Clang as replacement
+	for GCC.
 
-	For building optional documentation you need sgmlformat-1.7.tar.gz
-	from ftp://ftp1.freebsd.org:/pub/FreeBSD/distfiles and docbook which
-	will be probably already included in your distro.
+	For building optional documentation you need jade or openjade and
+	DocBook DSSSL stylesheets.
 
 	SCons is replacement for configure and make utility; there is no
 	separate configuration step. Building with SCons is very similar
