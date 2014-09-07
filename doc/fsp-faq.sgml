@@ -58,6 +58,7 @@
       <para>
         FSP stands for &fsp;. In general FSP is what anonymous ftp should be: a reliable and bandwidth friendly
         way to access publicly available data.
+      </para>
       <para>  
        FSP is a lightweight UDP based protocol for transferring files around.
        It has many benefits over FTP, mainly for running
@@ -71,11 +72,13 @@
       <para>
         FSP is (and always has been) open source project with MIT/X11 source
         code license. See <xref linkend="licence"> for more details.
+      </para>
       <para>
         In the past various people maintained the FSP code base.
         At the moment Radim Kolar
         is maintaining FSP. FSP project is now hosted on
         <ulink url="http://sourceforge.net">Source Forge.NET</ulink>.
+      </para>  
       <para>  
         If you like to get involved take a look at the FSP
         <ulink url="http://fsp.sourceforge.net">Homepage</ulink> and the 
@@ -87,23 +90,27 @@
       <para>
         The &fsp; has its strengths on slow lines and connections with a high packets lose like a Wireless LAN or radio packet networks. Because FSP is simple
         and lightweight, it is very well suited for use in embedded devices area.
+      </para>
       <para>
         FSP protocol is not aggressive about bandwidth and was designed
         to resist against users which want to do some bandwidth-related attacks.
         It can support more users, because the same available
         bandwidth is divided into smaller parts.
         Because FSP uses less bandwidth, FSP transfers takes about
-        2-3 times longer than with TCP-based protocols. 
+        2-3 times longer than with TCP-based protocols.
+      </para>
       <para>  
         FSP protocol
         chooses reliability and simplicity over raw transfer speed.
         File transfer takes longer, but there are much more resistant
         against network failure.
+      </para>
       <para>  
         Entire connection management is moved from server to client side,
         which solves problems with aborted and timed out transfer. Because
         FSP is stateless protocol, it can survive even server reboot without
-        interruption. 
+        interruption.
+      </para>
       <para>
         More information about FSP use can be found
         in <ulink url="http://cvs.sourceforge.net/viewcvs.py/fsp/fsp/INFO?view=auto">INFO document</ulink>.
@@ -114,14 +121,16 @@
         <para>
           We did some benchmarking so that you can see how fsp performance
           compared to various other command protocols used to transfer
-          files. 
-        <sect2 id="benchresults">
+          files.
+        </para>
+        <sect3 id="benchresults">
         <title>Benchmark results</title>
         <para> 
           You should understand that FSP is slower than TCP
           based protocols by design. TCP protocol can have more than
           one packet flying in network (usually 2-3) while FSP was designed to
           make it impossible (See <xref linkend="keying">).
+        </para>  
         <para>
           All TCP protocols have on normal networks
           (max 10% packet loss) higher transfer rate than FSP.
@@ -129,6 +138,7 @@
           These benchmarks were performed on 10Mbit LAN with zero traffic.
           Transfer rate is quite slow even for 10Mb because one of testing
           machines was old AMD K5/90 and both machines used cheap clone ISA NE2000 Ethernet cards.
+        </para>  
         <para>Test file was 3656535 bytes long (FreeBSD kernel image).
         Test results shows, that FSP is about 2-2.5 times slower than TCP. 
         <programlisting>
@@ -139,12 +149,14 @@
         fsp   12.7 secs 287.7 kB/s
         </programlisting>
         </para>
+        </sect3>
         <sect3 id="comparehttp">
           <title>FSP vs. http</title>
           <para>
           HTTP: widely supported by servers, clients and proxies.
           De-facto standard protocol for accessing information today.
           HTTP is also primary protocol used for file distribution today.
+          </para>
           <para>
           FSP: Can provide directory listings, which are not supported
           by standard HTTP/1.1 protocol. You need to have configured
@@ -158,11 +170,13 @@
           to proxy than HTTP, uses 2 TCP connections, can provide directory
           listings in site-specific format, server side is more heavy service
           than HTTP. FTP is being replaced by HTTP today.
+          </para>
           <para>
           FSP: do not needs to make any connection, server side is very
           lightweight service,
           directory listings are standardized by protocol and very quick,
           no problems with NAT.
+          </para>
         </sect3>
         <sect3 id="comparetftp">
           <title>FSP vs. tftp</title>
@@ -170,9 +184,11 @@
           tftp is simple UDP (but TCP version also exists) protocol used mainly
           for loading boot and flash ROM images from network. Standard
           tftp uses 512 bytes long packets.
+          </para>
           <para>
           TFTP: more widely used, standardized in RFC, most network cards
           can boot image via TFTP.
+          </para>
           <para>
           FSP: about 1.5-times faster because of 1k-1.4k packet size,
           supports directory listings,
@@ -190,21 +206,26 @@
       offer FSP access. FSP daemon is a very lightweight process, never
       forks and you will never have more than one copy running around.
       On todays machines, it has zero performance impact.
+      </para>
       <para>
       Running fspd allows people with overloaded or lousy lines to get
       files from your archive. It also helps people during spikes periods
       when archive is very busy.
+      </para>
       <para>
       There are also some people which likes slower FSP downloads better,
       because
       it saves their bandwidth for interactive tasks. This is often preferred
       way of downloading large files, like CD-ROM images.
+      </para>
       <para>
       It is not true that UDP based protocols are unsecure. &fsp; provides
       the same security level as anonymous FTP and is much more resistant
       against denial of service attacks. It is nearly impossible to overload
       fsp server by flooding. On other side, TCP-based protocols are very
       simple to SYN flood.
+      </para>
+    </sect2>  
     <sect2 id="wherecanifind">
       <title>Where can I download FSP?</title>
       <para>
@@ -222,8 +243,8 @@
         Explanation and all needed information to do this can be found
         on the
         <ulink url="http://sourceforge.net/cvs/?group_id=93841">sf.net CVS page</ulink>.
+        </para>
     </sect2>
-
     <sect2 id="gethelp">
       <title>Where can I find help?</title>
       <para>
@@ -238,7 +259,7 @@
           The <ulink url="http://fsp.sourceforge.net/doc/faq.html">old FSP FAQ</ulink>.
         </para>
       </sect3>
-          <sect3 id="gethelpml">
+      <sect3 id="gethelpml">
         <title>The Mailinglists</title>
         <para>
           For developing issue write to the fsp-dev mainlinglist. For end-user questions
@@ -252,9 +273,9 @@
           and
           <ulink url="http://www.netmeister.org/news/learn2quote.html">learn.to/quote</ulink>
         </para>
-      </sect3>  
+      </sect3>
     </sect2>
-    
+ 
     <sect2 id="licence">
       <title>Licence, copyright and redistribution of FSP</title>
       <para>
@@ -263,10 +284,10 @@
         You can freely develop, use and sell your commercional implementation of &fsp;.
       <orderedlist>
           <listitem>
-             <para>Do not claim that you have wrote this software.
+             <para>Do not claim that you have wrote this software.</para>
           </listitem>
           <listitem>
-             <para>Do not sue us if something breaks.
+             <para>Do not sue us if something breaks.</para>
           </listitem>
       </orderedlist>
       Summary: As long as you will not remove our copyrights from source code
@@ -331,7 +352,7 @@
         bufixed 1.0 but includes man pages.  After that two first
         releases FSP goes to the active life. People starts using it because
         it was superior to anonymous FTP at that time.
-
+        </para>
         <para>
         FSP active development era ends in May 1993 when last official
         version 2.7.1 was released. It was quite popular at that time,
@@ -341,34 +362,35 @@
         I see that FSP warez era
         as practical demonstration how can FSP perform nicely on
         overloaded sites and lines.
-
+        </para>
         <para>
         After that then was some maintenance work on FSP in 1995 which ends
         with famous last official beta FSP version 2.8.1b3
         in March 1996, which was coded by original FSP developers team. 
         This version is used on some servers today because Debian Woody has it.
-
+        </para>
         <para>
         Last official stable FSP version was still 2.7.1 from May '93.
         This is still used on some forgotten machines in universities today.
         It has also
         known security issue (fspd follows all symlinks), but at this
         time this was viewed as feature, not a bug.
-
+        </para>
         <para>
         Radim Kolar released 2.8.1b4 in 2001, which was just some bugfixed
         version of 2.8.1b3 untouched from 1997 when I ported it to OS/2.
-
+        </para>
         <para>
         With wireless networks Wi-Fi boom in 2002, it becomes clear that
         large wireless networks can have quite a high packet loss rate
         and TCP protocol is not very suitable for them.
+        </para>
         <para> 
         Active working on FSP again starts on 25 June 2003 when Version
         2.8.1b5 goes out. Major parts of FSP server code was rewrited
         for higher performance and many old bugs in FSP code fixed.
         Some bugs gets fixed after more than 10 years.
-
+        </para>
         <para>
         In the past various people worked on the &fsp;, see
         <xref linkend="licence">
@@ -385,8 +407,10 @@
           Since September 2003 Sven Hoexter is working on parts of the documentation and code. He is also doing release management and RPM, deb packaging.
           You can reach him on the mailinglists or via e-mail
           <email>sven@du-gehoerst-mir.de-nospam</email>.
+        </para>
+      </sect3>
     </sect2>
-    
+ 
     <sect2 id="credits">
       <title>Developers and contributors</title>
       <para>
@@ -443,6 +467,7 @@
       server in read only mode. In this mode fspd needs to know
       only home directory and port number. Both can be supplied by command
       line arguments to fspd.
+    </para>  
     <para>
       If you need additional features, such as
       logging, you will need to have <xref linkend="fspd.conf">
@@ -451,13 +476,16 @@
       <title>How to install fsp server</title>
       <para>
         FSP server is included in main FSP package. See <xref linkend="installation"> first. FSP server for windows is in the <xref linkend="lamerpack">.
+      </para>
       <para>
         Server can be installed as inetd service or standalone. I prefer
         inetd installation, because modification of system startup
         scripts is not needed.
+      </para>  
       <para>
         Server can operate even without user supplied configuration file
-        fspd.conf. Basic setup can be easily done by command line arguments.  
+        fspd.conf. Basic setup can be easily done by command line arguments.
+      </para>  
     </sect2>
     <sect2 id="installfspdquick">
       <title>How to quickly install fsp server</title>
@@ -468,10 +496,13 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
 </programlisting>
         This easy setup will run fsp server on standard port 21, home directory set to /home/ftp and effective user set to ftp. If you do not have configured
         temporary directory in fspd.conf, fsp server will run in read-only
-        mode. 
-      <para>  
+        mode.
+      </para>
+      <para>
         Some inetd server uses slightly different syntax of inetd.conf
         file. Consult your local man pages for inetd and inetd.conf.
+      </para>
+    </sect2>  
     <sect2 id="fspd.conf">
       <title>How to setup a basic fspd.conf</title>
       <para>
@@ -479,6 +510,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         found in distribution. This file needs to be installed as
         /usr/local/etc/fspd.conf or you can specify alternate location
         by -f command line switch passed to fspd.
+      </para>  
       <para>  
         Configuration file itself is commented. Read comments inside.
       </para>
@@ -517,6 +549,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         current remote server address and remote working directory is kept
         in several environment variables. See manual page fsp_env for more
         info.
+      </para>  
       <para>
         Fsp client commands are started from normal shell interpreter. Because
         most commands does remote globing which can not be done by your
@@ -524,6 +557,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         use one of prepared shell aliases. In distribution you will find
         setup.sh and setup.csh shell scripts. These scripts must be
         sourced (not executed) by your current shell.
+      </para>  
       <para>
         Fsp commands names follows unix standard with f prepended. For
         example: fcd, fpwd, fls. Files are transfered by fget/fput commands.
@@ -538,9 +572,11 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         multiple client programs in FSP protocol suite. If you are at least
         somewhat familiar with command line FTP and want to try FSP, this
         program is right for you.
+      </para>  
       <para>
         The old, real hackers prefers <xref linkend="fsptoolchain">, because
         fspclient is just 'fsp for lamah'.
+      </para>  
       <para>
        FSP client homepage is <ulink url="http://fspclient.sourceforge.net">http://fspclient.sourceforge.net</ulink>.
       </para>
@@ -552,19 +588,25 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         from your web browser. This is recommended method for using FSP
         by standard BFU users. They can handle web browser well -- no
         extra education is necessary.
+      </para>  
       <para>
         You need to download and install <ulink url="http://fsp.sf.net/javalib.html">FSP Java LIB</ulink> and <ulink url="http://fsp.sf.net/fsproxy.html">Proxy server</ulink>. Read included docs for install instructions.
+      </para>
+    </sect2>  
     <sect2 id="dmachine">
        <title>Download Machine</title>
        <para>
          Download Machine is non interactive, non graphical, batch download
          manager. Tired of GUI Download managers and mouse clicking?
          Then Download Machine is just for YOU!
+       </para>  
        <para>  
          Download Machine is written in portable Java 1.1 code and supports
          <ulink url="http://www.w3.org/Protocols/">HTTP</ulink>,
          FTP and <ulink url="http://fsp.sourceforge.net/">FSP</ulink>
          protocols.
+       </para>
+     </sect2>    
      <sect2 id="lamerpack">
          <title>FSP Win32 Suite</title>
          <para>
@@ -573,10 +615,13 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
            Easy to use fsp server (works without configration file),
            windows version of fspclient and
            Lamah starting guide to FSP.
+         </para>  
          <para>
             This package is downloadable from
             <ulink url="http://sourceforge.net/project/showfiles.php?group_id=93841&amp;package_id=133839">Source Forge</ulink> and requires cygwin dll library
             not included in the package.
+         </para>
+     </sect2>
   </sect1>
 <!-- end how to use the client -->
 
@@ -590,6 +635,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         <ulink url="http://fsp.sourceforge.net/doc/PROTOCOL.txt">http://fsp.sourceforge.net/doc/PROTOCOL.txt</ulink>
         or in the source distribution in the "doc" subdirectory.
       </para>
+    </sect2>  
     <sect2 id="transport">  
       <title>Transport mechanism used by FSP</title>    
       <para>
@@ -599,6 +645,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         disabled. FSP can be implemented in all kinds of environments.
         This makes FSP very suitable for embedded devices area, because
         it is easier to implement than other transfer protocols like X-Modem.
+      </para>  
       <para>  
         When used in TCP/IP based networks,
         UDP is used for transporting of FSP datagrams, this lowers protocol
@@ -610,6 +657,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         FSP frames can be packed directly info Ethernet 802.2, USB or GSM
         frames. Biggest advantage of using FSP in that areas is simplicity.
         FSP protocol is very simple to implement.
+      </para>  
     </sect2>
     <sect2 id="keying">
     <title>Keying: Network bandwidth protection</title>
@@ -617,12 +665,14 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         One of interesting parts of underlying network technology used
         by FSP is how protocol design restrict user from sending
         more than one packet into network.
+    </para>    
     <para>
         FSP uses very simple method: Every packet sent from server to client
         contains a 16-bit long, pseudo random key. Client needs this key
         for sending next request to server. Server will ignore requests
         with wrong key, unless there was no previous activity recorded
         for client IP address in last 60 seconds.
+    </para>
     <para>
         Server remembers for each IP not only nextkey, but also previous
         key. When packet's key matches previously stored key -- it is
@@ -630,6 +680,7 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         Max. allowed reply rate to resend packets is 1 reply per 3 seconds.
         This method also allows ignore duplicate requests by server for
         action which should not be done more than once (for example mkdir).
+    </para>
     <para>
         In each packet sent by client to server is sequence number.
         Server will echo this number back to the client, when packet is
@@ -641,12 +692,15 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
         fine-tune its retry algorithm
         by computing packet loss ratio of network, and duplicate
         packet rate.
+    </para>
+    </sect2>    
     <sect2>
     <title>Client side locking</title>
     <para>
     FSP server has its secret keys database divided by client ip address,
     not by client:port. All requests comming from the same machine must
     shares the same secret key.  This is done for bandwidth protection.
+    </para>
     <para>
     Client must submit a valid key with request. Where there are 2 programs
     runnings on the client PC and both wants to talk to the same FSPD at once,
@@ -654,10 +708,13 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
     If they don't, only one program can talk to the FSPD, because others do not
     knows the next session key. They can try to talk but fspd will ignore them.
     This is kind of client-side multiplexing.
+    </para>
     <para>
     There are several methods how to do this key sharing. Best method is
     to use semop+shmget, second is to use lockf on file in /tmp. All FSP
     clients running on the same machine must use the same locking method.
+    </para>
+    </sect2>
     <sect2 id="largepackets">
     <title>Why not use bigger packet size?</title>
     <para>
@@ -667,35 +724,47 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
        Some networks allows only 512 bytes long UDP (maximal size required
        by RFC). To use FSP on that networks, fsp clients must be configured
        to use only 500 bytes of payload.
+    </para>   
     <para>
        Because MTU of most networks is about 1500 bytes. It is true, that
        we can use slightly bigger packets for gaining some speed. FSP
        server can optionally support larger packet size, but must send
        them out only on explicit client request.
+    </para>   
     <para>
        We have performed some benchmarks and they shows only minor
        performance increase, about 10-15 percent. Similar testing
        was performed by HP in <ulink url="http://www.ietf.org/rfc/rfc2348.txt">RFC 2348</ulink>.
+    </para>   
     <para>
        For bigger performance enhancement we need to use at least 2.5 KB,
        but packets of that size must be fragmented on most network and fragmenting increases possibility of packet loss.
+    </para>
+    </sect2>   
     <sect2 id="prog">
     <title>Using FSP in your programs</title>
     <para>
       You can easily add support for FSP v2 protocol into your programs.
       Currently exists two independend libraries for FSP protocol support
       and one library is in the work.
+    </para>  
     <para>  
       First library is called <ulink url="http://fsp.sourceforge.net/javalib.html">JFSPlib</ulink>. This is FSP library for Java language.
+    </para>  
     <para>
       Second library is called <ulink url="http://fsp.sourceforge.net/fsplib.html">FSPlib</ulink>. This is FSP library for C language with POSIX-like API.
+    </para>  
     <para>
       FSP support for Python <ulink url="http://fsp.sourceforge.net/pyfsp.html">PyFSP</ulink> is currently work in progress. Note: PyFSP uses GPL license, not MIT/X11 like other libraries.
+    </para>
+    </sect2>  
     <sect2 id="faster">
     <title>How can I make FSP faster?</title>
     <para>
       Set FSP server and client to use bigger block size (<xref linkend="largepackets">), decrease server retry timeout to 1 sec, and descrease client delay also. Using this methods, FSP can run about 1.7 faster than before.
       If you need even higher transfer speed, switch to HTTP protocol.
+    </para>
+    </sect2>  
     <sect2 id="slower">
     <title>How can I make FSP slower?</title>
     <para>
@@ -703,6 +772,8 @@ ftp dgram udp wait ftp /usr/local/bin/fspd in.fspd -d /home/ftp
       smaller packets. FSP server has builtin output thruput limiting, you
       can slow down it in fspd.conf file. Slightly increasing server retry
       timer also helps.
+    </para>
+    </sect2>  
 </sect1>
 </article>
 <!-- vim: set expandtab: -->
