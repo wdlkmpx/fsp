@@ -10,7 +10,6 @@ PREFIX='/usr/local'
 VERSION='2.8.1b26'
 EFENCE=False
 CLIENTS=True
-SGML=False
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
 
@@ -60,7 +59,6 @@ from docdir import checkForUserDocdir
 from mandir import autodetectMandir
 from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
-from sgmlformat import checkForSGMLFMT
 from largefiles import enableLargeFiles
 from jade import checkDSSSLProcessor
 from dsssl import findDocbookStylesheets
@@ -79,7 +77,6 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
-		      'checkForSGMLFMT':checkForSGMLFMT,
 		      'checkDSSSLProcessor':checkDSSSLProcessor,
 		      'findDocbookStylesheets':findDocbookStylesheets
 	 	      })
