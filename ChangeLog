@@ -8,6 +8,8 @@ Version NEXT
 	fspscan: do not shadow host variable
 	fspscan: fix clang warning about empty for cycle body by placing
 	  semicolon on separate line
+	FAQ: Cleaned lot of SGML markup errors
+	Do not use sgmlformat, call jade directly
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.
