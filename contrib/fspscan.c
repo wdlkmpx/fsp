@@ -289,7 +289,8 @@ int _x_adr(char *xhost,int port,struct sockaddr_in *his)
     if((H = gethostbyname(xhost))) {
 	for(s = (char *)H->h_addr,
 	    d = (char *)&his->sin_addr,
-	    i = H->h_length; i--; *d++ = *s++);
+	    i = H->h_length; i--; *d++ = *s++)
+	      ;
         his->sin_family = H->h_addrtype;
     } else return(-1);
     his->sin_port = htons((unsigned short) port);
