@@ -93,6 +93,7 @@ for option in Split("""
       -Wlong-long -Wundef -Winline
       -Wpointer-arith -Wno-unused-parameter
       -Wunreachable-code
+      -fmacro-backtrace-limit=2 -Wno-cast-align -Wno-pointer-sign
 """):
        conf.checkForCCOption(option)
 SGML=conf.checkForSGMLFMT()
