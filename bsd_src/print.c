@@ -32,7 +32,11 @@
 #include <sys/param.h>
 #include <grp.h>
 #include <pwd.h>
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#else
 #include <utmp.h>
+#endif
 #ifdef TIME_WITH_SYS_TIME
 #  include <sys/time.h>
 #  include <time.h>

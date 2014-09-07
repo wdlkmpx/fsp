@@ -119,6 +119,8 @@ if conf.CheckCHeader('sys/wait.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_SYS_WAIT_H')
 if conf.CheckCHeader('utime.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_UTIME_H')
+if conf.CheckCHeader('utmpx.h'):
+    conf.env.Append(CPPFLAGS = '-DHAVE_UTMPX_H')    
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
 enableLargeFiles(conf)

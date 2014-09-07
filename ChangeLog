@@ -4,6 +4,7 @@ Version NEXT
 	note default timeout values in fsp_env man page
 	setting environment value FSP_TIMEOUT to <=0 uses 4byte maxint value
 	note default fspd max packet size in fsp_env man page
+	fix build on systems with utmpx.h API (FreeBSD 9)
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.
