@@ -1085,9 +1085,7 @@ const char *server_rename (PPATH *src,PPATH *dest,DIRINFO *sdir, DIRINFO *tdir)
 {
   struct stat sb;
   int issrcdir, istargetdir;
-  unsigned n;
-  const char *pe;
-  
+ 
   /* explore type of source object */
   if(FSP_STAT(src->fullp,&sb)) return("can't find source file or directory");
   if(S_ISDIR(sb.st_mode))
