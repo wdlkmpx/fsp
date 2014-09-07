@@ -60,7 +60,7 @@ from docdir import checkForUserDocdir
 from mandir import autodetectMandir
 from clients import checkForBuildingClients
 from sysconfdir import checkForUserSysconfdir
-from sgmldoc import checkForSGMLFMT
+from sgmlformat import checkForSGMLFMT
 from largefiles import enableLargeFiles
 
 conf = Configure(env,{'checkForCCOption':checkForCCOption,
