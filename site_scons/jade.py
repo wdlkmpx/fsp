@@ -1,14 +1,11 @@
 #
-# SCons JADE executable check
+# SCons DSSSL processor check
 #
 # Version 1.0
 # 07-Sep-2014
 #
 
-from SCons.Script import ARGUMENTS,Touch,Delete,Command
 import subprocess
-import SCons.Action
-import SCons.SConf
 
 def checkDSSSLProcessor(check, name="jade"):
     """Check if DSSSL engine is working. Returns True or False."""
