@@ -107,6 +107,8 @@ if JADE:
     DSSSL = conf.findDocbookStylesheets()
 else:
     DSSSL = None
+if DSSSL == None:
+   JADE = False
 
 # Portability build time config
 if conf.CheckFunc('srandomdev'):
