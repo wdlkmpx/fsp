@@ -374,7 +374,7 @@ static void printlong_ffind (char * name, struct stat * sb)
 
   printf("%4ld ", (long)BLK(sb->st_size));
   modep = ((S_IFDIR & sb->st_mode)) ? "drwxrwxrwx" : "-rw-rw-rw-" ;
-  printf("%s %3u %-*s %-*s ", modep, sb->st_nlink, 8, "nobody", 8, "nobody");
+  printf("%s %3u %-*s %-*s ", modep, (unsigned int)sb->st_nlink, 8, "nobody", 8, "nobody");
 
   printf("%8ld ", (long)sb->st_size);
   printtime_ffind(sb->st_mtime);

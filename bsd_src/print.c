@@ -126,7 +126,7 @@ void printlong (LS * stats, int num)
     if (f_size ) printf("%4lu ", (unsigned long)BLK(stats->lstat.st_size));
     modep = ((S_IFDIR & stats->lstat.st_mode)) ? "drwxrwxrwx" : "-rw-rw-rw-" ;
 
-    (void)printf("%s %3u %-*s ", modep, stats->lstat.st_nlink, 8, "nobody");
+    (void)printf("%s %3u %-*s ", modep, (unsigned int)stats->lstat.st_nlink, 8, "nobody");
     if (f_group) printf("%-*s ", 8, "nobody");
     else printf("%8lu ", (unsigned long)stats->lstat.st_size);
     if (f_accesstime) printtime(stats->lstat.st_atime);
