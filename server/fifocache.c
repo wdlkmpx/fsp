@@ -136,7 +136,7 @@ void f_cache_stats(struct FifoCache *cache,FILE *f)
 	}
     }
     fprintf(f,"%u entries (%u used). Memory: %u hdr, keys %u static + %u dynamic, entries %u static + %u dynamic. Hit ratio: %u hit, %u miss.\n",
-	    cache->cachesize,used,sizeof(struct FifoCache), cache->cachesize*cache->keysize,dkey,cache->cachesize*cache->entrysize,dentry,cache->hit,cache->miss);
+	    cache->cachesize,used,(unsigned int)sizeof(struct FifoCache), cache->cachesize*cache->keysize,dkey,cache->cachesize*cache->entrysize,dentry,cache->hit,cache->miss);
 }
 
 /**
