@@ -1,8 +1,8 @@
 #
 # SCons Locate DSSSL docbook stylesheets
 #
-# Version 1.0
-# 07-Sep-2014
+# Version 1.1
+# 08-Sep-2014
 #
 
 import os
@@ -11,9 +11,10 @@ import stat
 def findDocbookStylesheets(check):
     """Return path to Docbook stylesheets or None."""
     directories = [
-                    "/usr/local/share/sgml/docbook/dsssl/modular"
+                    "/usr/local/share/sgml/docbook/dsssl/modular",
+                    "/usr/share/sgml/stylesheets/dsssl/docbook"
     ]
-    files = [ "html/docbook.dsl", "catalog", "dtds/html/dbhtml.dtd" ]
+    files = [ "html/docbook.dsl", "catalog", "common/dbcommon.dsl" ]
     check.Message("Locating Docbook DSSSL Stylesheets... ")
     for d in directories:
         try:
