@@ -1,8 +1,8 @@
 #
 # Scons compiler tester
 #
-# Version 1.1
-# 24-Aug-2009
+# Version 1.2
+# 08-Sep-2014
 #
 
 def checkForCCOption(conf,option):
@@ -19,6 +19,10 @@ void dummy(void);
 void dummy(void) {}
 """,'.c')
    if not rc:
+       try:
+          lastCFLAGS.remove(option)
+       except ValueError:
+          pass
        conf.env.Replace(CCFLAGS = lastCFLAGS)
    conf.Result(rc)
    return rc
