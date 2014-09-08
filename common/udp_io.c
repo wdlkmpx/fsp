@@ -30,7 +30,9 @@ int _x_udp (const char * bindaddress, unsigned short * port)
   socklen_t len;
   struct sockaddr_in me ;
   struct sockaddr_in myadr;
+#ifdef REUSE_SOCKET  
   int zz=1;
+#endif
 
   if(bindaddress == NULL || _x_adr (bindaddress, *port,&me ) != 0) {
      memset(&me,0,sizeof(me));
