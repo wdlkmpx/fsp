@@ -10,6 +10,8 @@ Version NEXT
 	  semicolon on separate line
 	FAQ: Cleaned lot of SGML markup errors
 	Do not use sgmlformat, call jade directly
+	correctly zero entire sockaddr_in structure during name resolving,
+	  error found by clang.
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.

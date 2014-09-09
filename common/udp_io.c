@@ -65,7 +65,7 @@ int _x_adr (const char *host, int port, struct sockaddr_in * his)
   int    i;
   char *s, *d;
 
-  memset(his,0,sizeof(his));
+  memset(his,0,sizeof(struct sockaddr_in));
   if(!host) {
 	  gethostname(myhost,sizeof(myhost));
           host=myhost;
