@@ -728,16 +728,16 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
         send_error(from, ub, "Server is running in read-only mode") ;
 	return;
       }
-      if(!old)
+      pe = validate_path(s1,l1,&pp,&di,0);
+      if(pe)
       {
-	pe = validate_path(s1,l1,&pp,&di,0);
-	if(pe)
-	{
 	    ACTIONLOG1(L_MAKEDIR|L_ERR,"MAKEDIR");
 	    ACTIONFAILED(L_MAKEDIR|L_ERR,pe);
             send_error(from, ub, pe) ;
 	    return;
-	}
+      }
+      if(!old)
+      {
 	CHECK_ACCESS_RIGHTS(DIR_MKDIR,L_MAKEDIR);
 	pe=server_make_dir(&pp,inet_num,&di);
 	if(pe)
@@ -778,16 +778,16 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
         send_error(from, ub, "Server is running in read-only mode") ;
 	return;
       }
+      pe = validate_path(s1,l1,&pp,&di,1);
+      if(pe)
+      {
+         ACTIONLOG1(L_SETPRO|L_ERR,"SETPRO");
+         ACTIONFAILED(L_SETPRO|L_ERR,pe);
+         send_error(from, ub, pe) ;
+         return;
+      }
       if(!old)
       {
-	pe = validate_path(s1,l1,&pp,&di,1);
-	if(pe)
-	{
-          ACTIONLOG1(L_SETPRO|L_ERR,"SETPRO");
-	  ACTIONFAILED(L_SETPRO|L_ERR,pe);
-          send_error(from, ub, pe) ;
-	  return;
-	}
         CHECK_ACCESS_RIGHTS(DIR_OWNER,L_SETPRO);
 	pe = server_set_pro(di,s2);
 	if(pe)

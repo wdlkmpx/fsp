@@ -12,7 +12,10 @@ Version NEXT
 	Do not use sgmlformat, call jade directly
 	correctly zero entire sockaddr_in structure during name resolving,
 	  error found by clang.
-	allow docbook dsssl stylesheets to be specified at scons command line  
+	allow docbook dsssl stylesheets to be specified at scons command line
+	always validate path in SETPRO and MKDIR even if packet is resent and
+	  no action will be taken. This is needed to avoid uninitialised
+	  pointer access during reply. Found by Clang.
 
 Version 2.8.1b26 - 1 Oct 2009
 	fver now reports if server can process extra data in input packets.
