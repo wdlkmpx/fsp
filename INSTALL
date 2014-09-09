@@ -55,6 +55,7 @@ SCons command line options:
 	sysconfdir=directory	where to look for fspd and client configuration
 				files. Default prefix/etc
 	without-clients=yes     dont build and install client commands
+	dsssl=directory		Look for DocBook DSSSL Stylesheets there
 
 Client utilities:
         All inter-command states are kept in these three shell environment

@@ -1,12 +1,13 @@
 #
 # SCons Locate DSSSL docbook stylesheets
 #
-# Version 1.1
-# 08-Sep-2014
+# Version 1.2
+# 09-Sep-2014
 #
 
 import os
 import stat
+from SCons.Script import ARGUMENTS
 
 def findDocbookStylesheets(check):
     """Return path to Docbook stylesheets or None."""
@@ -14,6 +15,8 @@ def findDocbookStylesheets(check):
                     "/usr/local/share/sgml/docbook/dsssl/modular",
                     "/usr/share/sgml/stylesheets/dsssl/docbook"
     ]
+    customdsssl = ARGUMENTS.get('dsssl', None)
+    if customdsssl: directories.insert(0, customdsssl)
     files = [ "html/docbook.dsl", "catalog", "common/dbcommon.dsl" ]
     check.Message("Locating Docbook DSSSL Stylesheets... ")
     for d in directories:
