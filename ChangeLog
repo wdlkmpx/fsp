@@ -1,4 +1,4 @@
-Version NEXT
+Version 2.8.1b27 - 9 Sep 2014
 	fhostcmd: Fixed output of FSP_TRACE variable for Bourne style shells
 	correctly initialize to zero client packet sent statistic counter
 	note default timeout values in fsp_env man page
@@ -11,7 +11,7 @@ Version NEXT
 	FAQ: Cleaned lot of SGML markup errors
 	Do not use sgmlformat, call jade directly
 	correctly zero entire sockaddr_in structure during name resolving,
-	  error found by clang.
+	  error found by Clang.
 	allow docbook dsssl stylesheets to be specified at scons command line
 	always validate path in SETPRO and MKDIR even if packet is resent and
 	  no action will be taken. This is needed to avoid uninitialised
