@@ -1,8 +1,8 @@
 #
 # SCons DSSSL processor check
 #
-# Version 1.1
-# 08-Sep-2014
+# Version 1.2
+# 16-Aug-2019
 #
 
 import subprocess
@@ -18,6 +18,8 @@ def checkDSSSLProcessor(check, name="jade"):
           check.Result(True)
           return True
     except subprocess.CalledProcessError:
+       pass
+    except OSError:
        pass
     check.Result(False)
     return False
