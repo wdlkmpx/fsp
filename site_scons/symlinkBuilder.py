@@ -1,8 +1,8 @@
 #
 # Symlink SCons builder
 #
-# Version 1.0
-# 02-Aug-2009
+# Version 1.1
+# 16-Aug-2019
 #
 
 def Symlink(target, source, env=None):
@@ -18,11 +18,11 @@ def Symlink(target, source, env=None):
    """
    import os
    if not isinstance(target, list):
-       raise TypeError,"target must be list"
+       raise TypeError("target must be list")
    elif not isinstance(source, list):
-       raise TypeError,"source must be list"
+       raise TypeError("source must be list")
    if len(target) != len(source):
-       raise ValueError,"target and source list must have same size"    
+       raise ValueError("target and source list must have same size")
    for i in range(0,len(target)):
        try:
           os.unlink(str(target[i]))
