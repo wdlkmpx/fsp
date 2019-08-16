@@ -2,8 +2,8 @@
 
 import os
 # init Scons
-EnsureSConsVersion(1,1)
-EnsurePythonVersion(2,2)
+EnsureSConsVersion(3,0)
+EnsurePythonVersion(2,7)
 
 # set defaults
 PREFIX='/usr/local'
