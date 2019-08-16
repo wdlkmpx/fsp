@@ -1,8 +1,8 @@
 #
 # SCons check for maintainer mode
 #
-# Version 1.3
-# 13-Sep-2009
+# Version 1.4
+# 15-Aug-2019
 #
 
 from SCons.Script import ARGUMENTS
@@ -20,10 +20,10 @@ def checkForMaintainerMode(conf,force=False):
          maint2=None
     if force: maint2 = 1
     if maint2 > 0 or str(maint).lower() == 'yes':
-			  conf.Result(1)
-			  conf.env.Append(CCFLAGS = '-O0')
-			  conf.env.Append(CPPFLAGS = '-DMAINTAINER_MODE')
+                          conf.Result(1)
+                          conf.env.Append(CCFLAGS = '-O0')
+                          conf.env.Append(CPPFLAGS = '-DMAINTAINER_MODE')
                           return True
     else:
-			  conf.Result(0)
+                          conf.Result(0)
                           return False
