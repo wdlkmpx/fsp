@@ -20,11 +20,11 @@ else:
     MAN7=[]
 
 SYMLINKS=[ ('fcdcmd','fcd'), ('fducmd','fdu'), ('fcatcmd','fcat'),
-	   ('fgetcmd','fget'), ('fgrabcmd','fgrab'), ('ffindcmd','ffind'),
-	   ('fmvcmd','fmv'), ('fhostcmd','fhost'), ('flscmd','fls'),
-	   ('frmcmd','frm'), ('frmdircmd','frmdir'), ('fprocmd','fpro'),
-	   ('fstatcmd','fstat'), ('fsetupcmd','fsetup')
-	 ]
+           ('fgetcmd','fget'), ('fgrabcmd','fgrab'), ('ffindcmd','ffind'),
+           ('fmvcmd','fmv'), ('fhostcmd','fhost'), ('flscmd','fls'),
+           ('frmcmd','frm'), ('frmdircmd','frmdir'), ('fprocmd','fpro'),
+           ('fstatcmd','fstat'), ('fsetupcmd','fsetup')
+         ]
 
 # compress manpages
 for page in MAN1+MAN5+MAN7:
@@ -41,6 +41,6 @@ for page in MAN7:
 # install symlinks for man pages
 if 'install' in COMMAND_LINE_TARGETS and CLIENTS:
     for pair in SYMLINKS:
-	env.Symlink(MANDIR+'/man1/'+pair[1]+'.1.gz',MANDIR+'/man1/'+pair[0]+'.1.gz')
+        env.Symlink(MANDIR+'/man1/'+pair[1]+'.1.gz',MANDIR+'/man1/'+pair[0]+'.1.gz')
 
 env.Alias("install",MANDIR)
