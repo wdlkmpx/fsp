@@ -30,10 +30,10 @@ if CLIENTS:
 
     MERGED_SRC=[ 'fcatcmd','fcdcmd','fducmd','ffindcmd','fgetcmd','fgrabcmd',
                'fhostcmd','flscmd','fmkdir','fprocmd','fput','frmcmd',
-	       'frmdircmd','fver','fstatcmd','fmvcmd','fbye', 'fsetupcmd']
+               'frmdircmd','fver','fstatcmd','fmvcmd','fbye', 'fsetupcmd']
 
     for program in MERGED_SRC:
-	createMergeSource(program)
+        createMergeSource(program)
 
     fcatcmd_m=env.StaticObject('fcatcmd_m.c', CPPDEFINES='-Dmain=fcatcmd_main')
     fcdcmd_m =env.StaticObject('fcdcmd_m.c', CPPDEFINES='-Dmain=fcdcmd_main')
@@ -60,8 +60,8 @@ if CLIENTS:
      client, common, bsdfsp])
 
     PROGRAMS=[ fcatcmd, fcdcmd, fducmd, ffindcmd, fgetcmd, fgrabcmd, fhostcmd,
-	     flscmd, fmkdircmd, fprocmd, fputcmd, frmcmd, frmdircmd, fvercmd,
-	     fstatcmd, fmvcmd, fbyecmd, fsetupcmd, fspmerge ]
+             flscmd, fmkdircmd, fprocmd, fputcmd, frmcmd, frmdircmd, fvercmd,
+             fstatcmd, fmvcmd, fbyecmd, fsetupcmd, fspmerge ]
 
     for program in PROGRAMS:
-	env.Install(dir = PREFIX+'/bin', source = program)
+        env.Install(dir = PREFIX+'/bin', source = program)
