@@ -1,8 +1,8 @@
 #
 # Scons variable importer
 #
-# Version 1.0
-# 16-Jun-2009
+# Version 1.1
+# 16-Aug-2019
 #
 import os
 
@@ -73,23 +73,23 @@ def _importcore(env,varlist,targets,prefix,setter):
            if isinstance(varlist, str):
                varlist=[varlist]
            else:
-               raise TypeError,"varlist must be list or string"
+               raise TypeError("varlist must be list or string")
        if targets:
            if not isinstance(targets, list):
                if isinstance(targets, str):
                    targets=[targets]
                else:
-                   raise TypeError,"targets must be list of string"
+                   raise TypeError("targets must be list of string")
        for i in range(0,len(varlist)):
            value=os.environ.get(varlist[i])
-	   if value:
+           if value:
                if targets:
-	          setter(*[env,targets[i],value])
+                  setter(*[env,targets[i],value])
                else:   
-	          setter(*[env,varlist[i],value])
+                  setter(*[env,varlist[i],value])
    if prefix:
        if not isinstance(prefix, str):
-           raise TypeError,"prefix must be string"
+           raise TypeError("prefix must be string")
        for i in os.environ.keys():
-	   if i.startswith(prefix):
+           if i.startswith(prefix):
                setter(*[env,i,os.environ.get(i)])

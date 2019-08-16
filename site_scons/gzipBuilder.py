@@ -1,8 +1,8 @@
 #
 # GZip SCons builder
 #
-# Version 1.0
-# 16-Jun-2009
+# Version 1.1
+# 16-Aug-2019
 #
 
 def GZip(target, source, env=None):
@@ -19,14 +19,14 @@ def GZip(target, source, env=None):
    """
    import gzip
    if not isinstance(target, list):
-       raise TypeError,"target must be list"
+       raise TypeError("target must be list")
    elif not isinstance(source, list):
-       raise TypeError,"source must be list"
+       raise TypeError("source must be list")
    for i in range(0,len(target)):
        inpf=str(source[i])
        outf=str(target[i])
        out=gzip.open(outf,"wb")
-       inp=file(inpf,"rb")
+       inp=open(inpf,"rb")
        out.write(inp.read())
        out.close()
        inp.close()

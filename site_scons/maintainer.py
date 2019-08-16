@@ -1,8 +1,8 @@
 #
 # SCons check for maintainer mode
 #
-# Version 1.4
-# 15-Aug-2019
+# Version 1.5
+# 16-Aug-2019
 #
 
 from SCons.Script import ARGUMENTS
@@ -17,7 +17,7 @@ def checkForMaintainerMode(conf,force=False):
     try:
          maint2=int(maint)
     except ValueError:
-         maint2=None
+         maint2=0
     if force: maint2 = 1
     if maint2 > 0 or str(maint).lower() == 'yes':
                           conf.Result(1)

@@ -1,8 +1,8 @@
 #
 # SCons C language related tests
 #
-# Version 1.2
-# 24-Aug-2009
+# Version 1.3
+# 16-Aug-2019
 #
 
 def checkForVariable(conf,variable,include):
@@ -34,16 +34,16 @@ main ()
 }
 """ % (var,var),'.c')
     if rc:
-	rc,result = conf.TryRun('''
+        rc,result = conf.TryRun('''
 #include <stdio.h>
-#include <sys/types.h>	
+#include <sys/types.h>  
 
 main ()
 {
     printf("%%d",sizeof(%s));
     return 0;
 }''' % var,'.c')
-	if rc:
-	    rc=result
+        if rc:
+            rc=result
     conf.Result(rc)
     return rc
