@@ -6,12 +6,13 @@ How to run FSP:
 
 Building:
         FSP uses SCons software construction tool. Building was tested
-	with SCons 1.2.0 and Python 2.5, but older versions will probably
-	work fine. Prior to building FSP you need to download and install
-	SCons from http://www.scons.org.
+	with SCons 3.0 and Python 2.7 or Python 3.6, but older versions
+	will probably work fine if you remove version check from SConstruct.
+	Prior to building FSP you need to download and install SCons
+	from http://www.scons.org.
 
 	Other tools needed for building FSP are GNU flex and GNU C compiler.
-	They should be part of your Unix distribution but you can also 
+	These should be part of your Unix distribution but you can also 
 	download and compile them yourself from http://flex.sourceforge.net/
 	and http://gcc.gnu.org. Its possible to use Clang as replacement
 	for GCC.
