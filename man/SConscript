@@ -1,9 +1,9 @@
 from os import symlink, unlink
-Import(Split("env PREFIX MANDIR CLIENTS SCANNER"))
+Import(Split("env PREFIX MANDIR CLIENTS FSPSCAN"))
 
 MAN1=Split("fspd.1")
 
-if SCANNER:
+if FSPSCAN:
     MAN1.extend(Split("fspscan.1"))
 
 if CLIENTS:
