@@ -1,4 +1,5 @@
-Import(Split("env PREFIX"))
+Import(Split("env PREFIX FSPSCAN"))
 
-fspscan=env.Program(target = 'fspscan', source = 'fspscan.c')
-env.Install(dir=PREFIX+'/bin',source=fspscan)
+if FSPSCAN:
+  fspscan=env.Program(target = 'fspscan', source = 'fspscan.c')
+  env.Install(dir=PREFIX+'/bin',source=fspscan)

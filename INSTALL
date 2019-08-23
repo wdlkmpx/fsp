@@ -58,6 +58,7 @@ SCons command line options:
 	docdir=directory        where to put documentation.
 	                           Default prefix/share/doc/fsp
 	without-clients=yes     dont build and install client commands
+	without-fspscan=yes     dont build and install fspcan command
 	dsssl=directory		Look for DocBook DSSSL Stylesheets there
 
 Client utilities:

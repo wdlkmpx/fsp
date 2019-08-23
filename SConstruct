@@ -58,6 +58,7 @@ from mandir import checkForUserMandir
 from docdir import checkForUserDocdir
 from mandir import autodetectMandir
 from clients import checkForBuildingClients
+from fspscan import checkForBuildingFspscan
 from sysconfdir import checkForUserSysconfdir
 from largefiles import enableLargeFiles
 from jade import checkDSSSLProcessor
@@ -77,6 +78,7 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
+		      'checkForBuildingFspscan':checkForBuildingFspscan,
 		      'checkDSSSLProcessor':checkDSSSLProcessor,
 		      'findDocbookStylesheets':findDocbookStylesheets
 	 	      })
@@ -154,10 +156,11 @@ if EFENCE == True:
     EFENCE=conf.CheckLib("efence","EF_Abort")
 conf.checkForLamerPack()
 CLIENTS=conf.checkForBuildingClients()
+FSPSCAN=conf.checkForBuildingFspscan()
 conf.checkForClientTimeout()
 conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR DOCDIR CLIENTS JADE DSSSL"))
+Export( Split("env PREFIX MANDIR DOCDIR CLIENTS FSPSCAN JADE DSSSL"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
