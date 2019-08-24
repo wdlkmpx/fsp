@@ -339,7 +339,7 @@ int main (int argc, char ** argv)
   {
       if(inetd_timeout==0)
 	  /* 5. minutes is maximum resend timeout required by protocol */
-	  inetd_timeout=300*1000L; 
+	  inetd_timeout=5*60*1000L;
   }else
   {
       if(inetd_timeout==0 || !dbug)
