@@ -3,6 +3,8 @@ Version 2.8.1b29 - Not Released yet
 	  without fspscan
 	do not install shell scripts if no clients are installed
 	support for user supplied examplesdir
+	display pidfile name in case we can not write to it
+	add error exit 8 if we can't write pid file
 Version 2.8.1b28 - 16 Aug 2019
 	Pull scons site Python 3 fixed from fsplib and fspclient projects
 	More scons with python 3 build fixes

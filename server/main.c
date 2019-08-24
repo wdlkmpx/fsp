@@ -324,8 +324,8 @@ int main (int argc, char ** argv)
   */
 #ifndef LAMERPACK  
   if (pidfile(pidlogname)) {
-	  fprintf(stderr,"Error: can not write pidfile - exiting.\n");
-	  exit(1);/* cannot write pid file - exit */
+	  fprintf(stderr,"Error: can not write pidfile %s - exiting.\n",pidlogname);
+	  exit(8);/* cannot write pid file - exit */
   }
 #endif
   init_htab();
