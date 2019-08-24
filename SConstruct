@@ -7,7 +7,7 @@ EnsurePythonVersion(2,7)
 
 # set defaults
 PREFIX='/usr/local'
-VERSION='2.8.1b29'
+VERSION='2.8.1b30'
 EFENCE=False
 CLIENTS=True
 
