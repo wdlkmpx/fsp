@@ -57,6 +57,8 @@ SCons command line options:
 				files. Default prefix/etc
 	docdir=directory        where to put documentation.
 	                           Default prefix/share/doc/fsp
+	examplesdir=directory   where to install examples
+				   Default is docdir/examples
 	without-clients=yes     dont build and install client commands
 	without-fspscan=yes     dont build and install fspcan command
 	dsssl=directory		Look for DocBook DSSSL Stylesheets there

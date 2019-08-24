@@ -57,6 +57,7 @@ from relsignals import checkReliableSignals
 from mandir import checkForUserMandir
 from docdir import checkForUserDocdir
 from mandir import autodetectMandir
+from examplesdir import checkForUserExamplesdir
 from clients import checkForBuildingClients
 from fspscan import checkForBuildingFspscan
 from sysconfdir import checkForUserSysconfdir
@@ -75,6 +76,7 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkReliableSignals':checkReliableSignals,
 		      'checkForUserMandir':checkForUserMandir,
 		      'checkForUserDocdir':checkForUserDocdir,
+		      'checkForUserExamplesdir':checkForUserExamplesdir,
 		      'autodetectMandir':autodetectMandir,
 		      'checkForUserSysconfdir':checkForUserSysconfdir,
 		      'checkForBuildingClients':checkForBuildingClients,
@@ -150,6 +152,8 @@ MANDIR=conf.autodetectMandir(PREFIX)
 MANDIR=conf.checkForUserMandir(MANDIR)
 DOCDIR=PREFIX+'/share/doc/fsp'
 DOCDIR=conf.checkForUserDocdir(DOCDIR)
+EXAMPLESDIR=DOCDIR+'/examples'
+EXAMPLESDIR=conf.checkForUserExamplesdir(EXAMPLESDIR)
 dmode=conf.checkForDebugBuild()
 EFENCE = conf.MAINTAINER_MODE(dmode)
 if EFENCE == True:
@@ -162,5 +166,5 @@ conf.Finish()
 
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
-Export( Split("env PREFIX MANDIR DOCDIR CLIENTS FSPSCAN JADE DSSSL"))
+Export( Split("env PREFIX MANDIR DOCDIR EXAMPLESDIR CLIENTS FSPSCAN JADE DSSSL"))
 env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
