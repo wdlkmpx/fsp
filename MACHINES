@@ -25,3 +25,4 @@ FSP Version	CPU         OS        	Compiler         C library
 2.8.1 Beta 27	amd64	    Gentoo Linux 2014
 2.8.1 Beta 28   amd64       FreeBSD 11.3
 2.8.1 Beta 28   amd64       Gentoo Linux 17.1
+2.8.1 Beta 29   amd64       Centos 7
