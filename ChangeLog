@@ -1,6 +1,7 @@
 Version 2.8.1b29 - Not Released yet
         added scons command line argument without-fspscan=yes for building
 	  without fspscan
+	do not install shell scripts if no clients are installed
 Version 2.8.1b28 - 16 Aug 2019
 	Pull scons site Python 3 fixed from fsplib and fspclient projects
 	More scons with python 3 build fixes

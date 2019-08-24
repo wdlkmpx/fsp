@@ -1,11 +1,13 @@
-Import(Split("env PREFIX DOCDIR"))
+Import(Split("env PREFIX DOCDIR CLIENTS"))
 
 env.Install(dir=DOCDIR,source=Split("""BETA.README COPYRIGHT ChangeLog
 FILES INFO INSTALL MACHINES TODO
 """))
 
 EXAMPLESDIR=PREFIX+'/share/examples/fsp'
-env.Install(dir=EXAMPLESDIR,source=Split("setup.sh setup.csh fspd.conf"))
+env.Install(dir=EXAMPLESDIR,source="fspd.conf")
+if CLIENTS:
+  env.Install(dir=EXAMPLESDIR,source=Split("setup.sh setup.csh"))
 env.Alias("install", EXAMPLESDIR)
 
 # *************** Targets ****************
