@@ -21,10 +21,12 @@ BDEPEND="sys-devel/flex"
 src_configure() {
 	MYSCONS=(
 		CC="$(tc-getCC)"
-		prefix=${D}
+		prefix=${D}/usr
 		without-clients=yes
+		without-fspscan=yes
 		mandir=${D}/usr/share/man
 		docdir=${D}/usr/share/doc/${PF}
+		examplesdir=${D}/usr/share/examples/fspd
 		sysconfdir=/etc
 	)
 }
@@ -35,8 +37,7 @@ src_compile() {
 
 src_install() {
 	escons "${MYSCONS[@]}" install
-	rm -f ${D}/bin/fspscan ${D}/usr/share/man/man1/fspscan*
 	mkdir -p ${D}/etc
-	mv ${D}/share/examples/fsp/fspd.conf ${D}/etc
-	rm -rf ${D}/share
+	mv ${D}/usr/share/examples/fspd/fspd.conf ${D}/etc
+	rm -rf ${D}/usr/share
 }
