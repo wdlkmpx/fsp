@@ -5,10 +5,12 @@ Version 2.8.1b29 - Not Released yet
 	support for user supplied examplesdir
 	display pidfile name in case we can not write to it
 	add error exit 8 if we can't write pid file
+	RPM packaging of fspd
 Version 2.8.1b28 - 16 Aug 2019
 	Pull scons site Python 3 fixed from fsplib and fspclient projects
 	More scons with python 3 build fixes
 	contrib/fspscan fdclose() name conflict
+	Gentoo packaging of fspd
 Version 2.8.1b27 - 9 Sep 2014
 	fhostcmd: Fixed output of FSP_TRACE variable for Bourne style shells
 	correctly initialize to zero client packet sent statistic counter
