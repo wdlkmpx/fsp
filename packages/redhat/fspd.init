@@ -1,0 +1,78 @@
+#!/bin/sh
+#
+# fsp          This script starts and stops the File Service Protocol daemon
+#
+# chkconfig: 345 85 15
+#
+# description: FSP is a UDP based protocol to access files similar to \
+#              anonymous ftp.
+#
+#This init script was written by Sven 'Hoaxter' Hoexter <sven@du-gehoerst-mir.de>
+#Writen for RH 7.3
+
+. /etc/init.d/functions
+
+OPTIONS=""
+RETVAL=0
+prog="FSPd"
+PROG="/usr/bin/fspd"
+
+if [ -f /etc/sysconfig/fspd ]; then
+      . /etc/sysconfig/fspd
+fi
+
+[ -f $PROG ] || exit 0
+
+
+start() {
+	echo -n $"Starting $prog: "
+        daemon $PROG $OPTIONS
+	RETVAL=$?
+	echo
+	touch /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+stop() {
+	echo -n $"Stopping $prog: "
+	killproc $PROG
+	RETVAL=$?
+	echo
+	rm -f /var/lock/subsys/$prog
+	return $RETVAL
+}
+
+reload(){
+	stop
+	start
+}
+
+restart(){
+	stop
+	start
+}
+
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+        ;;
+  reload)
+	reload
+        ;;
+  status)
+        status snmpd
+	RETVAL=$?
+        ;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|reload}"
+	RETVAL=1
+esac
+
+exit $RETVAL
