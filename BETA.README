@@ -13,17 +13,21 @@ FSP Development Battle plan:
 FSP Protocol wire changes:
 - add FSP Info command
 
+2.8.3
 Symlink handling:
 - security: symlink to FILE can escape from FSP root directory
 
+2.8.X
+- support for ~user namespace
 Code fixups:
 - fix Sven's compiling problems on various unixes
 - fspd: add special defence against rapid/double fire clients (burst command in fspclient)
+
+2.9.0
 - add FSP change password command (do we really need this ??)
+- hard coded access list, do not load it from filesystem
 
 * for next point Stable version 2.8.3
-- hard coded access list, do not load it from filesystem
-- support for ~user namespace
 
 FSP V2.8.1 Beta version Notes:
 ------------------------------

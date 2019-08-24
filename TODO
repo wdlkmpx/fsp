@@ -3,9 +3,7 @@ FSP SUITE TO DO LIST
 
 /* maintained by hsn -at- sendmail * cz */
 
-Radim Kolar's personal wishlist from 1997
-*-high priority-*
- - show loosers online (finfo command) and server statz
+See file BETA.README for short term plans
 
 SCons build framework:
 Supports for detecting cygwin environment and define OS_CYGWIN 1
@@ -16,14 +14,13 @@ Write a test suite using testing tool
 test for remote buffer overflows
 Test if >2GB files but <4GB works correctly with and without --disable-largefile
 
-SECURITY BUGS:
+POSSIBLE SECURITY BUG:
 symlink to FILE can escape from FSP root directory. OLD known problem.
-symlink support must be reworked before `final` release.
 
 PROTOCOL-RELATED BUGS:
 we should add real,portable error codes support to CC_ERR extended data area.
 
-NEEDS IMPROVMENT:
+AREAS NEEDING IMPROVMENT:
 
 Client LIBRARY
 :low:
