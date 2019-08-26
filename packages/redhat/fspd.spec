@@ -4,13 +4,13 @@
 Summary: File Service Protocol Daemon 
 Name: %{name}
 Version: 2.8.1b29
-Release: hsn0
+Release: hsn1
 Group: System Environment/Daemons
 License: BSD/MIT/X
 URL: http://fsp.sourceforge.net
 Source0: %{sname}-%{version}.tar.bz2
 Source1: fspd.init
-BuildRequires: glibc-devel scons >= 3.0.0 flex
+BuildRequires: glibc-devel python2-scons >= 3.0.0 flex
 
 %description
 FSP is a set of programs that implements a public-access
