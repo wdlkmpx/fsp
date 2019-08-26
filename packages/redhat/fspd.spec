@@ -4,7 +4,7 @@
 Summary: File Service Protocol Daemon 
 Name: %{name}
 Version: 2.8.1b29
-Release: hsn1
+Release: 2%{?dist}
 Group: System Environment/Daemons
 License: BSD/MIT/X
 URL: http://fsp.sourceforge.net
