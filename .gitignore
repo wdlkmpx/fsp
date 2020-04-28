@@ -49,3 +49,6 @@ tests/mklargefile
 tests/parsecheck
 tests/randomcheck
 man/*.gz
+*.o
+*.a
+*.pyc
