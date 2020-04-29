@@ -9,16 +9,16 @@ SCons build framework:
 Supports for detecting cygwin environment and define OS_CYGWIN 1
 
 TESTSUITE NEEDED:
-Write a simple FSP protocol testing tool
-Write a test suite using testing tool
-test for remote buffer overflows
+Write a simple FSP protocol test suite using one
+  of its client libraries (Java, C, Python, Perl)
+automatic test for remote buffer overflows
 Test if >2GB files but <4GB works correctly with and without --disable-largefile
 
 POSSIBLE SECURITY BUG:
 symlink to FILE can escape from FSP root directory. OLD known problem.
 
 PROTOCOL-RELATED BUGS:
-we should add real,portable error codes support to CC_ERR extended data area.
+we should add real, portable error codes support to CC_ERR extended data area.
 
 AREAS NEEDING IMPROVMENT:
 
@@ -28,8 +28,6 @@ fver and others add support new syntax fsp://host:port/file
 
 :long-term goals:
 drop this library and use libfsp instead
-
-LOCKING
 
 CLIENTS 
 :high: 
@@ -64,7 +62,6 @@ use ntons a podobne funkce v iprange.c
 ipv6 socket support
 privileged Hosts, excluded from Byte transfer Limit (hard to do)
 
-
 PERFORMANCE:
 do host hashtable shrinking/clearing sometimes
 stat cache for FSP_STAT a other stat() calls
@@ -75,29 +72,6 @@ Current performance 1925648B/s
 MAN:
 separate manpage for 7 fsp (protocol definition) == write FSP RFC
 Register udp/21 for FSP in http://www.iana.org/ FSP RFC needed!
-
-POSSIBLE NEW PROJECTS
-FSP Proxy repeater - take a look at old code, but we have NAT and fspproxy
-  today.
-Experimental transfer HTTP over fsp transport. Coder needed!
-
-libraries and support for FSP protocol
-======================================
-
-DONE: FSP library for Java
-DONE: FSP over HTTP
-DONE: new small,light fsplib for C.
-DONE: fsp backend in gftp
-
-FSP plugin for Netscape/MSIE. 
-  Not possible to write protocol plugins with Netscape 3 SDK,
-  not sure about MSIE 
-  we have fsproxy now.
-  Mozilla/Firefox have support for protocol plugins
-FSP backend for APT
-FSP support in major ftp programs: lftp,wget,curl
-Gnome vfs2 plugin
-AVFS plugin http://sourceforge.net/projects/avf
 
 LARGEFILES64 how to turn them on:
 *-------------------------------*
