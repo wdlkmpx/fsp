@@ -243,7 +243,9 @@ int main (int argc, char ** argv)
   {
     opt=_x_udp(listen_on,&udp_port);
     if(opt == -1) {
-    perror("Error: socket open");
+    fprintf(stderr,"can't listen on port %d: ",udp_port);
+    fflush(stderr);
+    perror("");
     exit(2);
     }
     if(dbug) {
