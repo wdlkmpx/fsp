@@ -1,5 +1,6 @@
 Version NEXT
 	display port number if we can't listen on it
+	minor whitespace cleanup
 
 Version 2.8.1b29 - 24 Aug 2019
         added scons command line argument without-fspscan=yes for building
