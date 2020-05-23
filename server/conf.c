@@ -257,7 +257,7 @@ void load_configuration (const char *config_file)
 {
 #ifdef LAMERPACK
     return;
-#endif        
+#endif
   if(config_file == NULL) return;
 
   /* destroy_configuration(); */
