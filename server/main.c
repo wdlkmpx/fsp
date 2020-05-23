@@ -324,7 +324,7 @@ int main (int argc, char ** argv)
         new pid to it after we setuid()+fork()
   */
 #ifndef LAMERPACK  
-  if (pidfile(pidlogname)) {
+  if (! inetd_mode && pidfile(pidlogname)) {
 	  fprintf(stderr,"Error: can not write pidfile %s - exiting.\n",pidlogname);
 	  exit(8);/* cannot write pid file - exit */
   }
