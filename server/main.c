@@ -60,14 +60,14 @@ static void check_required_vars (void)
   dbug = 0;
   dir_cache_limit = 500;
   udp_port = 80;
-#endif    
+#endif
 
   if(!inetd_mode && udp_port==0) {
 #ifdef LAMERPACK
-#else            
+#else
     fprintf(stderr, "Error: No port set. (Use 65535 for random port)\n");
     exit(1);
-#endif    
+#endif
   }
   if(udp_port == 65535)
   {
@@ -82,23 +82,23 @@ static void check_required_vars (void)
 	  packetsize = DEFAULT_SPACE;
       else
 	  if(packetsize < 64)
-	      packetsize = 64;	  
+	      packetsize = 64;
 
   if(!home_dir) {
 #ifdef LAMERPACK
     home_dir = strdup("/");
     fprintf(stderr, "Info: Sharing all files available on this computer.\n");
-#else            
+#else
     fprintf(stderr, "Error: No home directory set.\n");
     exit(1);
-#endif    
+#endif
   }
-#if 0  
+#if 0
   if(*home_dir != '/') {
     fprintf(stderr,"Error: home directory [%s] does not start with a /.\n", home_dir);
     exit(1);
   }
-#endif  
+#endif
 #if 0
   if(!pidlogname) {
     fprintf(stderr, "No pidlogname set in your fspd.conf.\n");
@@ -131,9 +131,8 @@ static void check_required_vars (void)
 static void init_random (void)
 {
 #ifdef HAVE_SRANDOMDEV
-    
   srandomdev();
-#else        
+#else
   unsigned int seed;
   FILE *f;
 
@@ -146,7 +145,7 @@ static void init_random (void)
       seed=getpid()*time(NULL);
 
   srandom(seed);
-#endif  
+#endif
 }
 
 int main (int argc, char ** argv)
@@ -366,7 +365,7 @@ int main (int argc, char ** argv)
     /* Added Alban E J Fellows 12 Jan 93             */
     /* Moved by JT Traub to only do this if not running under inetd. */
     if(daemonize) {
-#if HAVE_FORK	
+#if HAVE_FORK
       pid_t forkpid;
       forkpid = fork();
       if (forkpid == 0) { /* child prozess */
