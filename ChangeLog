@@ -3,6 +3,7 @@ Version NEXT
 	minor whitespace cleanup
 	do not fail hard if we can't write to pid file and running from
 	  inetd
+	added scons switch without-server=yes to not build fspd
 
 Version 2.8.1b29 - 24 Aug 2019
         added scons command line argument without-fspscan=yes for building

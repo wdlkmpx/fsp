@@ -56,11 +56,12 @@ SCons command line options:
 	sysconfdir=directory	where to look for fspd and client configuration
 				files. Default prefix/etc
 	docdir=directory        where to put documentation.
-	                           Default prefix/share/doc/fsp
+				   Default prefix/share/doc/fsp
 	examplesdir=directory   where to install examples
 				   Default is docdir/examples
-	without-clients=yes     dont build and install client commands
-	without-fspscan=yes     dont build and install fspcan command
+	without-clients=yes	dont build and install client commands
+	without-fspscan=yes	dont build and install fspcan command
+	without-server=yes	don't build fspd server
 	dsssl=directory		Look for DocBook DSSSL Stylesheets there
 
 Client utilities:
