@@ -84,7 +84,7 @@ static void print_bitcount(void)
 
 int main(int argc,const char *argv[])
 {
-    rounds=2000;
+    rounds=20000;
     if(argc>1)
     {
 	rounds=atoi(argv[1]);
