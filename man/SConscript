@@ -47,7 +47,7 @@ for page in MAN7:
 
 # install symlinks for man pages
 if 'install' in COMMAND_LINE_TARGETS and CLIENTS:
-    for pair in SYMLINKS:
-        env.Symlink(MANDIR+'/man1/'+pair[1]+'.1.gz',MANDIR+'/man1/'+pair[0]+'.1.gz')
+    for lto, lfrom in SYMLINKS:
+        env.Symlink(MANDIR+'/man1/'+lfrom+'.1.gz',lto+'.1.gz')
 
 env.Alias("install",MANDIR)
