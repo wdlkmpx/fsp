@@ -1,12 +1,12 @@
 #
-# Symlink SCons builder
+# Relative symlink SCons builder
 #
 # Version 1.2
 # 04-Jun-2020
 #
 
 def Symlink(target, source, env=None):
-   """Create symlink target pointing to source.
+   """Create relative symlink target pointing to source.
 
    This builder creates symlinks named target pointing to source.
    Target is removed if exists.
@@ -28,5 +28,7 @@ def Symlink(target, source, env=None):
           os.unlink(str(target[i]))
        except OSError:
           pass
+       if not str(source[i]).rfind('/') == -1:
+          source[i]=str(source[i])[str(source[i]).rfind('/')+1:]
        os.symlink(str(source[i]),str(target[i]))
    return None
