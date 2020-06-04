@@ -16,7 +16,7 @@ env.Alias("install", EXAMPLESDIR)
 env.Alias("install", PREFIX+'/bin')
 
 #Add build target
-env.Alias("build", Split('server/fspd clients/ contrib/ tests/ doc/ man/') )
+env.Alias("build", Split('server/ clients/ contrib/ tests/ doc/ man/') )
 
 #Change default target to build
 env.Default(None)
