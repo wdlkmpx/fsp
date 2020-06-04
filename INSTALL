@@ -61,7 +61,7 @@ SCons command line options:
 				   Default is docdir/examples
 	without-clients=yes	dont build and install client commands
 	without-fspscan=yes	dont build and install fspcan command
-	without-server=yes	don't build fspd server
+	without-server=yes	dont build and install fspd server
 	dsssl=directory		Look for DocBook DSSSL Stylesheets there
 
 Client utilities:
@@ -97,7 +97,7 @@ Client utilities:
         transmit buffers containing 1024 bytes of data in addition to the
         header information.  Setting FSP_BUF_SIZE to a lower value will
         allow these sites to access fsp archives. Large values can provide
-	faster transfers.
+        faster transfers.
 
         FSP_LOCAL_DIR can be set to a local working directory from/to which
         all data will be transferred.
