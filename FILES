@@ -2,26 +2,26 @@ Complete content of the FSP package:
 ------------------------------------
 
    BETA.README     Warning about using FSP beta versions
-   COPYRIGHT	   Who wrote FSP		   
-   ChangeLog	   A list of all the changes made to the source code
-		   seperated by version.
-   FILES	   This list.
-   INFO		   Information about the purpose of FSP
-   INSTALL	   Installation instructions for FSP
+   COPYRIGHT       Who wrote FSO
+   ChangeLog       A list of all the changes made to the source code
+                     seperated by version.
+   FILES           This list.
+   INFO            Information about the purpose of FSP
+   INSTALL         Installation instructions for FSP
    MACHINES        Where FSP compiles out of box
    setup.csh       CSH script for initializing FSP (Unix).
    setup.sh        SH script for initializing FSP (Unix).
-   fspd.conf   	   An example fspd.conf file suitable for copying and editing.
+   fspd.conf       An example fspd.conf file suitable for copying and editing.
    SConstruct      SCons main configuration file
    SConscript      SCons script for building files in directory
-   TODO		   What is planed for future versions
+   TODO            What is planed for future versions
 
    doc/            Aditional FSP documentation
    SConscript      SCons script for building files in directory
    faq.html        OLD FSP FAQ
    HISTORY         OLD FSP Changelog
    PROTOCOL        FSP v2 protocol definition
-   4LAMERZ.TXT	   Lamerpack readme
+   4LAMERZ.TXT     Lamerpack readme
    fsp-faq.sgml    New SGML FSP FAQ
 
    bsd_src/        Directory containing additional sources derived from
@@ -29,24 +29,24 @@ Complete content of the FSP package:
                    are modified to deal with FSP or some architectures.
     SConscript     SCons script for building files in directory
     cmp.c          BSD compare routines.
-    find.c	   Source for BSD find.
-    fnmatch.c	   filename matching functions for BSD find.
-    function.c	   BSD find function parser.
+    find.c         Source for BSD find.
+    fnmatch.c      filename matching functions for BSD find.
+    function.c     BSD find function parser.
     glob.c         modified BSD globbing routine.
     ls.c           Modified ls source.
-    operator.c	   operator parsing code for BSD find.
-    option.c	   option parsing for BSD find.
+    operator.c     operator parsing code for BSD find.
+    option.c       option parsing for BSD find.
     print.c        Directory print routines, modified for VMS.
     random.c       BSD random/srandom functions.
     util.c         additional util routines for ls.
-    
-   client/	   Code common to all clients
+
+   client/         Code common to all clients
     SConscript     SCons script for building files in directory
     lib.c          Core routines of the client library.
     lock.c         Simple file locking code to do client multi-plexing.
     util.c         Supplementry routines of the client library.
 
-   clients/	   Code for the standalone and merged client versions
+   clients/        Code for the standalone and merged client versions
     SConscript     SCons script for building files in directory
     fgrabcmd.c     environment variables (fcdcmd and fhostcmd)
     fcatcmd.c      These compiles into individual client utilities.
@@ -54,16 +54,16 @@ Complete content of the FSP package:
     fducmd.c       shell alias wrappers either because they do their own
     ffindcmd.c     file globbing on argv based on directory information
     fgetcmd.c      gotten from the server or because the modify the
-    fhostcmd.c     
-    flscmd.c        
-    fmkdir.c       
-    fprocmd.c      
-    fput.c         
-    frmcmd.c       
-    frmdircmd.c    
-    fver.c         
-    fstatcmd.c     
-    fmvcmd.c	   
+    fhostcmd.c
+    flscmd.c
+    fmkdir.c
+    fprocmd.c
+    fput.c
+    frmcmd.c
+    frmdircmd.c
+    fver.c
+    fstatcmd.c
+    fmvcmd.c
     fspprof.l      lex rules for generating fsp_prof parser
     fprintpro.c    display protections flags in human readable form 
     merge.c        This file is used to call the other client programs
@@ -135,7 +135,7 @@ Complete content of the FSP package:
      fsp_prof.5
      fsp_env.7
 
-   server/	   Files needed to compile the FSPD server
+   server/         Files needed to compile the FSPD server
     SConscript     SCons script for building files in directory
     acl.c          ACL loading, saving, testing
     conf.c         fspd configuration file reading routines. 
@@ -156,7 +156,7 @@ Complete content of the FSP package:
     SConscript     SCons script for building files in directory
     rotate.py      90deg. rotation of input text
     fspscan.c      FSP site scanner
-    fspscan.h	   FSP site scanner header file
+    fspscan.h      FSP site scanner header file
     auto_del.csh   Remove outdated files from FSP home
 
    tests/          Tests for some internal FSPD functions
@@ -166,7 +166,7 @@ Complete content of the FSP package:
     parsecheck.c   Input path parsing
     randomcheck.c  Random generator tests
 
-   site_scons/	   Custom tests for SCons framework
+   site_scons/     Custom tests for SCons framework
     importer.py    Imports variables from environment into SCons
     clangtest.py   Test for existence of variable, variable size
     gzipBuilder.py Builds GZip compressed file
@@ -183,5 +183,6 @@ Complete content of the FSP package:
     sysconfdir.py  User configured directory with server config
     relsignals.py  Check if signal handlers auto installs themself
     docdir.py      User supplied documentation directory
-    clients.py	   Check if we are installing client commands
+    clients.py     Check if we are installing client commands
     sgmldoc.py     Check if sgmlfmt is available and working
+    server.py      Check if we are building fspd server
