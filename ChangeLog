@@ -4,9 +4,11 @@ Version NEXT
 	do not fail hard if we can't write to pid file and running from
 	  inetd
 	added scons switch without-server=yes to not build fspd
+	make relative links while installing man pages for fsp client
+	  programs
 
 Version 2.8.1b29 - 24 Aug 2019
-        added scons command line argument without-fspscan=yes for building
+	added scons command line argument without-fspscan=yes for building
 	  without fspscan
 	do not install shell scripts if no clients are installed
 	support for user supplied examplesdir
