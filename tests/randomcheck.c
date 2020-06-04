@@ -93,6 +93,9 @@ int main(int argc,const char *argv[])
     printf("Running %d rounds.\n\n",rounds);
 	
     result=0;
+#ifdef HAVE_SRANDOMDEV
+    srandomdev();
+#endif
 
     printf("Generator: classic\n");
     run_randomtest(classic);
