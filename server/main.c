@@ -25,7 +25,7 @@ static void display_version (void)
       printf(
 #ifndef LAMERPACK      
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
-	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2005 by Radim Kolar.\n"
+	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2020 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
 	  "Portions copyright by BSD, Wen-King Su, Philip G. Richards, Michael Meskes.\n"
 #ifdef __GNUC__
