@@ -23,7 +23,7 @@ static const char *config_file = CONF_FILE ;
 static void display_version (void)
 {
       printf(
-#ifndef LAMERPACK      
+#ifndef LAMERPACK
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
 	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2020 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
@@ -323,7 +323,7 @@ int main (int argc, char ** argv)
      2) If we create pidfile early before setuid() we can't write
         new pid to it after we setuid()+fork()
   */
-#ifndef LAMERPACK  
+#ifndef LAMERPACK
   if (! inetd_mode && pidfile(pidlogname)) {
 	  fprintf(stderr,"Error: can not write pidfile %s - exiting.\n",pidlogname);
 	  exit(8);/* cannot write pid file - exit */
