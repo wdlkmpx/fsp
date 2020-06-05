@@ -349,7 +349,10 @@ int main (int argc, char ** argv)
 
   /* inetd init */
   if(inetd_mode) {
-    opt=dup(0);
+    /* make sure that out descriptor is not 0-2, we closing these */
+    for( opt=dup(0);opt>-1 && opt<=2; ) {
+	    opt=dup(0);
+    }
   }
 
   if(daemonize || inetd_mode)
