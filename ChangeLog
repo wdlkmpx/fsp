@@ -5,7 +5,8 @@ Version NEXT
 	  inetd
 	added scons switch without-server=yes to not build fspd
 	make relative links while installing man pages for fsp client
-	  programs
+	  programs. Required for rpm packaging.
+	code cleanup
 
 Version 2.8.1b29 - 24 Aug 2019
 	added scons command line argument without-fspscan=yes for building
