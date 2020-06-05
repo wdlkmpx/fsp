@@ -16,8 +16,6 @@
 #include <unistd.h>
 #endif
 
-
-#define DSIZE (sizeof(int)*8)
 #define SAVE_ERRNO(A) { int sav; sav = errno; A; errno = sav; }
 
 #ifndef EXOS_IPC
@@ -97,10 +95,10 @@ int _x_select (fd_set * rf, long tt)  /* tt is in unit of ms */
     if(tt < MIN_DELAY) tt = MIN_DELAY;
     timeout.tv_sec  =  tt / 1000;
     timeout.tv_usec = (tt % 1000)*1000;
-    return(select(DSIZE, rf, NULL, NULL, &timeout));
+    return(select(FD_SETSIZE, rf, NULL, NULL, &timeout));
   }
 
-  return(select(DSIZE, rf, NULL, NULL , (struct timeval *) 0));
+  return(select(FD_SETSIZE, rf, NULL, NULL , (struct timeval *) 0));
 }
 #endif  /* not EXOS_IPC */
 
