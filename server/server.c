@@ -99,9 +99,9 @@ static const char * print_command(unsigned char cmd)
 	case CC_BYE:
 	    return "BYE";
 	case CC_VERSION:
-            return "VER";
+	    return "VER";
 	case CC_INFO:
-	    return "INFO";    
+	    return "INFO";
 	case CC_ERR:
 	    return "ERR";
 	case CC_GET_DIR:
@@ -125,7 +125,7 @@ static const char * print_command(unsigned char cmd)
 	case CC_GRAB_FILE:
 	    return "GRAB";
 	case CC_GRAB_DONE:
-            return "GRABDONE";
+	    return "GRABDONE";
 	case CC_STAT:
 	    return "STAT";
 	case CC_RENAME:
@@ -185,19 +185,19 @@ int server_loop (int fd, time_t timeout)
       FILE *fp;
       if(dbug) fprintf(stderr,"Got USR1, dumping tables...\n");
       if(dumpname)
-	  fp=fopen(dumpname,"a");
+          fp=fopen(dumpname,"a");
       else
-	  fp=NULL;
+          fp=NULL;
       dump_htab(fp);
       dump_iptab(iptab,fp);
       stat_caches(fp);
       if(fp)
       {
-	  fclose(fp);
+          fclose(fp);
       }
       dump = 0;
     } else
-	if(shutdowning) return 1;
+        if(shutdowning) return 1;
 
     retval = _x_select(&mask, timeout);
 
@@ -215,19 +215,19 @@ int server_loop (int fd, time_t timeout)
 	      if(dbug) fprintf(stderr,"Header truncated.\n");
 	      continue;
       }
-	
+
       rlen = BB_READ2(rbuf.bb_len);
       if((rlen+UBUF_HSIZE) > bytes)
       {
 	      if(dbug) fprintf(stderr,"Message truncated.\n");
 	      continue;	/* truncated.  */
       }
-	
+
       if(!(ir = check_ip_table(from.sin_addr.s_addr,iptab)))
       { /* host not found in table */
 	ir = priv_mode ? "DFSP service not available": "N";
       }
-	
+
       switch (*ir) {
         case 'D':	/* disabled host - return error message */
 	  if (rbuf.cmd == CC_BYE)
@@ -242,17 +242,17 @@ int server_loop (int fd, time_t timeout)
 	  fputs("check_ip() returned illegal host type\n",stderr);
 	  exit(99);
       }
-	
+
       hp = find_host(from.sin_addr.s_addr);
 
       if(hp->hostname == 0 && no_unnamed) {
 	send_error(&from,&rbuf, REVERSE_ERR_MSG);
 	continue;
       }
-	
+
       old = 0;
       cur_time = time((time_t *) 0);
-	
+
       rkey = BB_READ2(rbuf.bb_key);
       if(hp->next_key != rkey) {
 	if(!hp->active)
@@ -290,7 +290,7 @@ int server_loop (int fd, time_t timeout)
 	      if(dbug) fprintf(stderr,"Wrong checksum got %x, expected %x\n",u,sum);
 	      continue;			/* wrong check sum */
       }
-	
+
       server_process_packet(bytes,&rbuf,old,hp,&from);
     } else return(0);				/* got a timeout */
   }
@@ -436,12 +436,12 @@ static void server_show_version (struct sockaddr_in * from, UBUF * ub)
   if (no_unnamed)    verflags |= VER_REVNAME;
   if (priv_mode)     verflags |= VER_PRIVMODE;
   if (maxthcallowed) verflags |= VER_THRUPUT;
-  
+
   /* we are accepting xtra data on input */
   /* because UDP tranport provides data size */
 
   verflags |= VER_XTRADATA;
-  
+
   strcpy(ub->buf, buf);
   ub->buf[strlen(ub->buf)] = '\0';
   ub->buf[strlen(ub->buf)+1] = verflags;
@@ -705,7 +705,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
 	  }
 	  if(l1>1) {
 	      CHECK_ACCESS_RIGHTS(DIR_ADD,L_INSTALL);
-	  }    
+	  }
           pe = server_install(&pp,inet_num,port_num,pe,di,l2,s2);
 	  if(pe)
 	  {
@@ -908,9 +908,9 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
              send_error(from, ub, pe) ;
 	     return;
           }
-      
+
           CHECK_ACCESS_RIGHTS(DIR_RENAME,L_RENAME);
-          
+
 	  srcdir=di;
 	  srcpath=pp;
 
@@ -923,7 +923,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
 	  {
 	      if(FSP_STAT(s2,&sb))
                   istargetdir=-1; /* non - existent! */
-              else    
+              else
                   if(S_ISDIR(sb.st_mode))
                     istargetdir=1;
                   else
@@ -932,7 +932,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
                     else
 	              pe = ("Refusing to operate on special files");
 	  }
-	  
+
 	  if (!pe)
 	  {
 	      if (istargetdir == 1)
