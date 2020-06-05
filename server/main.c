@@ -374,7 +374,7 @@ int main (int argc, char ** argv)
       if (forkpid == 0) { /* child prozess */
 	if (pidfile(pidlogname)) {
           pidfile_cleanup(pidlogname); /* try cleanup */
-	  exit(1);/* cannot write pid file - exit */
+	  exit(8);/* cannot write pid file - exit */
 	}
       } else if (forkpid > 0) { /* father prozess */
 	_exit(0);

@@ -10,6 +10,7 @@ Version NEXT
 	make sure that our descriptor for running in inetd is not 0 to 2,
 	  because we closing these later. This should help systemd internal
 	  inetd to work correctly using fspd socket activation.
+	fspd exits with err 8 if can't write pidfile after forking
 
 Version 2.8.1b29 - 24 Aug 2019
 	added scons command line argument without-fspscan=yes for building
