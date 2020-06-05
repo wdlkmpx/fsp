@@ -7,6 +7,9 @@ Version NEXT
 	make relative links while installing man pages for fsp client
 	  programs. Required for rpm packaging.
 	code cleanup
+	make sure that our descriptor for running in inetd is not 0 to 2,
+	  because we closing these later. This should help systemd internal
+	  inetd to work correctly using fspd socket activation.
 
 Version 2.8.1b29 - 24 Aug 2019
 	added scons command line argument without-fspscan=yes for building
