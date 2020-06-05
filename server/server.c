@@ -365,7 +365,7 @@ fprintf(stderr,"\n") ;
   if(sendto(myfd,(char *)ub,(len1 + len2 + UBUF_HSIZE),0,
 	    (struct sockaddr *)from,sizeof(struct sockaddr_in)) == -1) {
     perror("sendto");
-    exit(7);
+    exit(9);
   }
 
 return(0);
