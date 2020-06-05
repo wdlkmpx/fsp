@@ -71,7 +71,7 @@ extern time_t cur_time;
 extern int shutdowning;
 RETSIGTYPE server_interrupt (int signum);
 RETSIGTYPE server_dump (int signum);
-int server_loop (int fd,time_t timeout);
+int server_loop (int fd,long timeout);
 int server_reply (struct sockaddr_in *, UBUF *, unsigned int, unsigned int);
 void serve_file (struct sockaddr_in *, UBUF *, FILE *, unsigned int,
 			      unsigned char *);

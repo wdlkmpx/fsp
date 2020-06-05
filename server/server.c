@@ -152,13 +152,15 @@ static void send_error (struct sockaddr_in * from, UBUF * ub, const char * msg)
 }
 
 /****************************************************************************
- *  This is the message filter.  It is called by main with a timeout value.
+ *  This is the message filter.  It is called by main with a timeout value in
+ *  milliseconds.
+ *
  *  If timeout is -1, it will never time out.  Otherwise, it waits for a
  *  message.  If timed out, it returns.  Otherwise it pass it through checks.
  *  Those message that passed get sent to the dispatch loop.
  ****************************************************************************/
 
-int server_loop (int fd, time_t timeout)
+int server_loop (int fd, long timeout)
 {
   HTAB *hp;
   const char *ir;
