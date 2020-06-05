@@ -183,7 +183,7 @@ int main (int argc, char ** argv)
 			  dbug = 1;
 			  break;
 		  case 'f':
-		  	  /* already loaded */
+			  /* already loaded */
 			  break;
 		  case 'd':
 			  if(home_dir) free(home_dir);
@@ -195,9 +195,9 @@ int main (int argc, char ** argv)
 			  logging = L_ALL ^ L_RDONLY;
 			  break;
 	          case 'P':
-		          if(pidlogname) free(pidlogname);
-		          pidlogname = strdup(optarg);
-		          break;
+			  if(pidlogname) free(pidlogname);
+			  pidlogname = strdup(optarg);
+			  break;
 		  case 'T':
 			  if(tmp_dir)
 			      free(tmp_dir);
