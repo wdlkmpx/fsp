@@ -1,15 +1,15 @@
 #
 # SCons check for maintainer mode
 #
-# Version 1.5
-# 16-Aug-2019
+# Version 1.6
+# 06-Jun-2020
 #
 
 from SCons.Script import ARGUMENTS
 
 def checkForMaintainerMode(conf,force=False):
     """Check if user wants to enable maintainer compilation mode.
-       
+
        If force is true than maintainer mode is forced"""
     conf.Message("Checking whether to enable maintainer mode... ")
     maint=ARGUMENTS.get('maintainer-mode', 0) or \
@@ -23,6 +23,8 @@ def checkForMaintainerMode(conf,force=False):
                           conf.Result(1)
                           conf.env.Append(CCFLAGS = '-O0')
                           conf.env.Append(CPPFLAGS = '-DMAINTAINER_MODE')
+                          conf.env.Append(CCFLAGS = '-Werror')
+                          conf.env.Append(CCFLAGS = '-Weverything')
                           return True
     else:
                           conf.Result(0)
