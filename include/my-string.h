@@ -1,5 +1,5 @@
-#ifndef _FSP_MY_STRING_H_
-#define _FSP_MY_STRING_H_ 1
+#ifndef FSP_MY_STRING_H_
+#define FSP_MY_STRING_H_ 1
 
 #include <string.h>
 

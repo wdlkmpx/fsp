@@ -1,5 +1,5 @@
-#ifndef _FSP_SERVER_CONF_H_
-#define _FSP_SERVER_CONF_H_ 1
+#ifndef FSP_SERVER_CONF_H_
+#define FSP_SERVER_CONF_H_ 1
 
 /****************************************************************************
  * Set this to the location of the fspd.conf file on your system            *
@@ -49,4 +49,4 @@
  */
 #define THCCOUNT 10
 
-#endif /* _FSP_SERVER_CONF_H_ */
+#endif /* FSP_SERVER_CONF_H_ */

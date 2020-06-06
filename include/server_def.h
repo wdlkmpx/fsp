@@ -7,8 +7,8 @@
     *  use of this software.                                              *
     \*********************************************************************/
 
-#ifndef _FSP_SERVER_DEF_H_
-#define _FSP_SERVER_DEF_H_ 1
+#ifndef FSP_SERVER_DEF_H_
+#define FSP_SERVER_DEF_H_ 1
 
 #include "common_def.h"
 #include "server_conf.h"
@@ -121,4 +121,4 @@ typedef struct {
 #define FOURGIGS 0xffffffffUL
 #define TWOGIGS  0x7fffffffUL
 
-#endif /* _FSP_SERVER_DEF_H_ */
+#endif /* FSP_SERVER_DEF_H_ */

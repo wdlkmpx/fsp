@@ -1,5 +1,5 @@
-#ifndef _FSP_TWEAK_H_
-#define _FSP_TWEAK_H_ 1
+#ifndef FSP_TWEAK_H_
+#define FSP_TWEAK_H_ 1
 
 #include <sys/types.h>
 #include <sysexits.h>
@@ -49,4 +49,4 @@
 #define BB_READ2(V) ntohs(*(const u_int16_t *)(V))
 #define BB_WRITE2(V,A) *(u_int16_t *)(V) = htons(A)
 
-#endif /* _FSP_TWEAK_H_ */
+#endif /* FSP_TWEAK_H_ */

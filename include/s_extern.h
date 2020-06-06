@@ -1,5 +1,5 @@
-#ifndef _FSP_S_EXTERN_H_
-#define _FSP_S_EXTERN_H_ 1
+#ifndef FSP_S_EXTERN_H_
+#define FSP_S_EXTERN_H_ 1
 
 /* conf.c, read and check configuration */
 extern int daemonize,use_prebuild_dirlists,read_only,dbug;
@@ -91,4 +91,4 @@ void fsplogs (void);
 void fsploga(const char *fmt, ...);
 void xferlog(char direction, const char *filename,unsigned long filesize,const char *hostname);
 
-#endif /* _FSP_S_EXTERN_H_ */
+#endif /* FSP_S_EXTERN_H_ */
