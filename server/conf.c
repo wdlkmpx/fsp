@@ -43,7 +43,7 @@ int use_directory_mtime =
 #else
 1;
 #endif
-unsigned int maxthcallowed = 0;
+int maxthcallowed = 0;
 unsigned short packetsize = DEFAULT_SPACE;
 time_t retry_timeout = 3;
 time_t session_timeout = 60;
@@ -58,11 +58,11 @@ char *listen_on = NULL;
 int homedir_restricted = 1;
 int permit_passwordless_owners = 0;
 char *readme_file = NULL;
-unsigned int dir_cache_limit = DEFAULT_DIRLISTCACHE_SIZE;
-unsigned int stat_cache_limit = DEFAULT_DIRSTATCACHE_SIZE;
+int dir_cache_limit = DEFAULT_DIRLISTCACHE_SIZE;
+int fp_cache_limit= DEFAULT_FPCACHE_SIZE;
+int stat_cache_limit = DEFAULT_DIRSTATCACHE_SIZE;
 mode_t upload_umask = 0033;
 mode_t system_umask = 0077;
-unsigned int fp_cache_limit= DEFAULT_FPCACHE_SIZE;
 
 static void log_set (int flag, int neg)
 {
@@ -180,10 +180,10 @@ static void read_configuration (const char * name)
 	q = r;
       } while (*q);
     } else if(strcasecmp(p, "port") == 0)  {
-       udp_port = atoi(q);
+       udp_port = (unsigned short) atoi(q);
     }
     else if(strcasecmp(p, "packetsize") == 0) {
-      packetsize = atoi(q);
+      packetsize = (unsigned short) atoi(q);
     }
     else if(strcasecmp(p, "filecache") == 0) {
       fp_cache_limit = atoi(q);
@@ -214,14 +214,14 @@ static void read_configuration (const char * name)
       else maxthcallowed = atoi(q);
     } else if(strcasecmp(p, "setuid") == 0) {
       if(strcasecmp(q, "off") == 0) run_uid = 0;
-      else run_uid = atoi(q);
+      else run_uid = (uid_t) atoi(q);
     } else if(strcasecmp(p, "setgid") == 0) {
       if(strcasecmp(q, "off") == 0) run_gid = 0;
-      else run_gid = atoi(q);
+      else run_gid = (gid_t) atoi(q);
     } else if(strcasecmp(p, "umask") == 0) {
-      upload_umask = strtol(q,NULL,8);
+      upload_umask = (mode_t) strtol(q,NULL,8);
     } else if(strcasecmp(p, "serverumask") == 0) {
-      system_umask = strtol(q,NULL,8);
+      system_umask = (mode_t) strtol(q,NULL,8);
     } else if(strcasecmp(p, "daemonize") == 0) {
       daemonize = get_boolean(q);
     } else if(strcasecmp(p, "debug") == 0) {
