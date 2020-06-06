@@ -12,7 +12,6 @@ TESTSUITE NEEDED:
 Write a simple FSP protocol test suite using one
   of its client libraries (Java, C, Python, Perl)
 automatic test for remote buffer overflows
-Test if >2GB files but <4GB works correctly with and without --disable-largefile
 
 POSSIBLE SECURITY BUG:
 symlink to FILE can escape from FSP root directory. OLD known problem.

@@ -84,7 +84,8 @@ conf = Configure(env,{'checkForCCOption':checkForCCOption,
 		      'checkForBuildingServer':checkForBuildingServer,
 		      'checkForBuildingFspscan':checkForBuildingFspscan,
 		      'checkDSSSLProcessor':checkDSSSLProcessor,
-		      'findDocbookStylesheets':findDocbookStylesheets
+		      'findDocbookStylesheets':findDocbookStylesheets,
+		      'checkForLargeFiles':enableLargeFiles
 	 	      })
 if not conf.CheckCC(): Exit(1)
 # check for CC options
@@ -143,7 +144,7 @@ if conf.CheckCHeader('utmpx.h'):
     conf.env.Append(CPPFLAGS = '-DHAVE_UTMPX_H')    
 if not conf.CheckType("union semun", "#include <sys/types.h>\n#include <sys/ipc.h>\n#include <sys/sem.h>",'c'):
        conf.env.Append(CPPFLAGS = "-D_SEM_SEMUN_UNDEFINED=1")
-enableLargeFiles(conf)
+conf.checkForLargeFiles(conf)
 conf.checkForLockingType(conf)
 if conf.checkReliableSignals():
     conf.env.Append(CPPFLAGS = '-DRELIABLE_SIGNALS')
