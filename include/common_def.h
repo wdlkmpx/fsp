@@ -8,8 +8,8 @@
     *  use of this software.                                              *
     \*********************************************************************/
 
-#ifndef _FSP_COMMON_DEF_H_
-#define _FSP_COMMON_DEF_H_ 1
+#ifndef FSP_COMMON_DEF_H_
+#define FSP_COMMON_DEF_H_ 1
 
 #include <stdio.h>
 
@@ -156,4 +156,4 @@ typedef struct RDIRENT { unsigned char bb_time[4];
 #define MAX_DELAY       300000L
 #define DEFAULT_TIMEOUT 360
 
-#endif /* _FSP_COMMON_DEF_H_ */
+#endif /* FSP_COMMON_DEF_H_ */

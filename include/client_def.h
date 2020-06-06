@@ -7,8 +7,8 @@
     *  use of this software.                                              *
     \*********************************************************************/
 
-#ifndef _FSP_CLIENT_DEF_H_
-#define _FSP_CLIENT_DEF_H_ 1
+#ifndef FSP_CLIENT_DEF_H_
+#define FSP_CLIENT_DEF_H_ 1
 
 #include "common_def.h"
 #include "client_conf.h"
@@ -45,4 +45,4 @@ typedef struct rdirent { unsigned long  d_fileno;
 			 unsigned short d_namlen;
 			 char          *d_name; } rdirent;
 
-#endif /* _FSP_CLIENT_DEF_H_ */
+#endif /* FSP_CLIENT_DEF_H_ */
