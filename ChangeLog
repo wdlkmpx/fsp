@@ -15,6 +15,7 @@ Version NEXT
 	correct check for native largefiles. Because we are using unsigned
 	  long internaly as pointer to offset for portability, we have to
 	  be sure that usingned long is 8 or more bytes long
+	Always try to link Efence in debug build
 
 Version 2.8.1b29 - 24 Aug 2019
 	added scons command line argument without-fspscan=yes for building

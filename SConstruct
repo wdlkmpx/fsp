@@ -8,7 +8,6 @@ EnsurePythonVersion(2,7)
 # set defaults
 PREFIX='/usr/local'
 VERSION='2.8.1b30'
-EFENCE=False
 CLIENTS=True
 
 env = Environment(CPPPATH='#/include', LIBPATH=['/usr/lib','/usr/local/lib'])
@@ -158,9 +157,9 @@ DOCDIR=conf.checkForUserDocdir(DOCDIR)
 EXAMPLESDIR=DOCDIR+'/examples'
 EXAMPLESDIR=conf.checkForUserExamplesdir(EXAMPLESDIR)
 dmode=conf.checkForDebugBuild()
-EFENCE = conf.MAINTAINER_MODE(dmode)
-if EFENCE == True:
-    EFENCE=conf.CheckLib("efence","EF_Abort")
+if dmode:
+    conf.CheckLib("efence","EF_Abort")
+conf.MAINTAINER_MODE(dmode)
 conf.checkForLamerPack()
 CLIENTS=conf.checkForBuildingClients()
 SERVER=conf.checkForBuildingServer()
