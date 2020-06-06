@@ -1,5 +1,5 @@
-#ifndef _FSP_CO_EXTERN_H_
-#define _FSP_CO_EXTERN_H_ 1
+#ifndef FSP_CO_EXTERN_H_
+#define FSP_CO_EXTERN_H_ 1
 
 /* common routines for both server and clients */
 
@@ -19,4 +19,4 @@ int _x_select (fd_set *, long);
 /* getsl.c */
 char *getsl(char *s, int l);
 
-#endif /* _FSP_CO_EXTERN_H_ */
+#endif /* FSP_CO_EXTERN_H_ */
