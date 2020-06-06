@@ -35,7 +35,7 @@ static FPCACHE *search_fpcache (unsigned long inet_num,
 	                        unsigned short port_num,
 				const char * fname)
 {
-  unsigned int i;
+  int i;
   FPCACHE *entry;
   const char **key;
 
