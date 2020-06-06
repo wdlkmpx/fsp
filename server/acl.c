@@ -112,7 +112,7 @@ void load_access_rights (DIRINFO *di)
 	    /* max readme file size is
 	     * packetsize - pro_bytes (now 1) - 1 (for /0)
 	     */
-	    s=min(packetsize-PRO_BYTES-1,sf.st_size);
+	    s=min(packetsize-PRO_BYTES-1,(unsigned int)sf.st_size);
 	    di->readme=calloc(1,s+1); /* allocate also space for ending /0 */
 	    if(di->readme)
 	    {
