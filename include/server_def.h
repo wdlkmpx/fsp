@@ -72,7 +72,7 @@ typedef struct {
 typedef struct {
     char *realname;           /* real directory name, full path resolved */
     IPrange *owner;           /* owners of this directory */
-    unsigned char protection; /* directory protection flags */
+    unsigned int protection;  /* directory protection flags */
     char *public_password;    /* password for file access */
     char *owner_password;     /* password for owners */
     char *readme;             /* readme content */
