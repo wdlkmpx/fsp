@@ -1,8 +1,25 @@
 ## Process this file with automake to produce Makefile.in
 
-bin_PROGRAMS=fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
-             flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
-	     fstatcmd fmvcmd fbye fsetupcmd
+bin_PROGRAMS= \
+	fcatcmd \
+	fcdcmd \
+	fducmd \
+	ffindcmd \
+	fgetcmd \
+	fgrabcmd \
+	fhostcmd \
+	flscmd \
+	fmkdir \
+	fprocmd \
+	fput \
+	frmcmd \
+	frmdircmd \
+	fver \
+	fspmerge \
+	fstatcmd \
+	fmvcmd \
+	fbye \
+	fsetupcmd
 
 LDADD=-L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
 
@@ -15,14 +32,30 @@ fhostcmd_LDADD=$(LDADD)
 fsetupcmd_SOURCES=fsetupcmd.c fspsites.l fhost.c
 fsetupcmd_LDADD=$(LDADD)
 
-fspmerge_LDADD=fcatcmd_m.o fcdcmd_m.o fducmd_m.o ffindcmd_m.o fgetcmd_m.o \
-    fgrabcmd_m.o fhostcmd_m.o flscmd_m.o fmkdir_m.o fprocmd_m.o \
-    fput_m.o frmcmd_m.o frmdircmd_m.o fver_m.o fmvcmd_m.o \
-    fstatcmd_m.o fbye_m.o fhost.o $(LDADD)
-
-fgetcmd_CFLAGS:=-DCOMMAND_GET
+fspmerge_LDADD= \
+	fcatcmd_m.o \
+	fcdcmd_m.o \
+	fducmd_m.o \
+	ffindcmd_m.o \
+	fgetcmd_m.o \
+    fgrabcmd_m.o \
+    fhostcmd_m.o \
+    flscmd_m.o \
+    fmkdir_m.o \
+    fprocmd_m.o \
+    fput_m.o \
+    frmcmd_m.o \
+    frmdircmd_m.o \
+    fver_m.o \
+    fmvcmd_m.o \
+    fstatcmd_m.o \
+    fbye_m.o \
+    fhost_m.o \
+    fsetupcmd_m.o \
+    $(LDADD)
 
 AM_CFLAGS:=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
+
 
 fcatcmd_m.o:
 	@echo '#include "fcatcmd.c"' > fcatcmd_m.c
@@ -93,3 +126,11 @@ fbye_m.o:
 	@echo '#include "fbye.c"' > fbye_m.c
 	${COMPILE} -Dmain=fbye_main -c fbye_m.c
 	@rm -f fbye_m.c
+fhost_m.o:
+	@echo '#include "fhost.c"' > fhost_m.c
+	${COMPILE} -Dmain=fhost_main -c fhost_m.c
+	@rm -f fhost_m.c
+fsetupcmd_m.o:
+	@echo '#include "fsetupcmd.c"' > fsetupcmd_m.c
+	${COMPILE} -Dmain=fsetupcmd_main -c fsetupcmd_m.c fspsites.l fhost.c
+	@rm -f fsetupcmd_m.c

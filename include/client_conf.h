@@ -43,4 +43,9 @@
 # error "Locking type is not configured"
 #endif
 
+// fix configure.ac and then remove this
+#if defined(FSP_USE_SHAREMEM_AND_SEMOP) && defined(FSP_NOLOCKING)
+# undef FSP_USE_SHAREMEM_AND_SEMOP
+#endif
+
 #endif /* _FSP_CLIENT_CONF_H_ */

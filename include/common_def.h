@@ -11,6 +11,10 @@
 #ifndef FSP_COMMON_DEF_H_
 #define FSP_COMMON_DEF_H_ 1
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdio.h>
 
 #include <sys/param.h>

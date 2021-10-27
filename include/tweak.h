@@ -1,6 +1,7 @@
 #ifndef FSP_TWEAK_H_
 #define FSP_TWEAK_H_ 1
 
+#include "common_def.h"
 #include <sys/types.h>
 #include <sysexits.h>
 

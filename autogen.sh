@@ -1,63 +1,99 @@
-#! /bin/sh -e
-# This scripts rebuilds configure files using autoconf tools.
-# Supports both FreeBSD and Linux installations. No copyrights
-# script is public domain.
-#
-# I am not big fan of autotools stuff.
-#
-#                           Radim Kolar
-#
-rm -f configure configure.lineno config.log config.status
-rm -f aclocal.m4
-#rm -fr autom4te.cache
-rm -f Makefile "Makefile.in"
-echo "Generating configure and friends..."
-if [ `uname -s` = 'FreeBSD' ]; then
-    echo "* FreeBSD detected"
-    if [ -x /usr/local/bin/autoconf259 ]; then
-        echo "* Using autoconf 2.59"
-    	AUTOCONF=autoconf259; export AUTOCONF
-        AUTOHEADER=autoheader259; export AUTOHEADER
-    else
-	echo "* Using system default autoconf"
-	AUTOCONF=autoconf
-	AUTOHEADER=autoheader
-    fi
-    if [ -x /usr/local/bin/automake19 ]; then
-	echo "* Using automake 1.9"
-        ACLOCAL=aclocal19; export ACLOCAL
-        AUTOMAKE=automake19; export AUTOMAKE
-    elif [ -x /usr/local/bin/automake18 ]; then
-	echo "* Using automake 1.8"
-        ACLOCAL=aclocal18; export ACLOCAL
-        AUTOMAKE=automake18; export AUTOMAKE
-    else
-	echo "* Using system default automake"
-	ACLOCAL=aclocal
-	AUTOMAKE=automake
-    fi
-    #Use autoconf 2.59 + automake 1.X pair
-    export LDFLAGS=-L/usr/local/lib
-    echo "Running $ACLOCAL"
-    $ACLOCAL -I /usr/local/share/aclocal
-    echo "Running $AUTOCONF"
-    $AUTOCONF
-    echo "Running $AUTOHEADER"
-    $AUTOHEADER
-    echo "Running $AUTOMAKE"
-    $AUTOMAKE -a
-    #autoreconf259 -iv -I /usr/local/share/aclocal
-else
-    echo "Using your default auto* tools"
-    #this should work with recent autotools
-    autoreconf -iv
+#!/bin/sh
+# Run this to generate all the initial makefiles, etc.
+
+# special params:
+# - po       update .pot & po files
+# - linguas  update LINGUAS and POTFILES.in
+# - release  create release tarball
+
+#===========================================================================
+
+if test "$1" =  "po" ; then
+	# Before creating a release you might want to update the po files
+	test -d "po/"         || exit
+	#git clean -dfx
+	test -f ./configure   || ./autogen.sh
+	test -f ./po/Makefile || ./configure
+	find po -name '*.pot' -delete # updates don't happen if pot files already exist...
+	make -C po update-po
+	# cleanup
+	rm -f po/*.po~
+	#sed -i '/#~ /d' po/*.po
+	#git clean -dfx
+	exit
 fi
 
-if [ $# -eq 0 ]; then
-  echo "Now running configure in maintainer mode"
-  ./configure --enable-maintainer-mode
-else
-  echo "Now running configure $@"
-  ./configure $@
-fi;
-echo "$0 done."
+if test "$1" =  "linguas" ; then
+	./po/Makefile.in.gen
+	exit $?
+fi
+
+#===========================================================================
+
+if test "$1" = "release" || test "$1" = "--release" ; then
+	pkg="$(grep -m 1 AC_INIT configure.ac | cut -f 2 -d '[' | cut -f 1 -d ']')"
+	ver="$(grep -m 1 AC_INIT configure.ac | cut -f 3 -d '[' | cut -f 1 -d ']')"
+	ver=$(echo $ver)
+	dir=${pkg}-${ver}
+	rm -rf ../$dir
+	mkdir -p ../$dir
+	cp -rf $PWD/* ../$dir
+	( cd ../$dir ; ./autogen.sh )
+	cd ..
+	tar -Jcf ${dir}.tar.xz $dir
+	exit
+fi
+
+
+#===========================================================================
+#                    autogen.sh [--verbose]
+#===========================================================================
+
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=.
+cd $srcdir
+
+test -z "$AUTOMAKE"   && AUTOMAKE=automake
+test -z "$ACLOCAL"    && ACLOCAL=aclocal
+test -z "$AUTOCONF"   && AUTOCONF=autoconf
+test -z "$AUTOHEADER" && AUTOHEADER=autoheader
+test -z "$LIBTOOLIZE" && LIBTOOLIZE=$(which libtoolize glibtoolize 2>/dev/null | head -1)
+test -z "$LIBTOOLIZE" && LIBTOOLIZE=libtoolize #paranoid precaution
+
+if test "$1" = "verbose" || test "$1" = "--verbose" ; then
+	set -x
+	verbose='--verbose'
+	verbose2='--debug'
+fi
+
+# pre-create some dirs / files
+auxdir='.'
+if grep -q "AC_CONFIG_AUX_DIR" configure.ac ; then
+	auxdir="$(grep AC_CONFIG_AUX_DIR configure.ac | cut -f 2 -d '[' | cut -f 1 -d ']')"
+fi
+mkdir -p ${auxdir}
+touch ${auxdir}/config.rpath
+m4dir="$(grep AC_CONFIG_MACRO_DIR configure.ac | cut -f 2 -d '[' | cut -f 1 -d ']')"
+if test -n "$m4dir" ; then
+	mkdir -p ${m4dir}
+fi
+
+# Get all required m4 macros required for configure
+if grep -q LT_INIT configure.ac ; then
+	$LIBTOOLIZE ${verbose} --copy --force || exit 1
+fi
+$ACLOCAL ${verbose} || exit 1
+
+# Generate config.h.in
+$AUTOHEADER ${verbose} --force || exit 1
+
+# Generate Makefile.in's
+$AUTOMAKE ${verbose} --add-missing --copy --force || exit 1
+
+# generate configure
+$AUTOCONF ${verbose} --force || exit 1
+
+if test "$(ls $m4dir)" = "" ; then
+	rmdir $m4dir
+fi
+rm -rf autom4te.cache
