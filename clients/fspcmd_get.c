@@ -8,6 +8,8 @@
     *  use of this software.                                              *
     \*********************************************************************/
 
+static int COMMAND_GET = 1;
+
 #include "tweak.h"
 #include "client_def.h"
 #include "c_extern.h"
@@ -22,18 +24,6 @@
 #include <utime.h>
 #endif
 #include "my-string.h"
-#include "merge.h"
-
-
-#if defined(COMMAND_GRAB)
-# undef COMMAND_GET
-#else
-# define COMMAND_GET 1
-#endif
-
-#if defined(COMMAND_GRAB) && defined(COMMAND_GET)
-#error "You must define COMMAND_GRAB -OR- COMMAND_GET"
-#endif
 
 static int clobbertype=C_UNIQUE;
 static int preserve=0;
@@ -52,13 +42,7 @@ static RETSIGTYPE fsp_cleanup (int signum)
   exit(EX_TEMPFAIL);
 }
 
-static void
-#ifdef COMMAND_GET
-get_file
-#else
-grab_file
-#endif
-(char * path, struct stat * sbufp, int mode, int level)
+static void get_file (char * path, struct stat * sbufp, int mode, int level)
 {
   char *name = path + len;
   FILE *fp;
@@ -182,11 +166,11 @@ static int make_dir (char * name, struct stat * sbufp, u_long * mode)
 static void usage (void)
 {
 
-#ifdef COMMAND_GET
-    printf("fgetcmd");
-#else
-    printf("fgrabcmd");
-#endif
+    if (COMMAND_GET)
+       printf("fgetcmd");
+    else
+       printf("fgrabcmd");
+
     printf(" [options] [filename] ...\n");
     printf("Options:\n");
     printf("-f,-o\toverwrite existing files\n");
@@ -209,7 +193,7 @@ static void usage (void)
    *   -r recursively get directories
    *   -p preserve date/times of original file on downloaded copy
    */
-int main (int argc, char ** argv)
+int fgetcmd_main (int argc, char ** argv)
 {
   char **av, *av2[2], n[1024];
   int prompt, mode = 0;
@@ -277,13 +261,7 @@ int main (int argc, char ** argv)
       {
          for(len = strlen(*av); len >= 0 && (*av)[len] != '/'; len--);
          len++;
-         util_process_file(*av, mode,
-#ifdef COMMAND_GET
-		 get_file,
-#else
-		 grab_file,
-#endif
-		 make_dir, 0L, 0);
+         util_process_file(*av, mode, get_file, make_dir, 0L, 0);
          av++;
       }
     }
@@ -291,13 +269,7 @@ int main (int argc, char ** argv)
     prompt = isatty(0);
     while(1) {
       if(prompt) {
-        fputs(
-#ifdef COMMAND_GET
-		"fget: ",
-#else
-		"fgrab: ",
-#endif
-		stdout);
+        fputs (COMMAND_GET ? "fget: " : "fgrab: ",  stdout);
         fflush(stdout);
       }
       if(!getsl(n,1024)) break;
@@ -311,13 +283,7 @@ int main (int argc, char ** argv)
       {
          for(len = strlen(*av); len >= 0 && (*av)[len] != '/'; len--);
          len++;
-         util_process_file(*av, mode,
-#ifdef COMMAND_GET
-		 get_file,
-#else
-		 grab_file,
-#endif
-		 make_dir, 0L, 0);
+         util_process_file(*av, mode, get_file, make_dir, 0L, 0);
          av++;
       }
     }
@@ -326,4 +292,10 @@ int main (int argc, char ** argv)
   client_done();
 
   exit(EX_OK);
+}
+
+int fgrabcmd_main (int argc, char ** argv)
+{
+	COMMAND_GET = 0;
+	return (fgetcmd_main (argc, argv));
 }

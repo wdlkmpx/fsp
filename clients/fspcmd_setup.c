@@ -14,7 +14,6 @@
 #include "c_extern.h"
 #include <stdio.h>
 #include "my-string.h"
-#include "merge.h"
 #include <pwd.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -24,16 +23,19 @@
 
 #define FSP_STAT stat
 
-#include "fhost.h"
+#include "fspcmd_host.h"
 
 static const char *home="/";
 static int tryfile=0;
 
 
 /* generated lex parser */
+#define BROKEN_LEX_C 1 /* another .l produces redefinitions... */
+#ifndef BROKEN_LEX_C
 extern FILE *sitein;
 int sitelex(void);
 int sitewrap(void);
+#endif
 
 static void setup_usage (void) /* print usage message */
 {
@@ -42,16 +44,18 @@ static void setup_usage (void) /* print usage message */
 }
 
 /* get data out of resource file */
+
 static void parse_prof_file_new (void)
 {
+#ifndef BROKEN_LEX_C
   int rc;
-
   rc=sitewrap();
   if(rc==0)
       sitelex();
+#endif
 }
 
-int main (int argc, char ** argv)
+int fsetupcmd_main (int argc, char ** argv)
 {
   int optletter,csh,lhost=0;
   register char *p;
@@ -138,7 +142,7 @@ int main (int argc, char ** argv)
  *
  * Returns: 1 for terminating scanner or 0 for switching
  */
-
+ #ifndef BROKEN_LEX_C
 int sitewrap(void)
 {
   char *f2=NULL;
@@ -183,3 +187,4 @@ int sitewrap(void)
 
   return 0;
 }
+#endif

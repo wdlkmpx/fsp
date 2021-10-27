@@ -5,7 +5,7 @@
 
 %{
 #include <string.h>
-#include "fhost.h"
+#include "fspcmd_host.h"
 
 static struct fsp_host *host=NULL;
 %}

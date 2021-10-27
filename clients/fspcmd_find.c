@@ -45,7 +45,6 @@
 #include "client_def.h"
 #include "c_extern.h"
 #include "bsd_extern.h"
-#include "merge.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
@@ -81,7 +80,7 @@ static int eval_dir (char * name, struct stat * sbufp, u_long * sum)
   return (process);
 }
 
-int main (int argc, char **  argv)
+int ffindcmd_main (int argc, char **  argv)
 {
   register char **p;
   char *singlefile[2], **files;

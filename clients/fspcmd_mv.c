@@ -18,7 +18,6 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
-#include "merge.h"
 
 static unsigned int n;
 static unsigned char buf[UBUF_SPACE];
@@ -70,7 +69,7 @@ static void rename_file (const char *fname,const char *target)
    } 
 }
 
-int main (int argc, char ** argv)
+int fmvcmd_main (int argc, char ** argv)
 {
   char **av, *av2[2];
 

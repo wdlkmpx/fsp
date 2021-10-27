@@ -23,7 +23,7 @@
 #include <netdb.h>
 #endif
 
-#include "fhost.h"
+#include "fspcmd_host.h"
 
 static struct fsp_host *host;
 static int hostsize=0;

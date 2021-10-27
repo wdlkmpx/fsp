@@ -2,8 +2,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-# clients is currently broken
-SUBDIRS=include bsd_src common client server doc man contrib tests
+SUBDIRS=include bsd_src common client clients server man contrib tests
 
 EXTRA_DIST= \
 	fspd.conf FILES INFO BETA.README \

@@ -16,7 +16,6 @@
 #include <unistd.h>
 #endif
 #include "my-string.h"
-#include "merge.h"
 
 static int timestamps=0;
 static int optletter;
@@ -66,7 +65,7 @@ static RETSIGTYPE upload_cleanup (int signum)
   exit(EX_TEMPFAIL);
 }
 
-int main (int argc, char ** argv)
+int fput_main (int argc, char ** argv)
 {
   char n[1024];
   int prompt;

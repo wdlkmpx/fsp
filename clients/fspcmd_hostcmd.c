@@ -14,7 +14,6 @@
 #include "c_extern.h"
 #include <stdio.h>
 #include "my-string.h"
-#include "merge.h"
 #include <pwd.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -29,7 +28,7 @@
 #define FSP_STAT stat
 
 
-#include "fhost.h"
+#include "fspcmd_host.h"
 
 static const char *home="/";
 static int tryfile=0;
@@ -75,7 +74,7 @@ static void parse_prof_file_new (const char * filename)
       fclose(input);
 }
 
-int main (int argc, char ** argv)
+int fhostcmd_main (int argc, char ** argv)
 {
   int optletter,csh,lhost=0;
   register char *p;

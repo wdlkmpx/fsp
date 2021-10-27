@@ -15,7 +15,6 @@
 #include "c_extern.h"
 #include "bsd_extern.h"
 #include "my-string.h"
-#include "merge.h"
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -62,7 +61,7 @@ static void end_dir (char * path, int mode, u_long sum, int level)
 }
 
 /* ARGSUSED */
-int main (int argc, char ** argv)
+int fducmd_main (int argc, char ** argv)
 {
   int mode=0;
   int filcnt = 0;

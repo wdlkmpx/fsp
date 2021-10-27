@@ -11,14 +11,13 @@
 #include "tweak.h"
 #include "client_def.h"
 #include "c_extern.h"
-#include "merge.h"
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
-int main (int argc, char ** argv)
+int fver_main (int argc, char ** argv)
 {
   UBUF *ub;
   unsigned int len, tput = 0, len2;

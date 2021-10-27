@@ -2,7 +2,7 @@
 
 import os
 # init Scons
-EnsureSConsVersion(3,0)
+EnsureSConsVersion(2,5,1)
 EnsurePythonVersion(2,7)
 
 # set defaults

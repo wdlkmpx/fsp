@@ -54,26 +54,11 @@ Complete content of the FSP package:
     fducmd.c       shell alias wrappers either because they do their own
     ffindcmd.c     file globbing on argv based on directory information
     fgetcmd.c      gotten from the server or because the modify the
-    fhostcmd.c
-    flscmd.c
-    fmkdir.c
-    fprocmd.c
-    fput.c
-    frmcmd.c
-    frmdircmd.c
-    fver.c
-    fstatcmd.c
-    fmvcmd.c
     fspprof.l      lex rules for generating fsp_prof parser
     fprintpro.c    display protections flags in human readable form 
     merge.c        This file is used to call the other client programs
 	           when program merging option is used.  Rather than
-		   compiling into individual client utility programs,
-		   users may opt to build a single program which
-		   contains all client funtionalities, which are to
-		   be distinguished at run time by the name used to
-		   activate the program.  Significant space saving can
-		   be achieved on some machines.
+		   compiling into individual client utility programs
 
    common/	   Directory containing code used in both server and clients
     SConscript     SCons script for building files in directory
