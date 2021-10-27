@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-bin_PROGRAMS = fspcmd
+bin_PROGRAMS = fspcmd fspscan
 
 LDADD = -L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
 
@@ -21,6 +21,6 @@ fspcmd_SOURCES= \
 
 noinst_HEADERS=fspcmd_0misc.h fspcmd_host.h
 
-AM_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
+AM_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\""
 
 	

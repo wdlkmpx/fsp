@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS=include bsd_src common client clients server man contrib tests
+SUBDIRS=include bsd_src common client clients server man tests
 
 EXTRA_DIST= \
 	fspd.conf FILES INFO BETA.README \

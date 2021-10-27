@@ -199,7 +199,6 @@ AC_CONFIG_FILES(
 	clients/Makefile
 	man/Makefile
 	include/Makefile
-	contrib/Makefile
 	doc/Makefile
 	tests/Makefile
 )

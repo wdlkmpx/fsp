@@ -1,4 +1,4 @@
-Import(Split("env PREFIX common bsdfsp client CLIENTS"))
+Import(Split("env PREFIX common bsdfsp client CLIENTS FSPSCAN"))
 
 if CLIENTS:
     fspcmd=env.Program(target = 'fspcmd',source=['fspcmd.c','fspcmd_0misc.c','fspcmd_du.c','fspcmd_find.c','fspcmd_get.c','fspcmd_host.c','fspcmd_hostcmd.c','fspcmd_mv.c','fspcmd_put.c','fspcmd_setup.c','fspcmd_ver.c','fspprof.l']+client+common+bsdfsp)
@@ -7,3 +7,7 @@ if CLIENTS:
 
     for program in PROGRAMS:
         env.Install(dir = PREFIX+'/bin', source = program)
+
+if FSPSCAN:
+  fspscan=env.Program(target = 'fspscan', source = 'fspscan.c')
+  env.Install(dir=PREFIX+'/bin',source=fspscan)

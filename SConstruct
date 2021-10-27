@@ -170,4 +170,4 @@ conf.Finish()
 env.Append(CPPFLAGS = "-DPACKAGE_VERSION=\\\""+VERSION+"\\\"")
 # process build rules
 Export( Split("env PREFIX MANDIR DOCDIR EXAMPLESDIR CLIENTS SERVER FSPSCAN JADE DSSSL"))
-env.SConscript(dirs=Split("doc . bsd_src common server client clients contrib tests man"))
+env.SConscript(dirs=Split("doc . bsd_src common server client clients tests man"))
