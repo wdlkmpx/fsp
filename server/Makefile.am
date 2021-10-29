@@ -8,4 +8,4 @@ fspd_CFLAGS=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
 fspd_LDADD=-L../common -lcommon $(EX_LIBS)
 
 noinst_HEADERS=fifocache.h pidfile.h
-EXTRA_DIST=SConscript
+

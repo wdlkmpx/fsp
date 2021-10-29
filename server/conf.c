@@ -20,12 +20,7 @@
 static int conf_read = 0;
 
 int daemonize = 1;
-int use_prebuild_dirlists =
-#ifdef OS_CYGWIN
-0;
-#else
-1;
-#endif
+int use_prebuild_dirlists = 1;
 int grab_enabled = 1;
 int ver_enabled = 1;
 int read_only = 0;
@@ -37,12 +32,7 @@ int priv_mode = 0;
 int no_unnamed = 0;
 int logging = 0;
 int use_access_files = 1;
-int use_directory_mtime =
-#ifdef OS_CYGWIN
-0;
-#else
-1;
-#endif
+int use_directory_mtime = 1;
 int maxthcallowed = 0;
 unsigned short packetsize = DEFAULT_SPACE;
 time_t retry_timeout = 3;

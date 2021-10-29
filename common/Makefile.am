@@ -3,4 +3,3 @@ noinst_LIBRARIES=libcommon.a
 
 libcommon_a_SOURCES=random.c udp_io.c getsl.c
 
-EXTRA_DIST= SConscript

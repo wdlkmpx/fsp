@@ -1,24 +1,18 @@
 dnl Process this file with autoconf to produce a working configure script.
 
+AC_PREREQ([2.59])
 AC_INIT([fsp],[8.1b25],[])
 AC_CONFIG_AUX_DIR([autoconf])
 AC_CONFIG_MACRO_DIR([autoconf-m4])
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+m4_ifdef([AM_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
-AC_CONFIG_SRCDIR(server/main.c)
-
-AC_PREREQ([2.59])
-AM_MAINTAINER_MODE
 AC_CONFIG_HEADERS(include/config.h)
 AC_ARG_WITH(lockprefix,AS_HELP_STRING([--with-lockprefix=path],[Set lock prefix path to (default /tmp/.FSPL)]))
-AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/shmget/lockf/flock],[Set client locking type (default autodetected)]))
+AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/shmget/lockf/flock],[Set client locking type (default none)]))
 AC_CANONICAL_HOST
-AC_MSG_CHECKING([if building for Cygwin])
-case $host_os in
-           *cygwin* ) AC_DEFINE(OS_CYGWIN,1,[Define if you are building for cygwin]) AC_MSG_RESULT(yes);;
-                  * ) AC_MSG_RESULT(no);;
-esac
 AC_MSG_CHECKING([if we are building lamer pack])
 AC_ARG_ENABLE(lamerpack,AS_HELP_STRING([--enable-lamerpack],[Build fspd tuned for lamers (default no)]),AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disabled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
 AC_MSG_CHECKING([if enabling of extra debug code is requested])
@@ -32,34 +26,22 @@ else
    AC_MSG_RESULT(no)
 fi
 AC_PROG_RANLIB
-AM_PROG_LEX
-AC_PROG_LN_S
+AC_PROG_LEX
 AC_PROG_CC
 
 CFLAGS="$CFLAGS"
 AC_SUBST(CFLAGS)
-AC_USE_SYSTEM_EXTENSIONS
-AC_C_CONST
-AC_C_VOLATILE
-AC_PROG_CPP
 AC_SEARCH_LIBS([strerror],[cposix])
-if test "${enable_maintainer_mode+set}" = set; then
-	CFLAGS="-g3 $ac_cv_prog_gcc_flags"
-	AC_CHECK_LIB(efence,EF_Abort)   
-fi
 
-AC_HEADER_STDC
 AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h)
 AC_CHECK_HEADERS(string.h strings.h unistd.h sys/resource.h utime.h)
 AC_HEADER_DIRENT
 AC_HEADER_TIME
-AC_CHECK_SIZEOF(unsigned)
-AC_CHECK_SIZEOF(short)
-AC_CHECK_SIZEOF(long)
-AC_CHECK_SIZEOF(char)
-AC_CHECK_SIZEOF(void)
+AC_HEADER_SYS_WAIT
+AC_HEADER_STAT
 AC_SYS_LARGEFILE
 AC_CHECK_FUNCS(fseeko)
+
 AC_CHECK_SIZEOF(off_t)
 if test $ac_cv_sizeof_off_t -ge 8 -a "x$ac_cv_func_fseeko" = xyes; then
 	AC_DEFINE(NATIVE_LARGEFILES,1,[Define if we have 64bit off_t and fseeko])
@@ -73,30 +55,26 @@ AC_TYPE_UID_T
 AC_TYPE_PID_T
 AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not found in <sys/types.h>]))
 AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
-# RETSIGTYPE is void, fix the codebase and remove this
-AC_DEFINE_UNQUOTED([RETSIGTYPE],[void],[RETSIGTYPE is void])
 
-AC_FUNC_CLOSEDIR_VOID
 AC_CHECK_FUNCS(random srandomdev flock lockf getrlimit fork setsid semop)
+
 AC_CHECK_TYPE(union semun, ,AC_DEFINE(_SEM_SEMUN_UNDEFINED,1,[Define if you do not have semun in sys/sem.h]),
 [#include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 ])
-AC_CACHE_CHECK(for working shmget ,ac_cv_func_shmget,
+
+AC_CACHE_CHECK(for working shmget, ac_cv_func_shmget,
 [LOCKPATH="conftestlock"
-AC_RUN_IFELSE(
-[AC_LANG_SOURCE([[
+AC_RUN_IFELSE([AC_LANG_SOURCE([
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #define LOCKPATH "$LOCKPATH"
-
 main() {
   key_t ky;
   int   sh, rv, fd;
-
   fd = open(LOCKPATH, O_RDWR | O_CREAT, 0666);
   if (fd == -1) exit(1);
   rv = 0;
@@ -109,34 +87,22 @@ main() {
     else shmctl(sh, IPC_RMID, &foo);
   }
   close(fd);
-  exit(rv); }]])
-],[ac_cv_func_shmget="yes"],
-[ac_cv_func_shmget="no"],[])
+  exit(rv); }
+])],
+[ac_cv_func_shmget="yes"],[ac_cv_func_shmget="no"],[])
 rm -f $LOCKPATH conftest.c
 ])
 if test "x$ac_cv_func_shmget" = "xyes"; then 
 	AC_DEFINE(HAVE_SHMEM,1,[Define the following if you have working shared memory])
 fi
+
 AC_DEFINE(FSP_NOLOCKING,1)
-AC_DEFINE(HAVE_D_INO,1,[define if you have d_fileno in struct dirent])
+#AC_DEFINE(HAVE_D_INO,1,[define if you have d_fileno in struct dirent])
+AC_CHECK_MEMBER(struct dirent.d_ino,AC_DEFINE(HAVE_D_INO,1,[do you have d_ino in struct dirent]), [], [#include <dirent.h>])
+AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[do you have d_fileno in struct dirent]), [], [#include <dirent.h>])
 
-AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[define if you have d_fileno in struct dirent]), AC_CHECK_MEMBER(struct direct.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[do you have d_fileno in struct direct]), ,[
-#ifdef HAVE_SYS_DIR_H
-#include <sys/dir.h>
-#else
-#ifdef HAVE_SYS_NDIR_H
-#include <sys/ndir.h>
-#endif
-#endif
-])
-,[#include <dirent.h>])
-AC_HEADER_SYS_WAIT
-AC_HEADER_STAT
-dnl AC_CHECK_HEADERS(sysexits.h)
-AC_FUNC_VPRINTF
-
-AC_CACHE_CHECK(for reliable signals ,fsp_cv_sys_reliable_signals,[
-AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
+AC_CACHE_CHECK(for reliable signals ,fsp_cv_sys_reliable_signals,
+[AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
 #include <signal.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -154,7 +120,8 @@ main() {
  test=0;
  kill(getpid(),SIGUSR1);
  if(test==1) exit(0); else exit(1);
-}]])],[fsp_cv_sys_reliable_signals="yes"],[fsp_cv_sys_reliable_signals="no"],[])])
+}]])],
+[fsp_cv_sys_reliable_signals="yes"],[fsp_cv_sys_reliable_signals="no"],[])])
 
 if test "x$fsp_cv_sys_reliable_signals" = "xyes"; then
 	AC_DEFINE(RELIABLE_SIGNALS,1,[undefine If your signal handlers don not reinstall automatically])
