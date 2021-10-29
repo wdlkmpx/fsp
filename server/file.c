@@ -20,6 +20,7 @@
 #endif
 #include "my-string.h"
 #include "fifocache.h"
+#include <stdio.h>
 
 /****************************************************************************
 * This is a modified server_file that uses cache for directory listings and
@@ -71,7 +72,7 @@ static unsigned int fpcache_entry_profiler (const void *entry)
     const FPCACHE *f=entry;
 
     if(f->fp)
-	return sizeof(FILE);
+	return sizeof(FILE*);
     else
 	return 0;
 }

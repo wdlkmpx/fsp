@@ -44,8 +44,11 @@
 #endif
 
 // fix configure.ac and then remove this
-#if defined(FSP_USE_SHAREMEM_AND_SEMOP) && defined(FSP_NOLOCKING)
+#if FSP_NOLOCKING
 # undef FSP_USE_SHAREMEM_AND_SEMOP
+# undef FSP_USE_LOCKF
+# undef FSP_USE_FLOCK
+# undef FSP_USE_SHAREMEM_AND_LOCKF
 #endif
 
 #endif /* _FSP_CLIENT_CONF_H_ */

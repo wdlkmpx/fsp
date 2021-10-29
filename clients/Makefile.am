@@ -19,8 +19,10 @@ fspcmd_SOURCES= \
 	fspprof.l
 #	fspsites.l
 
+fspcmd_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\""  $(AM_CFLAGS)
+
 noinst_HEADERS=fspcmd_0misc.h fspcmd_host.h
 
-AM_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\""
+
 
 	

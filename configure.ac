@@ -1,4 +1,4 @@
-dnl Process this file with autoconf to produce a working configure script.
+# Process this file with autoconf to produce a working configure script.
 
 AC_PREREQ([2.59])
 AC_INIT([fsp],[8.1b25],[])
@@ -33,7 +33,7 @@ CFLAGS="$CFLAGS"
 AC_SUBST(CFLAGS)
 AC_SEARCH_LIBS([strerror],[cposix])
 
-AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h)
+AC_CHECK_HEADERS(limits.h sys/syslimits.h errno.h signal.h sys/shm.h)
 AC_CHECK_HEADERS(string.h strings.h unistd.h sys/resource.h utime.h)
 AC_HEADER_DIRENT
 AC_HEADER_TIME
@@ -58,99 +58,36 @@ AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsig
 
 AC_CHECK_FUNCS(random srandomdev flock lockf getrlimit fork setsid semop)
 
+#AC_DEFINE(HAVE_D_INO,1,[define if you have d_fileno in struct dirent])
+AC_CHECK_MEMBER(struct dirent.d_ino,AC_DEFINE(HAVE_D_INO,1,[do you have d_ino in struct dirent]), [], [#include <dirent.h>])
+AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[do you have d_fileno in struct dirent]), [], [#include <dirent.h>])
+
+
 AC_CHECK_TYPE(union semun, ,AC_DEFINE(_SEM_SEMUN_UNDEFINED,1,[Define if you do not have semun in sys/sem.h]),
 [#include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 ])
-
-AC_CACHE_CHECK(for working shmget, ac_cv_func_shmget,
-[LOCKPATH="conftestlock"
-AC_RUN_IFELSE([AC_LANG_SOURCE([
-#include <sys/types.h>
-#include <fcntl.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#define LOCKPATH "$LOCKPATH"
-main() {
-  key_t ky;
-  int   sh, rv, fd;
-  fd = open(LOCKPATH, O_RDWR | O_CREAT, 0666);
-  if (fd == -1) exit(1);
-  rv = 0;
-  ky = ftok(LOCKPATH, 2001);
-  if (ky == (key_t) -1) rv = 1;
-  else {
-    struct shmid_ds foo;
-    sh = shmget(ky, 1, IPC_CREAT | 0666);
-    if (sh == -1) rv = 1;
-    else shmctl(sh, IPC_RMID, &foo);
-  }
-  close(fd);
-  exit(rv); }
-])],
-[ac_cv_func_shmget="yes"],[ac_cv_func_shmget="no"],[])
-rm -f $LOCKPATH conftest.c
-])
-if test "x$ac_cv_func_shmget" = "xyes"; then 
-	AC_DEFINE(HAVE_SHMEM,1,[Define the following if you have working shared memory])
-fi
-
-AC_DEFINE(FSP_NOLOCKING,1)
-#AC_DEFINE(HAVE_D_INO,1,[define if you have d_fileno in struct dirent])
-AC_CHECK_MEMBER(struct dirent.d_ino,AC_DEFINE(HAVE_D_INO,1,[do you have d_ino in struct dirent]), [], [#include <dirent.h>])
-AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[do you have d_fileno in struct dirent]), [], [#include <dirent.h>])
-
-AC_CACHE_CHECK(for reliable signals ,fsp_cv_sys_reliable_signals,
-[AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
-#include <signal.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-volatile int test;
-RETSIGTYPE sig_handler(sg)
-int sg;
-{ test=1;} 
-main() {
- signal(SIGUSR1,sig_handler);
- test=0;
- kill(getpid(),SIGUSR1);
- sleep(1);
- if(test==0) { printf("Signals ARE BROKEN!\n");kill(0,SIGQUIT);}
- test=0;
- kill(getpid(),SIGUSR1);
- if(test==1) exit(0); else exit(1);
-}]])],
-[fsp_cv_sys_reliable_signals="yes"],[fsp_cv_sys_reliable_signals="no"],[])])
-
-if test "x$fsp_cv_sys_reliable_signals" = "xyes"; then
-	AC_DEFINE(RELIABLE_SIGNALS,1,[undefine If your signal handlers don not reinstall automatically])
-fi
+# shm.h
+AC_DEFINE(HAVE_SHMEM,1,[Define the following if you have working shared memory])
+# signal.h
+AC_DEFINE(RELIABLE_SIGNALS,1,[undefine If your signal handlers don not reinstall automatically])
 
 #Parse user locking choice
-if test "x$with_locking" = "xno" -o "x$with_locking" = "xnone" ; then
+if test "x$with_locking" = "xno" -o "x$with_locking" = "xnone" -o "x$with_locking" = "x" ; then
 	AC_DEFINE(FSP_NOLOCKING,1,[Define if you do not want to use any locking])
-	AC_MSG_NOTICE(locking disabled by user)
-elif test "x$with_locking" = "xlockf" -a "x$ac_cv_func_lockf" = "xyes"; then
+	with_locking=none
+elif test "x$with_locking" = "xlockf" ; then
 	AC_DEFINE(FSP_USE_LOCKF,1,[Define for lockf style locking])
-elif test "x$with_locking" = "xsemop" -a "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes";then
+elif test "x$with_locking" = "xsemop" ;then
 	AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1,[Define for sharemem+semop locking])
-elif test "x$with_locking" = "xshmget" -a "x$ac_cv_func_shmget" = "xyes" -a "x$ac_cv_func_lockf" = "xyes"; then
+elif test "x$with_locking" = "xshmget" ; then
 	AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1,[Define for lockf locking])
-elif test "x$with_locking" = "xflock" -a "x$ac_cv_func_flock" = "xyes"; then
+elif test "x$with_locking" = "xflock" ; then
 	AC_DEFINE(FSP_USE_FLOCK,1,[Define for flock style locks])
-elif test "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes"; then
-	AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1)
-elif test "x$ac_cv_func_shmget" = "xyes" -a "x$ac_cv_func_lockf" = "xyes"; then
-	AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1)
-elif test "x$ac_cv_func_lockf" = "xyes"; then
-	AC_DEFINE(FSP_USE_LOCKF,1)
-elif test "x$ac_cv_func_flock" = "xyes"; then
-	AC_DEFINE(FSP_USE_FLOCK,1)
-else
-	AC_DEFINE(FSP_NOLOCKING,1)
-	AC_MSG_NOTICE([no suitable locking method detected])
 fi
+AC_MSG_NOTICE([Locking method: $with_locking])
+
 
 #locking prefix
 if test "x$with_lockprefix" != "xno" -a "x$with_lockprefix" != "xyes" -a "x$with_lockprefix" != "x" ; then
