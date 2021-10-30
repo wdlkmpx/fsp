@@ -2,8 +2,20 @@
 
 bin_PROGRAMS=fspd
 
-fspd_SOURCES=file.c host.c main.c conf.c server.c fifocache.c \
-	     log.c iprange.c acl.c path.c random.c pidfile.c info.c
+fspd_SOURCES = \
+	acl.c \
+	conf.c \
+	fifocache.c \
+	file.c \
+	host.c \
+	iprange.c \
+	log.c \
+	main.c \
+	path.c \
+	pidfile.c \
+	random.c \
+	server.c
+
 fspd_CFLAGS=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)
 fspd_LDADD=-L../common -lcommon $(EX_LIBS)
 
