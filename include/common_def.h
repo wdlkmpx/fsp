@@ -36,6 +36,11 @@
 #include <signal.h>
 #include <dirent.h>
 
+#ifndef HAVE_RANDOM
+#define random rand
+#define srandom srand
+#endif
+
 /****************************************************************************
 *  UBUF is the structure of message exchanged between server and clients.
 *

@@ -13,7 +13,6 @@ fspd_SOURCES = \
 	main.c \
 	path.c \
 	pidfile.c \
-	random.c \
 	server.c
 
 fspd_CFLAGS=-DSYSCONFDIR="\"@sysconfdir@\"" $(AM_CFLAGS)

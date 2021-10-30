@@ -26,6 +26,17 @@ static int thc[THCCOUNT];
 static time_t thcbase;
 static int myfd;
 
+static unsigned short gen_next_key (void)
+{
+#ifdef HAVE_RANDOM
+   /* get high bits from random result - better */
+  return (random() >> 15);
+#else
+  unsigned short ulRandom = ((float)(0xffff)*rand()/(RAND_MAX+1.0f));
+  return (ulRandom);
+#endif
+}
+
 static void server_process_packet (unsigned, UBUF *, int, HTAB *,
 				      struct sockaddr_in *);
 

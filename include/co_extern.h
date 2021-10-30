@@ -3,14 +3,6 @@
 
 /* common routines for both server and clients */
 
-#ifndef HAVE_RANDOM
-/* random.c */
-void srandom (unsigned int);
-char *initstate (unsigned int, char *, int);
-char *setstate (char *);
-long random (void);
-#endif
-
 /* udp_io.c */
 int _x_udp (const char *, unsigned short *);
 int _x_adr (const char *, int, struct sockaddr_in *);

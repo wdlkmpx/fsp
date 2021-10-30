@@ -51,9 +51,6 @@ const char *server_rename (PPATH *src,PPATH *dest,DIRINFO *sdir, DIRINFO *tdir);
 /* path.c, path parser */
 const char *parse_path (char * fullp, unsigned int len, PPATH * pp);
 
-/* random.c, next key random degenerator */
-unsigned short gen_next_key (void);
-
 /* iprange.c IP range services */
 extern IPrange *iptab;
 const char *check_ip_table (unsigned long inet_num,IPrange *table);

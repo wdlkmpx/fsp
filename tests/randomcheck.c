@@ -4,6 +4,11 @@
 #include "my-string.h"
 #include <math.h>
 
+#ifndef HAVE_RANDOM
+#define random rand
+#define srandom srand
+#endif
+
 static int bitcount[16];
 static int rounds;
 static int result;
