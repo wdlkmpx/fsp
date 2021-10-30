@@ -34,7 +34,7 @@ static unsigned long start_from;
 
 static int len;
 
-static RETSIGTYPE fsp_cleanup (int signum)
+static void fsp_cleanup (int signum)
 {
   char filename[20];
   sprintf(filename,".fsp.%d",getpid());

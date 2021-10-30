@@ -10,10 +10,6 @@
 #define fseeko fseek
 #endif
 
-#ifndef RETSIGTYPE
-#define RETSIGTYPE void
-#endif
-
 #define FSP_STAT stat
 
 #define fexist(A) (!access(A,F_OK))

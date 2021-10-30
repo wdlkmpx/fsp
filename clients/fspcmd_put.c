@@ -53,7 +53,7 @@ static int put_file (char * path)
   return(0);
 }
 
-static RETSIGTYPE upload_cleanup (int signum)
+static void upload_cleanup (int signum)
 {
   UBUF *ub;
 

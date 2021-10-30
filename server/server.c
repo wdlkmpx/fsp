@@ -79,12 +79,12 @@ do { if((logging & (FLAG)) && !old) { \
 	      return; \
       } \
 
-RETSIGTYPE server_interrupt (int signum)
+void server_interrupt (int signum)
 {
   shutdowning = 1;
 }
 
-RETSIGTYPE server_dump (int signum)
+void server_dump (int signum)
 {
   dump = 1;
 #ifndef RELIABLE_SIGNALS

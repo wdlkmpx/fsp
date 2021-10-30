@@ -69,8 +69,8 @@ int dump_htab (FILE *fn);
 /* server.c, network server operations */
 extern time_t cur_time;
 extern int shutdowning;
-RETSIGTYPE server_interrupt (int signum);
-RETSIGTYPE server_dump (int signum);
+void server_interrupt (int signum);
+void server_dump (int signum);
 int server_loop (int fd,long timeout);
 int server_reply (struct sockaddr_in *, UBUF *, unsigned int, unsigned int);
 void serve_file (struct sockaddr_in *, UBUF *, FILE *, unsigned int,

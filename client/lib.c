@@ -239,7 +239,7 @@ UBUF *client_interact 	(unsigned char cmd, unsigned long pos,
   }
 }
 
-static RETSIGTYPE client_intr (int signum)
+static void client_intr (int signum)
 {
   switch(client_intr_state) {
     case 0: exit(EX_TEMPFAIL);
