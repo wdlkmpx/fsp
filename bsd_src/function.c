@@ -412,7 +412,7 @@ static int find_name (PLAN * plan, struct stat * sbuf, char * path)
   /* extract filename */
   for (name = path + strlen(path); name > path && *name != '/'; name--);
   if (*name == '/') name++;
-  return(fnmatch(plan->c_data, name));
+  return (fnmatch(plan->c_data, name, 0));
 }
 
 PLAN *c_name (char * pattern)

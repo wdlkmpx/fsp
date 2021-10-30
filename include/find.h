@@ -39,6 +39,8 @@
 #ifndef _FSP_FIND_H_
 #define _FSP_FIND_H_ 1
 
+#include <fnmatch.h>
+
 /* node type */
 enum ntype {
 	N_AND = 1, 				/* must start > 0 */
@@ -99,9 +101,6 @@ typedef struct _option {
 
 /* find.c */
 void find_formplan (char **);
-
-/* fnmatch.c */
-int fnmatch (register char *, register char *);
 
 /* function.c */
 PLAN * c_time (char *);

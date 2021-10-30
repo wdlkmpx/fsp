@@ -1,7 +1,7 @@
 Import(Split("env"))
 
 bsdfsp=env.StaticLibrary(target = 'bsdfsp', source = Split('''
-cmp.c fnmatch.c glob.c operator.c print.c
+cmp.c glob.c operator.c print.c
 find.c function.c ls.c  option.c  util.c
 '''))
 
