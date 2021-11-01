@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = foreign
-
 SUBDIRS=include bsd_src common client clients server man tests
 
 EXTRA_DIST= \

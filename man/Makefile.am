@@ -5,14 +5,12 @@ man_MANS = fcatcmd.1 \
 	ffindcmd.1 \
 	fgetcmd.1 \
 	fgrabcmd.1 \
-	fhostcmd.1 \
 	flscmd.1 \
 	fmkdir.1 \
 	fprocmd.1 \
 	fput.1 \
 	frmcmd.1 \
 	frmdircmd.1 \
-	fsp_prof.5 \
 	fspd.1 \
 	fver.1 \
 	fstatcmd.1 \

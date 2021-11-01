@@ -10,13 +10,10 @@ fspcmd_SOURCES= \
 	fspcmd_du.c \
 	fspcmd_find.c \
 	fspcmd_get.c \
-	fspcmd_host.c \
-	fspcmd_hostcmd.c \
 	fspcmd_mv.c \
 	fspcmd_put.c \
-	fspcmd_ver.c \
-	fspprof.l
+	fspcmd_ver.c
 
 fspcmd_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\""  $(AM_CFLAGS)
 
-noinst_HEADERS=fspcmd_0misc.h fspcmd_host.h
+noinst_HEADERS=fspcmd_0misc.h
