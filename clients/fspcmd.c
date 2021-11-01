@@ -35,41 +35,53 @@ int fmvcmd_main    (int argc, char ** argv);
 int fbye_main      (int argc, char ** argv);
 int fsetupcmd_main (int argc, char ** argv);
 
+static void fspcmd_usage (char *app)
+{
+	printf ("usage: \n");
+	printf ("   %s <command> [unknown options]\n\n", app);
+	printf ("Supported commands:\n");
+	printf ("   bye, cat, cd, du, get, grab\n");
+	printf ("   ls, mkdir, mv, pro, put, rm\n");
+	printf ("   rmdir, hostcmd, find, stat, setup, ver\n\n");
+}
+
+// ================================================
+
 int main (int argc, char ** argv)
 {
-  char *p, *q;
+  char * cmd;
+  cmd = argv[0];
+  if (argc >= 2) {
+     cmd = argv[1];
+     argv++;
+     argc--;
+  } else {
+     fspcmd_usage (argv[0]);
+     return 0;
+  }
 
-  for(p = q = argv[0]; *p; p++) if(*p == '/') q = p+1;
-
-  if      (!strcmp(q,"bye"))   fbye_main(argc,argv);
-  else if (!strcmp(q,"cat"))   fcatcmd_main(argc,argv);
-  else if (!strcmp(q,"cd"))    fcdcmd_main(argc,argv);
-  else if (!strcmp(q,"du"))    fducmd_main(argc,argv);
-  else if (!strcmp(q,"get"))   fgetcmd_main(argc,argv);
-  else if (!strcmp(q,"grab"))  fgrabcmd_main(argc,argv);
-  else if (!strcmp(q,"ls"))    flscmd_main(argc,argv);
-  else if (!strcmp(q,"mkdir")) fmkdir_main(argc,argv);
-  else if (!strcmp(q,"mv"))    fmvcmd_main(argc,argv);
-  else if (!strcmp(q,"pro"))   fprocmd_main(argc,argv);
-  else if (!strcmp(q,"put"))   fput_main(argc,argv);
-  else if (!strcmp(q,"rm"))    frmcmd_main(argc,argv);
-  else if (!strcmp(q,"rmdir")) frmdircmd_main(argc,argv);
-  else if (!strcmp(q,"hostcmd")) fhostcmd_main(argc,argv);
-  else if (!strcmp(q,"find"))    ffindcmd_main(argc,argv);
-  else if (!strcmp(q,"stat"))    fstatcmd_main(argc,argv);
-  else if (!strcmp(q,"setup"))   fsetupcmd_main(argc,argv);
-  else if (!strcmp(q,"ver"))     fver_main(argc,argv);
+  if      (!strcmp(cmd,"bye"))   fbye_main(argc,argv);
+  else if (!strcmp(cmd,"cat"))   fcatcmd_main(argc,argv);
+  else if (!strcmp(cmd,"cd"))    fcdcmd_main(argc,argv);
+  else if (!strcmp(cmd,"du"))    fducmd_main(argc,argv);
+  else if (!strcmp(cmd,"get"))   fgetcmd_main(argc,argv);
+  else if (!strcmp(cmd,"grab"))  fgrabcmd_main(argc,argv);
+  else if (!strcmp(cmd,"ls"))    flscmd_main(argc,argv);
+  else if (!strcmp(cmd,"mkdir")) fmkdir_main(argc,argv);
+  else if (!strcmp(cmd,"mv"))    fmvcmd_main(argc,argv);
+  else if (!strcmp(cmd,"pro"))   fprocmd_main(argc,argv);
+  else if (!strcmp(cmd,"put"))   fput_main(argc,argv);
+  else if (!strcmp(cmd,"rm"))    frmcmd_main(argc,argv);
+  else if (!strcmp(cmd,"rmdir")) frmdircmd_main(argc,argv);
+  else if (!strcmp(cmd,"hostcmd")) fhostcmd_main(argc,argv);
+  else if (!strcmp(cmd,"find"))    ffindcmd_main(argc,argv);
+  else if (!strcmp(cmd,"stat"))    fstatcmd_main(argc,argv);
+  else if (!strcmp(cmd,"setup"))   fsetupcmd_main(argc,argv);
+  else if (!strcmp(cmd,"ver"))     fver_main(argc,argv);
   else
   {
-    fprintf(stderr,"fspmerge: Unknown FSP client command: %s\n",q);
-    fprintf(stderr,"This program is single merged executable for invoking FSP client commands.\n"
-                   "It executes different FSP commands based on invoked name. Example:\n"
-		   "If fspmerge is invoked using fver executable name it will execute fver command\n"
-		   "and exit. Executable name can be set using symlink ln -s fspmerge fver or\n"
-		   "setting argv[0] passed to execve function.\n"
-		   "Using merged fsp client over single client executables saves diskspace,\n"
-		   "memory and have shorter startup time.\n");
-   exit(EX_USAGE);
+    fprintf(stderr,"fspmerge: Unknown FSP client command: %s\n", cmd);
+    exit(EX_USAGE);
   }
   exit(EX_OK);
 }
