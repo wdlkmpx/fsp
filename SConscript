@@ -6,9 +6,6 @@ FILES INFO INSTALL MACHINES TODO
 
 if SERVER:
   env.Install(dir=EXAMPLESDIR,source="fspd.conf")
-if CLIENTS:
-  env.Install(dir=EXAMPLESDIR,source=Split("setup.sh setup.csh"))
-env.Alias("install", EXAMPLESDIR)
 
 # *************** Targets ****************
 
