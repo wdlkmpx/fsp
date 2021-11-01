@@ -49,6 +49,7 @@ static void fspcmd_usage (char *app)
 
 int main (int argc, char ** argv)
 {
+  char * app = argv[0];
   char * cmd;
   cmd = argv[0];
   if (argc >= 2) {
@@ -56,7 +57,7 @@ int main (int argc, char ** argv)
      argv++;
      argc--;
   } else {
-     fspcmd_usage (argv[0]);
+     fspcmd_usage (app);
      return 0;
   }
 
@@ -78,9 +79,10 @@ int main (int argc, char ** argv)
   else if (!strcmp(cmd,"stat"))    fstatcmd_main(argc,argv);
   else if (!strcmp(cmd,"setup"))   fsetupcmd_main(argc,argv);
   else if (!strcmp(cmd,"ver"))     fver_main(argc,argv);
-  else
-  {
-    fprintf(stderr,"fspmerge: Unknown FSP client command: %s\n", cmd);
+  else if (!strcmp(cmd,"help") || !strcmp(cmd,"-help"))  {
+    fspcmd_usage (app);
+  } else {
+    fprintf(stderr,"%s: Unknown FSP client command: %s\n", app, cmd);
     exit(EX_USAGE);
   }
   exit(EX_OK);

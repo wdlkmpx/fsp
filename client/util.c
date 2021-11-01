@@ -458,11 +458,11 @@ static void util_get_env (void)
   char *p;
 
   if(!(env_host = getenv("FSP_HOST"))) {
-    fputs("No FSP_HOST specified.\n",stderr);
+    fputs("No FSP_HOST specified (example: export FSP_HOST=localhost).\n",stderr);
     exit(EX_CONFIG);
   }
   if(!(env_port = getenv("FSP_PORT"))) {
-    fputs("No FSP_PORT specified.\n",stderr);
+    fputs("No FSP_PORT specified (example: export FSP_PORT=21).\n",stderr);
     exit(EX_CONFIG);
   }
   if(!(env_dir  = getenv("FSP_DIR"))) {
