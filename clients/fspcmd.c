@@ -33,7 +33,6 @@ int ffindcmd_main  (int argc, char ** argv);
 int fstatcmd_main  (int argc, char ** argv);
 int fmvcmd_main    (int argc, char ** argv);
 int fbye_main      (int argc, char ** argv);
-int fsetupcmd_main (int argc, char ** argv);
 
 static void fspcmd_usage (char *app)
 {
@@ -42,7 +41,7 @@ static void fspcmd_usage (char *app)
 	printf ("Supported commands:\n");
 	printf ("   bye, cat, cd, du, get, grab\n");
 	printf ("   ls, mkdir, mv, pro, put, rm\n");
-	printf ("   rmdir, hostcmd, find, stat, setup, ver\n\n");
+	printf ("   rmdir, hostcmd, find, stat, ver\n\n");
 }
 
 // ================================================
@@ -77,7 +76,6 @@ int main (int argc, char ** argv)
   else if (!strcmp(cmd,"hostcmd")) fhostcmd_main(argc,argv);
   else if (!strcmp(cmd,"find"))    ffindcmd_main(argc,argv);
   else if (!strcmp(cmd,"stat"))    fstatcmd_main(argc,argv);
-  else if (!strcmp(cmd,"setup"))   fsetupcmd_main(argc,argv);
   else if (!strcmp(cmd,"ver"))     fver_main(argc,argv);
   else if (!strcmp(cmd,"help") || !strcmp(cmd,"-help"))  {
     fspcmd_usage (app);

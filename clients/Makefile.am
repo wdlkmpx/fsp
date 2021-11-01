@@ -14,15 +14,9 @@ fspcmd_SOURCES= \
 	fspcmd_hostcmd.c \
 	fspcmd_mv.c \
 	fspcmd_put.c \
-	fspcmd_setup.c \
 	fspcmd_ver.c \
 	fspprof.l
-#	fspsites.l
 
 fspcmd_CFLAGS = -DSYSCONFDIR="\"@sysconfdir@\""  $(AM_CFLAGS)
 
 noinst_HEADERS=fspcmd_0misc.h fspcmd_host.h
-
-
-
-	

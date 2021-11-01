@@ -15,12 +15,12 @@ if CLIENTS:
     fcdcmd.1
     fgrabcmd.1  fmvcmd.1    frmdircmd.1
     fducmd.1
-    fbye.1      fhostcmd.1  fprocmd.1   fsetupcmd.1 fstatcmd.1
+    fbye.1      fhostcmd.1  fprocmd.1 fstatcmd.1
     ffindcmd.1  fput.1      fver.1
     fcatcmd.1   flscmd.1
     """))
 if CLIENTS:
-    MAN5=Split("fspsites.5 fsp_prof.5")
+    MAN5=Split("fsp_prof.5")
     MAN7=Split("fsp_env.7")
 else:
     MAN5=[]

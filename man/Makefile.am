@@ -19,8 +19,6 @@ man_MANS = fcatcmd.1 \
 	fspscan.1 \
 	fsp_env.7 \
 	fbye.1 \
-	fspsites.5 \
-	fmvcmd.1 \
-	fsetupcmd.1
+	fmvcmd.1
 
 EXTRA_DIST=$(man_MANS)
