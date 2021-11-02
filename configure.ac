@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a working configure script.
 
 AC_PREREQ([2.59])
-AC_INIT([fsp],[8.1b25],[])
+AC_INIT([fsp],[2.8.1b30],[])
 AC_CONFIG_AUX_DIR([autoconf])
 AC_CONFIG_MACRO_DIR([autoconf-m4])
 AM_INIT_AUTOMAKE([-Wall foreign subdir-objects])
