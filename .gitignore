@@ -74,3 +74,4 @@ stamp-h1
 configure.ac~
 config.status
 clients/fspcmd
+fspscan

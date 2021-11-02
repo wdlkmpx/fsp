@@ -11,7 +11,8 @@ m4_ifdef([AM_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
 AC_CONFIG_HEADERS(include/config.h)
 AC_ARG_WITH(lockprefix,AS_HELP_STRING([--with-lockprefix=path],[Set lock prefix path to (default /tmp/.FSPL)]))
-AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/shmget/lockf/flock],[Set client locking type (default none)]))
+#AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/shmget/lockf/flock],[Set client locking type (default none)]))
+AC_ARG_WITH([locking],AS_HELP_STRING([--with-locking=none/semop/lockf/flock],[Set client locking type (default none)]))
 AC_CANONICAL_HOST
 AC_MSG_CHECKING([if we are building lamer pack])
 AC_ARG_ENABLE(lamerpack,AS_HELP_STRING([--enable-lamerpack],[Build fspd tuned for lamers (default no)]),AC_DEFINE(LAMERPACK,1,[Define if you want to build for lamer disabled ppl]) AC_MSG_RESULT(YES),AC_MSG_RESULT(NO))
@@ -53,40 +54,35 @@ AC_TYPE_MODE_T
 AC_TYPE_UID_T
 AC_TYPE_PID_T
 AC_CHECK_TYPE(nlink_t, ,AC_DEFINE(nlink_t, int,[declare nlink_t as int if not found in <sys/types.h>]))
-AC_CHECK_TYPE(rlim_t, ,AC_DEFINE(rlim_t, [unsigned int],[declare rlim_t as unsigned int if not found in <sys/resource.h>]),[#include <sys/resource.h>])
 
-AC_CHECK_FUNCS(random srandomdev flock lockf getrlimit fork setsid semop)
+AC_CHECK_FUNCS(random srandomdev getrlimit fork setsid flock lockf semop shmget)
 
 #AC_DEFINE(HAVE_D_INO,1,[define if you have d_fileno in struct dirent])
 AC_CHECK_MEMBER(struct dirent.d_ino,AC_DEFINE(HAVE_D_INO,1,[do you have d_ino in struct dirent]), [], [#include <dirent.h>])
 AC_CHECK_MEMBER(struct dirent.d_fileno,AC_DEFINE(HAVE_D_FILENO,1,[do you have d_fileno in struct dirent]), [], [#include <dirent.h>])
 
-
-AC_CHECK_TYPE(union semun, ,AC_DEFINE(_SEM_SEMUN_UNDEFINED,1,[Define if you do not have semun in sys/sem.h]),
-[#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>
-])
-# shm.h
-AC_DEFINE(HAVE_SHMEM,1,[Define the following if you have working shared memory])
 # signal.h
 AC_DEFINE(RELIABLE_SIGNALS,1,[undefine If your signal handlers don not reinstall automatically])
 
 #Parse user locking choice
-if test "x$with_locking" = "xno" -o "x$with_locking" = "xnone" -o "x$with_locking" = "x" ; then
+if test "x$with_locking" = "xno" -o "x$with_locking" = "xnone" ; then
 	AC_DEFINE(FSP_NOLOCKING,1,[Define if you do not want to use any locking])
-	with_locking=none
-elif test "x$with_locking" = "xlockf" ; then
+	AC_MSG_NOTICE(locking disabled by user)
+elif test "x$with_locking" = "xlockf" -a "x$ac_cv_func_lockf" = "xyes"; then
 	AC_DEFINE(FSP_USE_LOCKF,1,[Define for lockf style locking])
-elif test "x$with_locking" = "xsemop" ;then
+elif test "x$with_locking" = "xsemop" -a "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes";then
 	AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1,[Define for sharemem+semop locking])
-elif test "x$with_locking" = "xshmget" ; then
-	AC_DEFINE(FSP_USE_SHAREMEM_AND_LOCKF,1,[Define for lockf locking])
-elif test "x$with_locking" = "xflock" ; then
-	AC_DEFINE(FSP_USE_FLOCK,1,[Define for flock style locks])
+	#Autodetect locking 
+elif test "x$ac_cv_func_semop" = "xyes" -a "x$ac_cv_func_shmget" = "xyes"; then
+	AC_DEFINE(FSP_USE_SHAREMEM_AND_SEMOP,1)
+elif test "x$ac_cv_func_lockf" = "xyes"; then
+	AC_DEFINE(FSP_USE_LOCKF,1,[Define for lockf style locking])
+elif test "x$ac_cv_func_flock" = "xyes"; then
+	AC_DEFINE(FSP_USE_FLOCK,1,[Define for flock style locking])
+else
+	AC_DEFINE(FSP_NOLOCKING,1,[Define if you do not want to use any locking])
+	AC_MSG_NOTICE([no suitable locking method detected])
 fi
-AC_MSG_NOTICE([Locking method: $with_locking])
-
 
 #locking prefix
 if test "x$with_lockprefix" != "xno" -a "x$with_lockprefix" != "xyes" -a "x$with_lockprefix" != "x" ; then
