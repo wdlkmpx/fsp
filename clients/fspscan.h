@@ -58,53 +58,7 @@ typedef struct UBUF {            char   cmd;  /* message code.             */
 #define CC_MAKE_DIR     0x49    /* create a directory.                  */
 #define CC_BYE          0x4A    /* finish a session.                    */
 
-/****************************************************************************
-*  RDIRENT is the structure of a directory entry contained in a .FSP_CONTENT
-*  file.  Each entry contains a 4 bytes quantity 'time', a 4 bytes quentity
-*  'size', and 1 byte of 'type'.  Then followed by x number of bytes of
-*  'name'.  'name' is null terminated.  Then followed by enough number of
-*  padding to fill to an 4-byte boundary.  At this point, if the next entry
-*  to follow will spread across 1k boundary, then two possible things will
-*  happen.  1) if the header fits between this entry and the 1k boundary,
-*  a complete header will be filled in with a 'type' set to RDTYPE_SKIP.
-*  And then enough bytes to padd to 1k boundary.  2) if the header does
-*  not fit, then simply pad to the 1k boundary.  This will make sure that
-*  messages carrying directory information carry only complete directory
-*  entries and no fragmented entries.  The last entry is type RDTYPE_END.
-****************************************************************************/
-
-#define RDHSIZE (2*sizeof(unsigned long)+sizeof(unsigned char))
-
-typedef struct RDIRENT { unsigned long  time;
-                         unsigned long  size;
-                         unsigned char  type;
-                         char        name[1]; } RDIRENT;
-
-#define RDTYPE_END      0x00
-#define RDTYPE_FILE     0x01
-#define RDTYPE_DIR      0x02
-#define RDTYPE_SKIP     0x2A
-
 #define NULLP ((void *) 0)
-
-
-/****************************************************************************
-* These structures are used to implement a opendir/readdir mechanism similar
-* to that of the normal opendir/reader mechanism in unix.
-****************************************************************************/
-
-typedef struct DDLIST {	struct DDLIST *next;
-			char          *path;
-			RDIRENT  **dep_root;
-			int         ref_cnt; } DDLIST;
-
-typedef struct RDIR { DDLIST   *ddp;
-		      RDIRENT **dep; } RDIR;
-
-typedef struct rdirent { unsigned long  d_fileno;
-			 unsigned short d_reclen;
-			 unsigned short d_namlen;
-			 char          *d_name; } rdirent;
 
 UBUF *client_interact(unsigned cmd, unsigned long pos, unsigned l1, unsigned char *p1,unsigned l2, unsigned char *p2);
 void client_intr(int);
