@@ -2,14 +2,12 @@ How to run FSP:
 	The first step in running this fine software (:) is to get it to
 	compile.  Every effort on my part will be made to make this code
 	compile and run on any reasonable system.  The information in this
-	file CURRENTLY pertains only to Unix and probably to Cygwin users.
+	file CURRENTLY pertains only to Unix.
 
 Building:
-        FSP uses SCons software construction tool. Building was tested
-	with SCons 3.0 and Python 2.7 or Python 3.6, but older versions
-	will probably work fine if you remove version check from SConstruct.
-	Prior to building FSP you need to download and install SCons
-	from http://www.scons.org.
+	./configure --prefix=directory
+	make
+	make install
 
 	Other tools needed for building FSP are GNU flex and GNU C compiler.
 	These should be part of your Unix distribution but you can also 
@@ -20,49 +18,7 @@ Building:
 	For building optional documentation you need jade or openjade and
 	DocBook DSSSL stylesheets.
 
-	SCons is replacement for configure and make utility; there is no
-	separate configuration step. Building with SCons is very similar
-	to using make. Run 'scons' to compile and 'scons install' to
-	install.  You can skip compile part. 'scons install' will do both
-	steps then.
-
-	SCons can take several optional switches. You must supply these
-	switches to BOTH phases (compile and install) of build process.
-	Most important switch is disable-timeout=yes. This option switches
-	fsp clients into classic infinite retry mode which is preferred
-	by people with very flaky networks.
-
->>	By default, the SCons will install the code in /usr/local/bin
->>	and the man pages under /usr/local/man.  If you wish to change this,
->>	you MUST run scons with the prefix option.  For instance, on my
->>	machine, I install the files under /usr/jt/bin and /usr/jt/man.
->>	To do this, I type: scons prefix=/usr/jt install
-
-	If you get ANY errors while compiling this code (excepting warnings),
-	please send me email with a complete copy of the output of scons as
-	well as a copy of the config.log file.
-
-SCons command line options:
-	prefix=directory	set installation directory
-	disable-timeout=yes	client utilities never timeouts
-	enable-debug=yes	compile in extra debug code
-	enable-lamerpack=yes	build lamer pack version of fspd
-	lockprefix=directory	set directory for creating client lock files
-	locking=type		set locking type, default autodetected
-				type is one of none, lockf, semop, flock, shmget
-	enable-maintainer-mode=yes compile with libefence debug library and
-				   some extra debug information
-	mandir=directory	where to install man pages. default autodetect
-	sysconfdir=directory	where to look for fspd and client configuration
-				files. Default prefix/etc
-	docdir=directory        where to put documentation.
-				   Default prefix/share/doc/fsp
-	examplesdir=directory   where to install examples
-				   Default is docdir/examples
-	without-clients=yes	dont build and install client commands
-	without-fspscan=yes	dont build and install fspcan command
-	without-server=yes	dont build and install fspd server
-	dsssl=directory		Look for DocBook DSSSL Stylesheets there
+	By default, the installation directory is /usr/local
 
 Client utilities:
         All inter-command states are kept in these three shell environment
