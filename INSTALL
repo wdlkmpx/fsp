@@ -5,7 +5,7 @@ How to run FSP:
 	file CURRENTLY pertains only to Unix.
 
 Building:
-	./configure --prefix=directory
+	./configure --prefix=directory --sysconfdir=/etc
 	make
 	make install
 

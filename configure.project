@@ -1,0 +1,58 @@
+#!/bin/sh
+
+# Project name and version
+PACKAGE="fsp"
+VERSION="2.8.1b30"
+PACKAGE_URL=''
+
+# Flags that will be used in all makefiles that compile code...
+xCFLAGSX='-g -O2' # -Wall
+PROJECT_CFLAGS="$xCFLAGSX -I\${top_srcdir}/include" # -Wextra -Wno-unused-parameter -Wno-missing-field-initializers
+PROJECT_CXXFLAGS="${PROJECT_CFLAGS}"
+PROJECT_CPPFLAGS=''
+PROJECT_LDFLAGS=''
+PROJECT_LXXFLAGS=''
+PROJECT_LIBS=''
+
+# Enhance --sysroot?
+#W_SYSROOT_PLUS_INCLUDES_AND_LIBS=1
+
+# Project type, use C to avoid checking for C++ compiler and stuff
+# supported values: C, C++ ("" = C++)
+PROJECT_TYPE=C
+
+# Use mktemp to produce temp files
+#W_USE_MKTEMP=1
+
+# Files.in, to replace @VERSION@ and a few other variables
+#  see w_conf/00_standard_infile.sh for a complete list
+#w_infiles=''
+
+# config.h: custom extra lines
+w_config_h_extra_lines="#define RELIABLE_SIGNALS 1
+#define _LARGEFILE_SOURCE 1
+#define _LARGEFILE64_SOURCE 1
+#define _FILE_OFFSET_BITS 64
+#define FSP_NOLOCKING 1
+#define CLIENT_TIMEOUT 1"
+
+# config.mk: custom extra lines
+w_config_mk_extra_lines=""
+
+
+# configure the project using the commands provided
+# by `configure` and other scripts and commands/tools
+w_main_func()
+{
+	# GCC=yes if gcc has been detected
+	# if the Makefiles are only compatible with GNU make, use w_require_gnu_make
+
+	# check required headers and exit on error
+	w_check_headers_required stdio.h
+
+	# detect the presence of headers
+	# config.h: define HAVE_ZCONF_H if zconf.h is present, etc
+	w_check_headers limits.h sys/syslimits.h errno.h signal.h sys/shm.h \
+		string.h strings.h unistd.h sys/resource.h utime.h sys/wait.h
+}
+
