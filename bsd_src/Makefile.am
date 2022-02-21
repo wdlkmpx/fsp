@@ -2,6 +2,5 @@
 
 noinst_LIBRARIES = libbsdfsp.a
 
-libbsdfsp_a_SOURCES = cmp.c glob.c operator.c print.c \
-                      find.c function.c ls.c  option.c  util.c
+libbsdfsp_a_SOURCES = cmp.c glob.c operator.c print.c find.c function.c ls.c  option.c  util.c
 

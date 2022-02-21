@@ -2,7 +2,4 @@
 
 SUBDIRS=include bsd_src common client clients server man tests
 
-EXTRA_DIST= \
-	fspd.conf FILES INFO BETA.README \
-	MACHINES COPYRIGHT setup.sh setup.csh \
-	SConstruct SConscript
+EXTRA_DIST= fspd.conf FILES INFO BETA.README MACHINES COPYRIGHT
