@@ -206,7 +206,7 @@ void stat_caches (FILE *fp)
 /* should init all types of caches in future */
 void shutdown_caches (void)
 {
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
     fclose(stderr);
 #endif        
     fprintf(stderr,"DIRLISTCACHE ");
@@ -1183,13 +1183,13 @@ void init_home_dir (void)
       chdir(home_dir);
   }
 
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
   if(dbug) {
 #endif      
     fprintf(stderr,"home on %s\n",home_dir);
     if(tmp_dir)
        fprintf(stderr,"tmpdir on %s\n",tmp_dir);
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
   }
 #endif
 }

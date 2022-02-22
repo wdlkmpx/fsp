@@ -23,7 +23,7 @@ static const char *config_file = CONF_FILE ;
 static void display_version (void)
 {
       printf(
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
           "File Service Protocol Daemon - FSP "PACKAGE_VERSION"\n"
 	  "Copyright (c) 1991-1996 by A. J. Doherty, 2001-2020 by Radim Kolar.\n"
 	  "All of the FSP code is free software with revised BSD license.\n"
@@ -43,7 +43,7 @@ static void display_version (void)
 
 static void arg_err (void)
 {
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
   fputs("Usage: fspd [-f configfile] [-d directory] [-v|-V] [-i] [-F] [-p port] [-X] [-t inetd timeout] [-T temporary directory] [-l logfile] [-P pidlogname] [-b bytes/sec] [-s packetsize]\n", stderr);
 #else
   fputs("Usage: fspd [-d directory] [-p port] [-T temporary directory] [-l logfile] [-b bytes/sec] [-s packetsize]\n", stderr);
@@ -54,7 +54,7 @@ static void check_required_vars (void)
 {
   double rnd;
 
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
   inetd_mode = 0;
   daemonize = 0;
   dbug = 0;
@@ -63,7 +63,7 @@ static void check_required_vars (void)
 #endif
 
   if(!inetd_mode && udp_port==0) {
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
 #else
     fprintf(stderr, "Error: No port set. (Use 65535 for random port)\n");
     exit(1);
@@ -85,7 +85,7 @@ static void check_required_vars (void)
 	      packetsize = 64;
 
   if(!home_dir) {
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
     home_dir = strdup("/");
     fprintf(stderr, "Info: Sharing all files available on this computer.\n");
 #else
@@ -117,7 +117,7 @@ static void check_required_vars (void)
       dbug = 0;
   if(!tmp_dir && !read_only)
   {
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
       if(!inetd_mode)
 	  fprintf(stderr,"Warning: no tmpdir set, switching to readonly mode.\n");
 #else
@@ -170,7 +170,7 @@ int main (int argc, char ** argv)
   load_configuration(config_file);
 
   while( (opt=getopt(argc,argv,
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
       "h?Xd:f:vVip:t:FT:l:P:b:s:"
 #else
       "d:p:T:l:b:h?s:"
@@ -252,7 +252,7 @@ int main (int argc, char ** argv)
 	fprintf(stderr,"listening on port %d\n",udp_port);
 	fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
     }
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
     display_version();
     fprintf(stderr,"rocking on port %d\n",udp_port);
     fprintf(stderr,"FSP payload size %d bytes\n",packetsize);
@@ -286,7 +286,7 @@ int main (int argc, char ** argv)
   umask(system_umask);
 
   if (logging) {
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
      if (dbug)
 #endif
 	 fprintf(stderr,"logging to %s\n",logname);
@@ -323,7 +323,7 @@ int main (int argc, char ** argv)
      2) If we create pidfile early before setuid() we can't write
         new pid to it after we setuid()+fork()
   */
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
   if (! inetd_mode && pidfile(pidlogname)) {
 	  fprintf(stderr,"Error: can not write pidfile %s - exiting.\n",pidlogname);
 	  exit(8);/* cannot write pid file - exit */

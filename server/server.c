@@ -437,7 +437,7 @@ void serve_file (struct sockaddr_in * from, UBUF * ub, FILE * fp,
 * Note: no bounds checking is currently performed.  As version information
 *       grows, this will become required.
 ****************************************************************************/
-#ifndef LAMERPACK
+#ifndef __CYGWIN__
 static void server_show_version (struct sockaddr_in * from, UBUF * ub)
 {
   char buf[UBUF_SPACE], verflags = 0;
@@ -528,7 +528,7 @@ static void server_process_packet (unsigned bytes, UBUF * ub, int old,
 
   switch(ub->cmd) {
     case CC_VERSION:
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
       ACTIONLOG0(L_VER,"AVOIDED SCAN DETECTION");
       ACTIONOK(L_VER);
 #else

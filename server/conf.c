@@ -245,7 +245,7 @@ static void read_configuration (const char * name)
 
 void load_configuration (const char *config_file)
 {
-#ifdef LAMERPACK
+#ifdef __CYGWIN__
     return;
 #endif
   if(config_file == NULL) return;
