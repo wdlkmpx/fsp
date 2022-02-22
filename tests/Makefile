@@ -5,17 +5,17 @@ APPS_INST  =
 
 # ls *.c | sed "s%\.c%.o%g" | tr "\n" " " >> Makefile
 
-mklargefile_cflags = 
+mklargefile_cflags = ${CFLAGS}
 mklargefile_ldflags = 
 mklargefile_objs = mklargefile.c
-cachecheck_cflags = 
-cachecheck_ldflags = 
+cachecheck_cflags = ${CFLAGS}
+cachecheck_ldflags = ${LDFLAGS} ${LIBS}
 cachecheck_objs = ../server/fifocache.o cachecheck.o
-parsecheck_cflags = 
-parsecheck_ldflags = 
+parsecheck_cflags = ${CFLAGS}
+parsecheck_ldflags = ${LDFLAGS} ${LIBS}
 parsecheck_objs = parsecheck.o ../server/path.o
-randomcheck_cflags = 
-randomcheck_ldflags = 
+randomcheck_cflags = ${CFLAGS}
+randomcheck_ldflags = ${LDFLAGS} ${LIBS}
 randomcheck_objs = randomcheck.c
 
 LDFLAGS += 
@@ -26,16 +26,16 @@ LIBS   +=
 all: $(APPS)
 
 mklargefile: $(mklargefile_objs)
-	$(CC) $(CFLAGS) $(mklargefile_cflags) $(mklargefile_objs) -o mklargefile $(LDFLAGS) $(LIBS) $(mklargefile_ldflags)
+	$(CC) $(mklargefile_cflags) $(mklargefile_objs) -o $@ $(mklargefile_ldflags)
 
 cachecheck: $(cachecheck_objs)
-	$(CC) $(CFLAGS) $(cachecheck_cflags) $(cachecheck_objs) -o cachecheck $(LDFLAGS) $(LIBS) $(cachecheck_ldflags)
+	$(CC) $(cachecheck_cflags) $(cachecheck_objs) -o $@ $(cachecheck_ldflags)
 
 parsecheck: $(parsecheck_objs)
-	$(CC) $(CFLAGS) $(parsecheck_cflags) $(parsecheck_objs) -o parsecheck $(LDFLAGS) $(LIBS) $(parsecheck_ldflags)
+	$(CC) $(parsecheck_cflags) $(parsecheck_objs) -o $@ $(parsecheck_ldflags)
 
 randomcheck: $(randomcheck_objs)
-	$(CC) $(CFLAGS) $(randomcheck_cflags) $(randomcheck_objs) -o randomcheck $(LDFLAGS) $(LIBS) $(randomcheck_ldflags)
+	$(CC) $(randomcheck_cflags) $(randomcheck_objs) -o $@ $(randomcheck_ldflags)
 
 strip: $(APPS)
 	$(STRIP) $(APPS)

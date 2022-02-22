@@ -5,11 +5,11 @@ APPS_INST  =  fspcmd fspscan
 
 # ls *.c | sed "s%\.c%.o%g" | tr "\n" " " >> Makefile
 
-fspcmd_cflags = 
-fspcmd_ldflags = 
+fspcmd_cflags = ${CFLAGS}
+fspcmd_ldflags = ${LDFLAGS} ${LIBS}
 fspcmd_objs =  fspcmd.o fspcmd_0misc.o fspcmd_du.o fspcmd_find.o fspcmd_get.o fspcmd_mv.o fspcmd_put.o fspcmd_ver.o
-fspscan_cflags = 
-fspscan_ldflags = 
+fspscan_cflags = ${CFLAGS}
+fspscan_ldflags = ${LDFLAGS} ${LIBS}
 fspscan_objs = fspscan.c
 
 LDFLAGS +=  -L../common -L../bsd_src -L../client -lclient -lcommon -lbsdfsp $(EX_LIBS)
@@ -20,10 +20,10 @@ LIBS   +=
 all: $(APPS)
 
 fspcmd: $(fspcmd_objs)
-	$(CC) $(CFLAGS) $(fspcmd_cflags) $(fspcmd_objs) -o fspcmd $(LDFLAGS) $(LIBS) $(fspcmd_ldflags)
+	$(CC) $(fspcmd_cflags) $(fspcmd_objs) -o $@ $(fspcmd_ldflags)
 
 fspscan: $(fspscan_objs)
-	$(CC) $(CFLAGS) $(fspscan_cflags) $(fspscan_objs) -o fspscan $(LDFLAGS) $(LIBS) $(fspscan_ldflags)
+	$(CC) $(fspscan_cflags) $(fspscan_objs) -o $@ $(fspscan_ldflags)
 
 strip: $(APPS)
 	$(STRIP) $(APPS)
